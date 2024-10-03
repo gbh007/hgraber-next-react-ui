@@ -1,0 +1,13 @@
+#index-info ul {
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+}
+
+div.app-container {
+  margin-bottom: 20px;
+}
+
+div.app-container:last-child {
+  margin-bottom: unset;
+}
