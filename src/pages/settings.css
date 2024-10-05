@@ -1,0 +1,20 @@
+div.app-container {
+  margin-bottom: 20px;
+}
+
+.top-bar-settings > table {
+  display: inline-block;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.top-bar-settings > table td {
+  padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.top-bar-settings > table td.head {
+  border-bottom: 2px dashed black;
+  font-weight: bold;
+}

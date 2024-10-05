@@ -80,8 +80,8 @@ function BookHandleWidget() {
     const [{ data, isLoading, isError, errorText }, fetchData] = useSystemHandle()
 
     useEffect(() => {
-        setBookList((data?.not_handled || []).join("\n"))
-    }, [data, setBookList])
+        if (!isError) setBookList((data?.not_handled || []).join("\n"))
+    }, [data, isError, setBookList])
 
     return (
         <div className="app-container" style={{ "display": "flex" }}>
@@ -119,7 +119,7 @@ function BookHandleWidget() {
             <div style={{ "display": "flex", "flexDirection": "column", "marginLeft": "10px" }}>
                 {
                     isError ?
-                        <div className="app-error-container" v-if="appState.urlsError">
+                        <div className="app-error-container">
                             {errorText}
                         </div>
                         :

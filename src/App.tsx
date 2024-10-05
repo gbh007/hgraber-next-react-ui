@@ -7,11 +7,16 @@ import { MainScreen } from "./pages/main";
 
 
 import { PropsWithChildren } from "react";
+import { SettingsScreen } from "./pages/settings";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <SimpleWrapper> <MainScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/settings",
+    element: <SimpleWrapper> <SettingsScreen /></SimpleWrapper>,
   },
 ]);
 
