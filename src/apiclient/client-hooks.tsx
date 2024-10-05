@@ -38,7 +38,7 @@ export function useAPIGet<ResponseType>(url: string): [Response<ResponseType | n
             let text = 'unknown error'
 
             if (error instanceof axios.AxiosError) {
-                text = error.response?.data?.raw || 'unknown error'
+                text = error.response?.data?.details || 'unknown error'
 
                 if (error.response?.status == 401) {
                     setIsUnauthorize(true)
@@ -89,7 +89,7 @@ export function useAPIPost<RequestType, ResponseType>(url: string): [Response<Re
             let text = 'unknown error'
 
             if (error instanceof axios.AxiosError) {
-                text = error.response?.data?.raw || 'unknown error'
+                text = error.response?.data?.details || 'unknown error'
 
                 if (error.response?.status == 401) {
                     setIsUnauthorize(true)

@@ -1,6 +1,7 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useSystemInfo } from "../apiclient/api-system-info"
 import "./main.css"
+import { useSystemHandle } from "../apiclient/api-system-handle"
 
 export function MainScreen() {
     const [{ data, isError, errorText }, fetchData] = useSystemInfo()
@@ -67,6 +68,73 @@ export function MainScreen() {
                         </div>
                     </>
             }
+            <BookHandleWidget />
         </>
+    )
+}
+
+function BookHandleWidget() {
+    const [bookList, setBookList] = useState("")
+    const [isMultiParse, setIsMultiParse] = useState(false)
+
+    const [{ data, isLoading, isError, errorText }, fetchData] = useSystemHandle()
+
+    useEffect(() => {
+        setBookList((data?.not_handled || []).join("\n"))
+    }, [data, setBookList])
+
+    return (
+        <div className="app-container" style={{ "display": "flex" }}>
+            <div style={{ "display": "flex", "flexDirection": "column" }}>
+                <textarea
+                    className="app"
+                    rows={10}
+                    cols={50}
+                    value={bookList}
+                    onChange={e => { setBookList(e.target.value) }}
+                    placeholder="Загрузить новые книги"
+                ></textarea>
+                <label>
+                    <span>Множественный парсинг</span>
+                    <input
+                        className="app"
+                        onChange={(e) => { setIsMultiParse(e.target.checked) }}
+                        placeholder="Множественный парсинг"
+                        type="checkbox"
+                        checked={isMultiParse}
+                        autoComplete="off"
+                    />
+                </label>
+                <button
+                    className="app"
+                    onClick={() => {
+                        fetchData({
+                            urls: bookList.split("\n").map((s) => s.trim()).filter(e => e.length > 0),
+                            is_multi: isMultiParse,
+                        })
+                    }}
+                    disabled={isLoading}
+                >Загрузить</button>
+            </div>
+            <div style={{ "display": "flex", "flexDirection": "column", "marginLeft": "10px" }}>
+                {
+                    isError ?
+                        <div className="app-error-container" v-if="appState.urlsError">
+                            {errorText}
+                        </div>
+                        :
+                        <>
+                            <div><b>Всего: </b>{data?.total_count || 0}</div>
+                            <div>
+                                <b>Загружено: </b>{data?.loaded_count || 0}
+                            </div>
+                            <div>
+                                <b>Дубликаты: </b>{data?.duplicate_count || 0}
+                            </div>
+                            <div><b>Ошибки: </b>{data?.error_count || 0}</div>
+                        </>
+                }
+            </div>
+        </div >
     )
 }
