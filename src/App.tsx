@@ -8,6 +8,7 @@ import { MainScreen } from "./pages/main";
 
 import { PropsWithChildren } from "react";
 import { SettingsScreen } from "./pages/settings";
+import { RPCScreen } from "./pages/rpc";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/settings",
     element: <SimpleWrapper> <SettingsScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/rpc",
+    element: <SimpleWrapper> <RPCScreen /></SimpleWrapper>,
   },
 ]);
 
@@ -36,6 +41,7 @@ function SimpleWrapper(props: PropsWithChildren) {
         <Link to="/">Главная</Link>
         <Link to="/list">Список книг</Link>
         <Link to="/agents">Агенты</Link>
+        <Link to="/rpc">RPC</Link>
         <Link to="/settings">Настройки</Link>
       </div>
 
