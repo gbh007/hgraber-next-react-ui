@@ -1,0 +1,23 @@
+div.app-container {
+  margin-bottom: 20px;
+}
+
+.agent-status[data-status="ok"] {
+  color: green;
+}
+
+.agent-status[data-status="error"] {
+  color: red;
+}
+
+.agent-status[data-status="warning"] {
+  color: yellow;
+}
+
+.agent-status[data-status="offline"] {
+  color: gray;
+}
+
+.agent-status[data-status="unknown"] {
+  color: purple;
+}

@@ -9,6 +9,7 @@ import { MainScreen } from "./pages/main";
 import { PropsWithChildren } from "react";
 import { SettingsScreen } from "./pages/settings";
 import { RPCScreen } from "./pages/rpc";
+import { AgentScreen } from "./pages/agents";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/rpc",
     element: <SimpleWrapper> <RPCScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/agents",
+    element: <SimpleWrapper> <AgentScreen /></SimpleWrapper>,
   },
 ]);
 
