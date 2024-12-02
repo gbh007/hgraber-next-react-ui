@@ -1,0 +1,31 @@
+.book {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.book *[data-parsed="red"] {
+  color: red;
+}
+
+.book *[data-parsed="bred"] {
+  background: pink;
+}
+
+div.info-area {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+img.preview {
+  max-width: 130px;
+  max-height: 200px;
+}
+
+div.app-container {
+  padding: 10px;
+  display: flex;
+}
