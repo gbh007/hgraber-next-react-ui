@@ -10,6 +10,7 @@ import { PropsWithChildren } from "react";
 import { SettingsScreen } from "./pages/settings";
 import { RPCScreen } from "./pages/rpc";
 import { AgentScreen } from "./pages/agents";
+import { ListScreen } from "./pages/list";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/agents",
     element: <SimpleWrapper> <AgentScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/list",
+    element: <SimpleWrapper> <ListScreen /></SimpleWrapper>,
   },
 ]);
 

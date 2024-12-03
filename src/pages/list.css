@@ -1,0 +1,36 @@
+body {
+  text-align: center;
+}
+
+#book-list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(500px, 100vw - 20px), 1fr)
+  );
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+span.page[data-separator="true"] {
+  background: var(--app-background);
+}
+
+span.page[data-current="true"] {
+  background: var(--app-primary);
+}
+
+div.app-container:last-child,
+div.app-container {
+  padding: 10px;
+  display: flex;
+}
+
+.filter {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+}
