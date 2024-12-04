@@ -1,8 +1,4 @@
-body {
-  text-align: center;
-}
-
-#book-list {
+.bookList {
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
@@ -13,18 +9,23 @@ body {
   margin-bottom: 10px;
 }
 
+span.page {
+  border-radius: 3px;
+  padding: 3px;
+  margin: 2px;
+  min-width: 20px;
+  background: var(--app-secondary);
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+}
+
 span.page[data-separator="true"] {
   background: var(--app-background);
 }
 
 span.page[data-current="true"] {
   background: var(--app-primary);
-}
-
-div.app-container:last-child,
-div.app-container {
-  padding: 10px;
-  display: flex;
 }
 
 .filter {

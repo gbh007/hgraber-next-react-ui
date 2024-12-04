@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import "./list.css"
+import styles from "./list.module.css"
 import { BookFilter } from "../apiclient/model-book-filter"
 import { BookListResponsePages, useBookList } from "../apiclient/api-book-list"
 import { useAgentList } from "../apiclient/api-agent-list"
@@ -30,7 +30,7 @@ export function ListScreen() {
 
     return <>
         <ErrorTextWidget isError={booksResponse.isError} errorText={booksResponse.errorText} />
-        <details className="filter">
+        <details className={styles.filter}>
             <summary>Фильтр, всего {booksResponse.data?.count || 0}</summary>
             <BookFilterWidget value={bookFilter} onChange={setBookFilter} />
             <button className="app" disabled={booksResponse.isLoading} onClick={() => {
@@ -42,7 +42,7 @@ export function ListScreen() {
             setBookFilter({ ...bookFilter, page: v })
             getBooks({ ...bookFilter, page: v })
         }} value={booksResponse.data?.pages || []} />
-        <div id="book-list">
+        <div className={styles.bookList}>
             {booksResponse.data?.books?.map(book =>
                 <BookShortInfoWidget key={book.id} value={book} onClick={() => { }} /> // FIXME: роутинг
             )}
@@ -88,7 +88,7 @@ function AgentExportWidget(props: { filter: BookFilter }) {
         <ErrorTextWidget isError={exportResponse.isError} errorText={exportResponse.errorText} />
         <button className="app" disabled={exportResponse.isLoading || !agentID} onClick={() => {
             makeExport({
-                book_filter: { ...props.filter, count: 0, page: 0 }, // Принудительно срезаем параметры пагинации.
+                book_filter: { ...props.filter, count: undefined, page: undefined }, // Принудительно срезаем параметры пагинации.
                 delete_after: deleteAfterExport,
                 exporter: agentID,
             })
@@ -103,7 +103,7 @@ function PaginatorWidget(props: {
     return <div id="paginator">
         {props.value.map((page, index) => <span
             key={index}
-            className="page"
+            className={styles.page}
             data-current={page.is_current ? 'true' : 'false'}
             data-separator={page.is_separator ? 'true' : 'false'}
             onClick={() => {
