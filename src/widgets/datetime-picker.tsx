@@ -7,7 +7,7 @@ export function DatetimePickerWidget(props: DatetimePickerProps) {
     return <input
         className="app"
         type="datetime-local"
-        value={props.value}
+        value={transformDatetimeToInput(props.value)}
         onChange={e => {
             const v = e.target.value
             if (v) {
@@ -17,4 +17,22 @@ export function DatetimePickerWidget(props: DatetimePickerProps) {
             }
         }}
     />
+}
+
+function transformDatetimeToInput(v: string): string {
+    if (!v) {
+        return ""
+    }
+
+    let dt = new Date(v)
+
+    return `${dt.getFullYear()}-${leadZero(dt.getMonth() + 1)}-${leadZero(dt.getDate())}T${leadZero(dt.getHours())}:${leadZero(dt.getMinutes())}:${leadZero(dt.getSeconds())}`
+}
+
+function leadZero(v: number): string {
+    if (v < 10 && v >= 0) {
+        return `0${v}`
+    }
+
+    return `${v}`
 }

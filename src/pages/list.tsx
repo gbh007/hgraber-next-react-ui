@@ -23,9 +23,10 @@ export function ListScreen() {
         sort_desc: true,
     })
 
+
     const [booksResponse, getBooks] = useBookList()
 
-    // useEffect(() => { getBooks(bookFilter) }) // FIXME: проблема множественного вызова
+    useEffect(() => { getBooks(bookFilter) }, [getBooks])
 
     return <>
         <ErrorTextWidget isError={booksResponse.isError} errorText={booksResponse.errorText} />
@@ -60,7 +61,7 @@ function AgentExportWidget(props: { filter: BookFilter }) {
     const [deleteAfterExport, setDeleteAfterExport] = useState(false)
     const [exportResponse, makeExport] = useAgentTaskExport()
 
-    // useEffect(() => { getAgents({ can_export: true, }) }, [getAgents]) // FIXME: проблема множественного вызова
+    useEffect(() => { getAgents({ can_export: true, }) }, [getAgents])
 
     return <details>
         <summary>Параметры экспорта</summary>
