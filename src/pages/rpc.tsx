@@ -4,7 +4,6 @@ import { useSystemRPCRemoveDetachedFiles } from "../apiclient/api-system-rpc-rem
 import { useSystemRPCRemoveMismatchFiles } from "../apiclient/api-system-rpc-remove-mismatch-files"
 import { systemWorkerRunnerConfig, useSystemWorkerConfig } from "../apiclient/api-system-worker-config"
 
-import "./rpc.css"
 import { useSystemInfo } from "../apiclient/api-system-info"
 
 export function RPCScreen() {
@@ -22,10 +21,12 @@ export function RPCScreen() {
                 не рекомендуется их выполнять без крайней необходимости.
             </h2>
 
-            <DeduplicateFilesWidget />
-            <RemoveDetachedFilesWidget />
-            <RemoveMismatchFilesWidget />
-            <RunnersWidget />
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                <DeduplicateFilesWidget />
+                <RemoveDetachedFilesWidget />
+                <RemoveMismatchFilesWidget />
+                <RunnersWidget />
+            </div>
         </>
     )
 }

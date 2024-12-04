@@ -17,7 +17,7 @@ export function SettingsScreen() {
     }, [appSettings, setPageCount])
 
     return (
-        <>
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div className="app-container top-bar-settings">
                 <table>
                     <tbody>
@@ -61,6 +61,6 @@ export function SettingsScreen() {
                     login({ token }).then(() => setToken(""))
                 }}>Авторизоваться</button>
             </div >
-        </>
+        </div>
     )
 }

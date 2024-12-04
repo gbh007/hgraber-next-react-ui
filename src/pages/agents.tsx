@@ -32,7 +32,7 @@ function AgentListWidget(props: {
     callback: () => void
 }) {
     return (
-        <>
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {props.data.map(agent => <div
                 className="app-container"
                 style={{ display: "flex", flexDirection: "column", rowGap: "10px" }}
@@ -79,7 +79,7 @@ function AgentListWidget(props: {
                 <AgentDeleteButton callback={props.callback} agentID={agent.id} />
             </div >)
             }
-        </>
+        </div>
     )
 }
 

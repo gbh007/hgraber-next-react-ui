@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useSystemInfo } from "../apiclient/api-system-info"
-import "./main.css"
+import styles from "./main.module.css"
 import { useSystemHandle } from "../apiclient/api-system-handle"
 
 export function MainScreen() {
@@ -9,7 +9,7 @@ export function MainScreen() {
     useEffect(() => { fetchData() }, [fetchData])
 
     return (
-        <>
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {
                 isError ?
                     <div className="app-error-container" >
@@ -17,8 +17,8 @@ export function MainScreen() {
                     </div>
                     :
                     <>
-                        <div className="app-container" id="index-info">
-                            <ul>
+                        <div className="app-container">
+                            <ul className={styles.indexInfo}>
                                 <li>Всего <b>{data?.count || 0}</b> тайтлов</li>
                                 <li>
                                     Всего незагруженно
@@ -69,7 +69,7 @@ export function MainScreen() {
                     </>
             }
             <BookHandleWidget />
-        </>
+        </div>
     )
 }
 
