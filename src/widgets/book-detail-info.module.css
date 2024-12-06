@@ -1,0 +1,76 @@
+.bookDetails {
+  display: flex;
+}
+
+.bookDetails *[data-parsed="red"] {
+  color: red;
+}
+
+.bookDetails *[data-parsed="bred"] {
+  background: pink;
+}
+
+.bookDetails button.load,
+.bookDetails button.read,
+.bookDetails button.delete,
+.bookDetails button.verify {
+  text-align: center;
+  flex-grow: 1;
+}
+.bookDetails button.delete {
+  color: #ff0000;
+}
+.bookDetails button.verify {
+  color: #008b33;
+}
+
+span.tag {
+  border-radius: 3px;
+  padding: 3px;
+  margin: 2px;
+  background-color: var(--app-background);
+  display: inline-block;
+}
+
+div.preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 10px;
+}
+
+div.preview > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+img.mainPreview {
+  max-width: 15vw;
+  max-height: 50vh;
+}
+
+img.preview {
+  max-width: 400px;
+  max-height: 200px;
+}
+
+div.bookInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+  padding: 10px;
+}
+
+div.bookInfoPanel {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+div.bottomButtons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
