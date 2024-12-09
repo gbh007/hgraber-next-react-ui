@@ -1,9 +1,9 @@
+import { Link } from "react-router-dom";
 import { BookShortInfo } from "../apiclient/model-book-short-info";
 import styles from "./book-short-info.module.css"
 
 interface BookShortInfoProps {
     value: BookShortInfo
-    onClick: (id: string) => void
 }
 
 export function BookShortInfoWidget(props: BookShortInfoProps) {
@@ -11,14 +11,13 @@ export function BookShortInfoWidget(props: BookShortInfoProps) {
 
     return <div className="app-container">
         <div className={styles.book} data-parsed={book.parsed_name ? '' : 'bred'}>
-            <span>
+            <Link to={`/book/${book.id}`}>
                 {book.preview_url ? <img
                     className={styles.preview}
                     v-if="book.preview_url"
                     src={book.preview_url}
-                    onClick={() => props.onClick(book.id)}
                 /> : null /* FIXME: добавить альтернативную иконку для незагруженного изображения */}
-            </span>
+            </Link>
             <div style={{ display: "flex", flexDirection: "column" }}>
                 <span data-parsed={book.parsed_name ? '' : 'red'}>{book.name}</span>
                 <div className={styles["info-area"]}>

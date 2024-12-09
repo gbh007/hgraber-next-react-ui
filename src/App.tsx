@@ -1,7 +1,7 @@
 import {
-  createBrowserRouter,
   RouterProvider,
   Link,
+  createHashRouter,
 } from "react-router-dom";
 import { MainScreen } from "./pages/main";
 
@@ -11,8 +11,9 @@ import { SettingsScreen } from "./pages/settings";
 import { RPCScreen } from "./pages/rpc";
 import { AgentScreen } from "./pages/agents";
 import { ListScreen } from "./pages/list";
+import { BookDetailsScreen } from "./pages/details";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <SimpleWrapper> <MainScreen /></SimpleWrapper>,
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/list",
     element: <SimpleWrapper> <ListScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/book/:bookID",
+    element: <SimpleWrapper> <BookDetailsScreen /></SimpleWrapper>,
   },
 ]);
 
