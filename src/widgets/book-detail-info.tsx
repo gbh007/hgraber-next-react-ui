@@ -51,7 +51,7 @@ export function BookDetailInfoWidget(props: BookDetailInfoWidgetProps) {
         </div >
         <div className={styles.preview}>
             {props.book.pages?.filter(page => page.preview_url).map(page =>
-                <div className="app-container">
+                <div className="app-container" key={page.page_number}>
                     <span onClick={() => { props.onRead(page.page_number) }}>
                         <img className={styles.preview} src={page.preview_url} />
                     </span>

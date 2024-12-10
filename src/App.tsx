@@ -12,6 +12,7 @@ import { RPCScreen } from "./pages/rpc";
 import { AgentScreen } from "./pages/agents";
 import { ListScreen } from "./pages/list";
 import { BookDetailsScreen } from "./pages/details";
+import { BookReadScreen } from "./pages/read";
 
 const router = createHashRouter([
   {
@@ -37,6 +38,10 @@ const router = createHashRouter([
   {
     path: "/book/:bookID",
     element: <SimpleWrapper> <BookDetailsScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/book/:bookID/read/:page",
+    element: <SimpleWrapper> <BookReadScreen /></SimpleWrapper>,
   },
 ]);
 

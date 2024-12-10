@@ -1,0 +1,13 @@
+div.view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100vw - 20px);
+  height: calc(100vh - 80px);
+  white-space: nowrap;
+}
+
+img.view {
+  max-width: 100%;
+  max-height: 100%;
+}
