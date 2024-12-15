@@ -80,6 +80,10 @@ button.app:hover {
   background: var(--app-primary);
 }
 
+button.app:disabled {
+  background: var(--app-background);
+}
+
 select.app,
 textarea.app,
 input.app {

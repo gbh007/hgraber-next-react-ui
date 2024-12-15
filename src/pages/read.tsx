@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import styles from "./read.module.css"
 import { useBookDetails } from "../apiclient/api-book-details"
 import { useCallback, useEffect, useState } from "react"
@@ -65,13 +65,32 @@ export function BookReadScreen() {
 
     return bookDetailsResponse.isError ?
         <ErrorTextWidget isError={bookDetailsResponse.isError} errorText={bookDetailsResponse.errorText} /> :
-        <div className={styles.view}>
-            {!pageImage ? null : <img
-                src={pageImage}
-                id="main-image"
-                className={styles.view}
-                onClick={goGo}
-            />}
+        <div className={styles.viewScreen}>
+            <div className={"app-container " + styles.actions}>
+                <Link className="app-button" to={`/book/${bookID}`}>На страницу книги</Link>
+                <span>
+                    Страница {pageNumber} из {bookDetailsResponse.data?.page_count || 0}
+                </span>
+            </div>
+            <div className={styles.view}>
+                {!pageImage ? null : <img
+                    src={pageImage}
+                    id="main-image"
+                    className={styles.view}
+                    onClick={goGo}
+                />}
+            </div>
+            <div className={"app-container " + styles.actions}>
+                <span>
+                    <button className="app" onClick={prevPage}><span className={styles.pageNavigate}>{"<"}</span></button>
+                    <button className="app" onClick={nextPage}><span className={styles.pageNavigate}>{">"}</span></button>
+                </span>
+                <button className="app" disabled={true} title="На данный момент фича в разработке">действия</button>
+                <span>
+                    <button className="app" onClick={prevPage}><span className={styles.pageNavigate}>{"<"}</span></button>
+                    <button className="app" onClick={nextPage}><span className={styles.pageNavigate}>{">"}</span></button>
+                </span>
+            </div>
         </div>
 
 }

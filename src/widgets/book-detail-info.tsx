@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { BookDetails } from "../apiclient/model-book-details"
 import styles from "./book-detail-info.module.css"
 
@@ -52,9 +53,9 @@ export function BookDetailInfoWidget(props: BookDetailInfoWidgetProps) {
         <div className={styles.preview}>
             {props.book.pages?.filter(page => page.preview_url).map(page =>
                 <div className="app-container" key={page.page_number}>
-                    <span onClick={() => { props.onRead(page.page_number) }}>
+                    <Link to={`/book/${props.book.id}/read/${page.page_number}`}>
                         <img className={styles.preview} src={page.preview_url} />
-                    </span>
+                    </Link>
                 </div>
             )}
         </div >
