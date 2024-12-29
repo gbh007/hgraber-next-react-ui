@@ -13,4 +13,12 @@ export interface BookFilter {
 
 export interface BookFilterAdditional {
     name?: string
+    attributes?: Array<BookFilterAttribute>
+}
+
+export interface BookFilterAttribute {
+    code: string
+    type: string
+    values?: Array<string>
+    count?: number
 }
