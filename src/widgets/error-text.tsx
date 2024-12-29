@@ -1,15 +1,16 @@
-interface ErrorTextWidgetProps {
-    isError: boolean
-    errorText: string
-}
-
 // TODO: заменить все использования на этот виджет
-export function ErrorTextWidget(props: ErrorTextWidgetProps) {
-    if (props.isError) {
+export function ErrorTextWidget(props: {
+    value: {
+        isError: boolean,
+        isUnauthorize: boolean,
+        errorText: string,
+    }
+}) {
+    if (props.value.isError) {
         return <div className="app-error-container">
-            {props.errorText}
+            {props.value.errorText}
         </div>
     }
 
     return null
-}
+} 

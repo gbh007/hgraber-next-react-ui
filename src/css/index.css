@@ -101,3 +101,25 @@ input.app:focus {
   border: 1px dotted var(--app-primary);
   background: var(--app-secondary);
 }
+
+.container-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.container-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.container-gap-middle {
+  gap: 10px;
+}
+
+.container-gap-small {
+  gap: 5px;
+}
+
+.container-gap-smaller {
+  gap: 5px;
+}
