@@ -2,11 +2,23 @@ import { useState } from "react";
 import { BookFilter, BookFilterAttribute } from "../apiclient/model-book-filter";
 import { DatetimePickerWidget } from "./datetime-picker";
 import { ShowSelectWidget } from "./show-select";
+import { AttributeCountResponseAttribute } from "../apiclient/api-attribute-count";
 
+// FIXME: работать с этим списком через API
+const attributeCodes = [
+    "author",
+    "category",
+    "character",
+    "group",
+    "language",
+    "parody",
+    "tag",
+]
 
 export function BookFilterWidget(props: {
     value: BookFilter
     onChange: (v: BookFilter) => void
+    attributeCount?: Array<AttributeCountResponseAttribute>
 }) {
     return <div className="container-column container-gap-small">
         <div>
@@ -75,13 +87,22 @@ export function BookFilterWidget(props: {
             onChange={e => {
                 props.onChange({ ...props.value, filter: { ...props.value.filter, attributes: e } })
             }}
+            attributeCount={props.attributeCount}
         />
+        {attributeCodes.map(code =>
+            <datalist key={code} id={"attribute-autocomplete-" + code}>
+                {props.attributeCount?.filter(e => e.code == code).map(attr =>
+                    <option value={attr.value} key={attr.value} />
+                )}
+            </datalist>
+        )}
     </div>
 }
 
 function BookFilterAttributesWidget(props: {
     value: Array<BookFilterAttribute>
     onChange: (v: Array<BookFilterAttribute>) => void
+    attributeCount?: Array<AttributeCountResponseAttribute>
 }) {
     return <div className="container-column container-gap-small">
         <div>
@@ -127,14 +148,9 @@ function BookFilterAttributeWidget(props: {
                 props.onChange({ ...props.value, code: e.target.value })
             }}
         >
-            {/* FIXME: работать с этим списком через API */}
-            <option value="author">author</option>
-            <option value="category">category</option>
-            <option value="character">character</option>
-            <option value="group">group</option>
-            <option value="language">language</option>
-            <option value="parody">parody</option>
-            <option value="tag">tag</option>
+            {attributeCodes.map(code =>
+                <option value={code} key={code}>{code}</option>
+            )}
         </select>
         <select
             className="app"
@@ -166,6 +182,7 @@ function BookFilterAttributeWidget(props: {
                 onChange={e => {
                     props.onChange({ ...props.value, values: e })
                 }}
+                autoCompleteID={"attribute-autocomplete-" + props.value.code}
             />
         }
     </div>

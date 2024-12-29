@@ -21,10 +21,10 @@ export function BookDetailsScreen() {
     }, [getBookDetails, bookID])
 
     return bookDetailsResponse.isError ?
-        <ErrorTextWidget isError={bookDetailsResponse.isError} errorText={bookDetailsResponse.errorText} /> :
+        <ErrorTextWidget value={bookDetailsResponse} /> :
         <>
-            <ErrorTextWidget isError={bookDeleteResponse.isError} errorText={bookDeleteResponse.errorText} />
-            <ErrorTextWidget isError={bookVerifyResponse.isError} errorText={bookVerifyResponse.errorText} />
+            <ErrorTextWidget value={bookDeleteResponse} />
+            <ErrorTextWidget value={bookVerifyResponse} />
             {!bookDetailsResponse.data ? null : <BookDetailInfoWidget
                 book={bookDetailsResponse.data!}
                 onDelete={() => { postBookDelete({ id: bookID }) }}

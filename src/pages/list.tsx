@@ -8,6 +8,7 @@ import { ErrorTextWidget } from "../widgets/error-text"
 import { BookFilterWidget } from "../widgets/book-filter"
 import { BookShortInfoWidget } from "../widgets/book-short-info"
 import { useAppSettings } from "../apiclient/settings"
+import { useAttributeCount } from "../apiclient/api-attribute-count"
 
 
 export function ListScreen() {
@@ -23,20 +24,30 @@ export function ListScreen() {
         sort_desc: true,
     })
 
+    const [attributeCountResponse, getAttributeCount] = useAttributeCount()
+    useEffect(() => { getAttributeCount() }, [getAttributeCount])
+
 
     const [booksResponse, getBooks] = useBookList()
 
     useEffect(() => { getBooks(bookFilter) }, [getBooks])
 
     return <>
-        <ErrorTextWidget isError={booksResponse.isError} errorText={booksResponse.errorText} />
+        <ErrorTextWidget value={booksResponse} />
+        <ErrorTextWidget value={attributeCountResponse} />
         <details className={styles.filter}>
             <summary>Фильтр, всего {booksResponse.data?.count || 0}</summary>
-            <BookFilterWidget value={bookFilter} onChange={setBookFilter} />
-            <button className="app" disabled={booksResponse.isLoading} onClick={() => {
-                getBooks({ ...bookFilter, page: 1 })
-            }}>Применить</button>
-            <AgentExportWidget filter={bookFilter} />
+            <div className="container-column container-gap-small">
+                <BookFilterWidget
+                    value={bookFilter}
+                    onChange={setBookFilter}
+                    attributeCount={attributeCountResponse.data?.attributes}
+                />
+                <button className="app" disabled={booksResponse.isLoading} onClick={() => {
+                    getBooks({ ...bookFilter, page: 1 })
+                }}>Применить</button>
+                <AgentExportWidget filter={bookFilter} />
+            </div>
         </details >
         <PaginatorWidget onChange={(v: number) => {
             setBookFilter({ ...bookFilter, page: v })
@@ -65,34 +76,36 @@ function AgentExportWidget(props: { filter: BookFilter }) {
 
     return <details>
         <summary>Параметры экспорта</summary>
-        <ErrorTextWidget isError={agentsResponse.isError} errorText={agentsResponse.errorText} />
+        <div className="container-row container-gap-small">
+            <ErrorTextWidget value={agentsResponse} />
 
-        <select className="app" value={agentID} onChange={e => { setAgentID(e.target.value) }}>
-            <option value="">Не выбран</option>
-            {agentsResponse.data?.map(agent => <option value={agent.id} key={agent.id}>
-                {agent.name}
-            </option>
-            )}
-        </select>
-        <label>
-            <span>Удалить после экспорта</span>
-            <input
-                className="app"
-                checked={deleteAfterExport}
-                placeholder="Удалить после экспорта"
-                type="checkbox"
-                autoComplete="off"
-                onChange={e => { setDeleteAfterExport(e.target.checked) }}
-            />
-        </label>
-        <ErrorTextWidget isError={exportResponse.isError} errorText={exportResponse.errorText} />
-        <button className="app" disabled={exportResponse.isLoading || !agentID} onClick={() => {
-            makeExport({
-                book_filter: { ...props.filter, count: undefined, page: undefined }, // Принудительно срезаем параметры пагинации.
-                delete_after: deleteAfterExport,
-                exporter: agentID,
-            })
-        }}> Выгрузить</button>
+            <select className="app" value={agentID} onChange={e => { setAgentID(e.target.value) }}>
+                <option value="">Не выбран</option>
+                {agentsResponse.data?.map(agent => <option value={agent.id} key={agent.id}>
+                    {agent.name}
+                </option>
+                )}
+            </select>
+            <label>
+                <span>Удалить после экспорта</span>
+                <input
+                    className="app"
+                    checked={deleteAfterExport}
+                    placeholder="Удалить после экспорта"
+                    type="checkbox"
+                    autoComplete="off"
+                    onChange={e => { setDeleteAfterExport(e.target.checked) }}
+                />
+            </label>
+            <ErrorTextWidget value={exportResponse} />
+            <button className="app" disabled={exportResponse.isLoading || !agentID} onClick={() => {
+                makeExport({
+                    book_filter: { ...props.filter, count: undefined, page: undefined }, // Принудительно срезаем параметры пагинации.
+                    delete_after: deleteAfterExport,
+                    exporter: agentID,
+                })
+            }}> Выгрузить</button>
+        </div>
     </details>
 }
 

@@ -64,7 +64,7 @@ export function BookReadScreen() {
     }, [prevPage, nextPage])
 
     return bookDetailsResponse.isError ?
-        <ErrorTextWidget isError={bookDetailsResponse.isError} errorText={bookDetailsResponse.errorText} /> :
+        <ErrorTextWidget value={bookDetailsResponse} /> :
         <div className={styles.viewScreen}>
             <div className={"app-container " + styles.actions}>
                 <Link className="app-button" to={`/book/${bookID}`}>На страницу книги</Link>
