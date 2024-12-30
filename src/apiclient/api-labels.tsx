@@ -85,7 +85,7 @@ export function useLabelPresetDelete(): [Response<void | null>, PostAction<Label
 
 
 export interface LabelPresetListResponse {
-    labels?: Array<LabelPresetListResponseLabel>
+    presets?: Array<LabelPresetListResponseLabel>
 }
 
 export interface LabelPresetListResponseLabel {

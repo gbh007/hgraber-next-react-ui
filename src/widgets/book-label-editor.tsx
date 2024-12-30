@@ -38,7 +38,7 @@ export function BookLabelEditorButtonCoordinatorWidget(props: {
                     }}
                     pageNumber={props.pageNumber}
                     value={labelsResponse.data?.labels}
-                    autoComplete={labelPresetsResponse.data?.labels}
+                    labelsAutoComplete={labelPresetsResponse.data?.presets}
                 />
                 <button
                     className="app"
@@ -55,7 +55,7 @@ export function BookLabelEditorWidget(props: {
     bookID: string
     pageNumber?: number
     value?: Array<LabelGetResponseLabel>
-    autoComplete?: Array<LabelPresetListResponseLabel> // FIXME: по неизвестной причине не обновляется
+    labelsAutoComplete?: Array<LabelPresetListResponseLabel>
     onDelete: (v: LabelDeleteRequest) => void
     onCreate: (v: LabelSetRequest) => void
 }) {
@@ -97,7 +97,7 @@ export function BookLabelEditorWidget(props: {
                 )}
             </tbody>
         </table>
-        <BookLabelPresetAutocompleteWidget autoComplete={props.autoComplete} />
+        <BookLabelPresetAutocompleteWidget labelsAutoComplete={props.labelsAutoComplete} />
         <div className="container-row container-gap-small">
             <span>Создать метку</span>
             <input
@@ -137,14 +137,14 @@ export function BookLabelEditorWidget(props: {
 }
 
 export function BookLabelPresetAutocompleteWidget(props: {
-    autoComplete?: Array<LabelPresetListResponseLabel>
+    labelsAutoComplete?: Array<LabelPresetListResponseLabel>
 }) {
-    if (!props.autoComplete) {
+    if (!props.labelsAutoComplete) {
         return null
     }
 
     return <>
-        {props.autoComplete?.map(labelPreset =>
+        {props.labelsAutoComplete?.map(labelPreset =>
             <datalist id={"label-preset-values-" + labelPreset.name} key={labelPreset.name}>
                 {labelPreset.values.map(v =>
                     <option key={v} value={v} />
@@ -152,7 +152,7 @@ export function BookLabelPresetAutocompleteWidget(props: {
             </datalist>
         )}
         <datalist id={"label-preset-names"}>
-            {props.autoComplete?.map(labelPreset =>
+            {props.labelsAutoComplete?.map(labelPreset =>
                 <option key={labelPreset.name} value={labelPreset.name} />
             )}
         </datalist>
