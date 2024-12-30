@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { LabelDeleteRequest, LabelGetResponseLabel, LabelPresetListResponseLabel, LabelSetRequest, useLabelDelete, useLabelGet, useLabelPresetList, useLabelSet } from "../apiclient/api-labels";
-import { HumanTimeWidget } from "./common";
+import { DialogWidget, HumanTimeWidget } from "./common";
 import { ErrorTextWidget } from "./error-text";
 
 export function BookLabelEditorButtonCoordinatorWidget(props: {
@@ -22,32 +22,24 @@ export function BookLabelEditorButtonCoordinatorWidget(props: {
                 setShow(true)
             }}
         >Редактировать метки</button>
-        <dialog open={show}>
-            <div className="app-container container-column container-gap-middle">
-                <ErrorTextWidget value={labelsResponse} />
-                <ErrorTextWidget value={labelPresetsResponse} />
-                <ErrorTextWidget value={labelSetResponse} />
-                <ErrorTextWidget value={labelDeleteResponse} />
-                <BookLabelEditorWidget
-                    bookID={props.bookID}
-                    onCreate={(v: LabelSetRequest) => {
-                        doSetLabel(v).then(() => { fetchLabels({ book_id: props.bookID }) })
-                    }}
-                    onDelete={(v: LabelDeleteRequest) => {
-                        doDeleteLabel(v).then(() => { fetchLabels({ book_id: props.bookID }) })
-                    }}
-                    pageNumber={props.pageNumber}
-                    value={labelsResponse.data?.labels}
-                    labelsAutoComplete={labelPresetsResponse.data?.presets}
-                />
-                <button
-                    className="app"
-                    onClick={() => {
-                        setShow(false)
-                    }}
-                >Закрыть</button>
-            </div>
-        </dialog>
+        <DialogWidget open={show} onClose={() => setShow(false)}>
+            <ErrorTextWidget value={labelsResponse} />
+            <ErrorTextWidget value={labelPresetsResponse} />
+            <ErrorTextWidget value={labelSetResponse} />
+            <ErrorTextWidget value={labelDeleteResponse} />
+            <BookLabelEditorWidget
+                bookID={props.bookID}
+                onCreate={(v: LabelSetRequest) => {
+                    doSetLabel(v).then(() => { fetchLabels({ book_id: props.bookID }) })
+                }}
+                onDelete={(v: LabelDeleteRequest) => {
+                    doDeleteLabel(v).then(() => { fetchLabels({ book_id: props.bookID }) })
+                }}
+                pageNumber={props.pageNumber}
+                value={labelsResponse.data?.labels}
+                labelsAutoComplete={labelPresetsResponse.data?.presets}
+            />
+        </DialogWidget>
     </>
 }
 
