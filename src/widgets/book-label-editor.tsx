@@ -13,7 +13,6 @@ export function BookLabelEditorButtonCoordinatorWidget(props: {
     const [labelSetResponse, doSetLabel] = useLabelSet()
     const [labelDeleteResponse, doDeleteLabel] = useLabelDelete()
 
-
     return <>
         <button
             className="app"
@@ -98,18 +97,7 @@ export function BookLabelEditorWidget(props: {
                 )}
             </tbody>
         </table>
-        {props.autoComplete?.map(labelPreset =>
-            <datalist id={"label-preset-values-" + labelPreset.name} key={labelPreset.name}>
-                {labelPreset.values.map(v =>
-                    <option key={v} value={v} />
-                )}
-            </datalist>
-        )}
-        <datalist id={"label-preset-names"}>
-            {props.autoComplete?.map(labelPreset =>
-                <option key={labelPreset.name} value={labelPreset.name} />
-            )}
-        </datalist>
+        <BookLabelPresetAutocompleteWidget autoComplete={props.autoComplete} />
         <div className="container-row container-gap-small">
             <span>Создать метку</span>
             <input
@@ -146,4 +134,27 @@ export function BookLabelEditorWidget(props: {
             >создать</button>
         </div>
     </div>
+}
+
+export function BookLabelPresetAutocompleteWidget(props: {
+    autoComplete?: Array<LabelPresetListResponseLabel>
+}) {
+    if (!props.autoComplete) {
+        return null
+    }
+
+    return <>
+        {props.autoComplete?.map(labelPreset =>
+            <datalist id={"label-preset-values-" + labelPreset.name} key={labelPreset.name}>
+                {labelPreset.values.map(v =>
+                    <option key={v} value={v} />
+                )}
+            </datalist>
+        )}
+        <datalist id={"label-preset-names"}>
+            {props.autoComplete?.map(labelPreset =>
+                <option key={labelPreset.name} value={labelPreset.name} />
+            )}
+        </datalist>
+    </>
 }

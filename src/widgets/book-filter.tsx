@@ -87,22 +87,14 @@ export function BookFilterWidget(props: {
             onChange={e => {
                 props.onChange({ ...props.value, filter: { ...props.value.filter, attributes: e } })
             }}
-            attributeCount={props.attributeCount}
         />
-        {attributeCodes.map(code =>
-            <datalist key={code} id={"attribute-autocomplete-" + code}>
-                {props.attributeCount?.filter(e => e.code == code).map(attr =>
-                    <option value={attr.value} key={attr.value} />
-                )}
-            </datalist>
-        )}
+        < BookAttributeAutocompleteWidget attributeCount={props.attributeCount} />
     </div>
 }
 
 function BookFilterAttributesWidget(props: {
     value: Array<BookFilterAttribute>
     onChange: (v: Array<BookFilterAttribute>) => void
-    attributeCount?: Array<AttributeCountResponseAttribute>
 }) {
     return <div className="container-column container-gap-small">
         <div>
@@ -223,4 +215,22 @@ function ManyStringSelectWidget(props: {
             </div>
         )}
     </div>
+}
+
+export function BookAttributeAutocompleteWidget(props: {
+    attributeCount?: Array<AttributeCountResponseAttribute>
+}) {
+    if (!props.attributeCount) {
+        return null
+    }
+
+    return <>
+        {attributeCodes.map(code =>
+            <datalist key={code} id={"attribute-autocomplete-" + code}>
+                {props.attributeCount?.filter(e => e.code == code).map(attr =>
+                    <option value={attr.value} key={attr.value} />
+                )}
+            </datalist>
+        )}
+    </>
 }

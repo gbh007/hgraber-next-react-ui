@@ -1,4 +1,4 @@
-import { PostAction, useAPIPost, Response, useAPIGet } from "./client-hooks"
+import { PostAction, useAPIPost, Response, useAPIGet, GetAction } from "./client-hooks"
 
 
 export interface LabelSetRequest {
@@ -96,7 +96,7 @@ export interface LabelPresetListResponseLabel {
     updated_at?: string
 }
 
-export function useLabelPresetList(): [Response<LabelPresetListResponse | null>, PostAction<void>] {
+export function useLabelPresetList(): [Response<LabelPresetListResponse | null>, GetAction] {
     const [response, fetchData] = useAPIGet<LabelPresetListResponse>('/api/label/preset/list')
 
     return [response, fetchData]
