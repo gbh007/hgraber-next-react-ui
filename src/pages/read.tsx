@@ -3,6 +3,8 @@ import styles from "./read.module.css"
 import { useBookDetails } from "../apiclient/api-book-details"
 import { useCallback, useEffect, useState } from "react"
 import { ErrorTextWidget } from "../widgets/error-text"
+import { BookLabelEditorButtonCoordinatorWidget } from "../widgets/book-label-editor"
+import { DialogWidget } from "../widgets/common"
 
 export function BookReadScreen() {
     const params = useParams()
@@ -85,12 +87,36 @@ export function BookReadScreen() {
                     <button className="app" onClick={prevPage}><span className={styles.pageNavigate}>{"<"}</span></button>
                     <button className="app" onClick={nextPage}><span className={styles.pageNavigate}>{">"}</span></button>
                 </span>
-                <button className="app" disabled={true} title="На данный момент фича в разработке">действия</button>
+                <BookReadActionButtonWidget
+                    bookID={bookID}
+                    pageNumber={pageNumber}
+                />
                 <span>
                     <button className="app" onClick={prevPage}><span className={styles.pageNavigate}>{"<"}</span></button>
                     <button className="app" onClick={nextPage}><span className={styles.pageNavigate}>{">"}</span></button>
                 </span>
             </div>
         </div>
+}
 
+function BookReadActionButtonWidget(props: {
+    bookID: string
+    pageNumber: number
+}) {
+    const [show, setShow] = useState(false)
+
+    return <>
+        <button
+            className="app"
+            onClick={() => {
+                setShow(true)
+            }}
+        >Редактировать метки</button>
+        <DialogWidget open={show} onClose={() => setShow(false)}>
+            <BookLabelEditorButtonCoordinatorWidget
+                bookID={props.bookID}
+                pageNumber={props.pageNumber}
+            />
+        </DialogWidget>
+    </>
 }

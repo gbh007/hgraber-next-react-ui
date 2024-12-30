@@ -13,6 +13,7 @@ import { AgentScreen } from "./pages/agents";
 import { ListScreen } from "./pages/list";
 import { BookDetailsScreen } from "./pages/details";
 import { BookReadScreen } from "./pages/read";
+import { LabelPresetEditorScreen, LabelPresetsScreen } from "./pages/label-presets";
 
 const router = createHashRouter([
   {
@@ -22,6 +23,10 @@ const router = createHashRouter([
   {
     path: "/settings",
     element: <SimpleWrapper> <SettingsScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/menu",
+    element: <SimpleWrapper> <MenuWidget /></SimpleWrapper>,
   },
   {
     path: "/rpc",
@@ -43,6 +48,18 @@ const router = createHashRouter([
     path: "/book/:bookID/read/:page",
     element: <SimpleWrapper> <BookReadScreen /></SimpleWrapper>,
   },
+  {
+    path: "/label/presets",
+    element: <SimpleWrapper> <LabelPresetsScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/label/preset/edit/:name",
+    element: <SimpleWrapper> <LabelPresetEditorScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/label/preset/edit",
+    element: <SimpleWrapper> <LabelPresetEditorScreen /></SimpleWrapper>,
+  },
 ]);
 
 function App() {
@@ -54,15 +71,12 @@ function App() {
 }
 
 function SimpleWrapper(props: PropsWithChildren) {
-
   return (
     <>
       <div className="app-header">
         <Link to="/">Главная</Link>
         <Link to="/list">Список книг</Link>
-        <Link to="/agents">Агенты</Link>
-        <Link to="/rpc">RPC</Link>
-        <Link to="/settings">Настройки</Link>
+        <Link to="/menu">Меню</Link>
       </div>
 
       <div className="app-body">
@@ -70,6 +84,20 @@ function SimpleWrapper(props: PropsWithChildren) {
       </div>
     </ >
   )
+}
+
+
+function MenuWidget() {
+  return <div>
+    <ol>
+      <li> <Link to="/">Главная</Link> </li>
+      <li> <Link to="/list">Список книг</Link> </li>
+      <li> <Link to="/agents">Агенты</Link> </li>
+      <li> <Link to="/rpc">RPC</Link> </li>
+      <li> <Link to="/label/presets">Пресеты меток</Link> </li>
+      <li> <Link to="/settings">Настройки</Link> </li>
+    </ol>
+  </div>
 }
 
 export default App

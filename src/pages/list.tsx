@@ -9,6 +9,7 @@ import { BookFilterWidget } from "../widgets/book-filter"
 import { BookShortInfoWidget } from "../widgets/book-short-info"
 import { useAppSettings } from "../apiclient/settings"
 import { useAttributeCount } from "../apiclient/api-attribute-count"
+import { useLabelPresetList } from "../apiclient/api-labels"
 
 
 export function ListScreen() {
@@ -28,13 +29,16 @@ export function ListScreen() {
     useEffect(() => { getAttributeCount() }, [getAttributeCount])
 
 
-    const [booksResponse, getBooks] = useBookList()
+    const [labelPresetsResponse, fetchLabelPresets] = useLabelPresetList()
+    useEffect(() => { fetchLabelPresets() }, [fetchLabelPresets])
 
+    const [booksResponse, getBooks] = useBookList()
     useEffect(() => { getBooks(bookFilter) }, [getBooks])
 
     return <>
         <ErrorTextWidget value={booksResponse} />
         <ErrorTextWidget value={attributeCountResponse} />
+        <ErrorTextWidget value={labelPresetsResponse} />
         <details className={styles.filter}>
             <summary>Фильтр, всего {booksResponse.data?.count || 0}</summary>
             <div className="container-column container-gap-small">
@@ -42,6 +46,7 @@ export function ListScreen() {
                     value={bookFilter}
                     onChange={setBookFilter}
                     attributeCount={attributeCountResponse.data?.attributes}
+                    labelsAutoComplete={labelPresetsResponse.data?.presets}
                 />
                 <button className="app" disabled={booksResponse.isLoading} onClick={() => {
                     getBooks({ ...bookFilter, page: 1 })
