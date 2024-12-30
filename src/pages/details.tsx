@@ -5,6 +5,7 @@ import { BookDetailInfoWidget } from "../widgets/book-detail-info";
 import { useBookDelete } from "../apiclient/api-book-delete";
 import { useBookVerify } from "../apiclient/api-book-verify";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDeduplicateBookByPageBody } from "../apiclient/api-deduplicate";
 
 export function BookDetailsScreen() {
     const params = useParams()
@@ -13,6 +14,7 @@ export function BookDetailsScreen() {
     const [bookDetailsResponse, getBookDetails] = useBookDetails()
     const [bookDeleteResponse, postBookDelete] = useBookDelete()
     const [bookVerifyResponse, postBookVerify] = useBookVerify()
+    const [bookDeduplicateResponse, doBookDeduplicate] = useDeduplicateBookByPageBody()
 
     const navigate = useNavigate();
 
@@ -33,6 +35,10 @@ export function BookDetailsScreen() {
                     navigate(`/book/${bookID}/read/${page}`)
                 }}
                 onVerify={() => { postBookVerify({ id: bookID }) }}
+                onShowDuplicate={() => {
+                    doBookDeduplicate({ book_id: bookID })
+                }}
+                deduplicateBookInfo={bookDeduplicateResponse.data?.result}
             />}
         </>
 }
