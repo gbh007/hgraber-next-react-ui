@@ -101,3 +101,10 @@ export function useLabelPresetList(): [Response<LabelPresetListResponse | null>,
 
     return [response, fetchData]
 }
+
+// TODO: разделить модели
+export function useLabelPresetGet(): [Response<LabelPresetListResponseLabel | null>, PostAction<LabelPresetDeleteRequest>] {
+    const [response, fetchData] = useAPIPost<LabelPresetDeleteRequest, LabelPresetListResponseLabel>('/api/label/preset/get')
+
+    return [response, fetchData]
+}
