@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { BookDetails } from "../apiclient/model-book-details"
 import styles from "./book-detail-info.module.css"
+import { BookLabelEditorButtonCoordinatorWidget } from "./book-label-editor"
 
 interface BookDetailInfoWidgetProps {
     book: BookDetails
@@ -47,6 +48,8 @@ export function BookDetailInfoWidget(props: BookDetailInfoWidgetProps) {
                     <button className={"app " + styles.read} onClick={() => props.onRead(1)}> Читать</button>
                     <button className={"app " + styles.delete} onClick={props.onDelete}> Удалить</button>
                     <button className={"app " + styles.verify} onClick={props.onVerify}>Подтвердить</button>
+                    {/* FIXME: это жесть как плохо, надо переделать использование */}
+                    <BookLabelEditorButtonCoordinatorWidget bookID={props.book.id} />
                 </div >
             </div >
         </div >
