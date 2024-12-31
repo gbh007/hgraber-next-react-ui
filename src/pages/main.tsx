@@ -78,6 +78,7 @@ export function MainScreen() {
 function BookHandleWidget() {
     const [bookList, setBookList] = useState("")
     const [isMultiParse, setIsMultiParse] = useState(false)
+    const [isAutoVerify, setIsAutoVerify] = useState(false)
 
     const [{ data, isLoading, isError, errorText }, fetchData] = useSystemHandle()
 
@@ -86,8 +87,8 @@ function BookHandleWidget() {
     }, [data, isError, setBookList])
 
     return (
-        <div className="app-container" style={{ "display": "flex" }}>
-            <div style={{ "display": "flex", "flexDirection": "column" }}>
+        <div className="app-container container-row container-gap-middle" style={{ flexWrap: "wrap" }}>
+            <div className="container-column">
                 <textarea
                     className="app"
                     rows={10}
@@ -101,9 +102,18 @@ function BookHandleWidget() {
                     <input
                         className="app"
                         onChange={(e) => { setIsMultiParse(e.target.checked) }}
-                        placeholder="Множественный парсинг"
                         type="checkbox"
                         checked={isMultiParse}
+                        autoComplete="off"
+                    />
+                </label>
+                <label>
+                    <span>Авто-подтверждение</span>
+                    <input
+                        className="app"
+                        onChange={(e) => { setIsAutoVerify(e.target.checked) }}
+                        type="checkbox"
+                        checked={isAutoVerify}
                         autoComplete="off"
                     />
                 </label>
@@ -113,12 +123,13 @@ function BookHandleWidget() {
                         fetchData({
                             urls: bookList.split("\n").map((s) => s.trim()).filter(e => e.length > 0),
                             is_multi: isMultiParse,
+                            auto_verify: isAutoVerify,
                         })
                     }}
                     disabled={isLoading}
                 >Загрузить</button>
             </div>
-            <div style={{ "display": "flex", "flexDirection": "column", "marginLeft": "10px" }}>
+            <div className="container-column">
                 {
                     isError ?
                         <div className="app-error-container">

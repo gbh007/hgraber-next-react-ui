@@ -3,6 +3,7 @@ import { PostAction, useAPIPost, Response } from "./client-hooks"
 interface systemHandleRequest {
     urls: Array<string>
     is_multi: boolean
+    auto_verify: boolean
 }
 
 interface systemHandleResponse {
