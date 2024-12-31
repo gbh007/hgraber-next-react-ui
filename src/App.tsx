@@ -15,6 +15,7 @@ import { BookDetailsScreen } from "./pages/details";
 import { BookReadScreen } from "./pages/read";
 import { LabelPresetEditorScreen, LabelPresetsScreen } from "./pages/label-presets";
 import { TaskScreen } from "./pages/tasks";
+import { CompareBookScreen } from "./pages/compare";
 
 const router = createHashRouter([
   {
@@ -64,6 +65,10 @@ const router = createHashRouter([
   {
     path: "/tasks",
     element: <SimpleWrapper> <TaskScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/book/:origin/compare/:target",
+    element: <SimpleWrapper> <CompareBookScreen /></SimpleWrapper>,
   },
 ]);
 

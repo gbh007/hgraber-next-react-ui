@@ -8,7 +8,7 @@ export interface BookDetails {
     page_count: number
     page_loaded_percent: number
     attributes?: Array<BookDetailsAttribute>
-    pages?: Array<BookDetailsPage>
+    pages?: Array<BookSimplePage>
     size?: BookDetailsSize
 }
 
@@ -17,7 +17,7 @@ export interface BookDetailsAttribute {
     values: Array<string>
 }
 
-export interface BookDetailsPage {
+export interface BookSimplePage {
     page_number: number
     preview_url?: string
 }

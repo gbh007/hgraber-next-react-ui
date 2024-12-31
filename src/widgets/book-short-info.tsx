@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BookShortInfo } from "../apiclient/model-book-short-info";
+import { BookShortInfo } from "../apiclient/model-book";
 import styles from "./book-short-info.module.css"
 
 interface BookShortInfoProps {

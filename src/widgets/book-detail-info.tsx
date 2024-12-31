@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom"
-import { BookDetails } from "../apiclient/model-book-details"
+import { BookDetails, BookSimplePage } from "../apiclient/model-book-details"
 import styles from "./book-detail-info.module.css"
 import { BookLabelEditorButtonCoordinatorWidget } from "./book-label-editor"
 import { DeduplicateBookByPageBodyResponseResult } from "../apiclient/api-deduplicate"
 
-interface BookDetailInfoWidgetProps {
+
+// FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
+export function BookDetailInfoWidget(props: {
     book: BookDetails
     deduplicateBookInfo?: Array<DeduplicateBookByPageBodyResponseResult>
     onDownload: () => void
@@ -12,23 +14,14 @@ interface BookDetailInfoWidgetProps {
     onDelete: () => void
     onVerify: () => void
     onShowDuplicate: () => void
-}
-
-// FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
-export function BookDetailInfoWidget(props: BookDetailInfoWidgetProps) {
+}) {
     return <div>
         <div
             className={"app-container " + styles.bookDetails}
             data-parsed={props.book.parsed_name ? '' : 'bred'}
         >
             <div>
-                {props.book.preview_url ?
-                    <img
-                        className={styles.mainPreview}
-                        src={props.book.preview_url}
-                    /> :
-                    <span></span>
-                }
+                <BookMainImagePreviewWidget value={props.book.preview_url} />
             </div>
             <div className={styles.bookInfo}>
                 <h1 data-parsed={props.book.parsed_name ? '' : 'red'}>
@@ -59,17 +52,42 @@ export function BookDetailInfoWidget(props: BookDetailInfoWidgetProps) {
                 </div >
             </div >
         </div >
-        <BookDuplicates deduplicateBookInfo={props.deduplicateBookInfo} />
-        <div className={styles.preview}>
-            {props.book.pages?.filter(page => page.preview_url).map(page =>
-                <div className="app-container" key={page.page_number}>
-                    <Link to={`/book/${props.book.id}/read/${page.page_number}`}>
-                        <img className={styles.preview} src={page.preview_url} />
-                    </Link>
-                </div>
-            )}
-        </div >
+        <BookDuplicates deduplicateBookInfo={props.deduplicateBookInfo} originID={props.book.id} />
+        <BookPagesPreviewWidget
+            bookID={props.book.id}
+            pages={props.book.pages}
+        />
     </div >
+}
+
+export function BookMainImagePreviewWidget(props: {
+    value?: string
+}) {
+    return props.value ?
+        <img
+            className={styles.mainPreview}
+            src={props.value}
+        /> :
+        <span></span>
+}
+
+export function BookPagesPreviewWidget(props: {
+    bookID: string
+    pages?: Array<BookSimplePage>
+}) {
+    if (!props.pages) {
+        return null
+    }
+
+    return <div className={styles.preview}>
+        {props.pages?.filter(page => page.preview_url).map(page =>
+            <div className="app-container" key={page.page_number}>
+                <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
+                    <img className={styles.preview} src={page.preview_url} />
+                </Link>
+            </div>
+        )}
+    </div>
 }
 
 function BookDetailInfoAttribute(props: { name: string, values: Array<string> }) {
@@ -82,19 +100,21 @@ function BookDetailInfoAttribute(props: { name: string, values: Array<string> })
 }
 
 function BookDuplicates(props: {
+    originID: string
     deduplicateBookInfo?: Array<DeduplicateBookByPageBodyResponseResult>
 }) {
     return <div className={styles.preview}>
         {props.deduplicateBookInfo?.map(book =>
-            <div className="app-container" key={book.book_id}>
-                {book.preview_url ?
-                    <Link to={`/book/${book.book_id}`}>
-                        <img className={styles.preview} src={book.preview_url} />
+            <div className="app-container" key={book.book.id}>
+                {book.book.preview_url ?
+                    <Link to={`/book/${book.book.id}`}>
+                        <img className={styles.preview} src={book.book.preview_url} />
                     </Link> : null}
-                <b>{book.name}</b>
-                <span>Страниц: {book.page_count}</span>
+                <b>{book.book.name}</b>
+                <span>Страниц: {book.book.page_count}</span>
                 <span title="Сколько страниц этой книги есть в открытой">Покрытие книги: {prettyPercent(book.origin_covered_target)}%</span>
                 <span title="Сколько страниц открытой книги есть в этой">Покрытие оригинала: {prettyPercent(book.target_covered_origin)}%</span>
+                <Link className="app-button" to={`/book/${props.originID}/compare/${book.book.id}`}>Сравнить</Link>
             </div>
         )}
     </div>
