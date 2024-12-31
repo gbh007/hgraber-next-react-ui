@@ -14,6 +14,7 @@ import { ListScreen } from "./pages/list";
 import { BookDetailsScreen } from "./pages/details";
 import { BookReadScreen } from "./pages/read";
 import { LabelPresetEditorScreen, LabelPresetsScreen } from "./pages/label-presets";
+import { TaskScreen } from "./pages/tasks";
 
 const router = createHashRouter([
   {
@@ -60,6 +61,10 @@ const router = createHashRouter([
     path: "/label/preset/edit",
     element: <SimpleWrapper> <LabelPresetEditorScreen /></SimpleWrapper>,
   },
+  {
+    path: "/tasks",
+    element: <SimpleWrapper> <TaskScreen /></SimpleWrapper>,
+  },
 ]);
 
 function App() {
@@ -94,6 +99,7 @@ function MenuWidget() {
       <li> <Link to="/list">Список книг</Link> </li>
       <li> <Link to="/agents">Агенты</Link> </li>
       <li> <Link to="/rpc">RPC</Link> </li>
+      <li> <Link to="/tasks">Задачи</Link> </li>
       <li> <Link to="/label/presets">Пресеты меток</Link> </li>
       <li> <Link to="/settings">Настройки</Link> </li>
     </ol>

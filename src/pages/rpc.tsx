@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react"
-import { useSystemRPCDeduplicateFiles } from "../apiclient/api-system-rpc-deduplicate-files"
-import { useSystemRPCRemoveDetachedFiles } from "../apiclient/api-system-rpc-remove-detached-files"
-import { useSystemRPCRemoveMismatchFiles } from "../apiclient/api-system-rpc-remove-mismatch-files"
 import { systemWorkerRunnerConfig, useSystemWorkerConfig } from "../apiclient/api-system-worker-config"
 
 import { useSystemInfo } from "../apiclient/api-system-info"
@@ -22,62 +19,12 @@ export function RPCScreen() {
             </h2>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                <DeduplicateFilesWidget />
-                <RemoveDetachedFilesWidget />
-                <RemoveMismatchFilesWidget />
                 <RunnersWidget />
             </div>
         </>
     )
 }
 
-function DeduplicateFilesWidget() {
-    const [{ isError, errorText, data, isLoading }, doRequest] = useSystemRPCDeduplicateFiles()
-
-    return <div className="app-container" style={{ display: "flex", flexDirection: "column" }}>
-        <h3>Очистка файлов дубликов</h3>
-        {isError ? <div className="app-error-container">
-            {errorText}
-        </div> : null}
-        {data ? <>
-            <span>Количество очищенных: {data?.count || 0}</span>
-            <span>Объем очищенных: {data?.pretty_size || ''}</span>
-        </> : null}
-        <button className="app" onClick={() => doRequest()} disabled={isLoading}>Дедуплицировать файлы</button>
-    </div >
-}
-
-function RemoveDetachedFilesWidget() {
-    const [{ isError, errorText, data, isLoading }, doRequest] = useSystemRPCRemoveDetachedFiles()
-
-    return <div className="app-container" style={{ display: "flex", flexDirection: "column" }}>
-        <h3>Удаление ни с чем не связанных файлов</h3>
-        {isError ? <div className="app-error-container">
-            {errorText}
-        </div> : null}
-        {data ? <>
-            <span>Количество удаленных: {data?.count || 0}</span>
-            <span>Объем удаленных: {data?.pretty_size || ''}</span>
-        </> : null}
-        <button className="app" onClick={() => doRequest()} disabled={isLoading}>Удалить непривязанные файлы</button>
-    </div >
-}
-
-function RemoveMismatchFilesWidget() {
-    const [{ isError, errorText, data, isLoading }, doRequest] = useSystemRPCRemoveMismatchFiles()
-
-    return <div className="app-container" style={{ display: "flex", flexDirection: "column" }}>
-        <h3>Удаление рассинхронизированных файлов</h3>
-        {isError ? <div className="app-error-container">
-            {errorText}
-        </div> : null}
-        {data ? <>
-            <span>Удалено из файловой системы: {data?.remove_from_fs || 0}</span>
-            <span>Удалено из БД: {data?.remove_from_db || 0}</span>
-        </> : null}
-        <button className="app" onClick={() => doRequest()} disabled={isLoading}>Удалить рассинхронизированные файлы</button>
-    </div >
-}
 
 function RunnersWidget() {
     const [runners, setRunners] = useState<Array<systemWorkerRunnerConfig>>()
