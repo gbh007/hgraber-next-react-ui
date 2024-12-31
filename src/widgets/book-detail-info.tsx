@@ -91,6 +91,7 @@ function BookDuplicates(props: {
                         <img className={styles.preview} src={book.preview_url} />
                     </Link> : null}
                 <b>{book.name}</b>
+                <span>Страниц: {book.page_count}</span>
                 <span title="Сколько страниц этой книги есть в открытой">Покрытие книги: {prettyPercent(book.origin_covered_target)}%</span>
                 <span title="Сколько страниц открытой книги есть в этой">Покрытие оригинала: {prettyPercent(book.target_covered_origin)}%</span>
             </div>

@@ -19,10 +19,12 @@ export function MainScreen() {
                     <>
                         <div className="app-container">
                             <ul className={styles.indexInfo}>
-                                <li>Всего <b>{data?.count || 0}</b> тайтлов</li>
+                                <li>Всего <b>{data?.count || 0}</b> книг</li>
+                                <li>Всего загружено <b>{data?.downloaded_count || 0}</b> книг</li>
+                                <li>Всего подтверждено <b>{data?.verified_count || 0}</b> книг</li>
                                 <li>
                                     Всего незагруженно
-                                    <b> {data?.not_load_count || 0}</b> тайтлов
+                                    <b> {data?.not_load_count || 0}</b> книг
                                 </li>
                                 <li>Всего <b>{data?.page_count || 0}</b> страниц</li>
                                 <li>

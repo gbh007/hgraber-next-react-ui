@@ -2,6 +2,8 @@ import { GetAction, useAPIGet, Response } from "./client-hooks"
 
 interface systemInfo {
   count: number
+  downloaded_count: number
+  verified_count: number
   not_load_count: number
   page_count: number
   not_load_page_count: number
