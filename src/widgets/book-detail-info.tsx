@@ -47,6 +47,7 @@ export function BookDetailInfoWidget(props: BookDetailInfoWidgetProps) {
                 {props.book.attributes?.map(attr =>
                     <BookDetailInfoAttribute key={attr.name} name={attr.name} values={attr.values} />
                 )}
+                {props.book.size ? <span>Размер: уникальный {props.book.size.unique_formatted} разделяемый {props.book.size.shared_formatted} общий {props.book.size.total_formatted}</span> : null}
                 <div className={styles.bottomButtons}>
                     <button className={"app " + styles.load} onClick={props.onDownload}> Скачать</button>
                     <button className={"app " + styles.read} onClick={() => props.onRead(1)}> Читать</button>

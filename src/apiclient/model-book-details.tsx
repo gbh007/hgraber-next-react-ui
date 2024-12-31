@@ -9,13 +9,24 @@ export interface BookDetails {
     page_loaded_percent: number
     attributes?: Array<BookDetailsAttribute>
     pages?: Array<BookDetailsPage>
+    size?: BookDetailsSize
 }
 
 export interface BookDetailsAttribute {
     name: string
     values: Array<string>
 }
+
 export interface BookDetailsPage {
     page_number: number
     preview_url?: string
+}
+
+export interface BookDetailsSize {
+    unique: number
+    shared: number
+    total: number
+    unique_formatted: string
+    shared_formatted: string
+    total_formatted: string
 }
