@@ -66,6 +66,7 @@ function BookShortInfo(props: {
         <b>{props.value.name}</b>
         <span>Создана: <HumanTimeWidget value={props.value.create_at} /> </span>
         <span>Страниц: {props.value.page_count}</span>
+        {props.value.origin_url ? <a href={props.value.origin_url}>Ссылка на первоисточник</a> : null}
         <Link className="app-button" to={`/book/${props.value.id}`}>Страница книги</Link>
     </div>
 }
