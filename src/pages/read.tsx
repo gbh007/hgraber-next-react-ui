@@ -117,6 +117,7 @@ function BookReadActionButtonWidget(props: {
                 bookID={props.bookID}
                 pageNumber={props.pageNumber}
             />
+            <Link className="app-button" to={`/deduplicate/${props.bookID}/${props.pageNumber}`}>Книги с этой страницей</Link>
         </DialogWidget>
     </>
 }

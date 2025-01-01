@@ -17,6 +17,7 @@ import { LabelPresetEditorScreen, LabelPresetsScreen } from "./pages/label-prese
 import { TaskScreen } from "./pages/tasks";
 import { CompareBookScreen } from "./pages/compare";
 import { UniqueBookPagesScreen } from "./pages/unique-pages";
+import { BooksByPageScreen } from "./pages/books-by-page";
 
 const router = createHashRouter([
   {
@@ -74,6 +75,10 @@ const router = createHashRouter([
   {
     path: "/book/:bookID/unique-pages",
     element: <SimpleWrapper> <UniqueBookPagesScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/deduplicate/:bookID/:page",
+    element: <SimpleWrapper> <BooksByPageScreen /></SimpleWrapper>,
   },
 ]);
 

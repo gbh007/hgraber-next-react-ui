@@ -16,13 +16,11 @@ export interface DeduplicateBookByPageBodyResponseResult {
     target_covered_origin: number
 }
 
-
 export function useDeduplicateBookByPageBody(): [Response<DeduplicateBookByPageBodyResponse | null>, PostAction<DeduplicateBookByPageBodyRequest>] {
     const [response, fetchData] = useAPIPost<DeduplicateBookByPageBodyRequest, DeduplicateBookByPageBodyResponse>('/api/deduplicate/book-by-page-body')
 
     return [response, fetchData]
 }
-
 
 export interface DeduplicateCompareRequest {
     origin_book_id: string
@@ -36,8 +34,6 @@ export interface DeduplicateCompareResponse {
     both_pages?: Array<BookSimplePage>
     target_pages?: Array<BookSimplePage>
 }
-
-
 
 export function useDeduplicateCompare(): [Response<DeduplicateCompareResponse | null>, PostAction<DeduplicateCompareRequest>] {
     const [response, fetchData] = useAPIPost<DeduplicateCompareRequest, DeduplicateCompareResponse>('/api/deduplicate/compare')
@@ -53,10 +49,23 @@ export interface UniqueBookPagesResponse {
     pages?: Array<BookSimplePage>
 }
 
-
-
 export function useUniqueBookPages(): [Response<UniqueBookPagesResponse | null>, PostAction<UniqueBookPagesRequest>] {
     const [response, fetchData] = useAPIPost<UniqueBookPagesRequest, UniqueBookPagesResponse>('/api/deduplicate/unique-pages')
+
+    return [response, fetchData]
+}
+
+export interface DeduplicateBooksByPageRequest {
+    book_id: string
+    page_number: number
+}
+
+export interface DeduplicateBooksByPageResponse {
+    books?: Array<BookSimple>
+}
+
+export function useDeduplicateBooksByPage(): [Response<DeduplicateBooksByPageResponse | null>, PostAction<DeduplicateBooksByPageRequest>] {
+    const [response, fetchData] = useAPIPost<DeduplicateBooksByPageRequest, DeduplicateBooksByPageResponse>('/api/deduplicate/books-by-page')
 
     return [response, fetchData]
 }
