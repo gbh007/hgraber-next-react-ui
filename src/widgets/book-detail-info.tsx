@@ -18,25 +18,25 @@ export function BookDetailInfoWidget(props: {
     return <div>
         <div
             className={"app-container " + styles.bookDetails}
-            data-parsed={props.book.parsed_name ? '' : 'bred'}
+            data-parsed={props.book.flags.parsed_name ? '' : 'bred'}
         >
             <div>
                 <BookMainImagePreviewWidget value={props.book.preview_url} />
             </div>
             <div className={styles.bookInfo}>
-                <h1 data-parsed={props.book.parsed_name ? '' : 'red'}>
+                <h1 data-parsed={props.book.flags.parsed_name ? '' : 'red'}>
                     {props.book.name}
                 </h1>
                 <div className={styles.bookInfoPanel}>
                     <span> #{props.book.id} </span>
-                    <span data-parsed={props.book.parsed_page ? '' : 'red'}>
+                    <span data-parsed={props.book.flags.parsed_page ? '' : 'red'}>
                         Страниц: {props.book.page_count}
                     </span>
                     <span data-parsed={props.book.page_loaded_percent != 100.0 ? 'red' : ''}>
                         Загружено: {props.book.page_loaded_percent}%
                     </span>
                     <span>{new Date(props.book.created).toLocaleString()}</span>
-                </div >
+                </div>
                 {props.book.attributes?.map(attr =>
                     <BookDetailInfoAttribute key={attr.name} name={attr.name} values={attr.values} />
                 )}
@@ -44,21 +44,25 @@ export function BookDetailInfoWidget(props: {
                 <div className={styles.bottomButtons}>
                     <button className={"app " + styles.load} onClick={props.onDownload}> Скачать</button>
                     <button className={"app " + styles.read} onClick={() => props.onRead(1)}> Читать</button>
-                    <button className={"app " + styles.delete} onClick={props.onDelete}> Удалить</button>
-                    <button className={"app " + styles.verify} onClick={props.onVerify}>Подтвердить</button>
-                    <button className="app" onClick={props.onShowDuplicate}>Показать дубли</button>
-                    <Link className="app-button" to={`/book/${props.book.id}/unique-pages`}>Показать уникальные страницы</Link>
+                    {props.book.flags.is_deleted ? null : <button className={"app " + styles.delete} onClick={props.onDelete}> Удалить</button>}
+                    {props.book.flags.is_verified ? null : <button className={"app " + styles.verify} onClick={props.onVerify}>Подтвердить</button>}
+                    {!props.book.flags.is_deleted && (!props.book.size || props.book.size.shared != 0) ?
+                        <button className="app" onClick={props.onShowDuplicate}>Показать дубли</button>
+                        : null}
+                    {!props.book.flags.is_deleted && (!props.book.size || props.book.size.unique != 0) ?
+                        <Link className="app-button" to={`/book/${props.book.id}/unique-pages`}>Показать уникальные страницы</Link>
+                        : null}
                     {/* FIXME: это жесть как плохо, надо переделать использование */}
                     <BookLabelEditorButtonCoordinatorWidget bookID={props.book.id} />
-                </div >
-            </div >
-        </div >
+                </div>
+            </div>
+        </div>
         <BookDuplicates deduplicateBookInfo={props.deduplicateBookInfo} originID={props.book.id} />
         <BookPagesPreviewWidget
             bookID={props.book.id}
             pages={props.book.pages}
         />
-    </div >
+    </div>
 }
 
 export function BookMainImagePreviewWidget(props: {

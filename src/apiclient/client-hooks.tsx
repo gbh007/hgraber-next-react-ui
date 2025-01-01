@@ -10,6 +10,7 @@ export interface Response<T> {
     isError: boolean,
     isUnauthorize: boolean,
     errorText: string,
+    cleanData: () => void
 }
 
 export function useAPIGet<ResponseType>(url: string): [Response<ResponseType | null>, GetAction] {
@@ -60,7 +61,14 @@ export function useAPIGet<ResponseType>(url: string): [Response<ResponseType | n
         setIsLoading(false);
     }, [url])
 
-    return [{ data, isLoading, isError, errorText, isUnauthorize }, fetchData];
+    return [{
+        data,
+        isLoading,
+        isError,
+        errorText,
+        isUnauthorize,
+        cleanData: () => { setData(null) }
+    }, fetchData];
 }
 
 export function useAPIPost<RequestType, ResponseType>(url: string): [Response<ResponseType | null>, PostAction<RequestType>] {
@@ -111,5 +119,12 @@ export function useAPIPost<RequestType, ResponseType>(url: string): [Response<Re
         setIsLoading(false);
     }, [url])
 
-    return [{ data, isLoading, isError, errorText, isUnauthorize }, fetchData];
+    return [{
+        data,
+        isLoading,
+        isError,
+        errorText,
+        isUnauthorize,
+        cleanData: () => { setData(null) }
+    }, fetchData];
 }
