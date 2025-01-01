@@ -111,7 +111,7 @@ function BookReadActionButtonWidget(props: {
             onClick={() => {
                 setShow(true)
             }}
-        >Редактировать метки</button>
+        >опции</button>
         <DialogWidget open={show} onClose={() => setShow(false)}>
             <BookLabelEditorButtonCoordinatorWidget
                 bookID={props.bookID}

@@ -47,6 +47,7 @@ export function BookDetailInfoWidget(props: {
                     <button className={"app " + styles.delete} onClick={props.onDelete}> Удалить</button>
                     <button className={"app " + styles.verify} onClick={props.onVerify}>Подтвердить</button>
                     <button className="app" onClick={props.onShowDuplicate}>Показать дубли</button>
+                    <Link className="app-button" to={`/book/${props.book.id}/unique-pages`}>Показать уникальные страницы</Link>
                     {/* FIXME: это жесть как плохо, надо переделать использование */}
                     <BookLabelEditorButtonCoordinatorWidget bookID={props.book.id} />
                 </div >

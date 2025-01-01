@@ -7,7 +7,7 @@ export interface DeduplicateBookByPageBodyRequest {
 }
 
 export interface DeduplicateBookByPageBodyResponse {
-    result: Array<DeduplicateBookByPageBodyResponseResult>
+    result?: Array<DeduplicateBookByPageBodyResponseResult>
 }
 
 export interface DeduplicateBookByPageBodyResponseResult {
@@ -41,6 +41,22 @@ export interface DeduplicateCompareResponse {
 
 export function useDeduplicateCompare(): [Response<DeduplicateCompareResponse | null>, PostAction<DeduplicateCompareRequest>] {
     const [response, fetchData] = useAPIPost<DeduplicateCompareRequest, DeduplicateCompareResponse>('/api/deduplicate/compare')
+
+    return [response, fetchData]
+}
+
+export interface UniqueBookPagesRequest {
+    book_id: string
+}
+
+export interface UniqueBookPagesResponse {
+    pages?: Array<BookSimplePage>
+}
+
+
+
+export function useUniqueBookPages(): [Response<UniqueBookPagesResponse | null>, PostAction<UniqueBookPagesRequest>] {
+    const [response, fetchData] = useAPIPost<UniqueBookPagesRequest, UniqueBookPagesResponse>('/api/deduplicate/unique-pages')
 
     return [response, fetchData]
 }
