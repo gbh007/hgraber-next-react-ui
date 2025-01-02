@@ -3,6 +3,7 @@ import { BookDetails, BookSimplePage } from "../apiclient/model-book-details"
 import styles from "./book-detail-info.module.css"
 import { BookLabelEditorButtonCoordinatorWidget } from "./book-label-editor"
 import { DeduplicateBookByPageBodyResponseResult } from "../apiclient/api-deduplicate"
+import { useEffect, useState } from "react"
 
 
 // FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
@@ -79,19 +80,31 @@ export function BookMainImagePreviewWidget(props: {
 export function BookPagesPreviewWidget(props: {
     bookID: string
     pages?: Array<BookSimplePage>
+    pageLimit?: number
 }) {
     if (!props.pages) {
         return null
     }
 
+    const [pageLimit, setPageLimit] = useState(props.pageLimit ?? 20)
+
+    useEffect(() => {
+        setPageLimit(props.pageLimit ?? 20)
+    }, [setPageLimit, props.bookID])
+
     return <div className={styles.preview}>
-        {props.pages?.filter(page => page.preview_url).map(page =>
-            <div className="app-container" key={page.page_number}>
-                <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
-                    <img className={styles.preview} src={page.preview_url} />
-                </Link>
-            </div>
+        {props.pages?.filter(page => page.preview_url).map((page, i) =>
+            pageLimit != -1 && i >= pageLimit ? null :
+                <div className="app-container" key={page.page_number}>
+                    <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
+                        <img className={styles.preview} src={page.preview_url} />
+                    </Link>
+                </div>
+
         )}
+        {pageLimit != -1 ?
+            <button className="app" onClick={() => setPageLimit(-1)}>Показать все страницы</button>
+            : null}
     </div>
 }
 

@@ -48,7 +48,7 @@ export function CompareBookScreen() {
             : currentShow == "both" ?
                 <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.both_pages} />
                 : currentShow == "target" ?
-                    <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.target_pages} />
+                    <BookPagesPreviewWidget bookID={targetBookID} pages={compareResult.data?.target_pages} />
                     : null
         }
 
