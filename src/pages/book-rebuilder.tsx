@@ -6,6 +6,8 @@ import { useLabelPresetList } from "../apiclient/api-labels"
 import { useAttributeCount } from "../apiclient/api-attribute-count"
 import { useBookDetails } from "../apiclient/api-book-details"
 import { BookRebuilderWidget } from "../widgets/book-rebuilder"
+import { BookFilter } from "../apiclient/model-book-filter"
+import { useBookList } from "../apiclient/api-book-list"
 
 export function BookRebuilderScreen() {
     const params = useParams()
@@ -21,14 +23,28 @@ export function BookRebuilderScreen() {
         selected_pages: [],
     })
 
+
+    const [bookFilter, setBookFilter] = useState<BookFilter>({
+        count: 10,
+        delete_status: "except",
+        download_status: "only",
+        verify_status: "only",
+        show_rebuilded: "only",
+        page: 1,
+        sort_field: "created_at",
+        sort_desc: true,
+    })
+
     const [bookRawResponse, fetchBookRaw] = useBookRaw()
     const [bookRebuildResponse, doBookRebuild] = useBookRebuild()
+    const [booksResponse, getBooks] = useBookList()
 
 
     // TODO: сделать другой запрос, который возвращает только нужные данные страниц
     const [bookDetailsResponse, getBookDetails] = useBookDetails()
     const [labelPresetsResponse, fetchLabelPresets] = useLabelPresetList()
     const [attributeCountResponse, getAttributeCount] = useAttributeCount()
+
 
 
     useEffect(() => {
@@ -39,6 +55,7 @@ export function BookRebuilderScreen() {
         getBookDetails({ id: bookID })
     }, [getBookDetails, bookID])
 
+    useEffect(() => { getBooks(bookFilter) }, [getBooks])
     useEffect(() => { fetchLabelPresets() }, [fetchLabelPresets])
     useEffect(() => { getAttributeCount() }, [getAttributeCount])
 
@@ -54,6 +71,7 @@ export function BookRebuilderScreen() {
         <ErrorTextWidget value={labelPresetsResponse} />
         <ErrorTextWidget value={attributeCountResponse} />
         <ErrorTextWidget value={bookRebuildResponse} />
+        <ErrorTextWidget value={booksResponse} />
         <div className="container-row container-gap-small">
             <Link className="app-button" to={`/book/${bookID}`}>На страницу исходной книги</Link>
             {bookRebuildResponse.data?.id ?
@@ -75,6 +93,11 @@ export function BookRebuilderScreen() {
                     labelsAutoComplete={labelPresetsResponse.data?.presets}
                     attributeCount={attributeCountResponse.data?.attributes}
                     pages={bookDetailsResponse.data?.pages}
+
+                    targetBookFilter={bookFilter}
+                    targetBookFilterChange={setBookFilter}
+                    getTargetBooks={e => getBooks(e)}
+                    targetBookResponse={booksResponse.data ?? undefined}
                 />
                 <div>
                     <button

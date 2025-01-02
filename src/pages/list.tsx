@@ -114,7 +114,7 @@ function AgentExportWidget(props: { filter: BookFilter }) {
     </details>
 }
 
-function PaginatorWidget(props: {
+export function PaginatorWidget(props: {
     value: Array<BookListResponsePages>
     onChange: (v: number) => void
 }) {

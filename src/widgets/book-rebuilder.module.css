@@ -16,3 +16,8 @@ img.preview {
   max-width: 400px;
   max-height: 200px;
 }
+
+img.bookPreview {
+  max-width: 130px;
+  max-height: 200px;
+}
