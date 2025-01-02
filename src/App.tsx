@@ -18,6 +18,7 @@ import { TaskScreen } from "./pages/tasks";
 import { CompareBookScreen } from "./pages/compare";
 import { UniqueBookPagesScreen } from "./pages/unique-pages";
 import { BooksByPageScreen } from "./pages/books-by-page";
+import { BookEditorScreen } from "./pages/book-editor";
 
 const router = createHashRouter([
   {
@@ -79,6 +80,10 @@ const router = createHashRouter([
   {
     path: "/deduplicate/:bookID/:page",
     element: <SimpleWrapper> <BooksByPageScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/book/:bookID/edit",
+    element: <SimpleWrapper> <BookEditorScreen /></SimpleWrapper>,
   },
 ]);
 

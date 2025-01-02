@@ -1,5 +1,5 @@
 import { PostAction, useAPIPost, Response } from "./client-hooks"
-import { BookDetails } from "./model-book-details"
+import { BookDetails } from "./model-book"
 
 export interface BookDetailsRequest {
     id: string
