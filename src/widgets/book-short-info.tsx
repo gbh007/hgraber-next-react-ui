@@ -10,7 +10,7 @@ export function BookShortInfoWidget(props: BookShortInfoProps) {
     const book = props.value
 
     return <div className="app-container">
-        <div className={styles.book} data-parsed={book.parsed_name ? '' : 'bred'}>
+        <div className={styles.book} data-parsed={book.flags.parsed_name ? '' : 'bred'}>
             <Link to={`/book/${book.id}`}>
                 {book.preview_url ? <img
                     className={styles.preview}
@@ -19,7 +19,7 @@ export function BookShortInfoWidget(props: BookShortInfoProps) {
                 /> : null /* FIXME: добавить альтернативную иконку для незагруженного изображения */}
             </Link>
             <div style={{ display: "flex", flexDirection: "column" }}>
-                <span data-parsed={book.parsed_name ? '' : 'red'}>{book.name}</span>
+                <span data-parsed={book.flags.parsed_name ? '' : 'red'}>{book.name}</span>
                 <div className={styles["info-area"]}>
                     <span data-parsed="book.parsed_page ? '' : 'red'">Страниц: {book.page_count}</span>
                     <span data-parsed={book.page_loaded_percent != 100.0 ? 'red' : ''}> Загружено: {book.page_loaded_percent}%</span>

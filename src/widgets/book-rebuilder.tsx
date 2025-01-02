@@ -84,7 +84,7 @@ function BookPagesSelectWidget(props: {
                         e.target.checked ?
                             [...props.value, page.page_number]
                             :
-                            props.value.filter(v => v == page.page_number)
+                            props.value.filter(v => v != page.page_number)
                     )}
                 /> выбрать</label>
             </div>

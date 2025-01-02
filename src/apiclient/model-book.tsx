@@ -2,13 +2,12 @@ export interface BookShortInfo {
     id: string
     created: string
     preview_url?: string
-    parsed_name: boolean
     name: string
-    parsed_page: boolean
     page_count: number
     page_loaded_percent: number
     tags?: Array<string>
     has_more_tags: boolean
+    flags: BookFlags
 }
 
 export interface BookSimple {
@@ -18,6 +17,7 @@ export interface BookSimple {
     name: string
     page_count: number
     preview_url?: string
+    flags: BookFlags
 }
 
 export interface BookSimplePage {
@@ -29,18 +29,22 @@ export interface BookDetails {
     id: string
     created: string
     preview_url?: string
-    flags: {
-        parsed_name: boolean
-        parsed_page: boolean
-        is_verified: boolean
-        is_deleted: boolean
-    }
+    flags: BookFlags
     name: string
     page_count: number
     page_loaded_percent: number
     attributes?: Array<BookDetailsAttribute>
     pages?: Array<BookSimplePage>
     size?: BookDetailsSize
+}
+
+
+export interface BookFlags {
+    parsed_name: boolean
+    parsed_page: boolean
+    is_verified: boolean
+    is_deleted: boolean
+    is_rebuild: boolean
 }
 
 export interface BookDetailsAttribute {

@@ -8,6 +8,7 @@ export interface BookFilter {
     verify_status?: string
     delete_status?: string
     download_status?: string
+    show_rebuilded?: string
     filter?: BookFilterAdditional
 }
 

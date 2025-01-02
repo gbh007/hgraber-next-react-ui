@@ -43,6 +43,12 @@ export function BookFilterWidget(props: {
             }} />
         </div>
         <div>
+            Показывать пересобранные:
+            <ShowSelectWidget value={props.value.show_rebuilded ?? "all"} onChange={(v: string) => {
+                props.onChange({ ...props.value, show_rebuilded: v })
+            }} />
+        </div>
+        <div>
             Сортировать по:
             <select className="app" value={props.value.sort_field ?? "created_at"} onChange={e => {
                 props.onChange({ ...props.value, sort_field: e.target.value })
