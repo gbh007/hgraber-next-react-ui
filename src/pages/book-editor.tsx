@@ -51,6 +51,7 @@ export function BookEditorScreen() {
             value={book}
             onChange={e => setBook(e)}
             labelsAutoComplete={labelPresetsResponse.data?.presets}
+            attributeCount={attributeCountResponse.data?.attributes}
         />
         <div>
             <button

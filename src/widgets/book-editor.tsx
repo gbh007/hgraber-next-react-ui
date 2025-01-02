@@ -47,7 +47,7 @@ export function BookMainInfoEditorWidget(props: {
             className="app"
             value={props.value.origin_url ?? ""}
             onChange={e => {
-                props.onChange({ ...props.value, origin_url: e.target.value })
+                props.onChange({ ...props.value, origin_url: e.target.value || undefined })
             }}
         /></label>
     </div>

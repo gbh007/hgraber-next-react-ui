@@ -17,3 +17,21 @@ export function useBookRaw(): [Response<BookRaw | null>, PostAction<BookRawReque
 
     return [response, fetchData]
 }
+
+
+export interface BookRebuildRequest {
+    old_book: BookRaw
+    selected_pages: Array<number>
+    merge_with_book?: string
+    only_unique?: boolean
+}
+
+export interface BookRebuildResponse {
+    id: string
+}
+
+export function useBookRebuild(): [Response<BookRebuildResponse | null>, PostAction<BookRebuildRequest>] {
+    const [response, fetchData] = useAPIPost<BookRebuildRequest, BookRebuildResponse>('/api/book/rebuild')
+
+    return [response, fetchData]
+}

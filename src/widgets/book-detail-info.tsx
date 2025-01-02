@@ -54,6 +54,7 @@ export function BookDetailInfoWidget(props: {
                         <Link className="app-button" to={`/book/${props.book.id}/unique-pages`}>Показать уникальные страницы</Link>
                         : null}
                     <Link className="app-button" to={`/book/${props.book.id}/edit`}>Редактировать</Link>
+                    <Link className="app-button" to={`/book/${props.book.id}/rebuild`}>Пересобрать</Link>
                     {/* FIXME: это жесть как плохо, надо переделать использование */}
                     <BookLabelEditorButtonCoordinatorWidget bookID={props.book.id} />
                 </div>
