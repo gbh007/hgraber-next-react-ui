@@ -86,28 +86,18 @@ export function BookRebuilderScreen() {
 
         </div>
         {!bookRebuildResponse.data?.id ?
-            <>
-                <BookRebuilderWidget
-                    value={bookRebuildData}
-                    onChange={e => setBookRebuildData(e)}
-                    labelsAutoComplete={labelPresetsResponse.data?.presets}
-                    attributeCount={attributeCountResponse.data?.attributes}
-                    pages={bookDetailsResponse.data?.pages}
+            <BookRebuilderWidget
+                value={bookRebuildData}
+                onChange={e => setBookRebuildData(e)}
+                labelsAutoComplete={labelPresetsResponse.data?.presets}
+                attributeCount={attributeCountResponse.data?.attributes}
+                pages={bookDetailsResponse.data?.pages}
 
-                    targetBookFilter={bookFilter}
-                    targetBookFilterChange={setBookFilter}
-                    getTargetBooks={e => getBooks(e)}
-                    targetBookResponse={booksResponse.data ?? undefined}
-                />
-                <div>
-                    <button
-                        className="app"
-                        onClick={() => {
-                            doBookRebuild(bookRebuildData)
-                        }}
-                    >Пересобрать</button>
-                </div>
-            </> : null
+                targetBookFilter={bookFilter}
+                targetBookFilterChange={setBookFilter}
+                getTargetBooks={e => getBooks(e)}
+                targetBookResponse={booksResponse.data ?? undefined}
+            /> : null
         }
     </div>
 }
