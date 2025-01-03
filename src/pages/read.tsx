@@ -14,6 +14,7 @@ export function BookReadScreen() {
     const pageNumber = parseInt(params.page!)
 
     const [currentPage, setCurrentPage] = useState<BookSimplePage>()
+    const [onlyActivePage, setOnlyActivePage] = useState(false)
 
     const [bookDetailsResponse, getBookDetails] = useBookDetails()
     const [createDeadHashResponse, doCreateDeadHash] = useCreateDeadHashByPage()
@@ -38,13 +39,35 @@ export function BookReadScreen() {
 
     const prevPage = useCallback(() => {
         if (pageNumber == 1) return
-        goPage(pageNumber - 1)
-    }, [bookDetailsResponse.data, bookID, pageNumber, goPage])
+
+        const pageNumberInArray = bookDetailsResponse.data?.pages?.
+            map(e => e.page_number).
+            filter(e => e < pageNumber).
+            sort((a: number, b: number) => a - b).
+            reduce((_, cur) => cur)
+
+        if (onlyActivePage && pageNumberInArray) {
+            goPage(pageNumberInArray)
+        } else {
+            goPage(pageNumber - 1)
+        }
+    }, [bookDetailsResponse.data, bookID, pageNumber, goPage, onlyActivePage])
 
     const nextPage = useCallback(() => {
         if (pageNumber == bookDetailsResponse.data?.page_count) return
-        goPage(pageNumber + 1)
-    }, [bookDetailsResponse.data, bookID, pageNumber, goPage])
+
+        const pageNumberInArray = bookDetailsResponse.data?.pages?.
+            map(e => e.page_number).
+            filter(e => e > pageNumber).
+            sort((a: number, b: number) => b - a).
+            reduce((_, cur) => cur)
+
+        if (onlyActivePage && pageNumberInArray) {
+            goPage(pageNumberInArray)
+        } else {
+            goPage(pageNumber + 1)
+        }
+    }, [bookDetailsResponse.data, bookID, pageNumber, goPage, onlyActivePage])
 
 
     const goGo = useCallback((event: any) => {
@@ -79,6 +102,12 @@ export function BookReadScreen() {
             <div className={"app-container " + styles.actions}>
                 <Link className="app-button" to={`/book/${bookID}`}>На страницу книги</Link>
                 {currentPage?.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
+                <label><input
+                    type="checkbox"
+                    className="app"
+                    checked={onlyActivePage}
+                    onChange={e => setOnlyActivePage(e.target.checked)}
+                />только активные страницы</label>
                 <span>
                     Страница {pageNumber} из {bookDetailsResponse.data?.page_count || 0}
                 </span>
