@@ -54,10 +54,14 @@ export interface BookDetailsAttribute {
 
 export interface BookDetailsSize {
     unique: number
+    unique_without_dead_hashes: number
     shared: number
+    dead_hashes: number
     total: number
     unique_formatted: string
+    unique_without_dead_hashes_formatted: string
     shared_formatted: string
+    dead_hashes_formatted: string
     total_formatted: string
 }
 

@@ -27,7 +27,6 @@ export function BookRebuilderWidget(props: {
 
     return <div className="container-column container-gap-middle">
         <div className="app-container container-column container-gap-small">
-            {/* FIXME: сделать выбор через фильтр как для обычного просмотра книг */}
             <div className="container-row container-gap-small">
                 <span>Выбрана целевой</span>
                 <input
@@ -48,6 +47,14 @@ export function BookRebuilderWidget(props: {
                     checked={props.value.only_unique ?? false}
                     onChange={e => props.onChange({ ...props.value, only_unique: e.target.checked })}
                 /> Только уникальные страницы
+            </label>
+            <label>
+                <input
+                    className="app"
+                    type="checkbox"
+                    checked={props.value.exclude_dead_hash_pages ?? false}
+                    onChange={e => props.onChange({ ...props.value, exclude_dead_hash_pages: e.target.checked })}
+                /> Исключить страницы с мертвыми хешами
             </label>
         </div>
 

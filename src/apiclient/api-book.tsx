@@ -24,6 +24,7 @@ export interface BookRebuildRequest {
     selected_pages: Array<number>
     merge_with_book?: string
     only_unique?: boolean
+    exclude_dead_hash_pages?: boolean
 }
 
 export interface BookRebuildResponse {
