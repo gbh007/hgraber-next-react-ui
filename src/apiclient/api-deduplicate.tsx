@@ -70,3 +70,37 @@ export function useDeduplicateBooksByPage(): [Response<DeduplicateBooksByPageRes
 
     return [response, fetchData]
 }
+
+export interface CreateDeadHashByPageRequest {
+    book_id: string
+    page_number: number
+}
+
+export function useCreateDeadHashByPage(): [Response<void | null>, PostAction<CreateDeadHashByPageRequest>] {
+    const [response, fetchData] = useAPIPost<CreateDeadHashByPageRequest, void>('/api/deduplicate/dead-hash-by-page/create')
+
+    return [response, fetchData]
+}
+
+export interface DeleteDeadHashByPageRequest {
+    book_id: string
+    page_number: number
+}
+
+export function useDeleteDeadHashByPage(): [Response<void | null>, PostAction<DeleteDeadHashByPageRequest>] {
+    const [response, fetchData] = useAPIPost<DeleteDeadHashByPageRequest, void>('/api/deduplicate/dead-hash-by-page/delete')
+
+    return [response, fetchData]
+}
+
+export interface DeletePagesByBodyRequest {
+    book_id: string
+    page_number: number
+    set_dead_hash?: boolean
+}
+
+export function useDeletePagesByBody(): [Response<void | null>, PostAction<DeletePagesByBodyRequest>] {
+    const [response, fetchData] = useAPIPost<DeletePagesByBodyRequest, void>('/api/deduplicate/delete-all-pages-by-hash')
+
+    return [response, fetchData]
+}
