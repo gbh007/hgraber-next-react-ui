@@ -1,5 +1,5 @@
 # HGraber next react ui
 
-**Внимание:** в данный момент версия нестабильная и может содержать баги повреждающие данные
+**Важно:** в данный момент качество кода оставляет желать лучшего, т.к. это MVP.
 
-Это веб версия для [HGraber next](https://github.com/gbh007/hgraber-next)
+Это Web UI для [HGraber next](https://github.com/gbh007/hgraber-next)

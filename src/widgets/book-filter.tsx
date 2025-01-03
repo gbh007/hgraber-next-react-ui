@@ -7,7 +7,7 @@ import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
 
 // FIXME: работать с этим списком через API
-const attributeCodes = [
+export const attributeCodes = [
     "author",
     "category",
     "character",
@@ -40,6 +40,12 @@ export function BookFilterWidget(props: {
             Показывать загруженные:
             <ShowSelectWidget value={props.value.download_status ?? "only"} onChange={(v: string) => {
                 props.onChange({ ...props.value, download_status: v })
+            }} />
+        </div>
+        <div>
+            Показывать пересобранные:
+            <ShowSelectWidget value={props.value.show_rebuilded ?? "all"} onChange={(v: string) => {
+                props.onChange({ ...props.value, show_rebuilded: v })
             }} />
         </div>
         <div>

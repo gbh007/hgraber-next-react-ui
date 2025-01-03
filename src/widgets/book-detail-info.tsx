@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
-import { BookDetails, BookSimplePage } from "../apiclient/model-book-details"
 import styles from "./book-detail-info.module.css"
 import { BookLabelEditorButtonCoordinatorWidget } from "./book-label-editor"
 import { DeduplicateBookByPageBodyResponseResult } from "../apiclient/api-deduplicate"
 import { useEffect, useState } from "react"
+import { BookDetails, BookSimplePage } from "../apiclient/model-book"
 
 
 // FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
@@ -53,6 +53,8 @@ export function BookDetailInfoWidget(props: {
                     {!props.book.flags.is_deleted && (!props.book.size || props.book.size.unique != 0) ?
                         <Link className="app-button" to={`/book/${props.book.id}/unique-pages`}>Показать уникальные страницы</Link>
                         : null}
+                    <Link className="app-button" to={`/book/${props.book.id}/edit`}>Редактировать</Link>
+                    <Link className="app-button" to={`/book/${props.book.id}/rebuild`}>Пересобрать</Link>
                     {/* FIXME: это жесть как плохо, надо переделать использование */}
                     <BookLabelEditorButtonCoordinatorWidget bookID={props.book.id} />
                 </div>
@@ -102,7 +104,7 @@ export function BookPagesPreviewWidget(props: {
                 </div>
 
         )}
-        {pageLimit != -1 ?
+        {pageLimit != -1 && (pageLimit < props.pages.length) ?
             <button className="app" onClick={() => setPageLimit(-1)}>Показать все страницы</button>
             : null}
     </div>

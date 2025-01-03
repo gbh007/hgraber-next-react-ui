@@ -1,6 +1,5 @@
 import { PostAction, useAPIPost, Response } from "./client-hooks"
-import { BookSimple } from "./model-book"
-import { BookSimplePage } from "./model-book-details"
+import { BookSimple, BookSimplePage } from "./model-book"
 
 export interface DeduplicateBookByPageBodyRequest {
     book_id: string
