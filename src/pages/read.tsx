@@ -125,6 +125,27 @@ export function BookReadScreen() {
                     <button className="app" onClick={prevPage}><span className={styles.pageNavigate}>{"<"}</span></button>
                     <button className="app" onClick={nextPage}><span className={styles.pageNavigate}>{">"}</span></button>
                 </span>
+                {currentPage ?
+                    <button
+                        className="app"
+                        onClick={() => {
+                            if (!confirm("Удалить такие страницы и добавить их в мертвый хеш? (ЭТО НЕОБРАТИМО)")) {
+                                return
+                            }
+
+                            doDeleteAllPageByBody({
+                                book_id: bookID,
+                                page_number: currentPage.page_number,
+                                set_dead_hash: true,
+                            }).then(() => {
+                                getBookDetails({ id: bookID })
+                            })
+                        }}
+                    >
+                        <b style={{ color: "red" }}>Удалить такие страницы</b>
+                    </button> : null
+
+                }
                 <BookReadActionButtonWidget
                     bookID={bookID}
                     pageNumber={pageNumber}
