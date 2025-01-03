@@ -35,6 +35,8 @@ export function TaskScreen() {
                 <option value="deduplicate_files">Дедуплицировать файлы</option>
                 <option value="remove_detached_files">Удалить ни с чем не связанные файлы</option>
                 <option value="remove_mismatch_files">Удалить не синхронизированные (FS/DB) файлы</option>
+                <option value="fill_dead_hashes">Наполнить мертвые хеши</option>
+                <option value="clean_deleted_pages">Очистить удаленные страницы</option>
             </select>
             <button className="app" onClick={() => { doCreateTask({ code: taskCode }) }}>Создать задачу</button>
             <button className="app" onClick={() => { fetchTaskResults() }}>Обновить</button>
