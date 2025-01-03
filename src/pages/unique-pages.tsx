@@ -32,13 +32,12 @@ export function UniqueBookPagesScreen() {
             </select>
         </div>
 
-        {deadHashSelector == "all" ?
-            <BookPagesPreviewWidget bookID={bookID} pages={uniquePagesResponse.data?.pages} />
-            : deadHashSelector == "without" ?
-                <BookPagesPreviewWidget bookID={bookID} pages={uniquePagesResponse.data?.pages_without_dead_hashes} />
-                : deadHashSelector == "only" ?
-                    <BookPagesPreviewWidget bookID={bookID} pages={uniquePagesResponse.data?.pages_only_dead_hashes} />
-                    : null
-        }
+
+        <BookPagesPreviewWidget bookID={bookID} pages={uniquePagesResponse.data?.pages?.filter(page =>
+            deadHashSelector == "all" ||
+            deadHashSelector == "without" && page.has_dead_hash === false ||
+            deadHashSelector == "only" && page.has_dead_hash === true)} />
+
+        { }
     </div>
 }

@@ -5,13 +5,14 @@ import { useCallback, useEffect, useState } from "react"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { BookLabelEditorButtonCoordinatorWidget } from "../widgets/book-label-editor"
 import { DialogWidget } from "../widgets/common"
+import { BookSimplePage } from "../apiclient/model-book"
 
 export function BookReadScreen() {
     const params = useParams()
     const bookID = params.bookID!
     const pageNumber = parseInt(params.page!)
 
-    const [pageImage, setPageImage] = useState('')
+    const [currentPage, setCurrentPage] = useState<BookSimplePage>()
 
     const [bookDetailsResponse, getBookDetails] = useBookDetails()
 
@@ -23,7 +24,7 @@ export function BookReadScreen() {
 
 
     useEffect(() => { // TODO: заменить на вычисляемую функцию
-        setPageImage(bookDetailsResponse.data?.pages?.filter(page => page.page_number == pageNumber)[0].preview_url || '')
+        setCurrentPage(bookDetailsResponse.data?.pages?.filter(page => page.page_number == pageNumber).pop())
     }, [bookDetailsResponse.data, bookID, pageNumber])
 
     const goPage = useCallback((page: number) => {
@@ -70,17 +71,18 @@ export function BookReadScreen() {
         <div className={styles.viewScreen}>
             <div className={"app-container " + styles.actions}>
                 <Link className="app-button" to={`/book/${bookID}`}>На страницу книги</Link>
+                {currentPage?.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
                 <span>
                     Страница {pageNumber} из {bookDetailsResponse.data?.page_count || 0}
                 </span>
             </div>
             <div className={styles.view}>
-                {!pageImage ? null : <img
-                    src={pageImage}
+                {currentPage?.preview_url ? <img
+                    src={currentPage?.preview_url}
                     id="main-image"
                     className={styles.view}
                     onClick={goGo}
-                />}
+                /> : null}
             </div>
             <div className={"app-container " + styles.actions}>
                 <span>

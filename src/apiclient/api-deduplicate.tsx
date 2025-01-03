@@ -34,12 +34,6 @@ export interface DeduplicateCompareResponse {
     origin_pages?: Array<BookSimplePage>
     both_pages?: Array<BookSimplePage>
     target_pages?: Array<BookSimplePage>
-    origin_pages_without_dead_hashes?: Array<BookSimplePage>
-    origin_pages_only_dead_hashes?: Array<BookSimplePage>
-    both_pages_without_dead_hashes?: Array<BookSimplePage>
-    both_pages_only_dead_hashes?: Array<BookSimplePage>
-    target_pages_without_dead_hashes?: Array<BookSimplePage>
-    target_pages_only_dead_hashes?: Array<BookSimplePage>
 }
 
 export function useDeduplicateCompare(): [Response<DeduplicateCompareResponse | null>, PostAction<DeduplicateCompareRequest>] {
@@ -54,8 +48,6 @@ export interface UniqueBookPagesRequest {
 
 export interface UniqueBookPagesResponse {
     pages?: Array<BookSimplePage>
-    pages_without_dead_hashes?: Array<BookSimplePage>
-    pages_only_dead_hashes?: Array<BookSimplePage>
 }
 
 export function useUniqueBookPages(): [Response<UniqueBookPagesResponse | null>, PostAction<UniqueBookPagesRequest>] {

@@ -23,6 +23,7 @@ export interface BookSimple {
 export interface BookSimplePage {
     page_number: number
     preview_url?: string
+    has_dead_hash?: boolean
 }
 
 export interface BookDetails {

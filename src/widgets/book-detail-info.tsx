@@ -108,6 +108,7 @@ export function BookPagesPreviewWidget(props: {
                     <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
                         <img className={styles.preview} src={page.preview_url} />
                     </Link>
+                    {page.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
                 </div>
 
         )}

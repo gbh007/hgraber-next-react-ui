@@ -13,6 +13,7 @@ export function CompareBookScreen() {
     const targetBookID = params.target!
 
     const [currentShow, setCurrentShow] = useState("origin")
+    const [deadHashSelector, setDeadHashSelector] = useState("all")
 
     useEffect(() => {
         doCompare({
@@ -30,21 +31,27 @@ export function CompareBookScreen() {
             </div>
             <BookShortInfo value={compareResult.data?.origin} />
             <div style={{ flexGrow: 1, textAlign: "center" }}>
-                <select
-                    className="app"
-                    value={currentShow}
-                    onChange={e => setCurrentShow(e.target.value)}
-                >
-                    <option value="origin">Страницы оригинала</option>
-                    <option value="origin_without_dead_hashes">Страницы оригинала (без мертвых хешей)</option>
-                    <option value="origin_only_dead_hashes">Страницы оригинала (только мертвые хеши)</option>
-                    <option value="both">Страницы общие</option>
-                    <option value="both_without_dead_hashes">Страницы общие (без мертвых хешей)</option>
-                    <option value="both_only_dead_hashes">Страницы общие (только мертвые хеши)</option>
-                    <option value="target">Страницы цели</option>
-                    <option value="target_without_dead_hashes">Страницы цели (без мертвых хешей)</option>
-                    <option value="target_only_dead_hashes">Страницы цели (только мертвые хеши)</option>
-                </select>
+                <div className="container-column container-gap-small">
+                    <select
+                        className="app"
+                        value={currentShow}
+                        onChange={e => setCurrentShow(e.target.value)}
+                    >
+                        <option value="origin">Страницы оригинала</option>
+                        <option value="both">Страницы общие</option>
+                        <option value="target">Страницы цели</option>
+                    </select>
+                    <span>Показывать страницы с мертвыми хешами</span>
+                    <select
+                        className="app"
+                        value={deadHashSelector}
+                        onChange={e => setDeadHashSelector(e.target.value)}
+                    >
+                        <option value="all">Все</option>
+                        <option value="without">Кроме</option>
+                        <option value="only">Только</option>
+                    </select>
+                </div>
             </div>
             <BookShortInfo value={compareResult.data?.target} />
             <div>
@@ -55,24 +62,21 @@ export function CompareBookScreen() {
 
         {/* FIXME: Переделать это непотребство */}
         {currentShow == "origin" ?
-            <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.origin_pages} />
-            : currentShow == "origin_without_dead_hashes" ?
-                <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.origin_pages_without_dead_hashes} />
-                : currentShow == "origin_only_dead_hashes" ?
-                    <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.origin_pages_only_dead_hashes} />
-                    : currentShow == "both" ?
-                        <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.both_pages} />
-                        : currentShow == "both_without_dead_hashes" ?
-                            <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.both_pages_without_dead_hashes} />
-                            : currentShow == "both_only_dead_hashes" ?
-                                <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.both_pages_only_dead_hashes} />
-                                : currentShow == "target" ?
-                                    <BookPagesPreviewWidget bookID={targetBookID} pages={compareResult.data?.target_pages} />
-                                    : currentShow == "target_without_dead_hashes" ?
-                                        <BookPagesPreviewWidget bookID={targetBookID} pages={compareResult.data?.target_pages_without_dead_hashes} />
-                                        : currentShow == "target_only_dead_hashes" ?
-                                            <BookPagesPreviewWidget bookID={targetBookID} pages={compareResult.data?.target_pages_only_dead_hashes} />
-                                            : null
+            <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.origin_pages?.filter(page =>
+                deadHashSelector == "all" ||
+                deadHashSelector == "without" && page.has_dead_hash === false ||
+                deadHashSelector == "only" && page.has_dead_hash === true)} />
+            : currentShow == "both" ?
+                <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.both_pages?.filter(page =>
+                    deadHashSelector == "all" ||
+                    deadHashSelector == "without" && page.has_dead_hash === false ||
+                    deadHashSelector == "only" && page.has_dead_hash === true)} />
+                : currentShow == "target" ?
+                    <BookPagesPreviewWidget bookID={targetBookID} pages={compareResult.data?.target_pages?.filter(page =>
+                        deadHashSelector == "all" ||
+                        deadHashSelector == "without" && page.has_dead_hash === false ||
+                        deadHashSelector == "only" && page.has_dead_hash === true)} />
+                    : null
         }
 
     </div>

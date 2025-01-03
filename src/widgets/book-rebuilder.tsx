@@ -151,6 +151,7 @@ function BookPagesSelectWidget(props: {
                                     <img className={styles.preview} src={page.preview_url} />
                                 </Link> : null}
                             <span>Страница: {page.page_number}</span>
+                            {page.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
                             <label><input
                                 className="app"
                                 type="checkbox"
@@ -262,6 +263,7 @@ function PageSelectorReaderWidget(props: {
                 <button className="app" onClick={prevPage}><span className={styles.pageViewActionsPageNavigate}>{"<"}</span></button>
                 <button className="app" onClick={nextPage}><span className={styles.pageViewActionsPageNavigate}>{">"}</span></button>
             </span>
+            {currentPage?.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
             {currentPage ?
                 <label><input
                     className="app"
