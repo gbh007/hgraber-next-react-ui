@@ -1,8 +1,10 @@
 div.preview {
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 10px;
+  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(300px, 100vw - 20px), 1fr)
+  );
 }
 
 div.preview > div {

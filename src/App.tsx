@@ -20,6 +20,7 @@ import { UniqueBookPagesScreen } from "./pages/unique-pages";
 import { BooksByPageScreen } from "./pages/books-by-page";
 import { BookEditorScreen } from "./pages/book-editor";
 import { BookRebuilderScreen } from "./pages/book-rebuilder";
+import { SelectToCompareScreen } from "./pages/select-to-compare";
 
 const router = createHashRouter([
   {
@@ -90,6 +91,10 @@ const router = createHashRouter([
     path: "/book/:bookID/rebuild",
     element: <SimpleWrapper> <BookRebuilderScreen /></SimpleWrapper>,
   },
+  {
+    path: "/select-to-compare",
+    element: <SimpleWrapper> <SelectToCompareScreen /></SimpleWrapper>,
+  },
 ]);
 
 function App() {
@@ -126,6 +131,7 @@ function MenuWidget() {
       <li> <Link to="/rpc">RPC</Link> </li>
       <li> <Link to="/tasks">Задачи</Link> </li>
       <li> <Link to="/label/presets">Пресеты меток</Link> </li>
+      <li> <Link to="/select-to-compare">Выбрать книги для сравнения</Link> </li>
       <li> <Link to="/settings">Настройки</Link> </li>
     </ol>
   </div>

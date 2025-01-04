@@ -27,7 +27,7 @@ export function BookRebuilderWidget(props: {
 }) {
     const [targetPreview, setTargetPreview] = useState<BookShortInfo>()
 
-    return <div className="container-column container-gap-middle">
+    return <div className="container-column container-gap-big">
         <div className="app-container container-column container-gap-small">
             <div className="container-row container-gap-small">
                 <span>Выбрана целевой</span>
@@ -61,7 +61,6 @@ export function BookRebuilderWidget(props: {
         </div>
 
         {targetPreview && targetPreview.id == props.value.merge_with_book ?
-
             <div className="app-container container-column container-gap-small">
                 <span>Данные будут внесены в</span>
                 <BooksPreview value={targetPreview} />
@@ -69,18 +68,20 @@ export function BookRebuilderWidget(props: {
             :
             <details>
                 <summary>Выбрать целевую книгу</summary>
-                <div className="app-container container-column container-gap-small">
-                    <BookFilterWidget
-                        value={props.targetBookFilter}
-                        onChange={props.targetBookFilterChange}
-                    />
-                    <button className="app" onClick={() => {
-                        props.getTargetBooks({ ...props.targetBookFilter, page: 1 })
-                    }}>Применить</button>
-                    <PaginatorWidget onChange={(v: number) => {
-                        props.targetBookFilterChange({ ...props.targetBookFilter, page: v })
-                        props.getTargetBooks({ ...props.targetBookFilter, page: v })
-                    }} value={props.targetBookResponse?.pages || []} />
+                <div className="container-column container-gap-big">
+                    <div className="app-container container-column container-gap-small">
+                        <BookFilterWidget
+                            value={props.targetBookFilter}
+                            onChange={props.targetBookFilterChange}
+                        />
+                        <button className="app" onClick={() => {
+                            props.getTargetBooks({ ...props.targetBookFilter, page: 1 })
+                        }}>Применить</button>
+                        <PaginatorWidget onChange={(v: number) => {
+                            props.targetBookFilterChange({ ...props.targetBookFilter, page: v })
+                            props.getTargetBooks({ ...props.targetBookFilter, page: v })
+                        }} value={props.targetBookResponse?.pages || []} />
+                    </div>
                     <BooksList
                         value={props.targetBookResponse?.books}
                         onChange={e => {
