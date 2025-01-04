@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { useSystemInfo } from "../apiclient/api-system-info"
-import styles from "./main.module.css"
 import { useSystemHandle } from "../apiclient/api-system-handle"
 
 export function MainScreen() {
@@ -17,33 +16,29 @@ export function MainScreen() {
                     </div>
                     :
                     <>
-                        <div className="app-container">
-                            <ul className={styles.indexInfo}>
-                                <li>Всего <b>{data?.count || 0}</b> книг</li>
-                                <li>Всего загружено <b>{data?.downloaded_count || 0}</b> книг</li>
-                                <li>Всего подтверждено <b>{data?.verified_count || 0}</b> книг</li>
-                                <li>
-                                    Всего незагруженно
-                                    <b> {data?.not_load_count || 0}</b> книг
-                                </li>
-                                <li>Всего <b>{data?.page_count || 0}</b> страниц</li>
-                                <li>
-                                    Всего незагруженно
-                                    <b> {data?.not_load_page_count || 0}</b> страниц
-                                </li>
-                                <li>
-                                    Всего без тела (файла)
-                                    <b> {data?.page_without_body_count || 0}</b> страниц
-                                </li>
-                                <li>
-                                    Объем страниц:
-                                    <b> {data?.pages_size_formatted || 0}</b>
-                                </li>
-                                <li>
-                                    Объем файлов:
-                                    <b> {data?.files_size_formatted || 0}</b>
-                                </li>
-                            </ul>
+                        <div className="app-container container-row container-gap-big" style={{ flexWrap: "wrap" }}>
+                            <div className="container-column container-gap-smaller">
+                                <b>Книги</b>
+                                <span>Всего: <b>{data?.count ?? 0}</b></span>
+                                <span>Загружено: <b>{data?.downloaded_count ?? 0}</b></span>
+                                <span>Подтверждено: <b>{data?.verified_count ?? 0}</b></span>
+                                <span>Пересобрано: <b>{data?.rebuilded_count ?? 0}</b></span>
+                                <span>Незагруженно: <b>{data?.not_load_count ?? 0}</b></span>
+                                <span>Удалено: <b>{data?.deleted_count ?? 0}</b></span>
+                            </div>
+                            <div className="container-column container-gap-smaller">
+                                <b>Страницы</b>
+                                <span>Всего: <b>{data?.page_count ?? 0}</b></span>
+                                <span>Незагруженно: <b>{data?.not_load_page_count ?? 0}</b></span>
+                                <span>Без тела (файла): <b>{data?.page_without_body_count ?? 0}</b></span>
+                                <span>Удалено: <b>{data?.deleted_page_count ?? 0}</b></span>
+                            </div>
+                            <div className="container-column container-gap-smaller">
+                                <b>Файлы</b>
+                                <span>Мертвых хешей: <b>{data?.dead_hash_count ?? 0}</b></span>
+                                <span>Объем страниц: <b>{data?.pages_size_formatted ?? 0}</b></span>
+                                <span>Объем файлов: <b>{data?.files_size_formatted ?? 0}</b></span>
+                            </div>
                         </div>
 
                         <div className="app-container" id="info-workers">

@@ -112,6 +112,10 @@ input.app:focus {
   flex-direction: column;
 }
 
+.container-gap-big {
+  gap: 15px;
+}
+
 .container-gap-middle {
   gap: 10px;
 }
@@ -121,5 +125,5 @@ input.app:focus {
 }
 
 .container-gap-smaller {
-  gap: 5px;
+  gap: 3px;
 }
