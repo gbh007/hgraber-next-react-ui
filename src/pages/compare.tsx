@@ -1,19 +1,25 @@
 import { Link, useParams } from "react-router-dom";
-import { useDeduplicateCompare } from "../apiclient/api-deduplicate";
+import { useCreateDeadHashByPage, useDeduplicateCompare, useDeleteDeadHashByPage, useDeletePagesByBody } from "../apiclient/api-deduplicate";
 import { useEffect, useState } from "react";
 import { ErrorTextWidget } from "../widgets/error-text";
 import { BookMainImagePreviewWidget, BookPagesPreviewWidget } from "../widgets/book-detail-info";
-import { BookSimple } from "../apiclient/model-book";
+import { BookSimple, BookSimplePage } from "../apiclient/model-book";
 import { HumanTimeWidget } from "../widgets/common";
+import { DualReaderWidget } from "../widgets/split-viewer";
 
 export function CompareBookScreen() {
-    const [compareResult, doCompare] = useDeduplicateCompare()
     const params = useParams()
     const originBookID = params.origin!
     const targetBookID = params.target!
 
     const [currentShow, setCurrentShow] = useState("origin")
     const [deadHashSelector, setDeadHashSelector] = useState("all")
+
+
+    const [compareResult, doCompare] = useDeduplicateCompare()
+    const [createDeadHashResponse, doCreateDeadHash] = useCreateDeadHashByPage()
+    const [deleteDeadHashResponse, doDeleteDeadHash] = useDeleteDeadHashByPage()
+    const [deleteAllPageByBodyResponse, doDeleteAllPageByBody] = useDeletePagesByBody()
 
     useEffect(() => {
         doCompare({
@@ -22,8 +28,14 @@ export function CompareBookScreen() {
         })
     }, [doCompare, originBookID, targetBookID])
 
+    const originBookName = compareResult.data?.origin.name
+    const targetBookName = compareResult.data?.target.name
+
     return <div className="container-column container-gap-middle">
         <ErrorTextWidget value={compareResult} />
+        <ErrorTextWidget value={createDeadHashResponse} />
+        <ErrorTextWidget value={deleteDeadHashResponse} />
+        <ErrorTextWidget value={deleteAllPageByBodyResponse} />
 
         <div className="app-container container-row container-gap-middle">
             <div>
@@ -40,6 +52,7 @@ export function CompareBookScreen() {
                         <option value="origin">Страницы оригинала</option>
                         <option value="both">Страницы общие</option>
                         <option value="target">Страницы цели</option>
+                        <option value="dual_read">Посмотреть отличия постранично</option>
                     </select>
                     <span>Показывать страницы с мертвыми хешами</span>
                     <select
@@ -76,7 +89,73 @@ export function CompareBookScreen() {
                         deadHashSelector == "all" ||
                         deadHashSelector == "without" && page.has_dead_hash === false ||
                         deadHashSelector == "only" && page.has_dead_hash === true)} />
-                    : null
+                    : currentShow == "dual_read" && compareResult.data ?
+                        <DualReaderWidget
+                            aBookID={compareResult.data.origin.id}
+                            bBookID={compareResult.data.target.id}
+                            onCreateDeadHash={(bookID: string, page: BookSimplePage) => {
+                                const bookName = originBookID == bookID ? originBookName :
+                                    targetBookID == bookID ? targetBookName : undefined
+                                if (!bookName) {
+                                    return
+                                }
+
+                                if (!confirm(`Создать мертвых хеш для ${bookName} (${page.page_number})?`)) {
+                                    return
+                                }
+
+                                doCreateDeadHash({ book_id: bookID, page_number: page.page_number })
+                                    .then(() => doCompare({
+                                        origin_book_id: originBookID,
+                                        target_book_id: targetBookID,
+                                    }))
+                            }}
+                            onDeleteDeadHash={(bookID: string, page: BookSimplePage) => {
+                                const bookName = originBookID == bookID ? originBookName :
+                                    targetBookID == bookID ? targetBookName : undefined
+                                if (!bookName) {
+                                    return
+                                }
+
+                                if (!confirm(`Удалить мертвых хеш для ${bookName} (${page.page_number})?`)) {
+                                    return
+                                }
+
+                                doDeleteDeadHash({ book_id: bookID, page_number: page.page_number })
+                                    .then(() => doCompare({
+                                        origin_book_id: originBookID,
+                                        target_book_id: targetBookID,
+                                    }))
+                            }}
+                            onDeleteAllPages={(bookID: string, page: BookSimplePage) => {
+                                const bookName = originBookID == bookID ? originBookName :
+                                    targetBookID == bookID ? targetBookName : undefined
+                                if (!bookName) {
+                                    return
+                                }
+
+                                if (!confirm(`Удалить такие страницы ${bookName} (${page.page_number})? (ЭТО НЕОБРАТИМО)`)) {
+                                    return
+                                }
+
+
+                                const setDeadHash = confirm("Установить для страниц мертвый хеш?")
+
+                                doDeleteAllPageByBody({
+                                    book_id: bookID,
+                                    page_number: page.page_number,
+                                    set_dead_hash: setDeadHash,
+                                })
+                                    .then(() => doCompare({
+                                        origin_book_id: originBookID,
+                                        target_book_id: targetBookID,
+                                    }))
+                            }}
+                            aPageCount={compareResult.data.origin.page_count}
+                            bPageCount={compareResult.data.target.page_count}
+                            aPages={compareResult.data.origin_pages}
+                            bPages={compareResult.data.target_pages}
+                        /> : null
         }
 
     </div>

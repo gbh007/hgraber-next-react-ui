@@ -46,7 +46,7 @@ export function BookDetailInfoWidget(props: {
                 {props.book.size ? <div className="container-column">
                     <b>Размер:</b>
                     <span>уникальный (без мертвых хешей) {props.book.size.unique_without_dead_hashes_formatted}</span>
-                    <span>уникальный (общий) {props.book.size.unique_formatted}</span>
+                    <span>уникальный (с мертвыми хешами) {props.book.size.unique_formatted}</span>
                     <span>разделяемый {props.book.size.shared_formatted}</span>
                     <span>мертвые хеши {props.book.size.dead_hashes_formatted}</span>
                     <span>общий {props.book.size.total_formatted}</span>

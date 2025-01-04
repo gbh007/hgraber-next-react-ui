@@ -3,10 +3,9 @@ import styles from "./read.module.css"
 import { useBookDetails } from "../apiclient/api-book-details"
 import { useCallback, useEffect, useState } from "react"
 import { ErrorTextWidget } from "../widgets/error-text"
-import { BookLabelEditorButtonCoordinatorWidget } from "../widgets/book-label-editor"
-import { DialogWidget } from "../widgets/common"
 import { BookSimplePage } from "../apiclient/model-book"
 import { useCreateDeadHashByPage, useDeleteDeadHashByPage, useDeletePagesByBody } from "../apiclient/api-deduplicate"
+import { BookReadActionButtonWidget } from "../widgets/book-reader"
 
 export function BookReadScreen() {
     const params = useParams()
@@ -102,12 +101,7 @@ export function BookReadScreen() {
             <div className={"app-container " + styles.actions}>
                 <Link className="app-button" to={`/book/${bookID}`}>На страницу книги</Link>
                 {currentPage?.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
-                <label><input
-                    type="checkbox"
-                    className="app"
-                    checked={onlyActivePage}
-                    onChange={e => setOnlyActivePage(e.target.checked)}
-                />только активные страницы</label>
+
                 <span>
                     Страница {pageNumber} из {bookDetailsResponse.data?.page_count || 0}
                 </span>
@@ -149,7 +143,6 @@ export function BookReadScreen() {
                 <BookReadActionButtonWidget
                     bookID={bookID}
                     pageNumber={pageNumber}
-                    has_dead_hash={currentPage?.has_dead_hash}
                     currentPage={currentPage}
                     onCreateDeadHash={() => {
                         if (!currentPage) {
@@ -202,7 +195,14 @@ export function BookReadScreen() {
                             getBookDetails({ id: bookID })
                         })
                     }}
-                />
+                >
+                    <label><input
+                        type="checkbox"
+                        className="app"
+                        checked={onlyActivePage}
+                        onChange={e => setOnlyActivePage(e.target.checked)}
+                    />только активные страницы</label>
+                </BookReadActionButtonWidget>
                 <span>
                     <button className="app" onClick={prevPage}><span className={styles.pageNavigate}>{"<"}</span></button>
                     <button className="app" onClick={nextPage}><span className={styles.pageNavigate}>{">"}</span></button>
@@ -210,65 +210,4 @@ export function BookReadScreen() {
             </div>
         </div>
     </div>
-}
-
-function BookReadActionButtonWidget(props: {
-    bookID: string
-    pageNumber: number
-    has_dead_hash?: boolean
-    currentPage?: BookSimplePage
-    onCreateDeadHash: () => void
-    onDeleteDeadHash: () => void
-    onDeleteAllPages: () => void
-}) {
-    const [show, setShow] = useState(false)
-
-    return <>
-        <button
-            className="app"
-            onClick={() => {
-                setShow(true)
-            }}
-        >опции</button>
-        <DialogWidget open={show} onClose={() => setShow(false)}>
-            <BookLabelEditorButtonCoordinatorWidget
-                bookID={props.bookID}
-                pageNumber={props.pageNumber}
-            />
-            {props.has_dead_hash === false ?
-                <button
-                    className="app"
-                    onClick={() => {
-                        setShow(false)
-                        props.onCreateDeadHash()
-                    }}
-                    style={{ color: "#b00" }}
-                >Создать мертвый хеш</button> : null
-            }
-            {props.has_dead_hash === true ?
-                <button
-                    className="app"
-                    onClick={() => {
-                        setShow(false)
-                        props.onDeleteDeadHash()
-                    }}
-                    style={{ color: "#b00" }}
-                >Удалить мертвый хеш</button> : null
-            }
-            {props.currentPage ?
-                <>
-                    <button
-                        className="app"
-                        onClick={() => {
-                            setShow(false)
-                            props.onDeleteAllPages()
-                        }}
-                    >
-                        <b style={{ color: "red" }}>Удалить такие страницы</b>
-                    </button>
-                    <Link className="app-button" to={`/deduplicate/${props.bookID}/${props.pageNumber}`}>Книги с этой страницей</Link>
-                </> : null
-            }
-        </DialogWidget>
-    </>
 }

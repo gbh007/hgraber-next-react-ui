@@ -11,6 +11,8 @@ dialog.appDialog {
 
 dialog.appDialog[open] {
   display: flex;
+  position: fixed;
+  overflow: scroll;
 }
 
 div.appDialog {
