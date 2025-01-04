@@ -4,6 +4,7 @@ import { BookLabelEditorButtonCoordinatorWidget } from "./book-label-editor"
 import { DeduplicateBookByPageBodyResponseResult } from "../apiclient/api-deduplicate"
 import { useEffect, useState } from "react"
 import { BookDetails, BookSimplePage } from "../apiclient/model-book"
+import missingImage from "../assets/missing-image.png"
 
 
 // FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
@@ -135,10 +136,9 @@ function BookDuplicates(props: {
     return <div className={styles.preview}>
         {props.deduplicateBookInfo?.map(book =>
             <div className="app-container" key={book.book.id}>
-                {book.book.preview_url ?
-                    <Link to={`/book/${book.book.id}`}>
-                        <img className={styles.preview} src={book.book.preview_url} />
-                    </Link> : null}
+                <Link to={`/book/${book.book.id}`}>
+                    <img className={styles.preview} src={book.book.preview_url ?? missingImage} />
+                </Link>
                 <b>{book.book.name}</b>
                 <span>Страниц: {book.book.page_count}</span>
                 <span title="Сколько страниц этой книги есть в открытой">Покрытие книги: {prettyPercent(book.origin_covered_target)}% ({prettyPercent(book.origin_covered_target_without_dead_hashes)}%)</span>

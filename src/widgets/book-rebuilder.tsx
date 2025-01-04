@@ -11,6 +11,7 @@ import { BookListResponse } from "../apiclient/api-book-list";
 import { PaginatorWidget } from "../pages/list";
 import { HumanTimeWidget } from "./common";
 import { useCallback, useEffect, useState } from "react";
+import missingImage from "../assets/missing-image.png"
 
 export function BookRebuilderWidget(props: {
     value: BookRebuildRequest
@@ -205,10 +206,9 @@ function BooksList(props: {
     return <div className={styles.preview}>
         {props.value?.map(book =>
             <div className="app-container" key={book.id}>
-                {book.preview_url ?
-                    <Link to={`/book/${book.id}`} style={{ flexGrow: 1 }}>
-                        <img className={styles.bookPreview} src={book.preview_url} />
-                    </Link> : null}
+                <Link to={`/book/${book.id}`} style={{ flexGrow: 1 }}>
+                    <img className={styles.bookPreview} src={book.preview_url ?? missingImage} />
+                </Link>
                 <b>{book.name}</b>
                 <span>Создана: <HumanTimeWidget value={book.created} /></span>
                 <span>Страниц: {book.page_count}</span>
@@ -232,10 +232,9 @@ function BooksPreview(props: {
     const book = props.value!
 
     return <div className="container-column container-gap-smaller" key={book.id}>
-        {book.preview_url ?
-            <Link to={`/book/${book.id}`}>
-                <img className={styles.bookPreview} src={book.preview_url} />
-            </Link> : null}
+        <Link to={`/book/${book.id}`}>
+            <img className={styles.bookPreview} src={book.preview_url ?? missingImage} />
+        </Link>
         <b>{book.name}</b>
         <span>Создана: <HumanTimeWidget value={book.created} /></span>
         <span>Страниц: {book.page_count}</span>

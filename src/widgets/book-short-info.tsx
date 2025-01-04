@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { BookShortInfo } from "../apiclient/model-book";
 import styles from "./book-short-info.module.css"
+import missingImage from "../assets/missing-image.png"
 
 interface BookShortInfoProps {
     value: BookShortInfo
@@ -12,11 +13,10 @@ export function BookShortInfoWidget(props: BookShortInfoProps) {
     return <div className="app-container">
         <div className={styles.book} data-parsed={book.flags.parsed_name ? '' : 'bred'}>
             <Link to={`/book/${book.id}`}>
-                {book.preview_url ? <img
+                <img
                     className={styles.preview}
-                    v-if="book.preview_url"
-                    src={book.preview_url}
-                /> : null /* FIXME: добавить альтернативную иконку для незагруженного изображения */}
+                    src={book.preview_url ?? missingImage}
+                />
             </Link>
             <div style={{ display: "flex", flexDirection: "column" }}>
                 <span data-parsed={book.flags.parsed_name ? '' : 'red'}>{book.name}</span>
