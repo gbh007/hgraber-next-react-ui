@@ -46,26 +46,35 @@ export function SelectToCompareScreen() {
         <ErrorTextWidget value={booksResponse} />
         <ErrorTextWidget value={attributeCountResponse} />
         <ErrorTextWidget value={labelPresetsResponse} />
-        <div className="app-container container-row container-gap-big">
-            {originPreview ? <div className="container-column container-gap-small">
-                <span>Оригинальная книга</span>
-                <BooksPreview value={originPreview} />
+        <div className="app-container container-column container-gap-big">
+            <div className="app-container container-row container-gap-big">
+                {originPreview ? <div className="container-column container-gap-small">
+                    <h3>Оригинальная книга</h3>
+                    <BooksPreview value={originPreview} />
+                    <button
+                        className="app"
+                        onClick={() => setOriginPreview(undefined)}
+                    >Сбросить</button>
+                </div> : null}
+                {targetPreview ? <div className="container-column container-gap-small">
+                    <h3>Целевая книга</h3>
+                    <BooksPreview value={targetPreview} />
+                    <button
+                        className="app"
+                        onClick={() => setTargetPreview(undefined)}
+                    >Сбросить</button>
+                </div> : null}
+            </div>
+            <div className="container-row container-gap-middle">
                 <button
                     className="app"
-                    onClick={() => setOriginPreview(undefined)}
-                >Сбросить</button>
-            </div> : null}
-            {targetPreview ? <div className="container-column container-gap-small">
-                <span>Целевая книга</span>
-                <BooksPreview value={targetPreview} />
-                <button
-                    className="app"
-                    onClick={() => setTargetPreview(undefined)}
-                >Сбросить</button>
-            </div> : null}
-            {originPreview && targetPreview ? <div>
-                <Link className="app-button" to={`/book/${originPreview.id}/compare/${targetPreview.id}`}>Сравнить</Link>
-            </div> : null}
+                    onClick={() => {
+                        setOriginPreview(undefined)
+                        setTargetPreview(undefined)
+                    }}
+                >Сбросить все</button>
+                {originPreview && targetPreview ? <Link className="app-button" to={`/book/${originPreview.id}/compare/${targetPreview.id}`}>Сравнить</Link> : null}
+            </div>
         </div>
         <div className="app-container container-column container-gap-middle">
             <BookFilterWidget
@@ -133,10 +142,11 @@ function BooksPreview(props: {
 
     const book = props.value!
 
-    return <div className="container-column container-gap-smaller" key={book.id}>
+    return <div className="container-column container-gap-smaller" key={book.id} style={{ flexGrow: 1 }}>
         <Link to={`/book/${book.id}`}>
             <img className={styles.bookPreview} src={book.preview_url ?? missingImage} />
         </Link>
+        <div style={{ flexGrow: 1 }}></div>
         <b>{book.name}</b>
         <span>Создана: <HumanTimeWidget value={book.created} /></span>
         <span>Страниц: {book.page_count}</span>
