@@ -9,6 +9,8 @@ export interface BookFilter {
     delete_status?: string
     download_status?: string
     show_rebuilded?: string
+    show_without_pages?: string
+    show_without_preview?: string
     filter?: BookFilterAdditional
 }
 

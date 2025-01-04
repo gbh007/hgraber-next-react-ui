@@ -49,6 +49,18 @@ export function BookFilterWidget(props: {
             }} />
         </div>
         <div>
+            Показывать без страниц:
+            <ShowSelectWidget value={props.value.show_without_pages ?? "all"} onChange={(v: string) => {
+                props.onChange({ ...props.value, show_without_pages: v })
+            }} />
+        </div>
+        <div>
+            Показывать без превью:
+            <ShowSelectWidget value={props.value.show_without_preview ?? "all"} onChange={(v: string) => {
+                props.onChange({ ...props.value, show_without_preview: v })
+            }} />
+        </div>
+        <div>
             Сортировать по:
             <select className="app" value={props.value.sort_field ?? "created_at"} onChange={e => {
                 props.onChange({ ...props.value, sort_field: e.target.value })
