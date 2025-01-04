@@ -10,6 +10,8 @@ import { BookFilterWidget } from "../widgets/book-filter"
 import { PaginatorWidget } from "./list"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { useAppSettings } from "../apiclient/settings"
+import { useAttributeCount } from "../apiclient/api-attribute-count"
+import { useLabelPresetList } from "../apiclient/api-labels"
 
 
 export function SelectToCompareScreen() {
@@ -29,11 +31,21 @@ export function SelectToCompareScreen() {
 
     useEffect(() => { getBooks(bookFilter) }, [getBooks])
 
+
+    const [attributeCountResponse, getAttributeCount] = useAttributeCount()
+    useEffect(() => { getAttributeCount() }, [getAttributeCount])
+
+
+    const [labelPresetsResponse, fetchLabelPresets] = useLabelPresetList()
+    useEffect(() => { fetchLabelPresets() }, [fetchLabelPresets])
+
     const [originPreview, setOriginPreview] = useState<BookShortInfo>()
     const [targetPreview, setTargetPreview] = useState<BookShortInfo>()
 
     return <div className="container-column container-gap-big">
         <ErrorTextWidget value={booksResponse} />
+        <ErrorTextWidget value={attributeCountResponse} />
+        <ErrorTextWidget value={labelPresetsResponse} />
         <div className="app-container container-row container-gap-big">
             {originPreview ? <div className="container-column container-gap-small">
                 <span>Оригинальная книга</span>
@@ -59,6 +71,8 @@ export function SelectToCompareScreen() {
             <BookFilterWidget
                 value={bookFilter}
                 onChange={setBookFilter}
+                attributeCount={attributeCountResponse.data?.attributes}
+                labelsAutoComplete={labelPresetsResponse.data?.presets}
             />
             <button className="app" onClick={() => {
                 getBooks({ ...bookFilter, page: 1 })
