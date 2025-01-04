@@ -20,6 +20,7 @@ export function BookRebuilderWidget(props: {
     getTargetBooks: (data: BookFilter) => void // TODO: Сильно перегруженный виджет, подумать над возможностью его упрощения
     targetBookResponse?: BookListResponse
     pages?: Array<BookSimplePage>
+    pageCount?: number
     labelsAutoComplete?: Array<LabelPresetListResponseLabel>
     attributeCount?: Array<AttributeCountResponseAttribute>
 }) {
@@ -65,27 +66,30 @@ export function BookRebuilderWidget(props: {
                 <BooksPreview value={targetPreview} />
             </div>
             :
-            <div className="app-container container-column container-gap-small">
-                <BookFilterWidget
-                    value={props.targetBookFilter}
-                    onChange={props.targetBookFilterChange}
-                />
-                <button className="app" onClick={() => {
-                    props.getTargetBooks({ ...props.targetBookFilter, page: 1 })
-                }}>Применить</button>
-                <PaginatorWidget onChange={(v: number) => {
-                    props.targetBookFilterChange({ ...props.targetBookFilter, page: v })
-                    props.getTargetBooks({ ...props.targetBookFilter, page: v })
-                }} value={props.targetBookResponse?.pages || []} />
-                <BooksList
-                    value={props.targetBookResponse?.books}
-                    onChange={e => {
-                        props.onChange({ ...props.value, merge_with_book: e.id || undefined })
-                        setTargetPreview(e)
-                    }}
-                    selected={props.value.merge_with_book}
-                />
-            </div>
+            <details>
+                <summary>Выбрать целевую книгу</summary>
+                <div className="app-container container-column container-gap-small">
+                    <BookFilterWidget
+                        value={props.targetBookFilter}
+                        onChange={props.targetBookFilterChange}
+                    />
+                    <button className="app" onClick={() => {
+                        props.getTargetBooks({ ...props.targetBookFilter, page: 1 })
+                    }}>Применить</button>
+                    <PaginatorWidget onChange={(v: number) => {
+                        props.targetBookFilterChange({ ...props.targetBookFilter, page: v })
+                        props.getTargetBooks({ ...props.targetBookFilter, page: v })
+                    }} value={props.targetBookResponse?.pages || []} />
+                    <BooksList
+                        value={props.targetBookResponse?.books}
+                        onChange={e => {
+                            props.onChange({ ...props.value, merge_with_book: e.id || undefined })
+                            setTargetPreview(e)
+                        }}
+                        selected={props.value.merge_with_book}
+                    />
+                </div>
+            </details>
         }
         {!props.value.merge_with_book ?
             <BookMainInfoEditorWidget
@@ -108,6 +112,7 @@ export function BookRebuilderWidget(props: {
             onChange={e => props.onChange({ ...props.value, selected_pages: e })}
             bookID={props.value.old_book.id}
             pages={props.pages}
+            pageCount={props.pageCount}
         />
     </div>
 }
@@ -118,7 +123,7 @@ function BookPagesSelectWidget(props: {
     onChange: (v: Array<number>) => void
     bookID: string
     pages?: Array<BookSimplePage>
-
+    pageCount?: number
 }) {
     const [viewMode, setViewMode] = useState("reader")
 
@@ -133,6 +138,7 @@ function BookPagesSelectWidget(props: {
             >
                 <option value="reader">Режим просмотра: постранично</option>
                 <option value="list">Режим просмотра: все страницы</option>
+                <option value="list_selected">Режим просмотра: все выбранные страницы</option>
             </select>
             <span>Выбрано {props.value.length} из {props.pages?.length}</span>
         </div>
@@ -142,30 +148,51 @@ function BookPagesSelectWidget(props: {
                 onChange={props.onChange}
                 value={props.value}
                 pages={props.pages}
+                pageCount={props.pageCount}
             /> : viewMode == "list" ?
-                <div className={styles.preview}>
-                    {props.pages?.map(page =>
-                        <div className="app-container" key={page.page_number}>
-                            {page.preview_url ?
-                                <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
-                                    <img className={styles.preview} src={page.preview_url} />
-                                </Link> : null}
-                            <span>Страница: {page.page_number}</span>
-                            {page.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
-                            <label><input
-                                className="app"
-                                type="checkbox"
-                                checked={props.value.includes(page.page_number)}
-                                onChange={e => props.onChange(
-                                    e.target.checked ?
-                                        [...props.value, page.page_number]
-                                        :
-                                        props.value.filter(v => v != page.page_number)
-                                )}
-                            /> выбрать</label>
-                        </div>
+                <PageListPreview
+                    bookID={props.bookID}
+                    onChange={props.onChange}
+                    value={props.value}
+                    pages={props.pages}
+                /> : viewMode == "list_selected" ?
+                    <PageListPreview
+                        bookID={props.bookID}
+                        onChange={props.onChange}
+                        value={props.value}
+                        pages={props.pages?.filter(page => props.value.includes(page.page_number))}
+                    /> : null}
+    </div>
+}
+
+function PageListPreview(props: {
+    value: Array<number>
+    onChange: (v: Array<number>) => void
+    bookID: string
+    pages?: Array<BookSimplePage>
+}) {
+    return <div className={styles.preview}>
+        {props.pages?.map(page =>
+            <div className="app-container" key={page.page_number}>
+                {page.preview_url ?
+                    <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
+                        <img className={styles.preview} src={page.preview_url} />
+                    </Link> : null}
+                <span>Страница: {page.page_number}</span>
+                {page.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
+                <label><input
+                    className="app"
+                    type="checkbox"
+                    checked={props.value.includes(page.page_number)}
+                    onChange={e => props.onChange(
+                        e.target.checked ?
+                            [...props.value, page.page_number]
+                            :
+                            props.value.filter(v => v != page.page_number)
                     )}
-                </div> : null}
+                /> выбрать</label>
+            </div>
+        )}
     </div>
 }
 
@@ -219,6 +246,7 @@ function PageSelectorReaderWidget(props: {
     value: Array<number>
     onChange: (v: Array<number>) => void
     bookID: string
+    pageCount?: number
     pages?: Array<BookSimplePage>
 }) {
     if (!props.pages) {
@@ -278,7 +306,10 @@ function PageSelectorReaderWidget(props: {
                 /> выбрать</label> : null
             }
             <span>
-                Страница {currentPage?.page_number} из {props.pages.length ?? 0}
+                {`Страница ${currentPage?.page_number}` +
+                    ` из ${props.pageCount ?? props.pages.length ?? 0}` +
+                    (props.pageCount && props.pageCount != props.pages.length ? ` (${currentIndex + 1}/${props.pages.length})` : '')
+                }
             </span>
         </div>
         <div className={styles.pageView}>

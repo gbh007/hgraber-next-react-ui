@@ -32,6 +32,7 @@ export function BookDetailInfoWidget(props: {
                     <span> #{props.book.id} </span>
                     <span data-parsed={props.book.flags.parsed_page ? '' : 'red'}>
                         Страниц: {props.book.page_count}
+                        {props.book.pages && props.book.pages.length != props.book.page_count ? ` (${props.book.pages.length})` : null}
                     </span>
                     <span data-parsed={props.book.page_loaded_percent != 100.0 ? 'red' : ''}>
                         Загружено: {props.book.page_loaded_percent}%
