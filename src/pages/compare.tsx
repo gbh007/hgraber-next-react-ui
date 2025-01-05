@@ -38,14 +38,14 @@ export function CompareBookScreen() {
         <ErrorTextWidget value={deleteAllPageByBodyResponse} />
 
         <div className="app-container container-row container-gap-middle" style={{ flexWrap: "wrap" }}>
-            <div>
+            <div className="container-row container-gap-small">
                 <BookMainImagePreviewWidget value={compareResult.data?.origin.preview_url} />
+                <BookShortInfo
+                    value={compareResult.data?.origin}
+                    covered_target={compareResult.data?.origin_covered_target}
+                    covered_target_without_dead_hashes={compareResult.data?.origin_covered_target_without_dead_hashes}
+                />
             </div>
-            <BookShortInfo
-                value={compareResult.data?.origin}
-                covered_target={compareResult.data?.origin_covered_target}
-                covered_target_without_dead_hashes={compareResult.data?.origin_covered_target_without_dead_hashes}
-            />
             <div style={{ flexGrow: 1, textAlign: "center" }}>
                 <div className="container-column container-gap-small">
                     <select
@@ -70,17 +70,17 @@ export function CompareBookScreen() {
                     </select>
                 </div>
             </div>
-            <BookShortInfo
-                value={compareResult.data?.target}
-                covered_target={compareResult.data?.target_covered_origin}
-                covered_target_without_dead_hashes={compareResult.data?.target_covered_origin_without_dead_hashes}
-            />
-            <div>
+            <div className="container-row container-gap-small">
+                <BookShortInfo
+                    value={compareResult.data?.target}
+                    covered_target={compareResult.data?.target_covered_origin}
+                    covered_target_without_dead_hashes={compareResult.data?.target_covered_origin_without_dead_hashes}
+                />
                 <BookMainImagePreviewWidget value={compareResult.data?.target.preview_url} />
             </div>
         </div>
 
-        <div className="app-container container-row container-gap-middle">
+        <div className="app-container container-row container-gap-middle" style={{ justifyContent: "space-between" }}>
             <div className="container-column container-gap-small">
                 <b>Аттрибуты оригинала</b>
                 <BookAttributesWidget value={compareResult.data?.origin_attributes} />
@@ -193,8 +193,8 @@ function BookShortInfo(props: {
         return
     }
 
-    return <div className="container-column container-gap-small">
-        <b>{props.value.name}</b>
+    return <div className="container-column container-gap-small" style={{ maxWidth: "500px" }}>
+        <b style={{ wordBreak: "break-all" }}>{props.value.name}</b>
         <span>Создана: <HumanTimeWidget value={props.value.create_at} /> </span>
         <span>Страниц: {props.value.page_count}</span>
         {props.value.origin_url ? <a href={props.value.origin_url}>Ссылка на первоисточник</a> : null}
