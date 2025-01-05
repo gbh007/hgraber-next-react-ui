@@ -35,6 +35,8 @@ export function MainScreen() {
                             </div>
                             <div className="container-column container-gap-smaller">
                                 <b>Файлы</b>
+                                <span>Всего: <b>{data?.file_count ?? 0}</b></span>
+                                <span>Без хешей: <b>{data?.unhashed_file_count ?? 0}</b></span>
                                 <span>Мертвых хешей: <b>{data?.dead_hash_count ?? 0}</b></span>
                                 <span>Объем страниц: <b>{data?.pages_size_formatted ?? 0}</b></span>
                                 <span>Объем файлов: <b>{data?.files_size_formatted ?? 0}</b></span>

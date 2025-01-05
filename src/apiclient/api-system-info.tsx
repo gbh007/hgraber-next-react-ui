@@ -7,11 +7,13 @@ interface systemInfo {
   rebuilded_count: number
   not_load_count: number
   deleted_count: number
-  dead_hash_count: number
   page_count: number
   not_load_page_count: number
   page_without_body_count: number
   deleted_page_count: number
+  file_count: number
+  unhashed_file_count: number
+  dead_hash_count: number
   pages_size: number
   pages_size_formatted: string
   files_size: number

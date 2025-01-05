@@ -86,6 +86,7 @@ export function SelectToCompareScreen() {
             <button className="app" onClick={() => {
                 getBooks({ ...bookFilter, page: 1 })
             }}>Применить</button>
+            <span>Всего: {booksResponse.data?.count}</span>
             <PaginatorWidget onChange={(v: number) => {
                 setBookFilter({ ...bookFilter, page: v })
                 getBooks({ ...bookFilter, page: v })
