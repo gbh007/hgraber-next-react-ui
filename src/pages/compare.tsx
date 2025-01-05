@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useCreateDeadHashByPage, useDeduplicateCompare, useDeleteDeadHashByPage, useDeletePagesByBody } from "../apiclient/api-deduplicate";
 import { useEffect, useState } from "react";
 import { ErrorTextWidget } from "../widgets/error-text";
-import { BookMainImagePreviewWidget, BookPagesPreviewWidget } from "../widgets/book-detail-info";
+import { BookAttributesWidget, BookMainImagePreviewWidget, BookPagesPreviewWidget } from "../widgets/book-detail-info";
 import { BookSimple, BookSimplePage } from "../apiclient/model-book";
 import { HumanTimeWidget } from "../widgets/common";
 import { DualReaderWidget } from "../widgets/split-viewer";
@@ -37,11 +37,15 @@ export function CompareBookScreen() {
         <ErrorTextWidget value={deleteDeadHashResponse} />
         <ErrorTextWidget value={deleteAllPageByBodyResponse} />
 
-        <div className="app-container container-row container-gap-middle">
+        <div className="app-container container-row container-gap-middle" style={{ flexWrap: "wrap" }}>
             <div>
                 <BookMainImagePreviewWidget value={compareResult.data?.origin.preview_url} />
             </div>
-            <BookShortInfo value={compareResult.data?.origin} />
+            <BookShortInfo
+                value={compareResult.data?.origin}
+                covered_target={compareResult.data?.origin_covered_target}
+                covered_target_without_dead_hashes={compareResult.data?.origin_covered_target_without_dead_hashes}
+            />
             <div style={{ flexGrow: 1, textAlign: "center" }}>
                 <div className="container-column container-gap-small">
                     <select
@@ -66,9 +70,28 @@ export function CompareBookScreen() {
                     </select>
                 </div>
             </div>
-            <BookShortInfo value={compareResult.data?.target} />
+            <BookShortInfo
+                value={compareResult.data?.target}
+                covered_target={compareResult.data?.target_covered_origin}
+                covered_target_without_dead_hashes={compareResult.data?.target_covered_origin_without_dead_hashes}
+            />
             <div>
                 <BookMainImagePreviewWidget value={compareResult.data?.target.preview_url} />
+            </div>
+        </div>
+
+        <div className="app-container container-row container-gap-middle">
+            <div className="container-column container-gap-small">
+                <b>Аттрибуты оригинала</b>
+                <BookAttributesWidget value={compareResult.data?.origin_attributes} />
+            </div>
+            <div className="container-column container-gap-small">
+                <b>Аттрибуты общие</b>
+                <BookAttributesWidget value={compareResult.data?.both_attributes} />
+            </div>
+            <div className="container-column container-gap-small">
+                <b>Аттрибуты цели</b>
+                <BookAttributesWidget value={compareResult.data?.target_attributes} />
             </div>
         </div>
 
@@ -163,6 +186,8 @@ export function CompareBookScreen() {
 
 function BookShortInfo(props: {
     value?: BookSimple
+    covered_target?: number
+    covered_target_without_dead_hashes?: number
 }) {
     if (!props.value) {
         return
@@ -173,6 +198,19 @@ function BookShortInfo(props: {
         <span>Создана: <HumanTimeWidget value={props.value.create_at} /> </span>
         <span>Страниц: {props.value.page_count}</span>
         {props.value.origin_url ? <a href={props.value.origin_url}>Ссылка на первоисточник</a> : null}
+        {props.covered_target != undefined &&
+            props.covered_target_without_dead_hashes != undefined ?
+            <span
+                title="Сколько страниц этой книги есть в другой"
+            >
+                Покрытие: {prettyPercent(props.covered_target)}% ({prettyPercent(props.covered_target_without_dead_hashes)}%)
+            </span>
+            : null}
         <Link className="app-button" to={`/book/${props.value.id}`}>Страница книги</Link>
     </div>
+}
+
+
+function prettyPercent(raw: number): number {
+    return Math.round(raw * 1000) / 10
 }

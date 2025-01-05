@@ -3,7 +3,7 @@ import styles from "./book-detail-info.module.css"
 import { BookLabelEditorButtonCoordinatorWidget } from "./book-label-editor"
 import { DeduplicateBookByPageBodyResponseResult } from "../apiclient/api-deduplicate"
 import { useEffect, useState } from "react"
-import { BookDetails, BookSimplePage } from "../apiclient/model-book"
+import { BookAttribute, BookDetails, BookSimplePage } from "../apiclient/model-book"
 import missingImage from "../assets/missing-image.png"
 
 
@@ -26,7 +26,7 @@ export function BookDetailInfoWidget(props: {
                 <BookMainImagePreviewWidget value={props.book.preview_url} />
             </div>
             <div className={styles.bookInfo}>
-                <h1 data-parsed={props.book.flags.parsed_name ? '' : 'red'}>
+                <h1 data-parsed={props.book.flags.parsed_name ? '' : 'red'} style={{ wordBreak: "break-all" }}>
                     {props.book.name}
                 </h1>
                 <div className={styles.bookInfoPanel}>
@@ -40,9 +40,7 @@ export function BookDetailInfoWidget(props: {
                     </span>
                     <span>{new Date(props.book.created).toLocaleString()}</span>
                 </div>
-                {props.book.attributes?.map(attr =>
-                    <BookDetailInfoAttribute key={attr.name} name={attr.name} values={attr.values} />
-                )}
+                <BookAttributesWidget value={props.book.attributes} />
                 {props.book.size ? <div className="container-column">
                     <b>Размер:</b>
                     <span>уникальный (без мертвых хешей) {props.book.size.unique_without_dead_hashes_formatted}</span>
@@ -120,13 +118,29 @@ export function BookPagesPreviewWidget(props: {
     </div>
 }
 
-function BookDetailInfoAttribute(props: { name: string, values: Array<string> }) {
-    return <span>
-        <span>{props.name}: </span>
-        {props.values.map(tagname =>
-            <span className={styles.tag} key={tagname}>{tagname}</span>
+export function BookAttributesWidget(props: {
+    value?: Array<BookAttribute>
+}) {
+    if (!props.value) {
+        return null
+    }
+
+    return <div className="container-column container-gap-small">
+        {props.value?.map(attr =>
+            <BookAttributeWidget key={attr.code} value={attr} />
         )}
-    </span>
+    </div>
+}
+
+export function BookAttributeWidget(props: {
+    value: BookAttribute
+}) {
+    return <div className="container-row container-gap-small" style={{ alignItems: "center", flexWrap: "wrap" }}>
+        <span>{props.value.name}:</span>
+        {props.value.values.map(v =>
+            <span className={styles.tag} key={v}>{v}</span>
+        )}
+    </div>
 }
 
 function BookDuplicates(props: {

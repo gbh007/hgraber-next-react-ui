@@ -34,7 +34,7 @@ export interface BookDetails {
     name: string
     page_count: number
     page_loaded_percent: number
-    attributes?: Array<BookDetailsAttribute>
+    attributes?: Array<BookAttribute>
     pages?: Array<BookSimplePage>
     size?: BookDetailsSize
 }
@@ -48,7 +48,8 @@ export interface BookFlags {
     is_rebuild: boolean
 }
 
-export interface BookDetailsAttribute {
+export interface BookAttribute {
+    code: string
     name: string
     values: Array<string>
 }

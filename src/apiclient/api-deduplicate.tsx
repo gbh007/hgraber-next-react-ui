@@ -1,5 +1,5 @@
 import { PostAction, useAPIPost, Response } from "./client-hooks"
-import { BookSimple, BookSimplePage } from "./model-book"
+import { BookAttribute, BookSimple, BookSimplePage } from "./model-book"
 
 export interface DeduplicateBookByPageBodyRequest {
     book_id: string
@@ -31,9 +31,19 @@ export interface DeduplicateCompareRequest {
 export interface DeduplicateCompareResponse {
     origin: BookSimple
     target: BookSimple
+
+    origin_covered_target: number
+    target_covered_origin: number
+    origin_covered_target_without_dead_hashes: number
+    target_covered_origin_without_dead_hashes: number
+
     origin_pages?: Array<BookSimplePage>
     both_pages?: Array<BookSimplePage>
     target_pages?: Array<BookSimplePage>
+
+    origin_attributes?: Array<BookAttribute>
+    both_attributes?: Array<BookAttribute>
+    target_attributes?: Array<BookAttribute>
 }
 
 export function useDeduplicateCompare(): [Response<DeduplicateCompareResponse | null>, PostAction<DeduplicateCompareRequest>] {
