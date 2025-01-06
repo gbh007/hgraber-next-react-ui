@@ -8,6 +8,7 @@ import { Link, useParams } from "react-router-dom";
 import { useCreateDeadHashByBookPages, useDeduplicateBookByPageBody, useDeleteAllPagesByBook, useDeleteDeadHashByBookPages } from "../apiclient/api-deduplicate";
 import { BookLabelEditorButtonCoordinatorWidget } from "../widgets/book-label-editor";
 import styles from "./details.module.css"
+import { useBookRestore } from "../apiclient/api-book";
 
 export function BookDetailsScreen() {
     const params = useParams()
@@ -20,6 +21,7 @@ export function BookDetailsScreen() {
     const [createDeadHashByBookResponse, doCreateDeadHashByBook] = useCreateDeadHashByBookPages()
     const [deleteDeadHashByBookResponse, doDeleteDeadHashByBook] = useDeleteDeadHashByBookPages()
     const [deleteAllPagesByBookResponse, doDeleteAllPagesByBook] = useDeleteAllPagesByBook()
+    const [bookRestoreResponse, doBookRestore] = useBookRestore()
 
     useEffect(() => {
         getBookDetails({ id: bookID })
@@ -33,6 +35,7 @@ export function BookDetailsScreen() {
     const hasPages = (bookDetailsResponse.data?.pages?.length ?? 0) > 0
     const hasUniquePages = (!bookDetailsResponse.data?.flags.is_deleted && (!bookDetailsResponse.data?.size || bookDetailsResponse.data.size.unique != 0))
     const hasSharedPages = (!bookDetailsResponse.data?.flags.is_deleted && (!bookDetailsResponse.data?.size || bookDetailsResponse.data.size.shared != 0))
+    const hasDeletedPages = bookDetailsResponse.data?.pages && bookDetailsResponse.data?.pages.length != bookDetailsResponse.data?.page_count
 
     return <div>
         <ErrorTextWidget value={bookDetailsResponse} />
@@ -42,6 +45,7 @@ export function BookDetailsScreen() {
         <ErrorTextWidget value={createDeadHashByBookResponse} />
         <ErrorTextWidget value={deleteDeadHashByBookResponse} />
         <ErrorTextWidget value={deleteAllPagesByBookResponse} />
+        <ErrorTextWidget value={bookRestoreResponse} />
         {bookDetailsResponse.data ? <BookDetailInfoWidget
             book={bookDetailsResponse.data}
             deduplicateBookInfo={bookDeduplicateResponse.data?.result}
@@ -156,7 +160,26 @@ export function BookDetailsScreen() {
                                 <b className="color-danger">Удалить все страницы из книги и их копии</b>
                             </button>
                         </> : null}
+                        {!hasPages || hasDeletedPages || bookDetailsResponse.data.flags.is_deleted ? <button
+                            className="app"
+                            disabled={bookRestoreResponse.isLoading}
+                            onClick={() => {
+                                if (!confirm("Восстановить книгу?")) {
+                                    return
+                                }
 
+                                const onlyPages = confirm("Восстановить только страницы?")
+
+                                doBookRestore({
+                                    book_id: bookID,
+                                    only_pages: onlyPages,
+                                }).then(() => {
+                                    getBookDetails({ id: bookID })
+                                })
+                            }}
+                        >
+                            <span className="color-good">Восстановить книгу</span>
+                        </button> : null}
                     </div>
                 </details>
             </div>

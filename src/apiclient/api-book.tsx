@@ -36,3 +36,14 @@ export function useBookRebuild(): [Response<BookRebuildResponse | null>, PostAct
 
     return [response, fetchData]
 }
+
+export interface BookRestoreRequest {
+    book_id: string
+    only_pages?: boolean
+}
+
+export function useBookRestore(): [Response<void | null>, PostAction<BookRestoreRequest>] {
+    const [response, fetchData] = useAPIPost<BookRestoreRequest, void>('/api/book/restore')
+
+    return [response, fetchData]
+}
