@@ -1,17 +1,3 @@
-.book {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
-
-.book *[data-parsed="red"] {
-  color: red;
-}
-
-.book *[data-parsed="bred"] {
-  background: pink;
-}
-
 div.info-area {
   display: flex;
   flex-direction: row;

@@ -102,6 +102,11 @@ input.app:focus {
   background: var(--app-secondary);
 }
 
+details.app > summary {
+  user-select: none;
+  cursor: pointer;
+}
+
 .container-row {
   display: flex;
   flex-direction: row;
@@ -110,6 +115,10 @@ input.app:focus {
 .container-column {
   display: flex;
   flex-direction: column;
+}
+
+.container-wrap {
+  flex-wrap: wrap;
 }
 
 .container-gap-big {
@@ -126,4 +135,24 @@ input.app:focus {
 
 .container-gap-smaller {
   gap: 3px;
+}
+
+.color-danger {
+  color: #ff0000;
+}
+
+.color-danger-lite {
+  color: #b00;
+}
+
+.color-good {
+  color: #008b33;
+}
+
+*[data-color="danger"] {
+  color: red;
+}
+
+*[data-background-color="danger"] {
+  background: pink;
 }

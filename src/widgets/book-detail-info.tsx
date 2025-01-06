@@ -1,41 +1,35 @@
 import { Link } from "react-router-dom"
 import styles from "./book-detail-info.module.css"
-import { BookLabelEditorButtonCoordinatorWidget } from "./book-label-editor"
 import { DeduplicateBookByPageBodyResponseResult } from "../apiclient/api-deduplicate"
-import { useEffect, useState } from "react"
+import { PropsWithChildren, useEffect, useState } from "react"
 import { BookAttribute, BookDetails, BookSimplePage } from "../apiclient/model-book"
 import missingImage from "../assets/missing-image.png"
 
 
 // FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
-export function BookDetailInfoWidget(props: {
+export function BookDetailInfoWidget(props: PropsWithChildren & {
     book: BookDetails
     deduplicateBookInfo?: Array<DeduplicateBookByPageBodyResponseResult>
-    onDownload: () => void
-    onRead: (page: number) => void
-    onDelete: () => void
-    onVerify: () => void
-    onShowDuplicate: () => void
 }) {
     return <div>
         <div
-            className={"app-container " + styles.bookDetails}
-            data-parsed={props.book.flags.parsed_name ? '' : 'bred'}
+            className="app-container container-row"
+            data-background-color={props.book.flags.parsed_name ? '' : 'danger'}
         >
             <div>
                 <BookMainImagePreviewWidget value={props.book.preview_url} />
             </div>
             <div className={styles.bookInfo}>
-                <h1 data-parsed={props.book.flags.parsed_name ? '' : 'red'} style={{ wordBreak: "break-all" }}>
+                <h1 data-color={props.book.flags.parsed_name ? '' : 'danger'} style={{ wordBreak: "break-all" }}>
                     {props.book.name}
                 </h1>
                 <div className={styles.bookInfoPanel}>
                     <span> #{props.book.id} </span>
-                    <span data-parsed={props.book.flags.parsed_page ? '' : 'red'}>
+                    <span data-color={props.book.flags.parsed_page ? '' : 'danger'}>
                         Страниц: {props.book.page_count}
                         {props.book.pages && props.book.pages.length != props.book.page_count ? ` (${props.book.pages.length})` : null}
                     </span>
-                    <span data-parsed={props.book.page_loaded_percent != 100.0 ? 'red' : ''}>
+                    <span data-color={props.book.page_loaded_percent != 100.0 ? 'danger' : ''}>
                         Загружено: {props.book.page_loaded_percent}%
                     </span>
                     <span>{new Date(props.book.created).toLocaleString()}</span>
@@ -49,22 +43,7 @@ export function BookDetailInfoWidget(props: {
                     <span>мертвые хеши {props.book.size.dead_hashes_formatted}</span>
                     <span>общий {props.book.size.total_formatted}</span>
                 </div> : null}
-                <div className={styles.bottomButtons}>
-                    <button className={"app " + styles.load} onClick={props.onDownload}> Скачать</button>
-                    <button className={"app " + styles.read} onClick={() => props.onRead(1)}> Читать</button>
-                    {props.book.flags.is_deleted ? null : <button className={"app " + styles.delete} onClick={props.onDelete}> Удалить</button>}
-                    {props.book.flags.is_verified ? null : <button className={"app " + styles.verify} onClick={props.onVerify}>Подтвердить</button>}
-                    {!props.book.flags.is_deleted && (!props.book.size || props.book.size.shared != 0) ?
-                        <button className="app" onClick={props.onShowDuplicate}>Показать дубли</button>
-                        : null}
-                    {!props.book.flags.is_deleted && (!props.book.size || props.book.size.unique != 0) ?
-                        <Link className="app-button" to={`/book/${props.book.id}/unique-pages`}>Показать уникальные страницы</Link>
-                        : null}
-                    <Link className="app-button" to={`/book/${props.book.id}/edit`}>Редактировать</Link>
-                    <Link className="app-button" to={`/book/${props.book.id}/rebuild`}>Пересобрать</Link>
-                    {/* FIXME: это жесть как плохо, надо переделать использование */}
-                    <BookLabelEditorButtonCoordinatorWidget bookID={props.book.id} />
-                </div>
+                {props.children}
             </div>
         </div>
         <BookDuplicates deduplicateBookInfo={props.deduplicateBookInfo} originID={props.book.id} />

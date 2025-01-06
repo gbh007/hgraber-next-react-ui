@@ -34,8 +34,9 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
                         setShow(false)
                         props.onCreateDeadHash()
                     }}
-                    style={{ color: "#b00" }}
-                >Создать мертвый хеш</button> : null
+                >
+                    <span className="color-danger-lite">Создать мертвый хеш</span>
+                </button> : null
             }
             {props.currentPage?.has_dead_hash === true ?
                 <button
@@ -44,8 +45,9 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
                         setShow(false)
                         props.onDeleteDeadHash()
                     }}
-                    style={{ color: "#b00" }}
-                >Удалить мертвый хеш</button> : null
+                >
+                    <span className="color-danger-lite">Удалить мертвый хеш</span>
+                </button> : null
             }
             {props.currentPage ?
                 <>
@@ -56,7 +58,7 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
                             props.onDeleteAllPages()
                         }}
                     >
-                        <b style={{ color: "red" }}>Удалить такие страницы</b>
+                        <b className="color-danger">Удалить такие страницы</b>
                     </button>
                     <Link className="app-button" to={`/deduplicate/${props.bookID}/${props.pageNumber}`}>Книги с этой страницей</Link>
                 </> : null

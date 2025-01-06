@@ -114,3 +114,24 @@ export function useDeletePagesByBody(): [Response<void | null>, PostAction<Delet
 
     return [response, fetchData]
 }
+
+
+export interface CreateDeadHashByBookPagesRequest {
+    book_id: string
+}
+
+export function useCreateDeadHashByBookPages(): [Response<void | null>, PostAction<CreateDeadHashByBookPagesRequest>] {
+    const [response, fetchData] = useAPIPost<CreateDeadHashByBookPagesRequest, void>('/api/deduplicate/dead-hash-by-book-pages/create')
+
+    return [response, fetchData]
+}
+
+export interface DeleteDeadHashByBookPagesRequest {
+    book_id: string
+}
+
+export function useDeleteDeadHashByBookPages(): [Response<void | null>, PostAction<DeleteDeadHashByBookPagesRequest>] {
+    const [response, fetchData] = useAPIPost<DeleteDeadHashByBookPagesRequest, void>('/api/deduplicate/dead-hash-by-book-pages/delete')
+
+    return [response, fetchData]
+}
