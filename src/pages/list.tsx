@@ -104,6 +104,10 @@ function AgentExportWidget(props: { filter: BookFilter }) {
             </label>
             <ErrorTextWidget value={exportResponse} />
             <button className="app" disabled={exportResponse.isLoading || !agentID} onClick={() => {
+                if (deleteAfterExport && !confirm("Книги будут удалены из системы после экспорта, продолжить?")) {
+                    return
+                }
+
                 makeExport({
                     book_filter: { ...props.filter, count: undefined, page: undefined }, // Принудительно срезаем параметры пагинации.
                     delete_after: deleteAfterExport,
