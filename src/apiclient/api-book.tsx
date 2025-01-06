@@ -23,8 +23,13 @@ export interface BookRebuildRequest {
     old_book: BookRaw
     selected_pages: Array<number>
     merge_with_book?: string
+    flags?: BookRebuildRequestFlags
+}
+
+export interface BookRebuildRequestFlags {
     only_unique?: boolean
     exclude_dead_hash_pages?: boolean
+    only_1_copy?: boolean
 }
 
 export interface BookRebuildResponse {

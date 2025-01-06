@@ -1,5 +1,5 @@
 import { AttributeCountResponseAttribute } from "../apiclient/api-attribute-count";
-import { BookRebuildRequest } from "../apiclient/api-book";
+import { BookRebuildRequest, BookRebuildRequestFlags } from "../apiclient/api-book";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookShortInfo, BookSimplePage } from "../apiclient/model-book";
 import { BookAttributeInfoEditorWidget, BookLabelInfoEditorWidget, BookMainInfoEditorWidget } from "./book-editor";
@@ -42,22 +42,10 @@ export function BookRebuilderWidget(props: {
                     onClick={() => props.onChange({ ...props.value, merge_with_book: undefined })}
                 >Сбросить</button>
             </div>
-            <label>
-                <input
-                    className="app"
-                    type="checkbox"
-                    checked={props.value.only_unique ?? false}
-                    onChange={e => props.onChange({ ...props.value, only_unique: e.target.checked })}
-                /> Только уникальные страницы
-            </label>
-            <label>
-                <input
-                    className="app"
-                    type="checkbox"
-                    checked={props.value.exclude_dead_hash_pages ?? false}
-                    onChange={e => props.onChange({ ...props.value, exclude_dead_hash_pages: e.target.checked })}
-                /> Исключить страницы с мертвыми хешами
-            </label>
+            <BuilderFlagsWidget
+                value={props.value.flags}
+                onChange={e => props.onChange({ ...props.value, flags: e })}
+            />
         </div>
 
         {targetPreview && targetPreview.id == props.value.merge_with_book ?
@@ -119,6 +107,38 @@ export function BookRebuilderWidget(props: {
     </div>
 }
 
+
+function BuilderFlagsWidget(props: {
+    value?: BookRebuildRequestFlags
+    onChange: (v: BookRebuildRequestFlags) => void
+}) {
+    return <div className="container-column container-gap-small">
+        <label>
+            <input
+                className="app"
+                type="checkbox"
+                checked={props.value?.only_unique ?? false}
+                onChange={e => props.onChange({ ...props.value, only_unique: e.target.checked })}
+            /> Оставить только уникальные страницы в результате (без дублей)
+        </label>
+        <label>
+            <input
+                className="app"
+                type="checkbox"
+                checked={props.value?.exclude_dead_hash_pages ?? false}
+                onChange={e => props.onChange({ ...props.value, exclude_dead_hash_pages: e.target.checked })}
+            /> Исключить страницы с мертвыми хешами
+        </label>
+        <label>
+            <input
+                className="app"
+                type="checkbox"
+                checked={props.value?.only_1_copy ?? false}
+                onChange={e => props.onChange({ ...props.value, only_1_copy: e.target.checked })}
+            /> Только уникальные страницы в системе (без копий) и без дублей
+        </label>
+    </div>
+}
 
 function BookPagesSelectWidget(props: {
     value: Array<number>
