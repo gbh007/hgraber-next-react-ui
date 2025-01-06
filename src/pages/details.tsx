@@ -5,7 +5,7 @@ import { BookDetailInfoWidget } from "../widgets/book-detail-info";
 import { useBookDelete } from "../apiclient/api-book-delete";
 import { useBookVerify } from "../apiclient/api-book-verify";
 import { Link, useParams } from "react-router-dom";
-import { useCreateDeadHashByBookPages, useDeduplicateBookByPageBody, useDeleteDeadHashByBookPages } from "../apiclient/api-deduplicate";
+import { useCreateDeadHashByBookPages, useDeduplicateBookByPageBody, useDeleteAllPagesByBook, useDeleteDeadHashByBookPages } from "../apiclient/api-deduplicate";
 import { BookLabelEditorButtonCoordinatorWidget } from "../widgets/book-label-editor";
 import styles from "./details.module.css"
 
@@ -19,6 +19,7 @@ export function BookDetailsScreen() {
     const [bookDeduplicateResponse, doBookDeduplicate] = useDeduplicateBookByPageBody()
     const [createDeadHashByBookResponse, doCreateDeadHashByBook] = useCreateDeadHashByBookPages()
     const [deleteDeadHashByBookResponse, doDeleteDeadHashByBook] = useDeleteDeadHashByBookPages()
+    const [deleteAllPagesByBookResponse, doDeleteAllPagesByBook] = useDeleteAllPagesByBook()
 
     useEffect(() => {
         getBookDetails({ id: bookID })
@@ -30,6 +31,8 @@ export function BookDetailsScreen() {
     }, [bookID])
 
     const hasPages = (bookDetailsResponse.data?.pages?.length ?? 0) > 0
+    const hasUniquePages = (!bookDetailsResponse.data?.flags.is_deleted && (!bookDetailsResponse.data?.size || bookDetailsResponse.data.size.unique != 0))
+    const hasSharedPages = (!bookDetailsResponse.data?.flags.is_deleted && (!bookDetailsResponse.data?.size || bookDetailsResponse.data.size.shared != 0))
 
     return <div>
         <ErrorTextWidget value={bookDetailsResponse} />
@@ -38,6 +41,7 @@ export function BookDetailsScreen() {
         <ErrorTextWidget value={bookDeduplicateResponse} />
         <ErrorTextWidget value={createDeadHashByBookResponse} />
         <ErrorTextWidget value={deleteDeadHashByBookResponse} />
+        <ErrorTextWidget value={deleteAllPagesByBookResponse} />
         {bookDetailsResponse.data ? <BookDetailInfoWidget
             book={bookDetailsResponse.data}
             deduplicateBookInfo={bookDeduplicateResponse.data?.result}
@@ -46,30 +50,46 @@ export function BookDetailsScreen() {
                 <div className="container-row container-gap-middle container-wrap">
                     <button className={"app " + styles.mainButton} onClick={() => { window.open('/api/book/archive/' + bookID, "_blank") }}>Скачать</button>
                     {hasPages ? <Link className={"app-button " + styles.mainButton} to={`/book/${bookID}/read/1`}>Читать</Link> : null}
-                    {bookDetailsResponse.data.flags.is_deleted ? null : <button className={"app " + styles.mainButton} onClick={() => {
-                        if (!confirm(`Удалить книгу: ${bookDetailsResponse.data?.name}`)) {
-                            return;
-                        }
+                    {bookDetailsResponse.data.flags.is_deleted ? null : <button
+                        className={"app " + styles.mainButton}
+                        disabled={bookDeleteResponse.isLoading}
+                        onClick={() => {
+                            if (!confirm(`Удалить книгу: ${bookDetailsResponse.data?.name}`)) {
+                                return;
+                            }
 
-                        if (bookDetailsResponse.data?.size?.unique && !confirm(`У книги ${bookDetailsResponse.data?.name} есть ${bookDetailsResponse.data?.size?.unique_formatted} уникального контента, точно хотите ее удалить?`)) {
-                            return;
-                        }
+                            if (bookDetailsResponse.data?.size?.unique && !confirm(`У книги ${bookDetailsResponse.data?.name} есть ${bookDetailsResponse.data?.size?.unique_formatted} уникального контента, точно хотите ее удалить?`)) {
+                                return;
+                            }
 
-                        postBookDelete({ id: bookID }).then(() => { getBookDetails({ id: bookID }) })
-                    }}><span className="color-danger">Удалить</span></button>}
-                    {bookDetailsResponse.data.flags.is_verified ? null : <button className={"app " + styles.mainButton} onClick={() => {
-                        if (!confirm(`Подтвердить книгу: ${bookDetailsResponse.data?.name}`)) {
-                            return;
-                        }
+                            postBookDelete({ id: bookID }).then(() => { getBookDetails({ id: bookID }) })
+                        }}
+                    >
+                        <span className="color-danger">Удалить</span>
+                    </button>}
+                    {bookDetailsResponse.data.flags.is_verified ? null : <button
+                        className={"app " + styles.mainButton}
+                        disabled={bookVerifyResponse.isLoading}
+                        onClick={() => {
+                            if (!confirm(`Подтвердить книгу: ${bookDetailsResponse.data?.name}`)) {
+                                return;
+                            }
 
-                        postBookVerify({ id: bookID }).then(() => { getBookDetails({ id: bookID }) })
-                    }}><span className="color-good">Подтвердить</span></button>}
-                    {!bookDetailsResponse.data.flags.is_deleted && (!bookDetailsResponse.data.size || bookDetailsResponse.data.size.shared != 0) ?
-                        <button className={"app " + styles.mainButton} onClick={() => {
-                            doBookDeduplicate({ book_id: bookID })
-                        }}>Показать дубли</button>
+                            postBookVerify({ id: bookID }).then(() => { getBookDetails({ id: bookID }) })
+                        }}
+                    >
+                        <span className="color-good">Подтвердить</span>
+                    </button>}
+                    {hasSharedPages ?
+                        <button
+                            className={"app " + styles.mainButton}
+                            disabled={bookDeduplicateResponse.isLoading}
+                            onClick={() => {
+                                doBookDeduplicate({ book_id: bookID })
+                            }}
+                        >Показать дубли</button>
                         : null}
-                    {!bookDetailsResponse.data.flags.is_deleted && (!bookDetailsResponse.data.size || bookDetailsResponse.data.size.unique != 0) ?
+                    {hasUniquePages ?
                         <Link className={"app-button " + styles.mainButton} to={`/book/${bookDetailsResponse.data.id}/unique-pages`}>Показать уникальные страницы</Link>
                         : null}
                 </div>
@@ -83,6 +103,7 @@ export function BookDetailsScreen() {
                         {hasPages ? <>
                             <button
                                 className="app"
+                                disabled={createDeadHashByBookResponse.isLoading}
                                 onClick={() => {
                                     if (!confirm("Создать мертвых хеш для всех страниц этой книги?")) {
                                         return
@@ -99,6 +120,7 @@ export function BookDetailsScreen() {
                             </button>
                             <button
                                 className="app"
+                                disabled={deleteDeadHashByBookResponse.isLoading}
                                 onClick={() => {
                                     if (!confirm("Удалить мертвых хеш для всех страниц этой книги?")) {
                                         return
@@ -112,6 +134,26 @@ export function BookDetailsScreen() {
                                 }}
                             >
                                 <span className="color-danger-lite">Удалить мертвый хеш</span>
+                            </button>
+                            <button
+                                className="app"
+                                disabled={deleteAllPagesByBookResponse.isLoading}
+                                onClick={() => {
+                                    if (!confirm("Удалить все страницы из этой книги и их копии? (ЭТО НЕОБРАТИМО)")) {
+                                        return
+                                    }
+
+                                    const markAsDeletedEmptyBook = confirm("Удалить книги которые станут пустыми?")
+
+                                    doDeleteAllPagesByBook({
+                                        book_id: bookID,
+                                        mark_as_deleted_empty_book: markAsDeletedEmptyBook,
+                                    }).then(() => {
+                                        getBookDetails({ id: bookID })
+                                    })
+                                }}
+                            >
+                                <b className="color-danger">Удалить все страницы из книги и их копии</b>
                             </button>
                         </> : null}
 
