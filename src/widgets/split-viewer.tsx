@@ -14,6 +14,7 @@ export function DualReaderWidget(props: {
     onCreateDeadHash: (bookID: string, page: BookSimplePage) => void
     onDeleteDeadHash: (bookID: string, page: BookSimplePage) => void
     onDeleteAllPages: (bookID: string, page: BookSimplePage) => void
+    onDeleteAllPagesWithDeadHash: (bookID: string, page: BookSimplePage) => void
 }) {
     const [currentAIndex, setCurrentAIndex] = useState(0)
     const [currentAPage, setCurrentAPage] = useState<BookSimplePage>()
@@ -88,7 +89,7 @@ export function DualReaderWidget(props: {
                 currentPage={currentAPage}
                 pageCount={props.aPageCount}
                 pages={props.aPages}
-            >{currentAPage ?
+            >{currentAPage ? <>
                 <BookReadActionButtonWidget
                     bookID={props.aBookID}
                     pageNumber={currentAPage.page_number}
@@ -96,7 +97,15 @@ export function DualReaderWidget(props: {
                     onCreateDeadHash={() => props.onCreateDeadHash(props.aBookID, currentAPage)}
                     onDeleteAllPages={() => props.onDeleteAllPages(props.aBookID, currentAPage)}
                     onDeleteDeadHash={() => props.onDeleteDeadHash(props.aBookID, currentAPage)}
-                /> : null}
+                />
+                <button
+                    className="app"
+                    onClick={() => props.onDeleteAllPagesWithDeadHash(props.aBookID, currentAPage)}
+                >
+                    <b className="color-danger">Удалить такие страницы</b>
+                </button>
+                <span></span>
+            </> : null}
             </ReaderWidget>
             <ReaderWidget
                 bookID={props.bBookID}
@@ -106,7 +115,7 @@ export function DualReaderWidget(props: {
                 currentPage={currentBPage}
                 pageCount={props.bPageCount}
                 pages={props.bPages}
-            >{currentBPage ?
+            >{currentBPage ? <>
                 <BookReadActionButtonWidget
                     bookID={props.bBookID}
                     pageNumber={currentBPage.page_number}
@@ -114,7 +123,15 @@ export function DualReaderWidget(props: {
                     onCreateDeadHash={() => props.onCreateDeadHash(props.bBookID, currentBPage)}
                     onDeleteAllPages={() => props.onDeleteAllPages(props.bBookID, currentBPage)}
                     onDeleteDeadHash={() => props.onDeleteDeadHash(props.bBookID, currentBPage)}
-                /> : null}</ReaderWidget>
+                />
+                <button
+                    className="app"
+                    onClick={() => props.onDeleteAllPagesWithDeadHash(props.bBookID, currentBPage)}
+                >
+                    <b className="color-danger">Удалить такие страницы</b>
+                </button>
+                <span></span>
+            </> : null}</ReaderWidget>
         </div>
     </div>
 }
@@ -142,7 +159,7 @@ function ReaderWidget(props: PropsWithChildren & {
         }
     }, [props.prevPage, props.nextPage])
 
-    return <div className="app-container">
+    return <div className="app-container container-column container-gap-middle">
         <div className={styles.pageViewActions}>
             <span>
                 <button className="app" onClick={props.prevPage}><span className={styles.pageViewActionsPageNavigate}>{"<"}</span></button>

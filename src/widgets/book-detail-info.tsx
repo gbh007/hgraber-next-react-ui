@@ -57,12 +57,12 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
 export function BookMainImagePreviewWidget(props: {
     value?: string
 }) {
-    return props.value ?
+    return <div>
         <img
             className={styles.mainPreview}
-            src={props.value}
-        /> :
-        <span></span>
+            src={props.value ?? missingImage}
+        />
+    </div>
 }
 
 export function BookPagesPreviewWidget(props: {

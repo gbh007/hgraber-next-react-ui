@@ -136,7 +136,7 @@ export function BookReadScreen() {
                             })
                         }}
                     >
-                        <b style={{ color: "red" }}>Удалить такие страницы</b>
+                        <b className="color-danger">Удалить такие страницы</b>
                     </button> : null
 
                 }
