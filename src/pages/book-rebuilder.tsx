@@ -79,6 +79,21 @@ export function BookRebuilderScreen() {
                 <button
                     className="app"
                     onClick={() => {
+                        if (bookRebuildData.flags?.mark_unused_pages_as_dead_hash &&
+                            !confirm("Создать мертвых хеш для всех страницы из этой книги что не вошли в ребилд?")) {
+                            return
+                        }
+
+                        if (bookRebuildData.flags?.mark_unused_pages_as_deleted &&
+                            !confirm("Удалить все страницы из этой книги и их копии что не вошли в ребилд? (ЭТО НЕОБРАТИМО)")) {
+                            return
+                        }
+
+                        if (bookRebuildData.flags?.mark_empty_book_as_deleted_after_remove_pages &&
+                            !confirm("Удалить все книги что останутся без страниц после ребилда? (ЭТО НЕОБРАТИМО)")) {
+                            return
+                        }
+
                         doBookRebuild(bookRebuildData)
                     }}
                 >Пересобрать</button>

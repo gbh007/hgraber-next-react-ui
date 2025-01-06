@@ -119,7 +119,7 @@ function BuilderFlagsWidget(props: {
                 type="checkbox"
                 checked={props.value?.only_unique ?? false}
                 onChange={e => props.onChange({ ...props.value, only_unique: e.target.checked })}
-            /> Оставить только уникальные страницы в результате (без дублей)
+            />Оставить только уникальные страницы в результате (без дублей)
         </label>
         <label>
             <input
@@ -127,7 +127,7 @@ function BuilderFlagsWidget(props: {
                 type="checkbox"
                 checked={props.value?.exclude_dead_hash_pages ?? false}
                 onChange={e => props.onChange({ ...props.value, exclude_dead_hash_pages: e.target.checked })}
-            /> Исключить страницы с мертвыми хешами
+            />Исключить страницы с мертвыми хешами
         </label>
         <label>
             <input
@@ -135,7 +135,31 @@ function BuilderFlagsWidget(props: {
                 type="checkbox"
                 checked={props.value?.only_1_copy ?? false}
                 onChange={e => props.onChange({ ...props.value, only_1_copy: e.target.checked })}
-            /> Только уникальные страницы в системе (без копий) и без дублей
+            />Только уникальные страницы в системе (без копий) и без дублей
+        </label>
+        <label className="color-danger-lite">
+            <input
+                className="app"
+                type="checkbox"
+                checked={props.value?.mark_unused_pages_as_dead_hash ?? false}
+                onChange={e => props.onChange({ ...props.value, mark_unused_pages_as_dead_hash: e.target.checked })}
+            />Отметить страницы что не вошли в ребилд как мертвый хеш
+        </label>
+        <label className="color-danger">
+            <input
+                className="app"
+                type="checkbox"
+                checked={props.value?.mark_unused_pages_as_deleted ?? false}
+                onChange={e => props.onChange({ ...props.value, mark_unused_pages_as_deleted: e.target.checked })}
+            />Удалить страницы что не вошли в ребилд и их копии в системе
+        </label>
+        <label className="color-danger-lite">
+            <input
+                className="app"
+                type="checkbox"
+                checked={props.value?.mark_empty_book_as_deleted_after_remove_pages ?? false}
+                onChange={e => props.onChange({ ...props.value, mark_empty_book_as_deleted_after_remove_pages: e.target.checked })}
+            />Отметить удаленным книги что остались без страниц после их удаления
         </label>
     </div>
 }
