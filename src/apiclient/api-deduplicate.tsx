@@ -146,3 +146,13 @@ export function useDeleteAllPagesByBook(): [Response<void | null>, PostAction<De
 
     return [response, fetchData]
 }
+
+export interface DeleteBookDeadHashedPagesRequest {
+    book_id: string
+}
+
+export function useDeleteBookDeadHashedPages(): [Response<void | null>, PostAction<DeleteBookDeadHashedPagesRequest>] {
+    const [response, fetchData] = useAPIPost<DeleteBookDeadHashedPagesRequest, void>('/api/deduplicate/delete-book-dead-hashed-pages')
+
+    return [response, fetchData]
+}

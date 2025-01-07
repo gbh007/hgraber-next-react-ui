@@ -5,7 +5,7 @@ import { BookDetailInfoWidget } from "../widgets/book-detail-info";
 import { useBookDelete } from "../apiclient/api-book-delete";
 import { useBookVerify } from "../apiclient/api-book-verify";
 import { Link, useParams } from "react-router-dom";
-import { useCreateDeadHashByBookPages, useDeduplicateBookByPageBody, useDeleteAllPagesByBook, useDeleteDeadHashByBookPages } from "../apiclient/api-deduplicate";
+import { useCreateDeadHashByBookPages, useDeduplicateBookByPageBody, useDeleteAllPagesByBook, useDeleteBookDeadHashedPages, useDeleteDeadHashByBookPages } from "../apiclient/api-deduplicate";
 import styles from "./details.module.css"
 import { useBookRestore } from "../apiclient/api-book";
 
@@ -21,6 +21,7 @@ export function BookDetailsScreen() {
     const [deleteDeadHashByBookResponse, doDeleteDeadHashByBook] = useDeleteDeadHashByBookPages()
     const [deleteAllPagesByBookResponse, doDeleteAllPagesByBook] = useDeleteAllPagesByBook()
     const [bookRestoreResponse, doBookRestore] = useBookRestore()
+    const [deleteBookDeadHashedPagesResponse, doDeleteBookDeadHashedPages] = useDeleteBookDeadHashedPages()
 
     useEffect(() => {
         getBookDetails({ id: bookID })
@@ -45,6 +46,7 @@ export function BookDetailsScreen() {
         <ErrorTextWidget value={deleteDeadHashByBookResponse} />
         <ErrorTextWidget value={deleteAllPagesByBookResponse} />
         <ErrorTextWidget value={bookRestoreResponse} />
+        <ErrorTextWidget value={deleteBookDeadHashedPagesResponse} />
         {bookDetailsResponse.data ? <BookDetailInfoWidget
             book={bookDetailsResponse.data}
             deduplicateBookInfo={bookDeduplicateResponse.data?.result}
@@ -136,6 +138,23 @@ export function BookDetailsScreen() {
                                 }}
                             >
                                 <span className="color-danger-lite">Удалить мертвый хеш</span>
+                            </button>
+                            <button
+                                className="app"
+                                disabled={deleteBookDeadHashedPagesResponse.isLoading}
+                                onClick={() => {
+                                    if (!confirm("Удалить все страницы из этой книги с мертвым хешом? (ЭТО НЕОБРАТИМО)")) {
+                                        return
+                                    }
+
+                                    doDeleteBookDeadHashedPages({
+                                        book_id: bookID,
+                                    }).then(() => {
+                                        getBookDetails({ id: bookID })
+                                    })
+                                }}
+                            >
+                                <span className="color-danger">Удалить все страницы из книги с мертвым хешом</span>
                             </button>
                             <button
                                 className="app"

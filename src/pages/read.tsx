@@ -47,7 +47,7 @@ export function BookReadScreen() {
             map(e => e.page_number).
             filter(e => e < pageNumber).
             sort((a: number, b: number) => a - b).
-            reduce((_, cur) => cur)
+            reduce((_, cur) => cur, 0)
 
         if (pageNumberInArray) {
             goPage(pageNumberInArray)
@@ -61,7 +61,7 @@ export function BookReadScreen() {
             map(e => e.page_number).
             filter(e => e > pageNumber).
             sort((a: number, b: number) => b - a).
-            reduce((_, cur) => cur)
+            reduce((_, cur) => cur, 0)
 
         if (pageNumberInArray) {
             goPage(pageNumberInArray)
