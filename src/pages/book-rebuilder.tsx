@@ -20,6 +20,9 @@ export function BookRebuilderScreen() {
             name: "",
             page_count: 0,
         },
+        flags: {
+            set_origin_labels: true,
+        },
         selected_pages: [],
     })
 

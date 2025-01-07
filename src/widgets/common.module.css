@@ -24,4 +24,5 @@ div.appDialog {
   padding: 10px;
   background-color: var(--container-background);
   flex-grow: 1;
+  overflow: scroll;
 }

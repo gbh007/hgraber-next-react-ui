@@ -55,7 +55,7 @@ export function BookLabelEditorWidget(props: {
     const [name, setName] = useState("")
     const [value, setValue] = useState("")
 
-    return <div className="container-column container-gap-middle">
+    return <div className="container-column container-gap-middle" style={{ overflow: "scroll" }}>
         <table>
             <thead>
                 <tr>

@@ -113,6 +113,14 @@ function BuilderFlagsWidget(props: {
     onChange: (v: BookRebuildRequestFlags) => void
 }) {
     return <div className="container-column container-gap-small">
+        <label className="color-good">
+            <input
+                className="app"
+                type="checkbox"
+                checked={props.value?.set_origin_labels ?? false}
+                onChange={e => props.onChange({ ...props.value, set_origin_labels: e.target.checked })}
+            />Проставить каждой страницы метки об оригинальной книге если ее нет
+        </label>
         <label>
             <input
                 className="app"

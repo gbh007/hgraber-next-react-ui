@@ -30,6 +30,7 @@ export interface BookRebuildRequestFlags {
     only_unique?: boolean
     exclude_dead_hash_pages?: boolean
     only_1_copy?: boolean
+    set_origin_labels?: boolean
     mark_unused_pages_as_dead_hash?: boolean
     mark_unused_pages_as_deleted?: boolean
     mark_empty_book_as_deleted_after_remove_pages?: boolean
