@@ -3,7 +3,7 @@ import { BookFilter } from "../apiclient/model-book-filter"
 import styles from "./select-to-compare.module.css"
 import { useBookList } from "../apiclient/api-book-list"
 import { BookShortInfo } from "../apiclient/model-book"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import { HumanTimeWidget } from "../widgets/common"
 import missingImage from "../assets/missing-image.png"
 import { BookFilterWidget } from "../widgets/book-filter"
@@ -16,8 +16,9 @@ import { useLabelPresetList } from "../apiclient/api-labels"
 
 export function SelectToCompareScreen() {
     const [settings, _] = useAppSettings()
+    const [searchParams, setSearchParams] = useSearchParams()
 
-    const [bookFilter, setBookFilter] = useState<BookFilter>({
+    const defaultFilterValue = {
         count: settings.book_on_page,
         delete_status: "except",
         download_status: "only",
@@ -25,12 +26,28 @@ export function SelectToCompareScreen() {
         page: 1,
         sort_field: "created_at",
         sort_desc: true,
-    })
+    }
+
+    const [bookFilter, setBookFilter] = useState<BookFilter>(defaultFilterValue)
 
     const [booksResponse, getBooks] = useBookList()
 
-    useEffect(() => { getBooks(bookFilter) }, [getBooks])
 
+    useEffect(() => {
+        try {
+            const filter = JSON.parse(searchParams.get("filter")!)
+
+            if (!filter) {
+                setBookFilter(defaultFilterValue)
+                getBooks(defaultFilterValue)
+            } else {
+                setBookFilter({ ...bookFilter, ...filter })
+                getBooks({ ...bookFilter, ...filter })
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }, [setBookFilter, searchParams])
 
     const [attributeCountResponse, getAttributeCount] = useAttributeCount()
     useEffect(() => { getAttributeCount() }, [getAttributeCount])
@@ -83,13 +100,23 @@ export function SelectToCompareScreen() {
                 attributeCount={attributeCountResponse.data?.attributes}
                 labelsAutoComplete={labelPresetsResponse.data?.presets}
             />
-            <button className="app" onClick={() => {
-                getBooks({ ...bookFilter, page: 1 })
-            }}>Применить</button>
+            <div className="container-row container-gap-middle">
+                <button className="app" onClick={() => {
+                    setBookFilter({ ...bookFilter, page: 1 })
+                    searchParams.set("filter", JSON.stringify({ ...bookFilter, page: 1 }))
+                    setSearchParams(searchParams)
+                }}>Применить фильтр</button>
+                <button className="app" onClick={() => {
+                    setBookFilter(defaultFilterValue)
+                    searchParams.delete("filter")
+                    setSearchParams(searchParams)
+                }}>Очистить фильтр</button>
+            </div>
             <span>Всего: {booksResponse.data?.count}</span>
             <PaginatorWidget onChange={(v: number) => {
                 setBookFilter({ ...bookFilter, page: v })
-                getBooks({ ...bookFilter, page: v })
+                searchParams.set("filter", JSON.stringify({ ...bookFilter, page: v }))
+                setSearchParams(searchParams)
             }} value={booksResponse.data?.pages || []} />
         </div>
         <BooksList

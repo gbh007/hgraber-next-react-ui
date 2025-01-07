@@ -10,20 +10,24 @@ import { BookShortInfoWidget } from "../widgets/book-short-info"
 import { useAppSettings } from "../apiclient/settings"
 import { useAttributeCount } from "../apiclient/api-attribute-count"
 import { useLabelPresetList } from "../apiclient/api-labels"
+import { useSearchParams } from "react-router-dom"
 
 
 export function ListScreen() {
     const [settings, _] = useAppSettings()
+    const [searchParams, setSearchParams] = useSearchParams()
 
-    const [bookFilter, setBookFilter] = useState<BookFilter>({
+    const defaultFilterValue = {
         count: settings.book_on_page,
         delete_status: "except",
         download_status: "only",
         verify_status: "only",
-        page: 1, // FIXME: из роутинга?
+        page: 1,
         sort_field: "created_at",
         sort_desc: true,
-    })
+    }
+
+    const [bookFilter, setBookFilter] = useState<BookFilter>(defaultFilterValue)
 
     const [attributeCountResponse, getAttributeCount] = useAttributeCount()
     useEffect(() => { getAttributeCount() }, [getAttributeCount])
@@ -33,30 +37,58 @@ export function ListScreen() {
     useEffect(() => { fetchLabelPresets() }, [fetchLabelPresets])
 
     const [booksResponse, getBooks] = useBookList()
-    useEffect(() => { getBooks(bookFilter) }, [getBooks])
 
-    return <>
+
+    useEffect(() => {
+        try {
+            const filter = JSON.parse(searchParams.get("filter")!)
+
+            if (!filter) {
+                setBookFilter(defaultFilterValue)
+                getBooks(defaultFilterValue)
+            } else {
+                setBookFilter({ ...bookFilter, ...filter })
+                getBooks({ ...bookFilter, ...filter })
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }, [setBookFilter, searchParams])
+
+    return <div className="container-column container-gap-middle">
         <ErrorTextWidget value={booksResponse} />
         <ErrorTextWidget value={attributeCountResponse} />
         <ErrorTextWidget value={labelPresetsResponse} />
-        <details className={styles.filter}>
-            <summary>Фильтр, всего {booksResponse.data?.count || 0}</summary>
-            <div className="container-column container-gap-small">
-                <BookFilterWidget
-                    value={bookFilter}
-                    onChange={setBookFilter}
-                    attributeCount={attributeCountResponse.data?.attributes}
-                    labelsAutoComplete={labelPresetsResponse.data?.presets}
-                />
-                <button className="app" disabled={booksResponse.isLoading} onClick={() => {
-                    getBooks({ ...bookFilter, page: 1 })
-                }}>Применить</button>
-                <AgentExportWidget filter={bookFilter} />
-            </div>
-        </details >
+        <div className="app-container container-column container-gap-middle">
+            <details className={"app " + styles.filter}>
+                <summary>Фильтр, всего {booksResponse.data?.count || 0}</summary>
+                <div className="container-column container-gap-middle">
+                    <BookFilterWidget
+                        value={bookFilter}
+                        onChange={setBookFilter}
+                        attributeCount={attributeCountResponse.data?.attributes}
+                        labelsAutoComplete={labelPresetsResponse.data?.presets}
+                    />
+                    <div className="container-row container-gap-middle">
+                        <button className="app" onClick={() => {
+                            setBookFilter({ ...bookFilter, page: 1 })
+                            searchParams.set("filter", JSON.stringify({ ...bookFilter, page: 1 }))
+                            setSearchParams(searchParams)
+                        }}>Применить фильтр</button>
+                        <button className="app" onClick={() => {
+                            setBookFilter(defaultFilterValue)
+                            searchParams.delete("filter")
+                            setSearchParams(searchParams)
+                        }}>Очистить фильтр</button>
+                    </div>
+                    <AgentExportWidget filter={bookFilter} />
+                </div>
+            </details >
+        </div>
         <PaginatorWidget onChange={(v: number) => {
             setBookFilter({ ...bookFilter, page: v })
-            getBooks({ ...bookFilter, page: v })
+            searchParams.set("filter", JSON.stringify({ ...bookFilter, page: v }))
+            setSearchParams(searchParams)
         }} value={booksResponse.data?.pages || []} />
         <div className={styles.bookList}>
             {booksResponse.data?.books?.map(book =>
@@ -65,9 +97,10 @@ export function ListScreen() {
         </div>
         <PaginatorWidget onChange={(v: number) => {
             setBookFilter({ ...bookFilter, page: v })
-            getBooks({ ...bookFilter, page: v })
+            searchParams.set("filter", JSON.stringify({ ...bookFilter, page: v }))
+            setSearchParams(searchParams)
         }} value={booksResponse.data?.pages || []} />
-    </>
+    </div>
 }
 
 
@@ -79,7 +112,7 @@ function AgentExportWidget(props: { filter: BookFilter }) {
 
     useEffect(() => { getAgents({ can_export: true, }) }, [getAgents])
 
-    return <details>
+    return <details className="app container-column container-gap-middle">
         <summary>Параметры экспорта</summary>
         <div className="container-row container-gap-small">
             <ErrorTextWidget value={agentsResponse} />

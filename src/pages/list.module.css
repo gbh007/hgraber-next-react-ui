@@ -27,11 +27,3 @@ span.page[data-separator="true"] {
 span.page[data-current="true"] {
   background: var(--app-primary);
 }
-
-.filter {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: center;
-}
