@@ -1,47 +1,6 @@
 import { useState } from "react";
-import { LabelDeleteRequest, LabelGetResponseLabel, LabelPresetListResponseLabel, LabelSetRequest, useLabelDelete, useLabelGet, useLabelPresetList, useLabelSet } from "../apiclient/api-labels";
-import { DialogWidget, HumanTimeWidget } from "./common";
-import { ErrorTextWidget } from "./error-text";
-
-export function BookLabelEditorButtonCoordinatorWidget(props: {
-    bookID: string
-    pageNumber?: number
-}) {
-    const [show, setShow] = useState(false)
-    const [labelsResponse, fetchLabels] = useLabelGet()
-    const [labelPresetsResponse, fetchLabelPresets] = useLabelPresetList()
-    const [labelSetResponse, doSetLabel] = useLabelSet()
-    const [labelDeleteResponse, doDeleteLabel] = useLabelDelete()
-
-    return <>
-        <button
-            className="app"
-            onClick={() => {
-                fetchLabels({ book_id: props.bookID })
-                fetchLabelPresets()
-                setShow(true)
-            }}
-        >Редактировать метки</button>
-        <DialogWidget open={show} onClose={() => setShow(false)}>
-            <ErrorTextWidget value={labelsResponse} />
-            <ErrorTextWidget value={labelPresetsResponse} />
-            <ErrorTextWidget value={labelSetResponse} />
-            <ErrorTextWidget value={labelDeleteResponse} />
-            <BookLabelEditorWidget
-                bookID={props.bookID}
-                onCreate={(v: LabelSetRequest) => {
-                    doSetLabel(v).then(() => { fetchLabels({ book_id: props.bookID }) })
-                }}
-                onDelete={(v: LabelDeleteRequest) => {
-                    doDeleteLabel(v).then(() => { fetchLabels({ book_id: props.bookID }) })
-                }}
-                pageNumber={props.pageNumber}
-                value={labelsResponse.data?.labels}
-                labelsAutoComplete={labelPresetsResponse.data?.presets}
-            />
-        </DialogWidget>
-    </>
-}
+import { LabelDeleteRequest, LabelGetResponseLabel, LabelPresetListResponseLabel, LabelSetRequest } from "../apiclient/api-labels";
+import { HumanTimeWidget } from "./common";
 
 export function BookLabelEditorWidget(props: {
     bookID: string
@@ -55,42 +14,8 @@ export function BookLabelEditorWidget(props: {
     const [name, setName] = useState("")
     const [value, setValue] = useState("")
 
-    return <div className="container-column container-gap-middle" style={{ overflow: "scroll" }}>
-        <table>
-            <thead>
-                <tr>
-                    <td>Метка</td>
-                    <td>Страница</td>
-                    <td>Значение</td>
-                    <td>Создана</td>
-                    <td>Действия</td>
-                </tr>
-            </thead>
-            <tbody>
-                {props.value?.map(label =>
-                    <tr key={label.book_id + label.page_number + label.name}>
-                        <td>{label.name}</td>
-                        <td>{label.page_number ?? ''}</td>
-                        <td>{label.value}</td>
-                        <td><HumanTimeWidget value={label.created_at} /></td>
-                        <td>
-                            <button
-                                className="app"
-                                onClick={() => {
-                                    props.onDelete({
-                                        book_id: label.book_id,
-                                        name: label.name,
-                                        page_number: label.page_number,
-                                    })
-                                }}
-                            >удалить</button>
-                        </td>
-                    </tr>
-                )}
-            </tbody>
-        </table>
-        <BookLabelPresetAutocompleteWidget labelsAutoComplete={props.labelsAutoComplete} />
-        <div className="container-row container-gap-small">
+    return <div className="container-column container-gap-big">
+        <div className="app-container container-row container-gap-small">
             <span>Создать метку</span>
             <input
                 className="app"
@@ -125,6 +50,42 @@ export function BookLabelEditorWidget(props: {
                 }}
             >создать</button>
         </div>
+        <div className="app-container container-column">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Метка</td>
+                        <td>Страница</td>
+                        <td>Значение</td>
+                        <td>Создана</td>
+                        <td>Действия</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.value?.sort((a, b) => a.page_number - b.page_number).map(label =>
+                        <tr key={label.book_id + label.page_number + label.name}>
+                            <td>{label.name}</td>
+                            <td>{label.page_number ?? ''}</td>
+                            <td>{label.value}</td>
+                            <td><HumanTimeWidget value={label.created_at} /></td>
+                            <td>
+                                <button
+                                    className="app"
+                                    onClick={() => {
+                                        props.onDelete({
+                                            book_id: label.book_id,
+                                            name: label.name,
+                                            page_number: label.page_number,
+                                        })
+                                    }}
+                                >удалить</button>
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
+        </div>
+        <BookLabelPresetAutocompleteWidget labelsAutoComplete={props.labelsAutoComplete} />
     </div>
 }
 

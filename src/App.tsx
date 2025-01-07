@@ -21,6 +21,7 @@ import { BooksByPageScreen } from "./pages/books-by-page";
 import { BookEditorScreen } from "./pages/book-editor";
 import { BookRebuilderScreen } from "./pages/book-rebuilder";
 import { SelectToCompareScreen } from "./pages/select-to-compare";
+import { BookLabelsEditorScreen } from "./pages/book-label-editor";
 
 const router = createHashRouter([
   {
@@ -94,6 +95,10 @@ const router = createHashRouter([
   {
     path: "/select-to-compare",
     element: <SimpleWrapper> <SelectToCompareScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/book/:bookID/labels",
+    element: <SimpleWrapper> <BookLabelsEditorScreen /></SimpleWrapper>,
   },
 ]);
 

@@ -6,7 +6,6 @@ import { useBookDelete } from "../apiclient/api-book-delete";
 import { useBookVerify } from "../apiclient/api-book-verify";
 import { Link, useParams } from "react-router-dom";
 import { useCreateDeadHashByBookPages, useDeduplicateBookByPageBody, useDeleteAllPagesByBook, useDeleteDeadHashByBookPages } from "../apiclient/api-deduplicate";
-import { BookLabelEditorButtonCoordinatorWidget } from "../widgets/book-label-editor";
 import styles from "./details.module.css"
 import { useBookRestore } from "../apiclient/api-book";
 
@@ -102,8 +101,7 @@ export function BookDetailsScreen() {
                     <div className="container-row container-gap-middle container-wrap">
                         <Link className="app-button" to={`/book/${bookDetailsResponse.data.id}/edit`}>Редактировать</Link>
                         <Link className="app-button" to={`/book/${bookDetailsResponse.data.id}/rebuild`}>Пересобрать</Link>
-                        {/* FIXME: это жесть как плохо, надо переделать использование */}
-                        <BookLabelEditorButtonCoordinatorWidget bookID={bookDetailsResponse.data.id} />
+                        <Link className="app-button" to={`/book/${bookDetailsResponse.data.id}/labels`}>Редактировать метки</Link>
                         {hasPages ? <>
                             <button
                                 className="app"

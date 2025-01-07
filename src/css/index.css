@@ -68,9 +68,18 @@ button.app {
   padding: 3px;
   box-sizing: border-box;
   font-family: var(--app-font-family);
+  font-size: small;
   cursor: pointer;
-  text-decoration: none;
   color: var(--app-color);
+}
+
+button.app {
+  text-decoration: none;
+}
+
+Link.app-button,
+a.app-button {
+  text-decoration: underline;
 }
 
 Link.app-button:hover,

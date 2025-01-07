@@ -1,7 +1,6 @@
 import { PropsWithChildren, useState } from "react"
 import { BookSimplePage } from "../apiclient/model-book"
 import { DialogWidget } from "./common"
-import { BookLabelEditorButtonCoordinatorWidget } from "./book-label-editor"
 import { Link } from "react-router-dom"
 
 
@@ -23,10 +22,7 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
             }}
         >опции</button>
         <DialogWidget open={show} onClose={() => setShow(false)}>
-            <BookLabelEditorButtonCoordinatorWidget
-                bookID={props.bookID}
-                pageNumber={props.pageNumber}
-            />
+            <Link className="app-button" to={`/book/${props.bookID}/labels?pageNumber=${props.pageNumber}`}>Редактировать метки</Link>
             {props.currentPage?.has_dead_hash === false ?
                 <button
                     className="app"
