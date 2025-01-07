@@ -347,7 +347,7 @@ function PageSelectorReaderWidget(props: {
 
     useEffect(() => {
         setCurrentIndex(0)
-    }, [props.bookID, props.pages])
+    }, [props.bookID, props.pages.length])
 
     useEffect(() => {
         setCurrentPage(props.pages![currentIndex])
