@@ -31,6 +31,21 @@ export function CompareBookScreen() {
     const originBookName = compareResult.data?.origin.name
     const targetBookName = compareResult.data?.target.name
 
+    const originPages = compareResult.data?.origin_pages?.filter(page =>
+        deadHashSelector == "all" ||
+        deadHashSelector == "without" && page.has_dead_hash === false ||
+        deadHashSelector == "only" && page.has_dead_hash === true)
+
+    const bothPages = compareResult.data?.both_pages?.filter(page =>
+        deadHashSelector == "all" ||
+        deadHashSelector == "without" && page.has_dead_hash === false ||
+        deadHashSelector == "only" && page.has_dead_hash === true)
+
+    const targetPages = compareResult.data?.target_pages?.filter(page =>
+        deadHashSelector == "all" ||
+        deadHashSelector == "without" && page.has_dead_hash === false ||
+        deadHashSelector == "only" && page.has_dead_hash === true)
+
     return <div className="container-column container-gap-middle">
         <ErrorTextWidget value={compareResult} />
         <ErrorTextWidget value={createDeadHashResponse} />
@@ -98,20 +113,11 @@ export function CompareBookScreen() {
 
         {/* FIXME: Переделать это непотребство */}
         {currentShow == "origin" ?
-            <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.origin_pages?.filter(page =>
-                deadHashSelector == "all" ||
-                deadHashSelector == "without" && page.has_dead_hash === false ||
-                deadHashSelector == "only" && page.has_dead_hash === true)} />
+            <BookPagesPreviewWidget bookID={originBookID} pages={originPages} />
             : currentShow == "both" ?
-                <BookPagesPreviewWidget bookID={originBookID} pages={compareResult.data?.both_pages?.filter(page =>
-                    deadHashSelector == "all" ||
-                    deadHashSelector == "without" && page.has_dead_hash === false ||
-                    deadHashSelector == "only" && page.has_dead_hash === true)} />
+                <BookPagesPreviewWidget bookID={originBookID} pages={bothPages} />
                 : currentShow == "target" ?
-                    <BookPagesPreviewWidget bookID={targetBookID} pages={compareResult.data?.target_pages?.filter(page =>
-                        deadHashSelector == "all" ||
-                        deadHashSelector == "without" && page.has_dead_hash === false ||
-                        deadHashSelector == "only" && page.has_dead_hash === true)} />
+                    <BookPagesPreviewWidget bookID={targetBookID} pages={targetPages} />
                     : currentShow == "dual_read" && compareResult.data ?
                         <DualReaderWidget
                             aBookID={compareResult.data.origin.id}
@@ -191,8 +197,8 @@ export function CompareBookScreen() {
                             }}
                             aPageCount={compareResult.data.origin.page_count}
                             bPageCount={compareResult.data.target.page_count}
-                            aPages={compareResult.data.origin_pages}
-                            bPages={compareResult.data.target_pages}
+                            aPages={originPages}
+                            bPages={targetPages}
                         /> : null
         }
 

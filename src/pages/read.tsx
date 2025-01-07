@@ -13,7 +13,8 @@ export function BookReadScreen() {
     const pageNumber = parseInt(params.page!)
 
     const [currentPage, setCurrentPage] = useState<BookSimplePage>()
-    const [onlyActivePage, setOnlyActivePage] = useState(false)
+    const [showPageOnlyWithPreview, setShowPageOnlyWithPreview] = useState(false)
+    const [showPageWithDeadHash, setShowPageWithDeadHash] = useState(true)
 
     const [bookDetailsResponse, getBookDetails] = useBookDetails()
     const [createDeadHashResponse, doCreateDeadHash] = useCreateDeadHashByPage()
@@ -35,38 +36,37 @@ export function BookReadScreen() {
         navigate(`/book/${bookID}/read/${page}`)
     }, [bookID])
 
+    const pages = bookDetailsResponse.data?.pages?.
+        filter(page => !showPageOnlyWithPreview || page.preview_url).
+        filter(page => showPageWithDeadHash || !page.has_dead_hash)
 
     const prevPage = useCallback(() => {
         if (pageNumber == 1) return
 
-        const pageNumberInArray = bookDetailsResponse.data?.pages?.
+        const pageNumberInArray = pages?.
             map(e => e.page_number).
             filter(e => e < pageNumber).
             sort((a: number, b: number) => a - b).
             reduce((_, cur) => cur)
 
-        if (onlyActivePage && pageNumberInArray) {
+        if (pageNumberInArray) {
             goPage(pageNumberInArray)
-        } else {
-            goPage(pageNumber - 1)
         }
-    }, [bookDetailsResponse.data, bookID, pageNumber, goPage, onlyActivePage])
+    }, [bookDetailsResponse.data, bookID, pageNumber, goPage, pages])
 
     const nextPage = useCallback(() => {
         if (pageNumber == bookDetailsResponse.data?.page_count) return
 
-        const pageNumberInArray = bookDetailsResponse.data?.pages?.
+        const pageNumberInArray = pages?.
             map(e => e.page_number).
             filter(e => e > pageNumber).
             sort((a: number, b: number) => b - a).
             reduce((_, cur) => cur)
 
-        if (onlyActivePage && pageNumberInArray) {
+        if (pageNumberInArray) {
             goPage(pageNumberInArray)
-        } else {
-            goPage(pageNumber + 1)
         }
-    }, [bookDetailsResponse.data, bookID, pageNumber, goPage, onlyActivePage])
+    }, [bookDetailsResponse.data, bookID, pageNumber, goPage, pages])
 
 
     const goGo = useCallback((event: any) => {
@@ -199,9 +199,15 @@ export function BookReadScreen() {
                     <label><input
                         type="checkbox"
                         className="app"
-                        checked={onlyActivePage}
-                        onChange={e => setOnlyActivePage(e.target.checked)}
-                    />только активные страницы</label>
+                        checked={showPageOnlyWithPreview}
+                        onChange={e => setShowPageOnlyWithPreview(e.target.checked)}
+                    />Только страницы с изображением</label>
+                    <label><input
+                        type="checkbox"
+                        className="app"
+                        checked={showPageWithDeadHash}
+                        onChange={e => setShowPageWithDeadHash(e.target.checked)}
+                    />Показывать с мертвым хешом</label>
                 </BookReadActionButtonWidget>
                 <span>
                     <button className="app" onClick={prevPage}><span className={styles.pageNavigate}>{"<"}</span></button>

@@ -188,41 +188,58 @@ function BookPagesSelectWidget(props: {
     pageCount?: number
 }) {
     const [viewMode, setViewMode] = useState("reader")
+    const [showOnlySelected, setShowOnlySelected] = useState(false)
+    const [showDeadHash, setShowDeadHash] = useState(true)
+
+
+    const pages = props.pages?.
+        filter(page => !showOnlySelected || props.value.includes(page.page_number)).
+        filter(page => showDeadHash || !page.has_dead_hash)
 
     return <div className="container-column container-gap-middle">
-        <div className="app-container container-row container-gap-small">
-            <button className="app" onClick={() => props.onChange(props.pages?.map(page => page.page_number) ?? [])}>Выбрать все</button>
-            <button className="app" onClick={() => props.onChange([])}>Снять все</button>
-            <select
-                className="app"
-                value={viewMode}
-                onChange={e => setViewMode(e.target.value)}
-            >
-                <option value="reader">Режим просмотра: постранично</option>
-                <option value="list">Режим просмотра: все страницы</option>
-                <option value="list_selected">Режим просмотра: все выбранные страницы</option>
-            </select>
-            <span>Выбрано {props.value.length} из {props.pages?.length}</span>
+        <div className="app-container container-column container-gap-middle">
+            <div className="container-row container-gap-middle">
+                <button className="app" onClick={() => props.onChange(props.pages?.map(page => page.page_number) ?? [])}>Выбрать все</button>
+                <button className="app" onClick={() => props.onChange([])}>Снять все</button>
+                <select
+                    className="app"
+                    value={viewMode}
+                    onChange={e => setViewMode(e.target.value)}
+                >
+                    <option value="reader">Режим просмотра: постранично</option>
+                    <option value="list">Режим просмотра: все страницы</option>
+                </select>
+                <span>Выбрано {props.value.length} из {props.pages?.length}</span>
+            </div>
+            <div className="container-column container-gap-middle">
+                <label><input
+                    type="checkbox"
+                    className="app"
+                    checked={showOnlySelected}
+                    onChange={e => setShowOnlySelected(e.target.checked)}
+                />Только выбранные страницы</label>
+                <label><input
+                    type="checkbox"
+                    className="app"
+                    checked={showDeadHash}
+                    onChange={e => setShowDeadHash(e.target.checked)}
+                />Показывать с мертвым хешом</label>
+            </div>
         </div>
-        {viewMode == "reader" ?
-            <PageSelectorReaderWidget
-                bookID={props.bookID}
-                onChange={props.onChange}
-                value={props.value}
-                pages={props.pages}
-                pageCount={props.pageCount}
-            /> : viewMode == "list" ?
-                <PageListPreview
+        {!pages?.length ? null :
+            viewMode == "reader" ?
+                <PageSelectorReaderWidget
                     bookID={props.bookID}
                     onChange={props.onChange}
                     value={props.value}
-                    pages={props.pages}
-                /> : viewMode == "list_selected" ?
+                    pages={pages}
+                    pageCount={props.pageCount}
+                /> : viewMode == "list" ?
                     <PageListPreview
                         bookID={props.bookID}
                         onChange={props.onChange}
                         value={props.value}
-                        pages={props.pages?.filter(page => props.value.includes(page.page_number))}
+                        pages={pages}
                     /> : null}
     </div>
 }

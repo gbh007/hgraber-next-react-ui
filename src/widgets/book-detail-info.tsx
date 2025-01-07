@@ -70,19 +70,20 @@ export function BookPagesPreviewWidget(props: {
     pages?: Array<BookSimplePage>
     pageLimit?: number
 }) {
-    if (!props.pages) {
+    if (!props.pages?.length) {
         return null
     }
 
-    const [pageLimit, setPageLimit] = useState(props.pageLimit ?? 20)
+    const [pageLimit, setPageLimit] = useState(20)
 
     useEffect(() => {
         setPageLimit(props.pageLimit ?? 20)
-    }, [setPageLimit, props.bookID])
+    }, [setPageLimit, props.pageLimit, props.bookID])
 
     return <div className={styles.preview}>
-        {props.pages?.filter(page => page.preview_url).map((page, i) =>
-            pageLimit != -1 && i >= pageLimit ? null :
+        {props.pages?.filter(page => page.preview_url)
+            .filter((_, i) => pageLimit == -1 || i < pageLimit)
+            .map((page) =>
                 <div className="app-container" key={page.page_number}>
                     <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
                         <img className={styles.preview} src={page.preview_url} />
@@ -90,7 +91,7 @@ export function BookPagesPreviewWidget(props: {
                     {page.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
                 </div>
 
-        )}
+            )}
         {pageLimit != -1 && (pageLimit < props.pages.length) ?
             <button className="app" onClick={() => setPageLimit(-1)}>Показать все страницы</button>
             : null}
