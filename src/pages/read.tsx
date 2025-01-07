@@ -110,7 +110,10 @@ export function BookReadScreen() {
                 {currentPage?.preview_url ? <img
                     src={currentPage?.preview_url}
                     id="main-image"
-                    className={styles.view}
+                    style={{ // TODO: подумать что с таким делать
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                    }}
                     onClick={goGo}
                 /> : null}
             </div>

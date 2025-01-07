@@ -2,11 +2,11 @@ import { Link, useParams } from "react-router-dom";
 import { useCreateDeadHashByPage, useDeduplicateCompare, useDeleteDeadHashByPage, useDeletePagesByBody } from "../apiclient/api-deduplicate";
 import { useEffect, useState } from "react";
 import { ErrorTextWidget } from "../widgets/error-text";
-import { BookAttributesWidget, BookMainImagePreviewWidget, BookPagesPreviewWidget } from "../widgets/book-detail-info";
+import { BookAttributesWidget, BookPagesPreviewWidget } from "../widgets/book-detail-info";
 import { BookSimple, BookSimplePage } from "../apiclient/model-book";
 import { HumanTimeWidget } from "../widgets/common";
 import { DualReaderWidget } from "../widgets/split-viewer";
-import { BookFlagsWidget } from "../widgets/book-short-info";
+import { BookImagePreviewWidget } from "../widgets/book-short-info";
 
 export function CompareBookScreen() {
     const params = useParams()
@@ -55,7 +55,11 @@ export function CompareBookScreen() {
 
         <div className="app-container container-row container-gap-middle" style={{ flexWrap: "wrap" }}>
             <div className="container-row container-gap-small">
-                <BookMainImagePreviewWidget value={compareResult.data?.origin.preview_url} />
+                <BookImagePreviewWidget
+                    flags={compareResult.data?.origin.flags}
+                    previewSize="superbig"
+                    preview_url={compareResult.data?.origin.preview_url}
+                />
                 <BookShortInfo
                     value={compareResult.data?.origin}
                     covered_target={compareResult.data?.origin_covered_target}
@@ -92,7 +96,11 @@ export function CompareBookScreen() {
                     covered_target={compareResult.data?.target_covered_origin}
                     covered_target_without_dead_hashes={compareResult.data?.target_covered_origin_without_dead_hashes}
                 />
-                <BookMainImagePreviewWidget value={compareResult.data?.target.preview_url} />
+                <BookImagePreviewWidget
+                    flags={compareResult.data?.target.flags}
+                    previewSize="superbig"
+                    preview_url={compareResult.data?.target.preview_url}
+                />
             </div>
         </div>
 
@@ -219,7 +227,6 @@ function BookShortInfo(props: {
 
     return <div className="container-column container-gap-small" style={{ maxWidth: "500px" }}>
         <b style={{ wordBreak: "break-all" }}>{props.value.name}</b>
-        <BookFlagsWidget value={props.value.flags} />
         <span>Создана: <HumanTimeWidget value={props.value.created_at} /> </span>
         <span>Страниц: {props.value.page_count}</span>
         {props.value.origin_url ? <a href={props.value.origin_url}>Ссылка на первоисточник</a> : null}

@@ -3,9 +3,8 @@ import styles from "./book-detail-info.module.css"
 import { DeduplicateBookByPageBodyResponseResult } from "../apiclient/api-deduplicate"
 import { PropsWithChildren, useEffect, useState } from "react"
 import { BookAttribute, BookSimplePage } from "../apiclient/model-book"
-import missingImage from "../assets/missing-image.png"
 import { BookDetails } from "../apiclient/api-book-details"
-import { BookFlagsWidget } from "./book-short-info"
+import { BookImagePreviewWidget, PageImagePreviewWidget } from "./book-short-info"
 
 
 // FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
@@ -20,13 +19,16 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
             data-background-color={props.book.info.flags.parsed_name ? '' : 'danger'}
         >
             <div>
-                <BookMainImagePreviewWidget value={props.book.info.preview_url} />
+                <BookImagePreviewWidget
+                    flags={props.book.info.flags}
+                    previewSize="superbig"
+                    preview_url={props.book.info.preview_url}
+                />
             </div>
             <div className={styles.bookInfo}>
                 <h1 data-color={props.book.info.flags.parsed_name ? '' : 'danger'} style={{ wordBreak: "break-all", margin: 0 }}>
                     {props.book.info.name}
                 </h1>
-                <BookFlagsWidget value={props.book.info.flags} />
                 <div className={styles.bookInfoPanel}>
                     <span> #{props.book.info.id} </span>
                     <span data-color={props.book.info.flags.parsed_page ? '' : 'danger'}>
@@ -62,17 +64,6 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
     </div>
 }
 
-export function BookMainImagePreviewWidget(props: {
-    value?: string
-}) {
-    return <div>
-        <img
-            className={styles.mainPreview}
-            src={props.value ?? missingImage}
-        />
-    </div>
-}
-
 export function BookPagesPreviewWidget(props: {
     bookID: string
     pages?: Array<BookSimplePage>
@@ -94,9 +85,12 @@ export function BookPagesPreviewWidget(props: {
             .map((page) =>
                 <div className="app-container" key={page.page_number}>
                     <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
-                        <img className={styles.preview} src={page.preview_url} />
+                        <PageImagePreviewWidget
+                            previewSize="medium"
+                            flags={page}
+                            preview_url={page.preview_url}
+                        />
                     </Link>
-                    {page.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
                 </div>
 
             )}
@@ -138,11 +132,12 @@ function BookDuplicates(props: {
     return <div className={styles.preview}>
         {props.deduplicateBookInfo?.map(book =>
             <div className="app-container" key={book.book.id}>
-                <Link to={`/book/${book.book.id}`}>
-                    <img className={styles.preview} src={book.book.preview_url ?? missingImage} />
-                </Link>
+                <BookImagePreviewWidget
+                    flags={book.book.flags}
+                    previewSize="small"
+                    preview_url={book.book.preview_url}
+                />
                 <b>{book.book.name}</b>
-                <BookFlagsWidget value={book.book.flags} />
                 <span>Страниц: {book.book.page_count}</span>
                 <span title="Сколько страниц этой книги есть в открытой">Покрытие книги: {prettyPercent(book.origin_covered_target)}% ({prettyPercent(book.origin_covered_target_without_dead_hashes)}%)</span>
                 <span title="Сколько страниц открытой книги есть в этой">Покрытие оригинала: {prettyPercent(book.target_covered_origin)}% ({prettyPercent(book.target_covered_origin_without_dead_hashes)}%)</span>

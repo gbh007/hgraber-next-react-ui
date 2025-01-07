@@ -5,8 +5,7 @@ import { ErrorTextWidget } from "../widgets/error-text"
 import { BookSimple } from "../apiclient/model-book"
 import styles from "./books-by-page.module.css"
 import { HumanTimeWidget } from "../widgets/common"
-import missingImage from "../assets/missing-image.png"
-import { BookFlagsWidget } from "../widgets/book-short-info"
+import { BookImagePreviewWidget } from "../widgets/book-short-info"
 
 export function BooksByPageScreen() {
     const params = useParams()
@@ -35,10 +34,13 @@ function BookDuplicates(props: {
         {props.value?.map(book =>
             <div className="app-container" key={book.id}>
                 <Link to={`/book/${book.id}`}>
-                    <img className={styles.preview} src={book.preview_url ?? missingImage} />
+                    <BookImagePreviewWidget
+                        flags={book.flags}
+                        preview_url={book.preview_url}
+                        previewSize="medium"
+                    />
                 </Link>
                 <b>{book.name}</b>
-                <BookFlagsWidget value={book.flags} />
                 <span>Создана: <HumanTimeWidget value={book.created_at} /></span>
                 <span>Страниц: {book.page_count}</span>
             </div>

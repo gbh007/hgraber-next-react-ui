@@ -11,8 +11,3 @@ div.preview > div {
   align-items: center;
   flex-grow: 1;
 }
-
-img.preview {
-  max-width: 400px;
-  max-height: 200px;
-}

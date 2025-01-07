@@ -19,16 +19,6 @@ div.preview > div {
   flex-grow: 1;
 }
 
-img.mainPreview {
-  max-width: 15vw;
-  max-height: 50vh;
-}
-
-img.preview {
-  max-width: 400px;
-  max-height: 200px;
-}
-
 div.bookInfo {
   display: flex;
   flex-direction: column;

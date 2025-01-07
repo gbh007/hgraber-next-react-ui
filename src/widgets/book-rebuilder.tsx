@@ -11,8 +11,7 @@ import { BookListResponse, BookShortInfo } from "../apiclient/api-book-list";
 import { PaginatorWidget } from "../pages/list";
 import { HumanTimeWidget } from "./common";
 import { useCallback, useEffect, useState } from "react";
-import missingImage from "../assets/missing-image.png"
-import { BookFlagsWidget } from "./book-short-info";
+import { BookImagePreviewWidget, PageImagePreviewWidget } from "./book-short-info";
 
 export function BookRebuilderWidget(props: {
     value: BookRebuildRequest
@@ -256,7 +255,11 @@ function PageListPreview(props: {
             <div className="app-container" key={page.page_number}>
                 {page.preview_url ?
                     <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
-                        <img className={styles.preview} src={page.preview_url} />
+                        <PageImagePreviewWidget
+                            previewSize="medium"
+                            flags={page}
+                            preview_url={page.preview_url}
+                        />
                     </Link> : null}
                 <span>Страница: {page.page_number}</span>
                 {page.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
@@ -286,10 +289,13 @@ function BooksList(props: {
         {props.value?.map(book =>
             <div className="app-container" key={book.info.id}>
                 <Link to={`/book/${book.info.id}`} style={{ flexGrow: 1 }}>
-                    <img className={styles.bookPreview} src={book.info.preview_url ?? missingImage} />
+                    <BookImagePreviewWidget
+                        flags={book.info.flags}
+                        previewSize="small"
+                        preview_url={book.info.preview_url}
+                    />
                 </Link>
                 <b>{book.info.name}</b>
-                <BookFlagsWidget value={book.info.flags} />
                 <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
                 <span>Страниц: {book.info.page_count}</span>
                 <button
@@ -311,12 +317,15 @@ function BooksPreview(props: {
 
     const book = props.value!
 
-    return <div className="container-column container-gap-smaller" key={book.info.id}>
+    return <div className="container-column container-gap-smaller" key={book.info.id} style={{ alignItems: "self-start" }}>
         <Link to={`/book/${book.info.id}`}>
-            <img className={styles.bookPreview} src={book.info.preview_url ?? missingImage} />
+            <BookImagePreviewWidget
+                flags={book.info.flags}
+                previewSize="medium"
+                preview_url={book.info.preview_url}
+            />
         </Link>
         <b>{book.info.name}</b>
-        <BookFlagsWidget value={book.info.flags} />
         <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
         <span>Страниц: {book.info.page_count}</span>
     </div>
@@ -395,7 +404,10 @@ function PageSelectorReaderWidget(props: {
         <div className={styles.pageView}>
             {currentPage?.preview_url ? <img
                 src={currentPage?.preview_url}
-                className={styles.pageView}
+                style={{ // TODO: подумать что с таким делать
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                }}
                 onClick={goGo}
             /> : null}
         </div>

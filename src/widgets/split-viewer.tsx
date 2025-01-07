@@ -176,7 +176,10 @@ function ReaderWidget(props: PropsWithChildren & {
         <div className={styles.pageView}>
             {props.currentPage?.preview_url ? <img
                 src={props.currentPage?.preview_url}
-                className={styles.pageView}
+                style={{ // TODO: подумать что с таким делать
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                }}
                 onClick={goGo}
             /> : null}
         </div>

@@ -4,14 +4,13 @@ import styles from "./select-to-compare.module.css"
 import { BookShortInfo, useBookList } from "../apiclient/api-book-list"
 import { Link, useSearchParams } from "react-router-dom"
 import { HumanTimeWidget } from "../widgets/common"
-import missingImage from "../assets/missing-image.png"
 import { BookFilterWidget } from "../widgets/book-filter"
 import { PaginatorWidget } from "./list"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { useAppSettings } from "../apiclient/settings"
 import { useAttributeCount } from "../apiclient/api-attribute-count"
 import { useLabelPresetList } from "../apiclient/api-labels"
-import { BookFlagsWidget } from "../widgets/book-short-info"
+import { BookImagePreviewWidget } from "../widgets/book-short-info"
 
 
 export function SelectToCompareScreen() {
@@ -141,10 +140,13 @@ function BooksList(props: {
         {props.value?.map(book =>
             <div className="app-container" key={book.info.id}>
                 <Link to={`/book/${book.info.id}`} style={{ flexGrow: 1 }}>
-                    <img className={styles.bookPreview} src={book.info.preview_url ?? missingImage} />
+                    <BookImagePreviewWidget
+                        flags={book.info.flags}
+                        previewSize="small"
+                        preview_url={book.info.preview_url}
+                    />
                 </Link>
                 <b>{book.info.name}</b>
-                <BookFlagsWidget value={book.info.flags} />
                 <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
                 <span>Страниц: {book.info.page_count}</span>
                 <button
@@ -171,13 +173,23 @@ function BooksPreview(props: {
 
     const book = props.value!
 
-    return <div className="container-column container-gap-smaller" key={book.info.id} style={{ flexGrow: 1 }}>
+    return <div
+        className="container-column container-gap-smaller"
+        key={book.info.id}
+        style={{
+            flexGrow: 1,
+            alignItems: "center",
+        }}
+    >
         <Link to={`/book/${book.info.id}`}>
-            <img className={styles.bookPreview} src={book.info.preview_url ?? missingImage} />
+            <BookImagePreviewWidget
+                flags={book.info.flags}
+                previewSize="small"
+                preview_url={book.info.preview_url}
+            />
         </Link>
         <div style={{ flexGrow: 1 }}></div>
         <b>{book.info.name}</b>
-        <BookFlagsWidget value={props.value.info.flags} />
         <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
         <span>Страниц: {book.info.page_count}</span>
     </div>
