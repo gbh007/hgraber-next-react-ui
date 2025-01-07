@@ -30,6 +30,7 @@ export interface BookDetails {
     id: string
     created: string
     preview_url?: string
+    origin_url?: string
     flags: BookFlags
     name: string
     page_count: number

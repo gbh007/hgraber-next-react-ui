@@ -214,11 +214,14 @@ function BookShortInfo(props: {
         return
     }
 
+    const originDomain = /https?:\/\/([\w.]+)\/.*/.exec(props.value.origin_url ?? "")?.[1]
+
     return <div className="container-column container-gap-small" style={{ maxWidth: "500px" }}>
         <b style={{ wordBreak: "break-all" }}>{props.value.name}</b>
         <span>Создана: <HumanTimeWidget value={props.value.create_at} /> </span>
         <span>Страниц: {props.value.page_count}</span>
         {props.value.origin_url ? <a href={props.value.origin_url}>Ссылка на первоисточник</a> : null}
+        {originDomain ? <span>Домен: {originDomain}</span> : null}
         {props.covered_target != undefined &&
             props.covered_target_without_dead_hashes != undefined ?
             <span

@@ -11,6 +11,7 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
     book: BookDetails
     deduplicateBookInfo?: Array<DeduplicateBookByPageBodyResponseResult>
 }) {
+    const originDomain = /https?:\/\/([\w.]+)\/.*/.exec(props.book.origin_url ?? "")?.[1]
     return <div>
         <div
             className="app-container container-row"
@@ -33,6 +34,10 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
                         Загружено: {props.book.page_loaded_percent}%
                     </span>
                     <span>{new Date(props.book.created).toLocaleString()}</span>
+                </div>
+                <div className="container-row container-gap-small">
+                    {props.book.origin_url ? <a href={props.book.origin_url}>Ссылка на первоисточник</a> : null}
+                    {originDomain ? <span>, домен: {originDomain}</span> : null}
                 </div>
                 <BookAttributesWidget value={props.book.attributes} />
                 {props.book.size ? <div className="container-column">
