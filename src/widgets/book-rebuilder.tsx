@@ -149,6 +149,14 @@ function BuilderFlagsWidget(props: {
             <input
                 className="app"
                 type="checkbox"
+                checked={props.value?.extract_mode ?? false}
+                onChange={e => props.onChange({ ...props.value, extract_mode: e.target.checked })}
+            />Режим экстракции - вынос страниц в новую книгу с удалением их только из исходной
+        </label>
+        <label className="color-danger-lite">
+            <input
+                className="app"
+                type="checkbox"
                 checked={props.value?.mark_unused_pages_as_dead_hash ?? false}
                 onChange={e => props.onChange({ ...props.value, mark_unused_pages_as_dead_hash: e.target.checked })}
             />Отметить страницы что не вошли в ребилд как мертвый хеш

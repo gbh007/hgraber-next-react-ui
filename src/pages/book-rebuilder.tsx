@@ -82,6 +82,11 @@ export function BookRebuilderScreen() {
                 <button
                     className="app"
                     onClick={() => {
+                        if (bookRebuildData.flags?.extract_mode &&
+                            !confirm("Удалить все страницы из этой книги (экстракция) что вошли в ребилд? (ЭТО НЕОБРАТИМО)")) {
+                            return
+                        }
+
                         if (bookRebuildData.flags?.mark_unused_pages_as_dead_hash &&
                             !confirm("Создать мертвых хеш для всех страницы из этой книги что не вошли в ребилд?")) {
                             return
