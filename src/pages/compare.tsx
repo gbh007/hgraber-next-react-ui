@@ -6,6 +6,7 @@ import { BookAttributesWidget, BookMainImagePreviewWidget, BookPagesPreviewWidge
 import { BookSimple, BookSimplePage } from "../apiclient/model-book";
 import { HumanTimeWidget } from "../widgets/common";
 import { DualReaderWidget } from "../widgets/split-viewer";
+import { BookFlagsWidget } from "../widgets/book-short-info";
 
 export function CompareBookScreen() {
     const params = useParams()
@@ -218,7 +219,8 @@ function BookShortInfo(props: {
 
     return <div className="container-column container-gap-small" style={{ maxWidth: "500px" }}>
         <b style={{ wordBreak: "break-all" }}>{props.value.name}</b>
-        <span>Создана: <HumanTimeWidget value={props.value.create_at} /> </span>
+        <BookFlagsWidget value={props.value.flags} />
+        <span>Создана: <HumanTimeWidget value={props.value.created_at} /> </span>
         <span>Страниц: {props.value.page_count}</span>
         {props.value.origin_url ? <a href={props.value.origin_url}>Ссылка на первоисточник</a> : null}
         {originDomain ? <span>Домен: {originDomain}</span> : null}

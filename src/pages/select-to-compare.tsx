@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import { BookFilter } from "../apiclient/model-book-filter"
 import styles from "./select-to-compare.module.css"
-import { useBookList } from "../apiclient/api-book-list"
-import { BookShortInfo } from "../apiclient/model-book"
+import { BookShortInfo, useBookList } from "../apiclient/api-book-list"
 import { Link, useSearchParams } from "react-router-dom"
 import { HumanTimeWidget } from "../widgets/common"
 import missingImage from "../assets/missing-image.png"
@@ -12,6 +11,7 @@ import { ErrorTextWidget } from "../widgets/error-text"
 import { useAppSettings } from "../apiclient/settings"
 import { useAttributeCount } from "../apiclient/api-attribute-count"
 import { useLabelPresetList } from "../apiclient/api-labels"
+import { BookFlagsWidget } from "../widgets/book-short-info"
 
 
 export function SelectToCompareScreen() {
@@ -90,7 +90,7 @@ export function SelectToCompareScreen() {
                         setTargetPreview(undefined)
                     }}
                 >Сбросить все</button>
-                {originPreview && targetPreview ? <Link className="app-button" to={`/book/${originPreview.id}/compare/${targetPreview.id}`}>Сравнить</Link> : null}
+                {originPreview && targetPreview ? <Link className="app-button" to={`/book/${originPreview.info.id}/compare/${targetPreview.info.id}`}>Сравнить</Link> : null}
             </div>
         </div>
         <div className="app-container container-column container-gap-middle">
@@ -123,8 +123,8 @@ export function SelectToCompareScreen() {
             value={booksResponse.data?.books}
             onChangeOrigin={setOriginPreview}
             onChangeTarget={setTargetPreview}
-            selectedOrigin={originPreview?.id}
-            selectedTarget={targetPreview?.id}
+            selectedOrigin={originPreview?.info.id}
+            selectedTarget={targetPreview?.info.id}
         />
     </div>
 }
@@ -139,22 +139,23 @@ function BooksList(props: {
 }) {
     return <div className={styles.preview}>
         {props.value?.map(book =>
-            <div className="app-container" key={book.id}>
-                <Link to={`/book/${book.id}`} style={{ flexGrow: 1 }}>
-                    <img className={styles.bookPreview} src={book.preview_url ?? missingImage} />
+            <div className="app-container" key={book.info.id}>
+                <Link to={`/book/${book.info.id}`} style={{ flexGrow: 1 }}>
+                    <img className={styles.bookPreview} src={book.info.preview_url ?? missingImage} />
                 </Link>
-                <b>{book.name}</b>
-                <span>Создана: <HumanTimeWidget value={book.created} /></span>
-                <span>Страниц: {book.page_count}</span>
+                <b>{book.info.name}</b>
+                <BookFlagsWidget value={book.info.flags} />
+                <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
+                <span>Страниц: {book.info.page_count}</span>
                 <button
                     className="app"
                     onClick={() => props.onChangeOrigin(book)}
-                    disabled={book.id == props.selectedOrigin}
+                    disabled={book.info.id == props.selectedOrigin}
                 >Выбрать как оригинальную</button>
                 <button
                     className="app"
                     onClick={() => props.onChangeTarget(book)}
-                    disabled={book.id == props.selectedTarget}
+                    disabled={book.info.id == props.selectedTarget}
                 >Выбрать как целевую</button>
             </div>
         )}
@@ -170,13 +171,14 @@ function BooksPreview(props: {
 
     const book = props.value!
 
-    return <div className="container-column container-gap-smaller" key={book.id} style={{ flexGrow: 1 }}>
-        <Link to={`/book/${book.id}`}>
-            <img className={styles.bookPreview} src={book.preview_url ?? missingImage} />
+    return <div className="container-column container-gap-smaller" key={book.info.id} style={{ flexGrow: 1 }}>
+        <Link to={`/book/${book.info.id}`}>
+            <img className={styles.bookPreview} src={book.info.preview_url ?? missingImage} />
         </Link>
         <div style={{ flexGrow: 1 }}></div>
-        <b>{book.name}</b>
-        <span>Создана: <HumanTimeWidget value={book.created} /></span>
-        <span>Страниц: {book.page_count}</span>
+        <b>{book.info.name}</b>
+        <BookFlagsWidget value={props.value.info.flags} />
+        <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
+        <span>Страниц: {book.info.page_count}</span>
     </div>
 }

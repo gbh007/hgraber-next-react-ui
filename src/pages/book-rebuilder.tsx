@@ -115,7 +115,7 @@ export function BookRebuilderScreen() {
                 labelsAutoComplete={labelPresetsResponse.data?.presets}
                 attributeCount={attributeCountResponse.data?.attributes}
                 pages={bookDetailsResponse.data?.pages}
-                pageCount={bookDetailsResponse.data?.page_count}
+                pageCount={bookDetailsResponse.data?.info.page_count}
 
                 targetBookFilter={bookFilter}
                 targetBookFilterChange={setBookFilter}

@@ -1,18 +1,6 @@
-export interface BookShortInfo {
-    id: string
-    created: string
-    preview_url?: string
-    name: string
-    page_count: number
-    page_loaded_percent: number
-    tags?: Array<string>
-    has_more_tags: boolean
-    flags: BookFlags
-}
-
 export interface BookSimple {
     id: string
-    create_at: string
+    created_at: string
     origin_url?: string
     name: string
     page_count: number
@@ -25,21 +13,6 @@ export interface BookSimplePage {
     preview_url?: string
     has_dead_hash?: boolean
 }
-
-export interface BookDetails {
-    id: string
-    created: string
-    preview_url?: string
-    origin_url?: string
-    flags: BookFlags
-    name: string
-    page_count: number
-    page_loaded_percent: number
-    attributes?: Array<BookAttribute>
-    pages?: Array<BookSimplePage>
-    size?: BookDetailsSize
-}
-
 
 export interface BookFlags {
     parsed_name: boolean

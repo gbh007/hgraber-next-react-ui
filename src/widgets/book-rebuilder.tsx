@@ -1,17 +1,18 @@
 import { AttributeCountResponseAttribute } from "../apiclient/api-attribute-count";
 import { BookRebuildRequest, BookRebuildRequestFlags } from "../apiclient/api-book";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
-import { BookShortInfo, BookSimplePage } from "../apiclient/model-book";
+import { BookSimplePage } from "../apiclient/model-book";
 import { BookAttributeInfoEditorWidget, BookLabelInfoEditorWidget, BookMainInfoEditorWidget } from "./book-editor";
 import styles from "./book-rebuilder.module.css"
 import { Link } from "react-router-dom";
 import { BookFilterWidget } from "./book-filter";
 import { BookFilter } from "../apiclient/model-book-filter";
-import { BookListResponse } from "../apiclient/api-book-list";
+import { BookListResponse, BookShortInfo } from "../apiclient/api-book-list";
 import { PaginatorWidget } from "../pages/list";
 import { HumanTimeWidget } from "./common";
 import { useCallback, useEffect, useState } from "react";
 import missingImage from "../assets/missing-image.png"
+import { BookFlagsWidget } from "./book-short-info";
 
 export function BookRebuilderWidget(props: {
     value: BookRebuildRequest
@@ -48,7 +49,7 @@ export function BookRebuilderWidget(props: {
             />
         </div>
 
-        {targetPreview && targetPreview.id == props.value.merge_with_book ?
+        {targetPreview && targetPreview.info.id == props.value.merge_with_book ?
             <div className="app-container container-column container-gap-small">
                 <span>Данные будут внесены в</span>
                 <BooksPreview value={targetPreview} />
@@ -73,7 +74,7 @@ export function BookRebuilderWidget(props: {
                     <BooksList
                         value={props.targetBookResponse?.books}
                         onChange={e => {
-                            props.onChange({ ...props.value, merge_with_book: e.id || undefined })
+                            props.onChange({ ...props.value, merge_with_book: e.info.id || undefined })
                             setTargetPreview(e)
                         }}
                         selected={props.value.merge_with_book}
@@ -283,17 +284,18 @@ function BooksList(props: {
 }) {
     return <div className={styles.preview}>
         {props.value?.map(book =>
-            <div className="app-container" key={book.id}>
-                <Link to={`/book/${book.id}`} style={{ flexGrow: 1 }}>
-                    <img className={styles.bookPreview} src={book.preview_url ?? missingImage} />
+            <div className="app-container" key={book.info.id}>
+                <Link to={`/book/${book.info.id}`} style={{ flexGrow: 1 }}>
+                    <img className={styles.bookPreview} src={book.info.preview_url ?? missingImage} />
                 </Link>
-                <b>{book.name}</b>
-                <span>Создана: <HumanTimeWidget value={book.created} /></span>
-                <span>Страниц: {book.page_count}</span>
+                <b>{book.info.name}</b>
+                <BookFlagsWidget value={book.info.flags} />
+                <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
+                <span>Страниц: {book.info.page_count}</span>
                 <button
                     className="app"
                     onClick={() => props.onChange(book)}
-                    disabled={book.id == props.selected}
+                    disabled={book.info.id == props.selected}
                 >Выбрать</button>
             </div>
         )}
@@ -309,13 +311,14 @@ function BooksPreview(props: {
 
     const book = props.value!
 
-    return <div className="container-column container-gap-smaller" key={book.id}>
-        <Link to={`/book/${book.id}`}>
-            <img className={styles.bookPreview} src={book.preview_url ?? missingImage} />
+    return <div className="container-column container-gap-smaller" key={book.info.id}>
+        <Link to={`/book/${book.info.id}`}>
+            <img className={styles.bookPreview} src={book.info.preview_url ?? missingImage} />
         </Link>
-        <b>{book.name}</b>
-        <span>Создана: <HumanTimeWidget value={book.created} /></span>
-        <span>Страниц: {book.page_count}</span>
+        <b>{book.info.name}</b>
+        <BookFlagsWidget value={book.info.flags} />
+        <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
+        <span>Страниц: {book.info.page_count}</span>
     </div>
 }
 

@@ -1,11 +1,17 @@
 import { PostAction, useAPIPost, Response } from "./client-hooks"
 import { BookFilter } from "./model-book-filter"
-import { BookShortInfo } from "./model-book"
+import { BookSimple } from "./model-book"
 
 export interface BookListResponse {
     books?: Array<BookShortInfo>
     count: number
     pages: Array<BookListResponsePages>
+}
+
+export interface BookShortInfo {
+    info: BookSimple
+    page_loaded_percent: number
+    tags?: Array<string>
 }
 
 export interface BookListResponsePages {

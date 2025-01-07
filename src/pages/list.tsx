@@ -92,7 +92,7 @@ export function ListScreen() {
         }} value={booksResponse.data?.pages || []} />
         <div className={styles.bookList}>
             {booksResponse.data?.books?.map(book =>
-                <BookShortInfoWidget key={book.id} value={book} />
+                <BookShortInfoWidget key={book.info.id} value={book} />
             )}
         </div>
         <PaginatorWidget onChange={(v: number) => {

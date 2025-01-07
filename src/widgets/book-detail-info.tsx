@@ -2,8 +2,10 @@ import { Link } from "react-router-dom"
 import styles from "./book-detail-info.module.css"
 import { DeduplicateBookByPageBodyResponseResult } from "../apiclient/api-deduplicate"
 import { PropsWithChildren, useEffect, useState } from "react"
-import { BookAttribute, BookDetails, BookSimplePage } from "../apiclient/model-book"
+import { BookAttribute, BookSimplePage } from "../apiclient/model-book"
 import missingImage from "../assets/missing-image.png"
+import { BookDetails } from "../apiclient/api-book-details"
+import { BookFlagsWidget } from "./book-short-info"
 
 
 // FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
@@ -11,32 +13,33 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
     book: BookDetails
     deduplicateBookInfo?: Array<DeduplicateBookByPageBodyResponseResult>
 }) {
-    const originDomain = /https?:\/\/([\w.]+)\/.*/.exec(props.book.origin_url ?? "")?.[1]
+    const originDomain = /https?:\/\/([\w.]+)\/.*/.exec(props.book.info.origin_url ?? "")?.[1]
     return <div>
         <div
             className="app-container container-row"
-            data-background-color={props.book.flags.parsed_name ? '' : 'danger'}
+            data-background-color={props.book.info.flags.parsed_name ? '' : 'danger'}
         >
             <div>
-                <BookMainImagePreviewWidget value={props.book.preview_url} />
+                <BookMainImagePreviewWidget value={props.book.info.preview_url} />
             </div>
             <div className={styles.bookInfo}>
-                <h1 data-color={props.book.flags.parsed_name ? '' : 'danger'} style={{ wordBreak: "break-all" }}>
-                    {props.book.name}
+                <h1 data-color={props.book.info.flags.parsed_name ? '' : 'danger'} style={{ wordBreak: "break-all", margin: 0 }}>
+                    {props.book.info.name}
                 </h1>
+                <BookFlagsWidget value={props.book.info.flags} />
                 <div className={styles.bookInfoPanel}>
-                    <span> #{props.book.id} </span>
-                    <span data-color={props.book.flags.parsed_page ? '' : 'danger'}>
-                        Страниц: {props.book.page_count}
-                        {props.book.pages && props.book.pages.length != props.book.page_count ? ` (${props.book.pages.length})` : null}
+                    <span> #{props.book.info.id} </span>
+                    <span data-color={props.book.info.flags.parsed_page ? '' : 'danger'}>
+                        Страниц: {props.book.info.page_count}
+                        {props.book.pages && props.book.pages.length != props.book.info.page_count ? ` (${props.book.pages.length})` : null}
                     </span>
                     <span data-color={props.book.page_loaded_percent != 100.0 ? 'danger' : ''}>
                         Загружено: {props.book.page_loaded_percent}%
                     </span>
-                    <span>{new Date(props.book.created).toLocaleString()}</span>
+                    <span>{new Date(props.book.info.created_at).toLocaleString()}</span>
                 </div>
                 <div className="container-row container-gap-small">
-                    {props.book.origin_url ? <a href={props.book.origin_url}>Ссылка на первоисточник</a> : null}
+                    {props.book.info.origin_url ? <a href={props.book.info.origin_url}>Ссылка на первоисточник</a> : null}
                     {originDomain ? <span>, домен: {originDomain}</span> : null}
                 </div>
                 <BookAttributesWidget value={props.book.attributes} />
@@ -51,9 +54,9 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
                 {props.children}
             </div>
         </div>
-        <BookDuplicates deduplicateBookInfo={props.deduplicateBookInfo} originID={props.book.id} />
+        <BookDuplicates deduplicateBookInfo={props.deduplicateBookInfo} originID={props.book.info.id} />
         <BookPagesPreviewWidget
-            bookID={props.book.id}
+            bookID={props.book.info.id}
             pages={props.book.pages}
         />
     </div>
@@ -139,9 +142,11 @@ function BookDuplicates(props: {
                     <img className={styles.preview} src={book.book.preview_url ?? missingImage} />
                 </Link>
                 <b>{book.book.name}</b>
+                <BookFlagsWidget value={book.book.flags} />
                 <span>Страниц: {book.book.page_count}</span>
                 <span title="Сколько страниц этой книги есть в открытой">Покрытие книги: {prettyPercent(book.origin_covered_target)}% ({prettyPercent(book.origin_covered_target_without_dead_hashes)}%)</span>
                 <span title="Сколько страниц открытой книги есть в этой">Покрытие оригинала: {prettyPercent(book.target_covered_origin)}% ({prettyPercent(book.target_covered_origin_without_dead_hashes)}%)</span>
+
                 <Link className="app-button" to={`/book/${props.originID}/compare/${book.book.id}`}>Сравнить</Link>
             </div>
         )}

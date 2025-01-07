@@ -33,9 +33,9 @@ export function BookDetailsScreen() {
     }, [bookID])
 
     const hasPages = (bookDetailsResponse.data?.pages?.length ?? 0) > 0
-    const hasUniquePages = (!bookDetailsResponse.data?.flags.is_deleted && (!bookDetailsResponse.data?.size || bookDetailsResponse.data.size.unique != 0))
-    const hasSharedPages = (!bookDetailsResponse.data?.flags.is_deleted && (!bookDetailsResponse.data?.size || bookDetailsResponse.data.size.shared != 0))
-    const hasDeletedPages = bookDetailsResponse.data?.pages && bookDetailsResponse.data?.pages.length != bookDetailsResponse.data?.page_count
+    const hasUniquePages = (!bookDetailsResponse.data?.info.flags.is_deleted && (!bookDetailsResponse.data?.size || bookDetailsResponse.data.size.unique != 0))
+    const hasSharedPages = (!bookDetailsResponse.data?.info.flags.is_deleted && (!bookDetailsResponse.data?.size || bookDetailsResponse.data.size.shared != 0))
+    const hasDeletedPages = bookDetailsResponse.data?.pages && bookDetailsResponse.data?.pages.length != bookDetailsResponse.data?.info.page_count
 
     return <div>
         <ErrorTextWidget value={bookDetailsResponse} />
@@ -55,15 +55,15 @@ export function BookDetailsScreen() {
                 <div className="container-row container-gap-middle container-wrap">
                     <button className={"app " + styles.mainButton} onClick={() => { window.open('/api/book/archive/' + bookID, "_blank") }}>Скачать</button>
                     {hasPages ? <Link className={"app-button " + styles.mainButton} to={`/book/${bookID}/read/1`}>Читать</Link> : null}
-                    {bookDetailsResponse.data.flags.is_deleted ? null : <button
+                    {bookDetailsResponse.data.info.flags.is_deleted ? null : <button
                         className={"app " + styles.mainButton}
                         disabled={bookDeleteResponse.isLoading}
                         onClick={() => {
-                            if (!confirm(`Удалить книгу: ${bookDetailsResponse.data?.name}`)) {
+                            if (!confirm(`Удалить книгу: ${bookDetailsResponse.data?.info.name}`)) {
                                 return;
                             }
 
-                            if (bookDetailsResponse.data?.size?.unique && !confirm(`У книги ${bookDetailsResponse.data?.name} есть ${bookDetailsResponse.data?.size?.unique_formatted} уникального контента, точно хотите ее удалить?`)) {
+                            if (bookDetailsResponse.data?.size?.unique && !confirm(`У книги ${bookDetailsResponse.data?.info.name} есть ${bookDetailsResponse.data?.size?.unique_formatted} уникального контента, точно хотите ее удалить?`)) {
                                 return;
                             }
 
@@ -72,11 +72,11 @@ export function BookDetailsScreen() {
                     >
                         <span className="color-danger">Удалить</span>
                     </button>}
-                    {bookDetailsResponse.data.flags.is_verified ? null : <button
+                    {bookDetailsResponse.data.info.flags.is_verified ? null : <button
                         className={"app " + styles.mainButton}
                         disabled={bookVerifyResponse.isLoading}
                         onClick={() => {
-                            if (!confirm(`Подтвердить книгу: ${bookDetailsResponse.data?.name}`)) {
+                            if (!confirm(`Подтвердить книгу: ${bookDetailsResponse.data?.info.name}`)) {
                                 return;
                             }
 
@@ -95,15 +95,15 @@ export function BookDetailsScreen() {
                         >Показать дубли</button>
                         : null}
                     {hasUniquePages ?
-                        <Link className={"app-button " + styles.mainButton} to={`/book/${bookDetailsResponse.data.id}/unique-pages`}>Показать уникальные страницы</Link>
+                        <Link className={"app-button " + styles.mainButton} to={`/book/${bookDetailsResponse.data.info.id}/unique-pages`}>Показать уникальные страницы</Link>
                         : null}
                 </div>
                 <details className="app container-column container-gap-middle">
                     <summary>дополнительные действия</summary>
                     <div className="container-row container-gap-middle container-wrap">
-                        <Link className="app-button" to={`/book/${bookDetailsResponse.data.id}/edit`}>Редактировать</Link>
-                        <Link className="app-button" to={`/book/${bookDetailsResponse.data.id}/rebuild`}>Пересобрать</Link>
-                        <Link className="app-button" to={`/book/${bookDetailsResponse.data.id}/labels`}>Редактировать метки</Link>
+                        <Link className="app-button" to={`/book/${bookDetailsResponse.data.info.id}/edit`}>Редактировать</Link>
+                        <Link className="app-button" to={`/book/${bookDetailsResponse.data.info.id}/rebuild`}>Пересобрать</Link>
+                        <Link className="app-button" to={`/book/${bookDetailsResponse.data.info.id}/labels`}>Редактировать метки</Link>
                         {hasPages ? <>
                             <button
                                 className="app"
@@ -177,7 +177,7 @@ export function BookDetailsScreen() {
                                 <b className="color-danger">Удалить все страницы из книги и их копии</b>
                             </button>
                         </> : null}
-                        {!hasPages || hasDeletedPages || bookDetailsResponse.data.flags.is_deleted ? <button
+                        {!hasPages || hasDeletedPages || bookDetailsResponse.data.info.flags.is_deleted ? <button
                             className="app"
                             disabled={bookRestoreResponse.isLoading}
                             onClick={() => {

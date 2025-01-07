@@ -6,6 +6,7 @@ import { BookSimple } from "../apiclient/model-book"
 import styles from "./books-by-page.module.css"
 import { HumanTimeWidget } from "../widgets/common"
 import missingImage from "../assets/missing-image.png"
+import { BookFlagsWidget } from "../widgets/book-short-info"
 
 export function BooksByPageScreen() {
     const params = useParams()
@@ -37,7 +38,8 @@ function BookDuplicates(props: {
                     <img className={styles.preview} src={book.preview_url ?? missingImage} />
                 </Link>
                 <b>{book.name}</b>
-                <span>Создана: <HumanTimeWidget value={book.create_at} /></span>
+                <BookFlagsWidget value={book.flags} />
+                <span>Создана: <HumanTimeWidget value={book.created_at} /></span>
                 <span>Страниц: {book.page_count}</span>
             </div>
         )}

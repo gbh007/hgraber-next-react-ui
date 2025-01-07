@@ -55,7 +55,7 @@ export function BookReadScreen() {
     }, [bookDetailsResponse.data, bookID, pageNumber, goPage, pages])
 
     const nextPage = useCallback(() => {
-        if (pageNumber == bookDetailsResponse.data?.page_count) return
+        if (pageNumber == bookDetailsResponse.data?.info.page_count) return
 
         const pageNumberInArray = pages?.
             map(e => e.page_number).
@@ -103,7 +103,7 @@ export function BookReadScreen() {
                 {currentPage?.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
 
                 <span>
-                    Страница {pageNumber} из {bookDetailsResponse.data?.page_count || 0}
+                    Страница {pageNumber} из {bookDetailsResponse.data?.info.page_count || 0}
                 </span>
             </div>
             <div className={styles.view}>
