@@ -110,6 +110,13 @@ export function SelectToCompareScreen() {
                     searchParams.delete("filter")
                     setSearchParams(searchParams)
                 }}>Очистить фильтр</button>
+                <button className="app" onClick={() => {
+                    getBooks(bookFilter)
+                }}>Обновить данные</button>
+                <Link
+                    className="app-button"
+                    to={`/list?filter=${encodeURIComponent(JSON.stringify(bookFilter))}`}
+                >Перейти в список книг</Link>
             </div>
             <span>Всего: {booksResponse.data?.count}</span>
             <PaginatorWidget onChange={(v: number) => {

@@ -10,7 +10,7 @@ import { BookShortInfoWidget } from "../widgets/book-short-info"
 import { useAppSettings } from "../apiclient/settings"
 import { useAttributeCount } from "../apiclient/api-attribute-count"
 import { useLabelPresetList } from "../apiclient/api-labels"
-import { useSearchParams } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 
 
 export function ListScreen() {
@@ -80,6 +80,13 @@ export function ListScreen() {
                             searchParams.delete("filter")
                             setSearchParams(searchParams)
                         }}>Очистить фильтр</button>
+                        <button className="app" onClick={() => {
+                            getBooks(bookFilter)
+                        }}>Обновить данные</button>
+                        <Link
+                            className="app-button"
+                            to={`/select-to-compare?filter=${encodeURIComponent(JSON.stringify(bookFilter))}`}
+                        >Перейти в выбор для сравнения</Link>
                     </div>
                     <AgentExportWidget filter={bookFilter} />
                 </div>
