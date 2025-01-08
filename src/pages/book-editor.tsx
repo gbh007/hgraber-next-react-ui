@@ -5,7 +5,7 @@ import { ErrorTextWidget } from "../widgets/error-text"
 import { BookEditorWidget } from "../widgets/book-editor"
 import { BookRaw } from "../apiclient/model-book"
 import { useLabelPresetList } from "../apiclient/api-labels"
-import { useAttributeCount } from "../apiclient/api-attribute-count"
+import { useAttributeCount } from "../apiclient/api-attribute"
 
 export function BookEditorScreen() {
     const params = useParams()

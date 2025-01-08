@@ -1,4 +1,4 @@
-import { AttributeCountResponseAttribute } from "../apiclient/api-attribute-count";
+import { AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { BookRebuildRequest, BookRebuildRequestFlags } from "../apiclient/api-book";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookSimplePage } from "../apiclient/model-book";

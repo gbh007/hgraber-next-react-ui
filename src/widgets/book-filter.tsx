@@ -2,20 +2,11 @@ import { useState } from "react";
 import { BookFilter, BookFilterAttribute, BookFilterLabel } from "../apiclient/model-book-filter";
 import { DatetimePickerWidget } from "./datetime-picker";
 import { ShowSelectWidget } from "./show-select";
-import { AttributeCountResponseAttribute } from "../apiclient/api-attribute-count";
+import { AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
+import { attributeCodes, BookAttributeAutocompleteWidget } from "./attribute";
 
-// FIXME: работать с этим списком через API
-export const attributeCodes = [
-    "author",
-    "category",
-    "character",
-    "group",
-    "language",
-    "parody",
-    "tag",
-]
 
 export function BookFilterWidget(props: {
     value: BookFilter
@@ -243,24 +234,6 @@ function ManyStringSelectWidget(props: {
             </div>
         )}
     </div>
-}
-
-export function BookAttributeAutocompleteWidget(props: {
-    attributeCount?: Array<AttributeCountResponseAttribute>
-}) {
-    if (!props.attributeCount) {
-        return null
-    }
-
-    return <>
-        {attributeCodes.map(code =>
-            <datalist key={code} id={"attribute-autocomplete-" + code}>
-                {props.attributeCount?.filter(e => e.code == code).map(attr =>
-                    <option value={attr.value} key={attr.value} />
-                )}
-            </datalist>
-        )}
-    </>
 }
 
 

@@ -3,7 +3,7 @@ import { BookRebuildRequest, useBookRaw, useBookRebuild } from "../apiclient/api
 import { useEffect, useState } from "react"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { useLabelPresetList } from "../apiclient/api-labels"
-import { useAttributeCount } from "../apiclient/api-attribute-count"
+import { useAttributeCount } from "../apiclient/api-attribute"
 import { useBookDetails } from "../apiclient/api-book-details"
 import { BookRebuilderWidget } from "../widgets/book-rebuilder"
 import { BookFilter } from "../apiclient/model-book-filter"

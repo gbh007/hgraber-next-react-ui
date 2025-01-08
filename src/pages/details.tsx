@@ -8,6 +8,7 @@ import { Link, useParams } from "react-router-dom";
 import { useCreateDeadHashByBookPages, useDeduplicateBookByPageBody, useDeleteAllPagesByBook, useDeleteBookDeadHashedPages, useDeleteDeadHashByBookPages } from "../apiclient/api-deduplicate";
 import styles from "./details.module.css"
 import { useBookRestore } from "../apiclient/api-book";
+import { useAttributeColorList } from "../apiclient/api-attribute";
 
 export function BookDetailsScreen() {
     const params = useParams()
@@ -22,6 +23,10 @@ export function BookDetailsScreen() {
     const [deleteAllPagesByBookResponse, doDeleteAllPagesByBook] = useDeleteAllPagesByBook()
     const [bookRestoreResponse, doBookRestore] = useBookRestore()
     const [deleteBookDeadHashedPagesResponse, doDeleteBookDeadHashedPages] = useDeleteBookDeadHashedPages()
+
+
+    const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
+    useEffect(() => { fetchAttributeColorList() }, [fetchAttributeColorList])
 
     useEffect(() => {
         getBookDetails({ id: bookID })
@@ -47,9 +52,11 @@ export function BookDetailsScreen() {
         <ErrorTextWidget value={deleteAllPagesByBookResponse} />
         <ErrorTextWidget value={bookRestoreResponse} />
         <ErrorTextWidget value={deleteBookDeadHashedPagesResponse} />
+        <ErrorTextWidget value={attributeColorListResponse} />
         {bookDetailsResponse.data ? <BookDetailInfoWidget
             book={bookDetailsResponse.data}
             deduplicateBookInfo={bookDeduplicateResponse.data?.result}
+            colors={attributeColorListResponse.data?.colors}
         >
             <div className="container-column container-gap-big">
                 <div className="container-row container-gap-middle container-wrap">

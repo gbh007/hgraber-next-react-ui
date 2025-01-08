@@ -8,7 +8,7 @@ import { BookFilterWidget } from "../widgets/book-filter"
 import { PaginatorWidget } from "./list"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { useAppSettings } from "../apiclient/settings"
-import { useAttributeCount } from "../apiclient/api-attribute-count"
+import { useAttributeCount } from "../apiclient/api-attribute"
 import { useLabelPresetList } from "../apiclient/api-labels"
 import { BookImagePreviewWidget } from "../widgets/book-short-info"
 

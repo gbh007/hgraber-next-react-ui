@@ -8,7 +8,7 @@ import { ErrorTextWidget } from "../widgets/error-text"
 import { BookFilterWidget } from "../widgets/book-filter"
 import { BookShortInfoWidget } from "../widgets/book-short-info"
 import { useAppSettings } from "../apiclient/settings"
-import { useAttributeCount } from "../apiclient/api-attribute-count"
+import { useAttributeColorList, useAttributeCount } from "../apiclient/api-attribute"
 import { useLabelPresetList } from "../apiclient/api-labels"
 import { Link, useSearchParams } from "react-router-dom"
 
@@ -36,6 +36,9 @@ export function ListScreen() {
     const [labelPresetsResponse, fetchLabelPresets] = useLabelPresetList()
     useEffect(() => { fetchLabelPresets() }, [fetchLabelPresets])
 
+    const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
+    useEffect(() => { fetchAttributeColorList() }, [fetchAttributeColorList])
+
     const [booksResponse, getBooks] = useBookList()
 
 
@@ -59,6 +62,7 @@ export function ListScreen() {
         <ErrorTextWidget value={booksResponse} />
         <ErrorTextWidget value={attributeCountResponse} />
         <ErrorTextWidget value={labelPresetsResponse} />
+        <ErrorTextWidget value={attributeColorListResponse} />
         <div className="app-container container-column container-gap-middle">
             <details className={"app " + styles.filter}>
                 <summary>Фильтр, всего {booksResponse.data?.count || 0}</summary>
@@ -99,7 +103,11 @@ export function ListScreen() {
         }} value={booksResponse.data?.pages || []} />
         <div className={styles.bookList}>
             {booksResponse.data?.books?.map(book =>
-                <BookShortInfoWidget key={book.info.id} value={book} />
+                <BookShortInfoWidget
+                    key={book.info.id}
+                    value={book}
+                    colors={attributeColorListResponse.data?.colors}
+                />
             )}
         </div>
         <PaginatorWidget onChange={(v: number) => {

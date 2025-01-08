@@ -34,7 +34,7 @@ export function LabelPresetsScreen() {
                         <td>{labelPreset.updated_at ? <HumanTimeWidget value={labelPreset.updated_at} /> : null}</td>
                         <td>
                             <div className="container-column container-gap-smaller">
-                                <Link className="app" to={"/label/preset/edit/" + encodeURIComponent(labelPreset.name)} >Редактировать</Link>
+                                <Link className="app-button" to={"/label/preset/edit/" + encodeURIComponent(labelPreset.name)} >Редактировать</Link>
                                 <button
                                     className="app"
                                     onClick={() => {

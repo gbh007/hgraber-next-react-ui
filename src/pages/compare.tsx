@@ -7,6 +7,7 @@ import { BookSimple, BookSimplePage } from "../apiclient/model-book";
 import { HumanTimeWidget } from "../widgets/common";
 import { DualReaderWidget } from "../widgets/split-viewer";
 import { BookImagePreviewWidget } from "../widgets/book-short-info";
+import { useAttributeColorList } from "../apiclient/api-attribute";
 
 export function CompareBookScreen() {
     const params = useParams()
@@ -21,6 +22,10 @@ export function CompareBookScreen() {
     const [createDeadHashResponse, doCreateDeadHash] = useCreateDeadHashByPage()
     const [deleteDeadHashResponse, doDeleteDeadHash] = useDeleteDeadHashByPage()
     const [deleteAllPageByBodyResponse, doDeleteAllPageByBody] = useDeletePagesByBody()
+
+
+    const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
+    useEffect(() => { fetchAttributeColorList() }, [fetchAttributeColorList])
 
     useEffect(() => {
         doCompare({
@@ -52,6 +57,7 @@ export function CompareBookScreen() {
         <ErrorTextWidget value={createDeadHashResponse} />
         <ErrorTextWidget value={deleteDeadHashResponse} />
         <ErrorTextWidget value={deleteAllPageByBodyResponse} />
+        <ErrorTextWidget value={attributeColorListResponse} />
 
         <div className="app-container container-row container-gap-middle" style={{ flexWrap: "wrap" }}>
             <div className="container-row container-gap-small">
@@ -107,15 +113,15 @@ export function CompareBookScreen() {
         <div className="app-container container-row container-gap-middle" style={{ justifyContent: "space-between" }}>
             <div className="container-column container-gap-small">
                 <b>Аттрибуты оригинала</b>
-                <BookAttributesWidget value={compareResult.data?.origin_attributes} />
+                <BookAttributesWidget value={compareResult.data?.origin_attributes} colors={attributeColorListResponse.data?.colors} />
             </div>
             <div className="container-column container-gap-small">
                 <b>Аттрибуты общие</b>
-                <BookAttributesWidget value={compareResult.data?.both_attributes} />
+                <BookAttributesWidget value={compareResult.data?.both_attributes} colors={attributeColorListResponse.data?.colors} />
             </div>
             <div className="container-column container-gap-small">
                 <b>Аттрибуты цели</b>
-                <BookAttributesWidget value={compareResult.data?.target_attributes} />
+                <BookAttributesWidget value={compareResult.data?.target_attributes} colors={attributeColorListResponse.data?.colors} />
             </div>
         </div>
 

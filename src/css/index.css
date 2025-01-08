@@ -97,6 +97,7 @@ select.app,
 textarea.app,
 input.app {
   border: 1px solid var(--app-primary);
+  color: var(--app-color);
   background: var(--container-background);
   border-radius: 3px;
   padding: 3px;
@@ -109,6 +110,12 @@ textarea.app:focus,
 input.app:focus {
   border: 1px dotted var(--app-primary);
   background: var(--app-secondary);
+}
+
+select.app:disabled,
+textarea.app:disabled,
+input.app:disabled {
+  background: var(--app-background);
 }
 
 details.app > summary {
@@ -124,6 +131,11 @@ details.app > summary {
 .container-column {
   display: flex;
   flex-direction: column;
+}
+
+.container-2-column {
+  display: grid;
+  grid-template-columns: auto 1fr;
 }
 
 .container-wrap {

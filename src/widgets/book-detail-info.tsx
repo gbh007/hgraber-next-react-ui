@@ -5,12 +5,15 @@ import { PropsWithChildren, useEffect, useState } from "react"
 import { BookAttribute, BookSimplePage } from "../apiclient/model-book"
 import { BookDetails } from "../apiclient/api-book-details"
 import { BookImagePreviewWidget, PageImagePreviewWidget } from "./book-short-info"
+import { AttributeColor } from "../apiclient/api-attribute"
+import { BookAttributeValuesWidget } from "./attribute"
 
 
 // FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
 export function BookDetailInfoWidget(props: PropsWithChildren & {
     book: BookDetails
     deduplicateBookInfo?: Array<DeduplicateBookByPageBodyResponseResult>
+    colors?: Array<AttributeColor>
 }) {
     const originDomain = /https?:\/\/([\w.]+)\/.*/.exec(props.book.info.origin_url ?? "")?.[1]
     return <div>
@@ -44,7 +47,7 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
                     {props.book.info.origin_url ? <a href={props.book.info.origin_url}>Ссылка на первоисточник</a> : null}
                     {originDomain ? <span>, домен: {originDomain}</span> : null}
                 </div>
-                <BookAttributesWidget value={props.book.attributes} />
+                <BookAttributesWidget value={props.book.attributes} colors={props.colors} />
                 {props.book.size ? <div className="container-column">
                     <b>Размер:</b>
                     <span>уникальный (без мертвых хешей) {props.book.size.unique_without_dead_hashes_formatted}</span>
@@ -102,6 +105,7 @@ export function BookPagesPreviewWidget(props: {
 
 export function BookAttributesWidget(props: {
     value?: Array<BookAttribute>
+    colors?: Array<AttributeColor>
 }) {
     if (!props.value) {
         return null
@@ -109,19 +113,22 @@ export function BookAttributesWidget(props: {
 
     return <div className="container-column container-gap-small">
         {props.value?.map(attr =>
-            <BookAttributeWidget key={attr.code} value={attr} />
+            <BookAttributeWidget key={attr.code} value={attr} colors={props.colors} />
         )}
     </div>
 }
 
 export function BookAttributeWidget(props: {
     value: BookAttribute
+    colors?: Array<AttributeColor>
 }) {
     return <div className="container-row container-gap-small" style={{ alignItems: "center", flexWrap: "wrap" }}>
         <span>{props.value.name}:</span>
-        {props.value.values.map(v =>
-            <span className={styles.tag} key={v}>{v}</span>
-        )}
+        <BookAttributeValuesWidget
+            code={props.value.code}
+            values={props.value.values}
+            colors={props.colors}
+        />
     </div>
 }
 

@@ -7,9 +7,12 @@ import deletedBadge from "../assets/deleted.png"
 import rebuildedBadge from "../assets/rebuilded.png"
 import verifiedBadge from "../assets/verified.png"
 import deadHashBadge from "../assets/dead-hash.png"
+import { AttributeColor } from "../apiclient/api-attribute";
+import { BookAttributeValuesWidget } from "./attribute";
 
 export function BookShortInfoWidget(props: {
     value: BookShortInfo
+    colors?: Array<AttributeColor>
 }) {
     const book = props.value
     const tags = book.tags?.filter((_, i) => i < 8)
@@ -32,15 +35,11 @@ export function BookShortInfoWidget(props: {
                     <span>{new Date(book.info.created_at).toLocaleString()}</span>
                 </div>
                 {tags ? <span>
-                    {tags?.map((tagname: string) =>
-                        <span key={tagname} style={{
-                            borderRadius: "3px",
-                            padding: "3px",
-                            margin: "2px",
-                            backgroundColor: "var(--app-background)",
-                            display: "inline-block",
-                        }}>{tagname}</span>
-                    )}
+                    <BookAttributeValuesWidget
+                        code="tag" // FIXME: прибито гвоздями, устранить
+                        values={tags}
+                        colors={props.colors}
+                    />
                     {hasMoreTags ? <b>и больше!</b> : null}
                 </span> : null}
             </div>
