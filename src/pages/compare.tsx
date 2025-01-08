@@ -52,7 +52,7 @@ export function CompareBookScreen() {
         deadHashSelector == "without" && page.has_dead_hash === false ||
         deadHashSelector == "only" && page.has_dead_hash === true)
 
-    return <div className="container-column container-gap-middle">
+    return <div className="container-column container-gap-bigger">
         <ErrorTextWidget value={compareResult} />
         <ErrorTextWidget value={createDeadHashResponse} />
         <ErrorTextWidget value={deleteDeadHashResponse} />

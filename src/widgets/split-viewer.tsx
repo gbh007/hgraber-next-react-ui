@@ -159,8 +159,8 @@ function ReaderWidget(props: PropsWithChildren & {
         }
     }, [props.prevPage, props.nextPage])
 
-    return <div className="app-container container-column container-gap-middle">
-        <div className={styles.pageViewActions}>
+    return <div className="container-column container-gap-middle">
+        <div className={"app-container " + styles.pageViewActions}>
             <span>
                 <button className="app" onClick={props.prevPage}><span className={styles.pageViewActionsPageNavigate}>{"<"}</span></button>
                 <button className="app" onClick={props.nextPage}><span className={styles.pageViewActionsPageNavigate}>{">"}</span></button>
@@ -183,6 +183,8 @@ function ReaderWidget(props: PropsWithChildren & {
                 onClick={goGo}
             /> : null}
         </div>
-        {props.children ? <div className={styles.pageViewActions}>{props.children}</div> : null}
+        <div className="app-container container-column container-gap-middle">
+            {props.children ? <div className={styles.pageViewActions}>{props.children}</div> : null}
+        </div>
     </div>
 }

@@ -374,32 +374,34 @@ function PageSelectorReaderWidget(props: {
         }
     }, [prevPage, nextPage])
 
-    return <div className="app-container">
-        <div className={styles.pageViewActions}>
-            <span>
-                <button className="app" onClick={prevPage}><span className={styles.pageViewActionsPageNavigate}>{"<"}</span></button>
-                <button className="app" onClick={nextPage}><span className={styles.pageViewActionsPageNavigate}>{">"}</span></button>
-            </span>
-            {currentPage?.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
-            {currentPage ?
-                <label><input
-                    className="app"
-                    type="checkbox"
-                    checked={props.value.includes(currentPage!.page_number)}
-                    onChange={e => props.onChange(
-                        e.target.checked ?
-                            [...props.value, currentPage!.page_number]
-                            :
-                            props.value.filter(v => v != currentPage!.page_number)
-                    )}
-                /> выбрать</label> : null
-            }
-            <span>
-                {`Страница ${currentPage?.page_number}` +
-                    ` из ${props.pageCount ?? props.pages.length ?? 0}` +
-                    (props.pageCount && props.pageCount != props.pages.length ? ` (${currentIndex + 1}/${props.pages.length})` : '')
+    return <div className="container-column container-gap-middle">
+        <div className="app-container">
+            <div className={styles.pageViewActions}>
+                <span>
+                    <button className="app" onClick={prevPage}><span className={styles.pageViewActionsPageNavigate}>{"<"}</span></button>
+                    <button className="app" onClick={nextPage}><span className={styles.pageViewActionsPageNavigate}>{">"}</span></button>
+                </span>
+                {currentPage?.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
+                {currentPage ?
+                    <label><input
+                        className="app"
+                        type="checkbox"
+                        checked={props.value.includes(currentPage!.page_number)}
+                        onChange={e => props.onChange(
+                            e.target.checked ?
+                                [...props.value, currentPage!.page_number]
+                                :
+                                props.value.filter(v => v != currentPage!.page_number)
+                        )}
+                    /> выбрать</label> : null
                 }
-            </span>
+                <span>
+                    {`Страница ${currentPage?.page_number}` +
+                        ` из ${props.pageCount ?? props.pages.length ?? 0}` +
+                        (props.pageCount && props.pageCount != props.pages.length ? ` (${currentIndex + 1}/${props.pages.length})` : '')
+                    }
+                </span>
+            </div>
         </div>
         <div className={styles.pageView}>
             {currentPage?.preview_url ? <img
