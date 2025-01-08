@@ -34,7 +34,7 @@ export function AttributeColorListWidget(props: {
                     <td>{color.code}</td>
                     <td>{color.value}</td>
                     <td>
-                        <BookAttributeValueWidget value={color.value} color={color} />
+                        <BookAttributeValueWidget value={color.value} color={color} code={color.code} />
                     </td>
                     <td>
                         <div className="container-column container-gap-small">
@@ -96,7 +96,7 @@ export function AttributeColorEditorWidget(props: {
         />
 
         <span>Итог</span>
-        <BookAttributeValueWidget value={props.value.value} color={props.value} />
+        <BookAttributeValueWidget value={props.value.value} color={props.value} code={props.value.code} />
     </div>
 }
 
@@ -109,6 +109,7 @@ export function BookAttributeValuesWidget(props: {
 
     return <>
         {props.values.map(value => <BookAttributeValueWidget
+            code={props.code}
             value={value}
             color={colors?.find(color => color.value == value)}
             key={value}
@@ -118,6 +119,7 @@ export function BookAttributeValuesWidget(props: {
 
 export function BookAttributeValueWidget(props: {
     value: string
+    code: string
     color?: AttributeColor
 }) {
     return <span key={props.value} style={{
@@ -127,7 +129,23 @@ export function BookAttributeValueWidget(props: {
         color: props.color?.text_color ?? attributeDefaultTextColor,
         backgroundColor: props.color?.background_color ?? attributeDefaultBackgroundColor,
         display: "inline-block",
-    }}>{props.value}</span>
+    }}>
+        <Link
+            style={{
+                textDecoration: "none",
+                color: "unset",
+            }}
+            to={`/list?filter=${encodeURIComponent(JSON.stringify({ // TODO: пока черновой вариант, необходимо вынести генерацию всех ссылок в отдельный пакет.
+                filter: {
+                    attributes: [{
+                        code: props.code,
+                        type: "in",
+                        values: [props.value]
+                    }]
+                }
+            }))}`}
+        >{props.value}</Link>
+    </span>
 }
 
 export function BookAttributeAutocompleteWidget(props: {
