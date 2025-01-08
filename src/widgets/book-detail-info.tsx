@@ -139,11 +139,13 @@ function BookDuplicates(props: {
     return <div className={styles.preview}>
         {props.deduplicateBookInfo?.map(book =>
             <div className="app-container" key={book.book.id}>
-                <BookImagePreviewWidget
-                    flags={book.book.flags}
-                    previewSize="small"
-                    preview_url={book.book.preview_url}
-                />
+                <Link to={`/book/${book.book.id}`}>
+                    <BookImagePreviewWidget
+                        flags={book.book.flags}
+                        previewSize="small"
+                        preview_url={book.book.preview_url}
+                    />
+                </Link>
                 <b>{book.book.name}</b>
                 <span>Страниц: {book.book.page_count}</span>
                 <span title="Сколько страниц этой книги есть в открытой">Покрытие книги: {prettyPercent(book.origin_covered_target)}% ({prettyPercent(book.origin_covered_target_without_dead_hashes)}%)</span>
