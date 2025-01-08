@@ -2,8 +2,6 @@ import { useEffect, useState } from "react"
 import styles from "./list.module.css"
 import { BookFilter } from "../apiclient/model-book-filter"
 import { BookListResponsePages, useBookList } from "../apiclient/api-book-list"
-import { useAgentList } from "../apiclient/api-agent-list"
-import { useAgentTaskExport } from "../apiclient/api-agent-task-export"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { BookFilterWidget } from "../widgets/book-filter"
 import { BookShortInfoWidget } from "../widgets/book-short-info"
@@ -11,6 +9,7 @@ import { useAppSettings } from "../apiclient/settings"
 import { useAttributeColorList, useAttributeCount } from "../apiclient/api-attribute"
 import { useLabelPresetList } from "../apiclient/api-labels"
 import { Link, useSearchParams } from "react-router-dom"
+import { useAgentList, useAgentTaskExport } from "../apiclient/api-agent"
 
 
 export function ListScreen() {
@@ -134,8 +133,8 @@ function AgentExportWidget(props: { filter: BookFilter }) {
 
             <select className="app" value={agentID} onChange={e => { setAgentID(e.target.value) }}>
                 <option value="">Не выбран</option>
-                {agentsResponse.data?.map(agent => <option value={agent.id} key={agent.id}>
-                    {agent.name}
+                {agentsResponse.data?.map(agent => <option value={agent.info.id} key={agent.info.id}>
+                    {agent.info.name}
                 </option>
                 )}
             </select>

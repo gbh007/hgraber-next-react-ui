@@ -1,105 +1,50 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
+import { Agent, AgentListResponse, AgentListResponseStatusProblems, useAgentDelete, useAgentGet, useAgentList, useAgentNew, useAgentUpdate } from "../apiclient/api-agent"
+import { ErrorTextWidget } from "../widgets/error-text"
+import { HumanTimeWidget } from "../widgets/common"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
-import "./agents.css"
-import { useAgentList, AgentListResponse } from "../apiclient/api-agent-list"
-import { useAgentDelete } from "../apiclient/api-agent-delete"
-import { AgentNewRequest, useAgentNew } from "../apiclient/api-agent-new"
+export function AgentListScreen() {
+    const [agentListResponse, fetchAgentList] = useAgentList()
+    const [agentDeleteResponse, doAgentDelete] = useAgentDelete()
 
-export function AgentScreen() {
-    const [{ isError, errorText, data }, doRequest] = useAgentList()
-
-    useEffect(() => { doRequest({ include_status: true }) }, [doRequest])
+    useEffect(() => { fetchAgentList({ include_status: true }) }, [fetchAgentList])
 
     return (
-        <>
-            {isError ? <div className="app-container">
-                <div className="app-error-container">
-                    {errorText}
-                </div>
-            </div> : null}
-            {data ? <AgentListWidget data={data!} callback={() => {
-                doRequest({ include_status: true })
-            }} /> : null}
-            <AgentNewWidget callback={() => {
-                doRequest({ include_status: true })
-            }} />
-        </>
-    )
-}
+        <div className="container-column container-gap-big">
+            <ErrorTextWidget value={agentListResponse} />
+            <ErrorTextWidget value={agentDeleteResponse} />
 
-function AgentListWidget(props: {
-    data: Array<AgentListResponse>
-    callback: () => void
-}) {
-    return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            {props.data.map(agent => <div
-                className="app-container"
-                style={{ display: "flex", flexDirection: "column", rowGap: "10px" }}
-                key={agent.id}
-            >
-                <h3
-                    className="agent-status"
-                    data-status={(agent.status || {}).status || 'unknown'}
-                >
-                    {agent.name}
-                </h3>
-                {agent.status && agent.status.start_at ? <span>
-                    <b>Запущен: </b>
-                    {new Date(agent.status!.start_at!).toLocaleString()}
-                </span> : null}
-                <span>
-                    <b>ID: </b>
-                    {agent.id}
-                </span>
-                <span>
-                    <b>Адрес: </b>
-                    {agent.addr}
-                </span>
-                <span>
-                    <b>Может обрабатывать новые: </b>
-                    {agent.can_parse ? 'Да' : 'Нет'}
-                </span>
-                <span>
-                    <b>Может обрабатывать новые массово: </b>
-                    {agent.can_parse_multi ? 'Да' : 'Нет'}
-                </span>
-                <span>
-                    <b>Может экспортировать: </b>
-                    {agent.can_export ? 'Да' : 'Нет'}
-                </span>
-                <span>
-                    <b>Приоритет: </b>
-                    {agent.priority}
-                </span>
-                <span>
-                    <b>Создан: </b>
-                    {new Date(agent.create_at).toLocaleString()}
-                </span>
-                <AgentDeleteButton callback={props.callback} agentID={agent.id} />
-            </div >)
-            }
+            <div>
+                <Link className="app-button" to={`/agent/edit/new`}>Новый</Link>
+            </div>
+
+            {agentListResponse.data?.map(agent => <AgentInfoWidget
+                key={agent.info.id}
+                value={agent}
+                onDelete={() => {
+                    doAgentDelete({ id: agent.info.id }).then(() => {
+                        fetchAgentList({ include_status: true })
+                    })
+                }}
+            />)}
         </div>
     )
 }
 
-function AgentDeleteButton(props: {
-    agentID: string
-    callback: () => void
-}) {
-    // FIXME: обрабатывать ошибки
-    const [_, doRequest] = useAgentDelete()
+export function AgentEditorScreen() {
+    const params = useParams()
+    const agentID = decodeURIComponent(params.id ?? "new")
 
-    return <button className="app" onClick={() => {
-        doRequest({ id: props.agentID })
-            .then(() => props.callback())
-    }} >
-        <b style={{ color: "red" }}>Удалить</b>
-    </button >
-}
 
-function AgentNewWidget(props: { callback: () => void }) {
-    const [agentData, setAgentData] = useState<AgentNewRequest>({
+    const navigate = useNavigate();
+
+    const [agentGetResponse, fetchAgent] = useAgentGet()
+    const [agentNewResponse, doAgentNew] = useAgentNew()
+    const [agentUpdateResponse, doAgentUpdate] = useAgentUpdate()
+
+    const [data, setData] = useState<Agent>({
+        id: "",
         addr: "",
         can_export: false,
         can_parse: false,
@@ -107,130 +52,212 @@ function AgentNewWidget(props: { callback: () => void }) {
         name: "",
         priority: 0,
         token: "",
+        created_at: new Date().toJSON(),
     })
-    const [{ isError, errorText }, doRequest] = useAgentNew()
 
-    return <div
-        className="app-container"
-        style={{ display: "flex", flexDirection: "column", rowGap: "10px" }}
-    >
-        <b>Создание агента</b>
 
-        {isError ? <div className="app-error-container">
-            {errorText}
-        </div> : null}
+    useEffect(() => {
+        if (agentGetResponse.data) {
+            setData(agentGetResponse.data!)
+        }
+    }, [agentGetResponse.data])
 
-        <label>
-            <span>Название</span>
-            <input
-                className="app"
-                placeholder="Название"
-                type="text"
-                autoComplete="off"
-                value={agentData.name}
-                onChange={(e) => {
-                    setAgentData({ ...agentData, name: e.target.value })
-                }}
+    const isExists = agentID != "new"
+
+
+    useEffect(() => {
+        if (isExists) {
+            fetchAgent({ id: agentID, })
+        }
+    }, [fetchAgent, agentID, isExists])
+
+    const useSave = useCallback(() => {
+        if (isExists) {
+            doAgentUpdate(data)
+        } else {
+            doAgentNew(data).then(() => navigate("/agent/list"))
+        }
+    }, [doAgentUpdate, doAgentNew, isExists, data])
+
+    return <div>
+        <ErrorTextWidget value={agentGetResponse} />
+        <ErrorTextWidget value={agentNewResponse} />
+        <ErrorTextWidget value={agentUpdateResponse} />
+
+        <div className="app-container container-column container-gap-middle">
+            <b>Редактор агента</b>
+
+            <AgentEditorWidget
+                value={data}
+                onChange={setData}
             />
-        </label>
 
-        <label>
-            <span>Адрес</span>
-            <input
-                className="app"
-                placeholder="Адрес"
-                type="url"
-                autoComplete="off"
-                value={agentData.addr}
-                onChange={(e) => {
-                    setAgentData({ ...agentData, addr: e.target.value })
-                }}
-            />
-        </label>
+            <button className="app" onClick={useSave}>Сохранить</button>
+        </div>
+    </div>
+}
 
-        <label>
-            <span>Токен</span>
-            <input
-                className="app"
-                placeholder="Токен"
-                type="password"
-                autoComplete="off"
-                value={agentData.token}
-                onChange={(e) => {
-                    setAgentData({ ...agentData, token: e.target.value })
-                }}
-            />
-        </label>
+function AgentInfoWidget(props: {
+    value: AgentListResponse
+    onDelete: () => void
+}) {
+    return <div className="app-container container-column container-gap-middle">
+        <h3>
+            <div className="container-row container-gap-middle">
+                <AgentStatusWidget value={props.value.status?.status} />
+                <span>{props.value.info.name}</span>
+            </div>
+        </h3>
+        <div className="container-2-column container-gap-middle">
+            {props.value.status?.start_at ? <>
+                <b>Запущен: </b>
+                <HumanTimeWidget value={props.value.status.start_at} />
+            </> : null}
+            <b>ID: </b>
+            <span>{props.value.info.id}</span>
+            <b>Адрес: </b>
+            <span>{props.value.info.addr}</span>
+            <b>Может обрабатывать новые: </b>
+            <span>{props.value.info.can_parse ? 'Да' : 'Нет'}</span>
+            <b>Может обрабатывать новые массово: </b>
+            <span>{props.value.info.can_parse_multi ? 'Да' : 'Нет'}</span>
+            <b>Может экспортировать: </b>
+            <span>{props.value.info.can_export ? 'Да' : 'Нет'}</span>
+            <b>Приоритет: </b>
+            <span>{props.value.info.priority}</span>
+            <b>Создан: </b>
+            <HumanTimeWidget value={props.value.info.created_at} />
+        </div>
+        <AgentStatusInfoWidget value={props.value.status?.problems} />
+        <div className="container-row container-gap-middle">
+            <Link className="app-button" to={`/agent/edit/${props.value.info.id}`}>Редактировать</Link>
+            <button className="app" onClick={() => props.onDelete()} >
+                <b className="color-danger">Удалить</b>
+            </button>
+        </div>
+    </div>
+}
 
-        <label>
-            <span>Поддерживает парсинг</span>
-            <input
-                className="app"
-                placeholder="Поддерживает парсинг"
-                type="checkbox"
-                autoComplete="off"
-                checked={agentData.can_parse}
-                onChange={(e) => {
-                    setAgentData({ ...agentData, can_parse: e.target.checked })
-                }}
-            />
-        </label>
+function AgentStatusInfoWidget(props: {
+    value?: Array<AgentListResponseStatusProblems>
+}) {
+    return <div className="container-column container-gap-small">
+        {props.value?.map((problem, i) => <span key={i}>{problem.type}: {problem.details}</span>)}
+    </div>
+}
 
-        <label>
-            <span>Поддерживает множественный парсинг</span>
-            <input
-                className="app"
-                placeholder="Поддерживает множественный парсинг"
-                type="checkbox"
-                autoComplete="off"
-                checked={agentData.can_parse_multi}
-                onChange={(e) => {
-                    setAgentData({ ...agentData, can_parse_multi: e.target.checked })
-                }}
-            />
-        </label>
+function AgentEditorWidget(props: {
+    value: Agent
+    onChange: (v: Agent) => void
+}) {
+    return <div className="container-2-column container-gap-middle">
+        <span>Название</span>
+        <input
+            className="app"
+            placeholder="Название"
+            type="text"
+            autoComplete="off"
+            value={props.value.name}
+            onChange={(e) => {
+                props.onChange({ ...props.value, name: e.target.value })
+            }}
+        />
 
-        <label>
-            <span>Поддерживает экспорт</span>
-            <input
-                className="app"
-                placeholder="Поддерживает экспорт"
-                type="checkbox"
-                autoComplete="off"
-                checked={agentData.can_export}
-                onChange={(e) => {
-                    setAgentData({ ...agentData, can_export: e.target.checked })
-                }}
-            />
-        </label>
+        <span>Адрес</span>
+        <input
+            className="app"
+            placeholder="Адрес"
+            type="url"
+            autoComplete="off"
+            value={props.value.addr}
+            onChange={(e) => {
+                props.onChange({ ...props.value, addr: e.target.value })
+            }}
+        />
 
-        <label>
-            <span>Приоритет</span>
-            <input
-                className="app"
-                placeholder="Приоритет"
-                type="number"
-                autoComplete="off"
-                value={agentData.priority}
-                onChange={(e) => {
-                    setAgentData({ ...agentData, priority: e.target.valueAsNumber })
-                }}
-            />
-        </label>
+        <span>Токен</span>
+        <input
+            className="app"
+            placeholder="Токен"
+            type="password"
+            autoComplete="off"
+            value={props.value.token}
+            onChange={(e) => {
+                props.onChange({ ...props.value, token: e.target.value })
+            }}
+        />
 
-        <button className="app" onClick={() => {
-            doRequest(agentData).then(() => {
-                props.callback()
-                setAgentData({
-                    addr: "",
-                    can_export: false,
-                    can_parse: false,
-                    can_parse_multi: false,
-                    name: "",
-                    priority: 0,
-                    token: "",
-                })
-            })
-        }}>Создать</button>
-    </div >
+        <span>Флаги</span>
+        <div className="container-column container-gap-small">
+            <label>
+                <input
+                    className="app"
+                    placeholder="Поддерживает парсинг"
+                    type="checkbox"
+                    autoComplete="off"
+                    checked={props.value.can_parse}
+                    onChange={(e) => {
+                        props.onChange({ ...props.value, can_parse: e.target.checked })
+                    }}
+                />
+                <span>Поддерживает парсинг</span>
+            </label>
+
+            <label>
+                <input
+                    className="app"
+                    placeholder="Поддерживает множественный парсинг"
+                    type="checkbox"
+                    autoComplete="off"
+                    checked={props.value.can_parse_multi}
+                    onChange={(e) => {
+                        props.onChange({ ...props.value, can_parse_multi: e.target.checked })
+                    }}
+                />
+                <span>Поддерживает множественный парсинг</span>
+            </label>
+
+            <label>
+                <input
+                    className="app"
+                    placeholder="Поддерживает экспорт"
+                    type="checkbox"
+                    autoComplete="off"
+                    checked={props.value.can_export}
+                    onChange={(e) => {
+                        props.onChange({ ...props.value, can_export: e.target.checked })
+                    }}
+                />
+                <span>Поддерживает экспорт</span>
+            </label>
+        </div>
+        <span>Приоритет</span>
+        <input
+            className="app"
+            placeholder="Приоритет"
+            type="number"
+            autoComplete="off"
+            value={props.value.priority}
+            onChange={(e) => {
+                props.onChange({ ...props.value, priority: e.target.valueAsNumber })
+            }}
+        />
+    </div>
+}
+
+function AgentStatusWidget(props: {
+    value?: string
+}) {
+    const color = props.value == "ok" ? "green" :
+        props.value == "error" ? "red" :
+            props.value == "warning" ? "yellow" :
+                props.value == "offline" ? "gray" : "purple"
+
+    return <div> <div
+        style={{
+            backgroundColor: color,
+            padding: "10px",
+            borderRadius: "10px",
+        }}
+    /></div>
 }

@@ -9,7 +9,7 @@ import { MainScreen } from "./pages/main";
 import { PropsWithChildren } from "react";
 import { SettingsScreen } from "./pages/settings";
 import { RPCScreen } from "./pages/rpc";
-import { AgentScreen } from "./pages/agents";
+import { AgentEditorScreen, AgentListScreen } from "./pages/agents";
 import { ListScreen } from "./pages/list";
 import { BookDetailsScreen } from "./pages/details";
 import { BookReadScreen } from "./pages/read";
@@ -42,8 +42,12 @@ const router = createHashRouter([
     element: <SimpleWrapper> <RPCScreen /></SimpleWrapper>,
   },
   {
-    path: "/agents",
-    element: <SimpleWrapper> <AgentScreen /></SimpleWrapper>,
+    path: "/agent/list",
+    element: <SimpleWrapper> <AgentListScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/agent/edit/:id",
+    element: <SimpleWrapper> <AgentEditorScreen /></SimpleWrapper>,
   },
   {
     path: "/list",
@@ -145,7 +149,7 @@ function MenuWidget() {
     <ol>
       <li> <Link to="/">Главная</Link> </li>
       <li> <Link to="/list">Список книг</Link> </li>
-      <li> <Link to="/agents">Агенты</Link> </li>
+      <li> <Link to="/agent/list">Агенты</Link> </li>
       <li> <Link to="/rpc">RPC</Link> </li>
       <li> <Link to="/tasks">Задачи</Link> </li>
       <li> <Link to="/label/presets">Пресеты меток</Link> </li>
