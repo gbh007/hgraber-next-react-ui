@@ -35,6 +35,7 @@ export interface BookRebuildRequestFlags {
     mark_unused_pages_as_dead_hash?: boolean
     mark_unused_pages_as_deleted?: boolean
     mark_empty_book_as_deleted_after_remove_pages?: boolean
+    auto_verify?: boolean
 }
 
 export interface BookRebuildResponse {

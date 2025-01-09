@@ -45,7 +45,7 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
                 </div>
                 <div className="container-row container-gap-small">
                     {props.book.info.origin_url ? <a href={props.book.info.origin_url}>Ссылка на первоисточник</a> : null}
-                    {originDomain ? <span>, домен: {originDomain}</span> : null}
+                    {originDomain ? <span>({originDomain})</span> : null}
                 </div>
                 <BookAttributesWidget value={props.book.attributes} colors={props.colors} />
                 {props.book.size ? <div className="container-column">

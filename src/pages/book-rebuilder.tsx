@@ -22,6 +22,7 @@ export function BookRebuilderScreen() {
         },
         flags: {
             set_origin_labels: true,
+            auto_verify: true,
         },
         selected_pages: [],
     })

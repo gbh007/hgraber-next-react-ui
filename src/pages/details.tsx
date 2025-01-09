@@ -66,7 +66,7 @@ export function BookDetailsScreen() {
                         className={"app " + styles.mainButton}
                         disabled={bookDeleteResponse.isLoading}
                         onClick={() => {
-                            if (!confirm(`Удалить книгу: ${bookDetailsResponse.data?.info.name}`)) {
+                            if (!confirm(`Удалить книгу: ${bookDetailsResponse.data?.info.name}?`)) {
                                 return;
                             }
 
@@ -79,19 +79,35 @@ export function BookDetailsScreen() {
                     >
                         <span className="color-danger">Удалить</span>
                     </button>}
-                    {bookDetailsResponse.data.info.flags.is_verified ? null : <button
-                        className={"app " + styles.mainButton}
-                        disabled={bookVerifyResponse.isLoading}
-                        onClick={() => {
-                            if (!confirm(`Подтвердить книгу: ${bookDetailsResponse.data?.info.name}`)) {
-                                return;
-                            }
+                    {bookDetailsResponse.data.info.flags.is_verified ?
+                        <button
+                            className={"app " + styles.mainButton}
+                            disabled={bookVerifyResponse.isLoading}
+                            onClick={() => {
+                                if (!confirm(`Снять подтверждение с книги: ${bookDetailsResponse.data?.info.name}?`)) {
+                                    return;
+                                }
 
-                            postBookVerify({ id: bookID }).then(() => { getBookDetails({ id: bookID }) })
-                        }}
-                    >
-                        <span className="color-good">Подтвердить</span>
-                    </button>}
+                                postBookVerify({ id: bookID, verify_status: false }).then(() => { getBookDetails({ id: bookID }) })
+                            }}
+                        >
+                            <span className="color-danger-lite">Снять статус подтвержденной</span>
+                        </button>
+                        :
+                        <button
+                            className={"app " + styles.mainButton}
+                            disabled={bookVerifyResponse.isLoading}
+                            onClick={() => {
+                                if (!confirm(`Подтвердить книгу: ${bookDetailsResponse.data?.info.name}?`)) {
+                                    return;
+                                }
+
+                                postBookVerify({ id: bookID, verify_status: true }).then(() => { getBookDetails({ id: bookID }) })
+                            }}
+                        >
+                            <span className="color-good">Подтвердить</span>
+                        </button>
+                    }
                     {hasSharedPages ?
                         <button
                             className={"app " + styles.mainButton}

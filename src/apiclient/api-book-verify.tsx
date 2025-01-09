@@ -2,6 +2,7 @@ import { PostAction, useAPIPost, Response } from "./client-hooks"
 
 export interface BookVerifyRequest {
     id: string
+    verify_status: boolean
 }
 
 export function useBookVerify(): [Response<void | null>, PostAction<BookVerifyRequest>] {

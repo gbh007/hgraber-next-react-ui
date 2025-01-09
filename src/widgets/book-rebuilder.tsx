@@ -121,6 +121,14 @@ function BuilderFlagsWidget(props: {
                 onChange={e => props.onChange({ ...props.value, set_origin_labels: e.target.checked })}
             />Проставить каждой страницы метки об оригинальной книге если ее нет
         </label>
+        <label className="color-good">
+            <input
+                className="app"
+                type="checkbox"
+                checked={props.value?.auto_verify ?? false}
+                onChange={e => props.onChange({ ...props.value, auto_verify: e.target.checked })}
+            />Проставить билду статус подтвержденной книги
+        </label>
         <label>
             <input
                 className="app"
