@@ -11,7 +11,8 @@ import { BookListResponse, BookShortInfo } from "../apiclient/api-book-list";
 import { PaginatorWidget } from "../pages/list";
 import { HumanTimeWidget } from "./common";
 import { useCallback, useEffect, useState } from "react";
-import { BookImagePreviewWidget, PageImagePreviewWidget } from "./book-short-info";
+import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget } from "./book-short-info";
+import { usePreviewSizeWidget } from "./book-detail-info";
 
 export function BookRebuilderWidget(props: {
     value: BookRebuildRequest
@@ -200,6 +201,8 @@ function BookPagesSelectWidget(props: {
     const [showDeadHash, setShowDeadHash] = useState(true)
 
 
+    const [imageSize, imageSizeWidget] = usePreviewSizeWidget("medium")
+
     const pages = props.pages?.
         filter(page => !showOnlySelected || props.value.includes(page.page_number)).
         filter(page => showDeadHash || !page.has_dead_hash)
@@ -209,6 +212,9 @@ function BookPagesSelectWidget(props: {
             <div className="container-row container-gap-middle">
                 <button className="app" onClick={() => props.onChange(props.pages?.map(page => page.page_number) ?? [])}>Выбрать все</button>
                 <button className="app" onClick={() => props.onChange([])}>Снять все</button>
+                <span>Выбрано {props.value.length} из {props.pages?.length}</span>
+            </div>
+            <div className="container-row container-gap-middle">
                 <select
                     className="app"
                     value={viewMode}
@@ -217,7 +223,7 @@ function BookPagesSelectWidget(props: {
                     <option value="reader">Режим просмотра: постранично</option>
                     <option value="list">Режим просмотра: все страницы</option>
                 </select>
-                <span>Выбрано {props.value.length} из {props.pages?.length}</span>
+                {viewMode == "list" ? imageSizeWidget : null}
             </div>
             <div className="container-column container-gap-middle">
                 <label><input
@@ -248,6 +254,7 @@ function BookPagesSelectWidget(props: {
                         onChange={props.onChange}
                         value={props.value}
                         pages={pages}
+                        previewSize={imageSize}
                     /> : null}
     </div>
 }
@@ -257,6 +264,7 @@ function PageListPreview(props: {
     onChange: (v: Array<number>) => void
     bookID: string
     pages?: Array<BookSimplePage>
+    previewSize: ImageSize
 }) {
     return <div className={styles.preview}>
         {props.pages?.map(page =>
@@ -264,7 +272,7 @@ function PageListPreview(props: {
                 {page.preview_url ?
                     <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
                         <PageImagePreviewWidget
-                            previewSize="medium"
+                            previewSize={props.previewSize}
                             flags={page}
                             preview_url={page.preview_url}
                         />

@@ -10,6 +10,8 @@ import deadHashBadge from "../assets/dead-hash.png"
 import { AttributeColor } from "../apiclient/api-attribute";
 import { BookAttributeValuesWidget } from "./attribute";
 
+export type ImageSize = "small" | "medium" | "big" | "superbig"
+
 export function BookShortInfoWidget(props: {
     value: BookShortInfo
     colors?: Array<AttributeColor>
@@ -50,7 +52,7 @@ export function BookShortInfoWidget(props: {
 export function BookImagePreviewWidget(props: {
     preview_url?: string
     flags?: BookFlags
-    previewSize: "small" | "medium" | "big" | "superbig"
+    previewSize: ImageSize
 }) {
     const activeBadge = [deletedBadge, verifiedBadge, rebuildedBadge]
         .filter(badge => badge == deletedBadge && props.flags?.is_deleted ||
@@ -113,25 +115,25 @@ export function PageImagePreviewWidget(props: {
     flags?: {
         has_dead_hash?: boolean
     }
-    previewSize: "small" | "medium" | "big" | "superbig" // TODO: доконфигурировать размеры
+    previewSize: ImageSize
 }) {
     const activeBadge = [deadHashBadge]
         .filter(badge => badge == deadHashBadge && props.flags?.has_dead_hash)
 
-    const badgeSize = props.previewSize == "superbig" ? 0
-        : props.previewSize == "big" ? 0
+    const badgeSize = props.previewSize == "superbig" ? 5
+        : props.previewSize == "big" ? 60
             : props.previewSize == "medium" ? 40
-                : 0
+                : 20
 
-    const imageWidth = props.previewSize == "superbig" ? 0
-        : props.previewSize == "big" ? 0
+    const imageWidth = props.previewSize == "superbig" ? 80
+        : props.previewSize == "big" ? 600
             : props.previewSize == "medium" ? 400
-                : 0
+                : 200
 
-    const imageHeight = props.previewSize == "superbig" ? 0
-        : props.previewSize == "big" ? 0
+    const imageHeight = props.previewSize == "superbig" ? 80
+        : props.previewSize == "big" ? 300
             : props.previewSize == "medium" ? 200
-                : 0
+                : 100
 
     const widthUnit = props.previewSize == "superbig" ? "vw" : "px"
     const heightUnit = props.previewSize == "superbig" ? "vh" : "px"

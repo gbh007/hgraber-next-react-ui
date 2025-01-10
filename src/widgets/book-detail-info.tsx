@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom"
 import styles from "./book-detail-info.module.css"
 import { DeduplicateBookByPageBodyResponseResult } from "../apiclient/api-deduplicate"
-import { PropsWithChildren, useEffect, useState } from "react"
+import { PropsWithChildren, ReactNode, useEffect, useState } from "react"
 import { BookAttribute, BookSimplePage } from "../apiclient/model-book"
 import { BookDetails } from "../apiclient/api-book-details"
-import { BookImagePreviewWidget, PageImagePreviewWidget } from "./book-short-info"
+import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget } from "./book-short-info"
 import { AttributeColor } from "../apiclient/api-attribute"
 import { BookAttributeValuesWidget } from "./attribute"
 
@@ -67,39 +67,64 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
     </div>
 }
 
+export function usePreviewSizeWidget(
+    defaultSize?: ImageSize
+): [ImageSize, ReactNode] {
+    const [size, setSize] = useState<ImageSize>(defaultSize ?? "small")
+
+    return [size, <select
+        className="app"
+        value={size}
+        onChange={e => setSize(e.target.value as ImageSize)}
+    >
+        <option value={"small"}>маленький</option>
+        <option value={"medium"}>средний</option>
+        <option value={"big"}>большой</option>
+        <option value={"superbig"}>огромный</option>
+    </select>]
+}
+
 export function BookPagesPreviewWidget(props: {
     bookID: string
     pages?: Array<BookSimplePage>
     pageLimit?: number
 }) {
-    if (!props.pages?.length) {
-        return null
-    }
-
     const [pageLimit, setPageLimit] = useState(20)
 
     useEffect(() => {
         setPageLimit(props.pageLimit ?? 20)
     }, [setPageLimit, props.pageLimit, props.bookID])
 
-    return <div className={styles.preview}>
-        {props.pages?.filter(page => page.preview_url)
-            .filter((_, i) => pageLimit == -1 || i < pageLimit)
-            .map((page) =>
-                <div className="app-container" key={page.page_number}>
-                    <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
-                        <PageImagePreviewWidget
-                            previewSize="medium"
-                            flags={page}
-                            preview_url={page.preview_url}
-                        />
-                    </Link>
-                </div>
 
-            )}
-        {pageLimit != -1 && (pageLimit < props.pages.length) ?
-            <button className="app" onClick={() => setPageLimit(-1)}>Показать все страницы</button>
-            : null}
+    const [imageSize, imageSizeWidget] = usePreviewSizeWidget("medium")
+
+    if (!props.pages?.length) {
+        return null
+    }
+
+    return <div className="container-column container-gap-middle">
+        <div className="app-container container-row container-gap-middle">
+            {pageLimit != -1 && (pageLimit < props.pages.length) ?
+                <button className="app" onClick={() => setPageLimit(-1)}>Показать все страницы</button>
+                : null}
+            {imageSizeWidget}
+        </div>
+        <div className={styles.preview}>
+            {props.pages?.filter(page => page.preview_url)
+                .filter((_, i) => pageLimit == -1 || i < pageLimit)
+                .map((page) =>
+                    <div className="app-container" key={page.page_number}>
+                        <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
+                            <PageImagePreviewWidget
+                                previewSize={imageSize}
+                                flags={page}
+                                preview_url={page.preview_url}
+                            />
+                        </Link>
+                    </div>
+
+                )}
+        </div>
     </div>
 }
 
