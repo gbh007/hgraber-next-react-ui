@@ -44,7 +44,7 @@ export function TaskScreen() {
             <button className="app" onClick={() => { fetchTaskResults() }}>Обновить</button>
         </div>
         <ErrorTextWidget value={taskResultsResponse} />
-        {taskResultsResponse.data?.results?.reverse().map((taskResult, i) =>
+        {taskResultsResponse.data?.results?.map((taskResult, i) =>
             <div className="app-container" key={i}>
                 <div className="container-column container-gap-small">
                     <h4>{taskResult.name}</h4>
