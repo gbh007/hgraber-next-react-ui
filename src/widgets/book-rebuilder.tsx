@@ -55,7 +55,7 @@ export function BookRebuilderWidget(props: {
                 <BooksPreview value={targetPreview} />
             </div>
             :
-            <details>
+            <details className="app">
                 <summary>Выбрать целевую книгу</summary>
                 <div className="container-column container-gap-big">
                     <div className="app-container container-column container-gap-small">

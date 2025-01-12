@@ -21,7 +21,7 @@ export function BookShortInfoWidget(props: {
     const hasMoreTags = book.tags?.length ?? 0 > 8
 
     return <div className="app-container">
-        <div className="container-row container-gap-middle" data-background-color={book.info.flags.parsed_name ? '' : 'danger'}>
+        <div className="container-row container-gap-middle">
             <Link to={`/book/${book.info.id}`}>
                 <BookImagePreviewWidget
                     flags={book.info.flags}
@@ -30,7 +30,10 @@ export function BookShortInfoWidget(props: {
                 />
             </Link>
             <div className="container-column">
-                <b data-color={book.info.flags.parsed_name ? '' : 'danger'}>{book.info.name}</b>
+                {book.info.flags.parsed_name ?
+                    <b>{book.info.name}</b>
+                    : <b data-color={'danger'}>НЕТ НАЗВАНИЯ</b>
+                }
                 <div className="container-row container-gap-small container-wrap" style={{ justifyContent: "space-between" }}>
                     <span data-color={book.info.flags.parsed_page ? '' : 'danger'}>Страниц: {book.info.page_count}</span>
                     <span data-color={book.page_loaded_percent != 100.0 ? 'danger' : ''}> Загружено: {book.page_loaded_percent}%</span>
