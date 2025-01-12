@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState } from "react"
 import { BookSimplePage } from "../apiclient/model-book"
-import { DialogWidget } from "./common"
+import { ColorizedTextWidget, DialogWidget } from "./common"
 import { Link } from "react-router-dom"
 
 
@@ -31,7 +31,7 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
                         props.onCreateDeadHash()
                     }}
                 >
-                    <span className="color-danger-lite">Создать мертвый хеш</span>
+                    <ColorizedTextWidget color="danger-lite">Создать мертвый хеш</ColorizedTextWidget>
                 </button> : null
             }
             {props.currentPage?.has_dead_hash === true ?
@@ -42,7 +42,7 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
                         props.onDeleteDeadHash()
                     }}
                 >
-                    <span className="color-danger-lite">Удалить мертвый хеш</span>
+                    <ColorizedTextWidget color="danger-lite">Удалить мертвый хеш</ColorizedTextWidget>
                 </button> : null
             }
             {props.currentPage ?
@@ -54,7 +54,7 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
                             props.onDeleteAllPages()
                         }}
                     >
-                        <b className="color-danger">Удалить такие страницы</b>
+                        <ColorizedTextWidget color="danger" bold>Удалить такие страницы</ColorizedTextWidget>
                     </button>
                     <Link className="app-button" to={`/deduplicate/${props.bookID}/${props.pageNumber}`}>Книги с этой страницей</Link>
                 </> : null

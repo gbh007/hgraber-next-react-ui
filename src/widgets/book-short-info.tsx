@@ -9,6 +9,7 @@ import verifiedBadge from "../assets/verified.png"
 import deadHashBadge from "../assets/dead-hash.png"
 import { AttributeColor } from "../apiclient/api-attribute";
 import { BookAttributeValuesWidget } from "./attribute";
+import { ColorizedTextWidget, ContainerWidget } from "./common";
 
 export type ImageSize = "small" | "medium" | "big" | "superbig"
 
@@ -20,8 +21,8 @@ export function BookShortInfoWidget(props: {
     const tags = book.tags?.filter((_, i) => i < 8)
     const hasMoreTags = book.tags?.length ?? 0 > 8
 
-    return <div className="app-container">
-        <div className="container-row container-gap-middle">
+    return <ContainerWidget appContainer>
+        <ContainerWidget direction="row" gap="medium">
             <Link to={`/book/${book.info.id}`}>
                 <BookImagePreviewWidget
                     flags={book.info.flags}
@@ -29,16 +30,16 @@ export function BookShortInfoWidget(props: {
                     previewSize="small"
                 />
             </Link>
-            <div className="container-column">
+            <ContainerWidget direction="column">
                 {book.info.flags.parsed_name ?
                     <b>{book.info.name}</b>
-                    : <b data-color={'danger'}>НЕТ НАЗВАНИЯ</b>
+                    : <ColorizedTextWidget bold color="danger">НЕТ НАЗВАНИЯ</ColorizedTextWidget>
                 }
-                <div className="container-row container-gap-small container-wrap" style={{ justifyContent: "space-between" }}>
-                    <span data-color={book.info.flags.parsed_page ? '' : 'danger'}>Страниц: {book.info.page_count}</span>
-                    <span data-color={book.page_loaded_percent != 100.0 ? 'danger' : ''}> Загружено: {book.page_loaded_percent}%</span>
+                <ContainerWidget direction="row" gap="small" wrap style={{ justifyContent: "space-between" }}>
+                    <ColorizedTextWidget color={book.info.flags.parsed_page ? undefined : 'danger'}>Страниц: {book.info.page_count}</ColorizedTextWidget>
+                    <ColorizedTextWidget color={book.page_loaded_percent != 100.0 ? 'danger' : undefined}> Загружено: {book.page_loaded_percent}%</ColorizedTextWidget>
                     <span>{new Date(book.info.created_at).toLocaleString()}</span>
-                </div>
+                </ContainerWidget>
                 {tags ? <span>
                     <BookAttributeValuesWidget
                         code="tag" // FIXME: прибито гвоздями, устранить
@@ -47,9 +48,9 @@ export function BookShortInfoWidget(props: {
                     />
                     {hasMoreTags ? <b>и больше!</b> : null}
                 </span> : null}
-            </div>
-        </div>
-    </div>
+            </ContainerWidget>
+        </ContainerWidget>
+    </ContainerWidget>
 }
 
 export function BookImagePreviewWidget(props: {

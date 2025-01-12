@@ -2,6 +2,7 @@ import { PropsWithChildren, useCallback, useEffect, useState } from "react"
 import { BookSimplePage } from "../apiclient/model-book"
 import styles from "./split-viewer.module.css"
 import { BookReadActionButtonWidget } from "./book-reader"
+import { ColorizedTextWidget, ContainerWidget } from "./common"
 
 
 export function DualReaderWidget(props: {
@@ -75,12 +76,12 @@ export function DualReaderWidget(props: {
         setCurrentAIndex(currentAIndex + 1)
     }, [props.bPages, currentBIndex, props.aPages, currentAIndex])
 
-    return <div className="container-column container-gap-small">
-        <div className="app-container container-row container-gap-small">
+    return <ContainerWidget direction="column" gap="small">
+        <ContainerWidget appContainer direction="row" gap="small">
             <button className="app" onClick={prevBothPage}>Пролистать назад</button>
             <button className="app" onClick={nextBothPage}>Пролистать вперед</button>
-        </div>
-        <div className="container-row container-gap-small">
+        </ContainerWidget>
+        <ContainerWidget direction="row" gap="small">
             <ReaderWidget
                 bookID={props.aBookID}
                 currentIndex={currentAIndex}
@@ -102,9 +103,9 @@ export function DualReaderWidget(props: {
                     className="app"
                     onClick={() => props.onDeleteAllPagesWithDeadHash(props.aBookID, currentAPage)}
                 >
-                    <b className="color-danger">Удалить такие страницы</b>
+                    <ColorizedTextWidget bold color="danger">Удалить такие страницы</ColorizedTextWidget>
                 </button>
-                <span></span>
+                <span>{/* это специальная заглушка для равномерного размещения компонентов */}</span>
             </> : null}
             </ReaderWidget>
             <ReaderWidget
@@ -128,12 +129,12 @@ export function DualReaderWidget(props: {
                     className="app"
                     onClick={() => props.onDeleteAllPagesWithDeadHash(props.bBookID, currentBPage)}
                 >
-                    <b className="color-danger">Удалить такие страницы</b>
+                    <ColorizedTextWidget bold color="danger">Удалить такие страницы</ColorizedTextWidget>
                 </button>
-                <span></span>
+                <span>{/* это специальная заглушка для равномерного размещения компонентов */}</span>
             </> : null}</ReaderWidget>
-        </div>
-    </div>
+        </ContainerWidget>
+    </ContainerWidget>
 }
 
 function ReaderWidget(props: PropsWithChildren & {
@@ -159,7 +160,7 @@ function ReaderWidget(props: PropsWithChildren & {
         }
     }, [props.prevPage, props.nextPage])
 
-    return <div className="container-column container-gap-middle">
+    return <ContainerWidget direction="column" gap="medium">
         <div className={"app-container " + styles.pageViewActions}>
             <span>
                 <button className="app" onClick={props.prevPage}><span className={styles.pageViewActionsPageNavigate}>{"<"}</span></button>
@@ -183,8 +184,8 @@ function ReaderWidget(props: PropsWithChildren & {
                 onClick={goGo}
             /> : null}
         </div>
-        <div className="app-container container-column container-gap-middle">
+        <ContainerWidget appContainer direction="column" gap="medium">
             {props.children ? <div className={styles.pageViewActions}>{props.children}</div> : null}
-        </div>
-    </div>
+        </ContainerWidget>
+    </ContainerWidget>
 }

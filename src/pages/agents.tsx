@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { Agent, AgentListResponse, AgentListResponseStatusProblems, useAgentDelete, useAgentGet, useAgentList, useAgentNew, useAgentUpdate } from "../apiclient/api-agent"
 import { ErrorTextWidget } from "../widgets/error-text"
-import { HumanTimeWidget } from "../widgets/common"
+import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../widgets/common"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
 export function AgentListScreen() {
@@ -11,7 +11,7 @@ export function AgentListScreen() {
     useEffect(() => { fetchAgentList({ include_status: true }) }, [fetchAgentList])
 
     return (
-        <div className="container-column container-gap-big">
+        <ContainerWidget direction="column" gap="big">
             <ErrorTextWidget value={agentListResponse} />
             <ErrorTextWidget value={agentDeleteResponse} />
 
@@ -28,7 +28,7 @@ export function AgentListScreen() {
                     })
                 }}
             />)}
-        </div>
+        </ContainerWidget>
     )
 }
 
@@ -84,7 +84,7 @@ export function AgentEditorScreen() {
         <ErrorTextWidget value={agentNewResponse} />
         <ErrorTextWidget value={agentUpdateResponse} />
 
-        <div className="app-container container-column container-gap-middle">
+        <ContainerWidget appContainer direction="column" gap="medium">
             <b>Редактор агента</b>
 
             <AgentEditorWidget
@@ -93,7 +93,7 @@ export function AgentEditorScreen() {
             />
 
             <button className="app" onClick={useSave}>Сохранить</button>
-        </div>
+        </ContainerWidget>
     </div>
 }
 
@@ -101,14 +101,14 @@ function AgentInfoWidget(props: {
     value: AgentListResponse
     onDelete: () => void
 }) {
-    return <div className="app-container container-column container-gap-middle">
+    return <ContainerWidget appContainer direction="column" gap="medium">
         <h3>
-            <div className="container-row container-gap-middle">
+            <ContainerWidget direction="row" gap="medium">
                 <AgentStatusWidget value={props.value.status?.status} />
                 <span>{props.value.info.name}</span>
-            </div>
+            </ContainerWidget>
         </h3>
-        <div className="container-2-column container-gap-middle">
+        <ContainerWidget direction="2-column" gap="medium">
             {props.value.status?.start_at ? <>
                 <b>Запущен: </b>
                 <HumanTimeWidget value={props.value.status.start_at} />
@@ -127,30 +127,30 @@ function AgentInfoWidget(props: {
             <span>{props.value.info.priority}</span>
             <b>Создан: </b>
             <HumanTimeWidget value={props.value.info.created_at} />
-        </div>
+        </ContainerWidget>
         <AgentStatusInfoWidget value={props.value.status?.problems} />
-        <div className="container-row container-gap-middle">
+        <ContainerWidget direction="row" gap="medium">
             <Link className="app-button" to={`/agent/edit/${props.value.info.id}`}>Редактировать</Link>
             <button className="app" onClick={() => props.onDelete()} >
-                <b className="color-danger">Удалить</b>
+                <ColorizedTextWidget bold color="danger">Удалить</ColorizedTextWidget>
             </button>
-        </div>
-    </div>
+        </ContainerWidget>
+    </ContainerWidget>
 }
 
 function AgentStatusInfoWidget(props: {
     value?: Array<AgentListResponseStatusProblems>
 }) {
-    return <div className="container-column container-gap-small">
+    return <ContainerWidget direction="column" gap="small">
         {props.value?.map((problem, i) => <span key={i}>{problem.type}: {problem.details}</span>)}
-    </div>
+    </ContainerWidget>
 }
 
 function AgentEditorWidget(props: {
     value: Agent
     onChange: (v: Agent) => void
 }) {
-    return <div className="container-2-column container-gap-middle">
+    return <ContainerWidget direction="2-column" gap="medium">
         <span>Название</span>
         <input
             className="app"
@@ -188,7 +188,7 @@ function AgentEditorWidget(props: {
         />
 
         <span>Флаги</span>
-        <div className="container-column container-gap-small">
+        <ContainerWidget direction="column" gap="small">
             <label>
                 <input
                     className="app"
@@ -230,7 +230,7 @@ function AgentEditorWidget(props: {
                 />
                 <span>Поддерживает экспорт</span>
             </label>
-        </div>
+        </ContainerWidget>
         <span>Приоритет</span>
         <input
             className="app"
@@ -242,7 +242,7 @@ function AgentEditorWidget(props: {
                 props.onChange({ ...props.value, priority: e.target.valueAsNumber })
             }}
         />
-    </div>
+    </ContainerWidget>
 }
 
 function AgentStatusWidget(props: {
@@ -253,7 +253,7 @@ function AgentStatusWidget(props: {
             props.value == "warning" ? "yellow" :
                 props.value == "offline" ? "gray" : "purple"
 
-    return <div> <div
+    return <div><div
         style={{
             backgroundColor: color,
             padding: "10px",

@@ -9,7 +9,7 @@ import { BookFilterWidget } from "./book-filter";
 import { BookFilter } from "../apiclient/model-book-filter";
 import { BookListResponse, BookShortInfo } from "../apiclient/api-book-list";
 import { PaginatorWidget } from "../pages/list";
-import { HumanTimeWidget } from "./common";
+import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "./common";
 import { useCallback, useEffect, useState } from "react";
 import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget } from "./book-short-info";
 import { usePreviewSizeWidget } from "./book-detail-info";
@@ -28,9 +28,9 @@ export function BookRebuilderWidget(props: {
 }) {
     const [targetPreview, setTargetPreview] = useState<BookShortInfo>()
 
-    return <div className="container-column container-gap-big">
-        <div className="app-container container-column container-gap-small">
-            <div className="container-row container-gap-small">
+    return <ContainerWidget direction="column" gap="big">
+        <ContainerWidget appContainer direction="column" gap="small">
+            <ContainerWidget direction="row" gap="small">
                 <span>Выбрана целевой</span>
                 <input
                     className="app"
@@ -42,23 +42,23 @@ export function BookRebuilderWidget(props: {
                     className="app"
                     onClick={() => props.onChange({ ...props.value, merge_with_book: undefined })}
                 >Сбросить</button>
-            </div>
+            </ContainerWidget>
             <BuilderFlagsWidget
                 value={props.value.flags}
                 onChange={e => props.onChange({ ...props.value, flags: e })}
             />
-        </div>
+        </ContainerWidget>
 
         {targetPreview && targetPreview.info.id == props.value.merge_with_book ?
-            <div className="app-container container-column container-gap-small">
+            <ContainerWidget appContainer direction="column" gap="small">
                 <span>Данные будут внесены в</span>
                 <BooksPreview value={targetPreview} />
-            </div>
+            </ContainerWidget>
             :
             <details className="app">
                 <summary>Выбрать целевую книгу</summary>
-                <div className="container-column container-gap-big">
-                    <div className="app-container container-column container-gap-small">
+                <ContainerWidget direction="column" gap="big">
+                    <ContainerWidget appContainer direction="column" gap="small">
                         <BookFilterWidget
                             value={props.targetBookFilter}
                             onChange={props.targetBookFilterChange}
@@ -70,7 +70,7 @@ export function BookRebuilderWidget(props: {
                             props.targetBookFilterChange({ ...props.targetBookFilter, page: v })
                             props.getTargetBooks({ ...props.targetBookFilter, page: v })
                         }} value={props.targetBookResponse?.pages || []} />
-                    </div>
+                    </ContainerWidget>
                     <BooksList
                         value={props.targetBookResponse?.books}
                         onChange={e => {
@@ -79,7 +79,7 @@ export function BookRebuilderWidget(props: {
                         }}
                         selected={props.value.merge_with_book}
                     />
-                </div>
+                </ContainerWidget>
             </details>
         }
         {!props.value.merge_with_book ?
@@ -105,7 +105,7 @@ export function BookRebuilderWidget(props: {
             pages={props.pages}
             pageCount={props.pageCount}
         />
-    </div>
+    </ContainerWidget>
 }
 
 
@@ -113,22 +113,24 @@ function BuilderFlagsWidget(props: {
     value?: BookRebuildRequestFlags
     onChange: (v: BookRebuildRequestFlags) => void
 }) {
-    return <div className="container-column container-gap-small">
-        <label className="color-good">
+    return <ContainerWidget direction="column" gap="small">
+        <label>
             <input
                 className="app"
                 type="checkbox"
                 checked={props.value?.set_origin_labels ?? false}
                 onChange={e => props.onChange({ ...props.value, set_origin_labels: e.target.checked })}
-            />Проставить каждой страницы метки об оригинальной книге если ее нет
+            />
+            <ColorizedTextWidget color="good">Проставить каждой страницы метки об оригинальной книге если ее нет</ColorizedTextWidget>
         </label>
-        <label className="color-good">
+        <label>
             <input
                 className="app"
                 type="checkbox"
                 checked={props.value?.auto_verify ?? false}
                 onChange={e => props.onChange({ ...props.value, auto_verify: e.target.checked })}
-            />Проставить билду статус подтвержденной книги
+            />
+            <ColorizedTextWidget color="good">Проставить билду статус подтвержденной книги</ColorizedTextWidget>
         </label>
         <label>
             <input
@@ -154,39 +156,43 @@ function BuilderFlagsWidget(props: {
                 onChange={e => props.onChange({ ...props.value, only_1_copy: e.target.checked })}
             />Только уникальные страницы в системе (без копий) и без дублей
         </label>
-        <label className="color-danger-lite">
+        <label>
             <input
                 className="app"
                 type="checkbox"
                 checked={props.value?.extract_mode ?? false}
                 onChange={e => props.onChange({ ...props.value, extract_mode: e.target.checked })}
-            />Режим экстракции - вынос страниц в новую книгу с удалением их только из исходной
+            />
+            <ColorizedTextWidget color="danger-lite">Режим экстракции - вынос страниц в новую книгу с удалением их только из исходной</ColorizedTextWidget>
         </label>
-        <label className="color-danger-lite">
+        <label>
             <input
                 className="app"
                 type="checkbox"
                 checked={props.value?.mark_unused_pages_as_dead_hash ?? false}
                 onChange={e => props.onChange({ ...props.value, mark_unused_pages_as_dead_hash: e.target.checked })}
-            />Отметить страницы что не вошли в ребилд как мертвый хеш
+            />
+            <ColorizedTextWidget color="danger-lite">Отметить страницы что не вошли в ребилд как мертвый хеш</ColorizedTextWidget>
         </label>
-        <label className="color-danger">
+        <label>
             <input
                 className="app"
                 type="checkbox"
                 checked={props.value?.mark_unused_pages_as_deleted ?? false}
                 onChange={e => props.onChange({ ...props.value, mark_unused_pages_as_deleted: e.target.checked })}
-            />Удалить страницы что не вошли в ребилд и их копии в системе
+            />
+            <ColorizedTextWidget color="danger">Удалить страницы что не вошли в ребилд и их копии в системе</ColorizedTextWidget>
         </label>
-        <label className="color-danger-lite">
+        <label>
             <input
                 className="app"
                 type="checkbox"
                 checked={props.value?.mark_empty_book_as_deleted_after_remove_pages ?? false}
                 onChange={e => props.onChange({ ...props.value, mark_empty_book_as_deleted_after_remove_pages: e.target.checked })}
-            />Отметить удаленным книги что остались без страниц после их удаления
+            />
+            <ColorizedTextWidget color="danger-lite">Отметить удаленным книги что остались без страниц после их удаления</ColorizedTextWidget>
         </label>
-    </div>
+    </ContainerWidget>
 }
 
 function BookPagesSelectWidget(props: {
@@ -207,14 +213,14 @@ function BookPagesSelectWidget(props: {
         filter(page => !showOnlySelected || props.value.includes(page.page_number)).
         filter(page => showDeadHash || !page.has_dead_hash)
 
-    return <div className="container-column container-gap-middle">
-        <div className="app-container container-column container-gap-middle">
-            <div className="container-row container-gap-middle">
+    return <ContainerWidget direction="column" gap="medium">
+        <ContainerWidget appContainer direction="column" gap="medium">
+            <ContainerWidget direction="row" gap="medium">
                 <button className="app" onClick={() => props.onChange(props.pages?.map(page => page.page_number) ?? [])}>Выбрать все</button>
                 <button className="app" onClick={() => props.onChange([])}>Снять все</button>
                 <span>Выбрано {props.value.length} из {props.pages?.length}</span>
-            </div>
-            <div className="container-row container-gap-middle">
+            </ContainerWidget>
+            <ContainerWidget direction="row" gap="medium">
                 <select
                     className="app"
                     value={viewMode}
@@ -224,8 +230,8 @@ function BookPagesSelectWidget(props: {
                     <option value="list">Режим просмотра: все страницы</option>
                 </select>
                 {viewMode == "list" ? imageSizeWidget : null}
-            </div>
-            <div className="container-column container-gap-middle">
+            </ContainerWidget>
+            <ContainerWidget direction="column" gap="medium">
                 <label><input
                     type="checkbox"
                     className="app"
@@ -238,8 +244,8 @@ function BookPagesSelectWidget(props: {
                     checked={showDeadHash}
                     onChange={e => setShowDeadHash(e.target.checked)}
                 />Показывать с мертвым хешом</label>
-            </div>
-        </div>
+            </ContainerWidget>
+        </ContainerWidget>
         {!pages?.length ? null :
             viewMode == "reader" ?
                 <PageSelectorReaderWidget
@@ -256,7 +262,7 @@ function BookPagesSelectWidget(props: {
                         pages={pages}
                         previewSize={imageSize}
                     /> : null}
-    </div>
+    </ContainerWidget>
 }
 
 function PageListPreview(props: {
@@ -268,7 +274,7 @@ function PageListPreview(props: {
 }) {
     return <div className={styles.preview}>
         {props.pages?.map(page =>
-            <div className="app-container" key={page.page_number}>
+            <ContainerWidget appContainer key={page.page_number}>
                 {page.preview_url ?
                     <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
                         <PageImagePreviewWidget
@@ -290,7 +296,7 @@ function PageListPreview(props: {
                             props.value.filter(v => v != page.page_number)
                     )}
                 /> выбрать</label>
-            </div>
+            </ContainerWidget>
         )}
     </div>
 }
@@ -303,7 +309,7 @@ function BooksList(props: {
 }) {
     return <div className={styles.preview}>
         {props.value?.map(book =>
-            <div className="app-container" key={book.info.id}>
+            <ContainerWidget appContainer key={book.info.id}>
                 <Link to={`/book/${book.info.id}`} style={{ flexGrow: 1 }}>
                     <BookImagePreviewWidget
                         flags={book.info.flags}
@@ -319,7 +325,7 @@ function BooksList(props: {
                     onClick={() => props.onChange(book)}
                     disabled={book.info.id == props.selected}
                 >Выбрать</button>
-            </div>
+            </ContainerWidget>
         )}
     </div>
 }
@@ -333,7 +339,7 @@ function BooksPreview(props: {
 
     const book = props.value!
 
-    return <div className="container-column container-gap-smaller" key={book.info.id} style={{ alignItems: "self-start" }}>
+    return <ContainerWidget direction="column" gap="smaller" key={book.info.id} style={{ alignItems: "self-start" }}>
         <Link to={`/book/${book.info.id}`}>
             <BookImagePreviewWidget
                 flags={book.info.flags}
@@ -344,7 +350,7 @@ function BooksPreview(props: {
         <b>{book.info.name}</b>
         <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
         <span>Страниц: {book.info.page_count}</span>
-    </div>
+    </ContainerWidget>
 }
 
 function PageSelectorReaderWidget(props: {
@@ -390,8 +396,8 @@ function PageSelectorReaderWidget(props: {
         }
     }, [prevPage, nextPage])
 
-    return <div className="container-column container-gap-middle">
-        <div className="app-container">
+    return <ContainerWidget direction="column" gap="medium">
+        <ContainerWidget appContainer>
             <div className={styles.pageViewActions}>
                 <span>
                     <button className="app" onClick={prevPage}><span className={styles.pageViewActionsPageNavigate}>{"<"}</span></button>
@@ -418,7 +424,7 @@ function PageSelectorReaderWidget(props: {
                     }
                 </span>
             </div>
-        </div>
+        </ContainerWidget>
         <div className={styles.pageView}>
             {currentPage?.preview_url ? <img
                 src={currentPage?.preview_url}
@@ -429,5 +435,5 @@ function PageSelectorReaderWidget(props: {
                 onClick={goGo}
             /> : null}
         </div>
-    </div>
+    </ContainerWidget>
 }

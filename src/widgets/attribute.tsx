@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { AttributeColor, AttributeCountResponseAttribute } from "../apiclient/api-attribute";
+import { ColorizedTextWidget, ContainerWidget } from "./common";
 
 // FIXME: работать с этим списком через API
 export const attributeCodes = [
@@ -19,7 +20,7 @@ export function AttributeColorListWidget(props: {
     value?: Array<AttributeColor>
     onDelete: (code: string, value: string) => void
 }) {
-    return <div className="container-column">
+    return <ContainerWidget direction="column">
         <table style={{ borderSpacing: "20px" }}>
             <thead>
                 <tr>
@@ -37,20 +38,19 @@ export function AttributeColorListWidget(props: {
                         <BookAttributeValueWidget value={color.value} color={color} code={color.code} />
                     </td>
                     <td>
-                        <div className="container-column container-gap-small">
+                        <ContainerWidget direction="column" gap="small">
                             <Link className="app-button" to={`/attribute/color/edit/${encodeURIComponent(color.code)}/${encodeURIComponent(color.value)}`} >Редактировать</Link>
-                            <button
-                                className="app color-danger-lite"
-                                onClick={() => {
-                                    props.onDelete(color.code, color.value)
-                                }}
-                            >Удалить</button>
-                        </div>
+                            <button className="app" onClick={() => {
+                                props.onDelete(color.code, color.value)
+                            }}>
+                                <ColorizedTextWidget color="danger-lite">Удалить</ColorizedTextWidget>
+                            </button>
+                        </ContainerWidget>
                     </td>
                 </tr>)}
             </tbody>
         </table>
-    </div>
+    </ContainerWidget>
 }
 
 export function AttributeColorEditorWidget(props: {
@@ -58,7 +58,7 @@ export function AttributeColorEditorWidget(props: {
     onChange: (v: AttributeColor) => void
     isNew?: boolean
 }) {
-    return <div className="container-2-column container-gap-middle">
+    return <ContainerWidget direction="2-column" gap="medium">
         <span>Код</span>
         <select
             className="app"
@@ -97,7 +97,7 @@ export function AttributeColorEditorWidget(props: {
 
         <span>Итог</span>
         <BookAttributeValueWidget value={props.value.value} color={props.value} code={props.value.code} />
-    </div>
+    </ContainerWidget>
 }
 
 export function BookAttributeValuesWidget(props: {

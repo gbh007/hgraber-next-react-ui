@@ -9,6 +9,7 @@ import { useCreateDeadHashByBookPages, useDeduplicateBookByPageBody, useDeleteAl
 import styles from "./details.module.css"
 import { useBookRestore } from "../apiclient/api-book";
 import { useAttributeColorList } from "../apiclient/api-attribute";
+import { ColorizedTextWidget, ContainerWidget } from "../widgets/common";
 
 export function BookDetailsScreen() {
     const params = useParams()
@@ -42,7 +43,7 @@ export function BookDetailsScreen() {
     const hasSharedPages = (!bookDetailsResponse.data?.info.flags.is_deleted && (!bookDetailsResponse.data?.size || bookDetailsResponse.data.size.shared != 0))
     const hasDeletedPages = bookDetailsResponse.data?.pages && bookDetailsResponse.data?.pages.length != bookDetailsResponse.data?.info.page_count
 
-    return <div>
+    return <ContainerWidget direction="column" gap="big">
         <ErrorTextWidget value={bookDetailsResponse} />
         <ErrorTextWidget value={bookDeleteResponse} />
         <ErrorTextWidget value={bookVerifyResponse} />
@@ -58,8 +59,8 @@ export function BookDetailsScreen() {
             deduplicateBookInfo={bookDeduplicateResponse.data?.result}
             colors={attributeColorListResponse.data?.colors}
         >
-            <div className="container-column container-gap-big">
-                <div className="container-row container-gap-middle container-wrap">
+            <ContainerWidget direction="column" gap="big">
+                <ContainerWidget direction="row" gap="medium" wrap>
                     <button className={"app " + styles.mainButton} onClick={() => { window.open('/api/book/archive/' + bookID, "_blank") }}>Скачать</button>
                     {hasPages ? <Link className={"app-button " + styles.mainButton} to={`/book/${bookID}/read/1`}>Читать</Link> : null}
                     {bookDetailsResponse.data.info.flags.is_deleted ? null : <button
@@ -77,7 +78,7 @@ export function BookDetailsScreen() {
                             postBookDelete({ id: bookID }).then(() => { getBookDetails({ id: bookID }) })
                         }}
                     >
-                        <span className="color-danger">Удалить</span>
+                        <ColorizedTextWidget color="danger">Удалить</ColorizedTextWidget>
                     </button>}
                     {bookDetailsResponse.data.info.flags.is_verified ?
                         <button
@@ -91,7 +92,7 @@ export function BookDetailsScreen() {
                                 postBookVerify({ id: bookID, verify_status: false }).then(() => { getBookDetails({ id: bookID }) })
                             }}
                         >
-                            <span className="color-danger-lite">Снять статус подтвержденной</span>
+                            <ColorizedTextWidget color="danger-lite">Снять статус подтвержденной</ColorizedTextWidget>
                         </button>
                         :
                         <button
@@ -105,7 +106,7 @@ export function BookDetailsScreen() {
                                 postBookVerify({ id: bookID, verify_status: true }).then(() => { getBookDetails({ id: bookID }) })
                             }}
                         >
-                            <span className="color-good">Подтвердить</span>
+                            <ColorizedTextWidget color="good">Подтвердить</ColorizedTextWidget>
                         </button>
                     }
                     {hasSharedPages ?
@@ -120,10 +121,10 @@ export function BookDetailsScreen() {
                     {hasUniquePages ?
                         <Link className={"app-button " + styles.mainButton} to={`/book/${bookDetailsResponse.data.info.id}/unique-pages`}>Показать уникальные страницы</Link>
                         : null}
-                </div>
+                </ContainerWidget>
                 <details className="app container-column container-gap-middle">
                     <summary>дополнительные действия</summary>
-                    <div className="container-row container-gap-middle container-wrap">
+                    <ContainerWidget direction="row" gap="medium" wrap>
                         <Link className="app-button" to={`/book/${bookDetailsResponse.data.info.id}/edit`}>Редактировать</Link>
                         <Link className="app-button" to={`/book/${bookDetailsResponse.data.info.id}/rebuild`}>Пересобрать</Link>
                         <Link className="app-button" to={`/book/${bookDetailsResponse.data.info.id}/labels`}>Редактировать метки</Link>
@@ -143,7 +144,7 @@ export function BookDetailsScreen() {
                                     })
                                 }}
                             >
-                                <span className="color-danger-lite">Создать мертвый хеш</span>
+                                <ColorizedTextWidget color="danger-lite">Создать мертвый хеш</ColorizedTextWidget>
                             </button>
                             <button
                                 className="app"
@@ -160,7 +161,7 @@ export function BookDetailsScreen() {
                                     })
                                 }}
                             >
-                                <span className="color-danger-lite">Удалить мертвый хеш</span>
+                                <ColorizedTextWidget color="danger-lite">Удалить мертвый хеш</ColorizedTextWidget>
                             </button>
                             <button
                                 className="app"
@@ -177,7 +178,7 @@ export function BookDetailsScreen() {
                                     })
                                 }}
                             >
-                                <span className="color-danger">Удалить все страницы из книги с мертвым хешом</span>
+                                <ColorizedTextWidget color="danger">Удалить все страницы из книги с мертвым хешом</ColorizedTextWidget>
                             </button>
                             <button
                                 className="app"
@@ -197,7 +198,7 @@ export function BookDetailsScreen() {
                                     })
                                 }}
                             >
-                                <b className="color-danger">Удалить все страницы из книги и их копии</b>
+                                <ColorizedTextWidget bold color="danger">Удалить все страницы из книги и их копии</ColorizedTextWidget>
                             </button>
                         </> : null}
                         {!hasPages || hasDeletedPages || bookDetailsResponse.data.info.flags.is_deleted ? <button
@@ -218,11 +219,11 @@ export function BookDetailsScreen() {
                                 })
                             }}
                         >
-                            <span className="color-good">Восстановить книгу</span>
+                            <ColorizedTextWidget color="good">Восстановить книгу</ColorizedTextWidget>
                         </button> : null}
-                    </div>
+                    </ContainerWidget>
                 </details>
-            </div>
+            </ContainerWidget>
         </BookDetailInfoWidget> : null}
-    </div>
+    </ContainerWidget>
 }

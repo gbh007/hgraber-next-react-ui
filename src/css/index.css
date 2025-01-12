@@ -133,17 +133,8 @@ details.app > summary {
   flex-direction: column;
 }
 
-.container-2-column {
-  display: grid;
-  grid-template-columns: auto 1fr;
-}
-
-.container-wrap {
-  flex-wrap: wrap;
-}
-
 .container-gap-biggest {
-  gap: 30px;
+  gap: 50px;
 }
 
 .container-gap-bigger {
@@ -164,24 +155,4 @@ details.app > summary {
 
 .container-gap-smaller {
   gap: 3px;
-}
-
-.color-danger {
-  color: #ff0000;
-}
-
-.color-danger-lite {
-  color: #b00;
-}
-
-.color-good {
-  color: #008b33;
-}
-
-*[data-color="danger"] {
-  color: red;
-}
-
-*[data-background-color="danger"] {
-  background: pink;
 }

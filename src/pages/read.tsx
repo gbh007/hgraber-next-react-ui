@@ -6,6 +6,7 @@ import { ErrorTextWidget } from "../widgets/error-text"
 import { BookSimplePage } from "../apiclient/model-book"
 import { useCreateDeadHashByPage, useDeleteDeadHashByPage, useDeletePagesByBody } from "../apiclient/api-deduplicate"
 import { BookReadActionButtonWidget } from "../widgets/book-reader"
+import { ColorizedTextWidget } from "../widgets/common"
 
 export function BookReadScreen() {
     const params = useParams()
@@ -139,7 +140,7 @@ export function BookReadScreen() {
                             })
                         }}
                     >
-                        <b className="color-danger">Удалить такие страницы</b>
+                        <ColorizedTextWidget bold color="danger">Удалить такие страницы</ColorizedTextWidget>
                     </button> : null
 
                 }
