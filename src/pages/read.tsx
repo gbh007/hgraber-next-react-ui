@@ -7,6 +7,7 @@ import { BookSimplePage } from "../apiclient/model-book"
 import { useCreateDeadHashByPage, useDeleteDeadHashByPage, useDeletePagesByBody } from "../apiclient/api-deduplicate"
 import { BookReadActionButtonWidget } from "../widgets/book-reader"
 import { ColorizedTextWidget } from "../widgets/common"
+import { PageBadgesWidget } from "../widgets/book-short-info"
 
 export function BookReadScreen() {
     const params = useParams()
@@ -101,11 +102,8 @@ export function BookReadScreen() {
         <div className={styles.viewScreen}>
             <div className={"app-container " + styles.actions}>
                 <Link className="app-button" to={`/book/${bookID}`}>На страницу книги</Link>
-                {currentPage?.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
-
-                <span>
-                    Страница {pageNumber} из {bookDetailsResponse.data?.info.page_count || 0}
-                </span>
+                <PageBadgesWidget flags={currentPage} badgeSize="medium" />
+                <span>Страница {pageNumber} из {bookDetailsResponse.data?.info.page_count ?? 0}</span>
             </div>
             <div className={styles.view}>
                 {currentPage?.preview_url ? <img

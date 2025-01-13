@@ -3,6 +3,7 @@ import { BookSimplePage } from "../apiclient/model-book"
 import styles from "./split-viewer.module.css"
 import { BookReadActionButtonWidget } from "./book-reader"
 import { ColorizedTextWidget, ContainerWidget } from "./common"
+import { PageBadgesWidget } from "./book-short-info"
 
 
 export function DualReaderWidget(props: {
@@ -166,7 +167,7 @@ function ReaderWidget(props: PropsWithChildren & {
                 <button className="app" onClick={props.prevPage}><span className={styles.pageViewActionsPageNavigate}>{"<"}</span></button>
                 <button className="app" onClick={props.nextPage}><span className={styles.pageViewActionsPageNavigate}>{">"}</span></button>
             </span>
-            {props.currentPage?.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
+            <PageBadgesWidget flags={props.currentPage} badgeSize="medium" />
             <span>
                 {`Страница ${props.currentPage?.page_number}` +
                     ` из ${props.pageCount ?? props.pages.length ?? 0}` +

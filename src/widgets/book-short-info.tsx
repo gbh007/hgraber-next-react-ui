@@ -173,3 +173,38 @@ export function PageImagePreviewWidget(props: {
 
     </div>
 }
+
+
+export function PageBadgesWidget(props: {
+    flags?: {
+        has_dead_hash?: boolean
+    }
+    badgeSize: ImageSize
+}) {
+    const activeBadge = [deadHashBadge]
+        .filter(badge => badge == deadHashBadge && props.flags?.has_dead_hash)
+
+    const badgeSize = props.badgeSize == "superbig" ? 5
+        : props.badgeSize == "big" ? 60
+            : props.badgeSize == "medium" ? 40
+                : 20
+
+
+    const widthUnit = props.badgeSize == "superbig" ? "vw" : "px"
+    const heightUnit = props.badgeSize == "superbig" ? "vh" : "px"
+
+    if (!activeBadge.length) {
+        return null
+    }
+
+    return <ContainerWidget direction="row" gap="small">
+        {activeBadge.map(badge => <img
+            style={{
+                maxWidth: `${badgeSize}${widthUnit}`,
+                maxHeight: `${badgeSize}${heightUnit}`,
+            }}
+            src={badge}
+            key={badge}
+        />)}
+    </ContainerWidget>
+}

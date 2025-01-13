@@ -11,7 +11,7 @@ import { BookListResponse, BookShortInfo } from "../apiclient/api-book-list";
 import { PaginatorWidget } from "../pages/list";
 import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "./common";
 import { useCallback, useEffect, useState } from "react";
-import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget } from "./book-short-info";
+import { BookImagePreviewWidget, ImageSize, PageBadgesWidget, PageImagePreviewWidget } from "./book-short-info";
 import { usePreviewSizeWidget } from "./book-detail-info";
 
 export function BookRebuilderWidget(props: {
@@ -284,7 +284,6 @@ function PageListPreview(props: {
                         />
                     </Link> : null}
                 <span>Страница: {page.page_number}</span>
-                {page.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
                 <label><input
                     className="app"
                     type="checkbox"
@@ -403,7 +402,7 @@ function PageSelectorReaderWidget(props: {
                     <button className="app" onClick={prevPage}><span className={styles.pageViewActionsPageNavigate}>{"<"}</span></button>
                     <button className="app" onClick={nextPage}><span className={styles.pageViewActionsPageNavigate}>{">"}</span></button>
                 </span>
-                {currentPage?.has_dead_hash == true ? <span style={{ color: "red" }}>мертвый хеш</span> : null}
+                <PageBadgesWidget flags={currentPage} badgeSize="medium" />
                 {currentPage ?
                     <label><input
                         className="app"
