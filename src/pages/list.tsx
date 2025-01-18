@@ -10,6 +10,7 @@ import { useAttributeColorList, useAttributeCount } from "../apiclient/api-attri
 import { useLabelPresetList } from "../apiclient/api-labels"
 import { Link, useSearchParams } from "react-router-dom"
 import { useAgentList, useAgentTaskExport } from "../apiclient/api-agent"
+import { ColorizedTextWidget } from "../widgets/common"
 
 
 export function ListScreen() {
@@ -82,7 +83,9 @@ export function ListScreen() {
                             setBookFilter(defaultFilterValue)
                             searchParams.delete("filter")
                             setSearchParams(searchParams)
-                        }}>Очистить фильтр</button>
+                        }}>
+                            <ColorizedTextWidget color="danger">Очистить фильтр</ColorizedTextWidget>
+                        </button>
                         <button className="app" onClick={() => {
                             getBooks(bookFilter)
                         }}>Обновить данные</button>

@@ -3,7 +3,7 @@ import { BookFilter } from "../apiclient/model-book-filter"
 import styles from "./select-to-compare.module.css"
 import { BookShortInfo, useBookList } from "../apiclient/api-book-list"
 import { Link, useSearchParams } from "react-router-dom"
-import { HumanTimeWidget } from "../widgets/common"
+import { ColorizedTextWidget, HumanTimeWidget } from "../widgets/common"
 import { BookFilterWidget } from "../widgets/book-filter"
 import { PaginatorWidget } from "./list"
 import { ErrorTextWidget } from "../widgets/error-text"
@@ -109,7 +109,9 @@ export function SelectToCompareScreen() {
                     setBookFilter(defaultFilterValue)
                     searchParams.delete("filter")
                     setSearchParams(searchParams)
-                }}>Очистить фильтр</button>
+                }}>
+                    <ColorizedTextWidget color="danger">Очистить фильтр</ColorizedTextWidget>
+                </button>
                 <button className="app" onClick={() => {
                     getBooks(bookFilter)
                 }}>Обновить данные</button>
