@@ -1,11 +1,10 @@
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useDeduplicateBooksByPage } from "../apiclient/api-deduplicate"
 import { useEffect } from "react"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { BookSimple } from "../apiclient/model-book"
 import styles from "./books-by-page.module.css"
-import { HumanTimeWidget } from "../widgets/common"
-import { BookImagePreviewWidget } from "../widgets/book-short-info"
+import { BooksSimpleWidget } from "../widgets/book"
 
 export function BooksByPageScreen() {
     const params = useParams()
@@ -32,18 +31,7 @@ function BookDuplicates(props: {
 }) {
     return <div className={styles.preview}>
         {props.value?.map(book =>
-            <div className="app-container" key={book.id}>
-                <Link to={`/book/${book.id}`}>
-                    <BookImagePreviewWidget
-                        flags={book.flags}
-                        preview_url={book.preview_url}
-                        previewSize="medium"
-                    />
-                </Link>
-                <b>{book.name}</b>
-                <span>Создана: <HumanTimeWidget value={book.created_at} /></span>
-                <span>Страниц: {book.page_count}</span>
-            </div>
+            <BooksSimpleWidget value={book} align="center" previewSize="medium" key={book.id} />
         )}
     </div>
 }

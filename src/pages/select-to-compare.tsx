@@ -3,14 +3,14 @@ import { BookFilter } from "../apiclient/model-book-filter"
 import styles from "./select-to-compare.module.css"
 import { BookShortInfo, useBookList } from "../apiclient/api-book-list"
 import { Link, useSearchParams } from "react-router-dom"
-import { ColorizedTextWidget, HumanTimeWidget } from "../widgets/common"
+import { ColorizedTextWidget } from "../widgets/common"
 import { BookFilterWidget } from "../widgets/book-filter"
 import { PaginatorWidget } from "./list"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { useAppSettings } from "../apiclient/settings"
 import { useAttributeCount } from "../apiclient/api-attribute"
 import { useLabelPresetList } from "../apiclient/api-labels"
-import { BookImagePreviewWidget } from "../widgets/book-short-info"
+import { BooksSimpleWidget } from "../widgets/book"
 
 
 export function SelectToCompareScreen() {
@@ -66,7 +66,7 @@ export function SelectToCompareScreen() {
             <div className="app-container container-row container-gap-big">
                 {originPreview ? <div className="container-column container-gap-small">
                     <h3>Оригинальная книга</h3>
-                    <BooksPreview value={originPreview} />
+                    <BooksSimpleWidget value={originPreview.info} align="start" />
                     <button
                         className="app"
                         onClick={() => setOriginPreview(undefined)}
@@ -74,7 +74,7 @@ export function SelectToCompareScreen() {
                 </div> : null}
                 {targetPreview ? <div className="container-column container-gap-small">
                     <h3>Целевая книга</h3>
-                    <BooksPreview value={targetPreview} />
+                    <BooksSimpleWidget value={targetPreview.info} align="start" />
                     <button
                         className="app"
                         onClick={() => setTargetPreview(undefined)}
@@ -147,17 +147,7 @@ function BooksList(props: {
 }) {
     return <div className={styles.preview}>
         {props.value?.map(book =>
-            <div className="app-container" key={book.info.id}>
-                <Link to={`/book/${book.info.id}`} style={{ flexGrow: 1 }}>
-                    <BookImagePreviewWidget
-                        flags={book.info.flags}
-                        previewSize="small"
-                        preview_url={book.info.preview_url}
-                    />
-                </Link>
-                <b>{book.info.name}</b>
-                <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
-                <span>Страниц: {book.info.page_count}</span>
+            <BooksSimpleWidget value={book.info} key={book.info.id}>
                 <button
                     className="app"
                     onClick={() => props.onChangeOrigin(book)}
@@ -168,38 +158,7 @@ function BooksList(props: {
                     onClick={() => props.onChangeTarget(book)}
                     disabled={book.info.id == props.selectedTarget}
                 >Выбрать как целевую</button>
-            </div>
+            </BooksSimpleWidget>
         )}
-    </div>
-}
-
-function BooksPreview(props: {
-    value?: BookShortInfo
-}) {
-    if (!props.value) {
-        return null
-    }
-
-    const book = props.value!
-
-    return <div
-        className="container-column container-gap-smaller"
-        key={book.info.id}
-        style={{
-            flexGrow: 1,
-            alignItems: "center",
-        }}
-    >
-        <Link to={`/book/${book.info.id}`}>
-            <BookImagePreviewWidget
-                flags={book.info.flags}
-                previewSize="small"
-                preview_url={book.info.preview_url}
-            />
-        </Link>
-        <div style={{ flexGrow: 1 }}></div>
-        <b>{book.info.name}</b>
-        <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
-        <span>Страниц: {book.info.page_count}</span>
     </div>
 }

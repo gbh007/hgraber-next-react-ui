@@ -9,10 +9,11 @@ import { BookFilterWidget } from "./book-filter";
 import { BookFilter } from "../apiclient/model-book-filter";
 import { BookListResponse, BookShortInfo } from "../apiclient/api-book-list";
 import { PaginatorWidget } from "../pages/list";
-import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "./common";
+import { ColorizedTextWidget, ContainerWidget } from "./common";
 import { useCallback, useEffect, useState } from "react";
-import { BookImagePreviewWidget, ImageSize, PageBadgesWidget, PageImagePreviewWidget } from "./book-short-info";
+import { ImageSize, PageBadgesWidget, PageImagePreviewWidget } from "./book-short-info";
 import { usePreviewSizeWidget } from "./book-detail-info";
+import { BooksSimpleWidget } from "./book";
 
 export function BookRebuilderWidget(props: {
     value: BookRebuildRequest
@@ -52,7 +53,7 @@ export function BookRebuilderWidget(props: {
         {targetPreview && targetPreview.info.id == props.value.merge_with_book ?
             <ContainerWidget appContainer direction="column" gap="small">
                 <span>Данные будут внесены в</span>
-                <BooksPreview value={targetPreview} />
+                <BooksSimpleWidget value={targetPreview.info} align="start" previewSize="medium" />
             </ContainerWidget>
             :
             <details className="app">
@@ -308,48 +309,15 @@ function BooksList(props: {
 }) {
     return <div className={styles.preview}>
         {props.value?.map(book =>
-            <ContainerWidget appContainer key={book.info.id}>
-                <Link to={`/book/${book.info.id}`} style={{ flexGrow: 1 }}>
-                    <BookImagePreviewWidget
-                        flags={book.info.flags}
-                        previewSize="small"
-                        preview_url={book.info.preview_url}
-                    />
-                </Link>
-                <b>{book.info.name}</b>
-                <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
-                <span>Страниц: {book.info.page_count}</span>
+            <BooksSimpleWidget value={book.info} key={book.info.id}>
                 <button
                     className="app"
                     onClick={() => props.onChange(book)}
                     disabled={book.info.id == props.selected}
                 >Выбрать</button>
-            </ContainerWidget>
+            </BooksSimpleWidget>
         )}
     </div>
-}
-
-function BooksPreview(props: {
-    value?: BookShortInfo
-}) {
-    if (!props.value) {
-        return
-    }
-
-    const book = props.value!
-
-    return <ContainerWidget direction="column" gap="smaller" key={book.info.id} style={{ alignItems: "self-start" }}>
-        <Link to={`/book/${book.info.id}`}>
-            <BookImagePreviewWidget
-                flags={book.info.flags}
-                previewSize="medium"
-                preview_url={book.info.preview_url}
-            />
-        </Link>
-        <b>{book.info.name}</b>
-        <span>Создана: <HumanTimeWidget value={book.info.created_at} /></span>
-        <span>Страниц: {book.info.page_count}</span>
-    </ContainerWidget>
 }
 
 function PageSelectorReaderWidget(props: {

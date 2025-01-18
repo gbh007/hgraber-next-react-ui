@@ -7,6 +7,7 @@ import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget } from "./boo
 import { AttributeColor } from "../apiclient/api-attribute"
 import { BookAttributeValuesWidget } from "./attribute"
 import { ColorizedTextWidget, ContainerWidget } from "./common"
+import { BooksSimpleWidget } from "./book"
 
 
 // FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
@@ -163,21 +164,13 @@ function BookDuplicates(props: {
 
     return <ContainerWidget direction="row" gap="medium" wrap>
         {props.deduplicateBookInfo?.map(book =>
-            <ContainerWidget appContainer direction="column" style={{ flexGrow: 1, alignItems: "center" }} key={book.book.id}>
-                <Link to={`/book/${book.book.id}`}>
-                    <BookImagePreviewWidget
-                        flags={book.book.flags}
-                        previewSize="small"
-                        preview_url={book.book.preview_url}
-                    />
-                </Link>
-                <b>{book.book.name}</b>
-                <span>Страниц: {book.book.page_count}</span>
-                <span title="Сколько страниц этой книги есть в открытой">Покрытие книги: {prettyPercent(book.origin_covered_target)}% ({prettyPercent(book.origin_covered_target_without_dead_hashes)}%)</span>
-                <span title="Сколько страниц открытой книги есть в этой">Покрытие оригинала: {prettyPercent(book.target_covered_origin)}% ({prettyPercent(book.target_covered_origin_without_dead_hashes)}%)</span>
-
-                <Link className="app-button" to={`/book/${props.originID}/compare/${book.book.id}`}>Сравнить</Link>
-            </ContainerWidget>
+            <BooksSimpleWidget value={book.book} align="center" key={book.book.id}>
+                <ContainerWidget direction="column" style={{ alignItems: "center" }}>
+                    <span title="Сколько страниц этой книги есть в открытой">Покрытие книги: {prettyPercent(book.origin_covered_target)}% ({prettyPercent(book.origin_covered_target_without_dead_hashes)}%)</span>
+                    <span title="Сколько страниц открытой книги есть в этой">Покрытие оригинала: {prettyPercent(book.target_covered_origin)}% ({prettyPercent(book.target_covered_origin_without_dead_hashes)}%)</span>
+                    <Link className="app-button" to={`/book/${props.originID}/compare/${book.book.id}`}>Сравнить</Link>
+                </ContainerWidget>
+            </BooksSimpleWidget>
         )}
     </ContainerWidget>
 }
