@@ -8,6 +8,7 @@ import { useBookDetails } from "../apiclient/api-book-details"
 import { BookRebuilderWidget } from "../widgets/book-rebuilder"
 import { BookFilter } from "../apiclient/model-book-filter"
 import { useBookList } from "../apiclient/api-book-list"
+import { BookDetailsLink } from "../core/routing"
 
 export function BookRebuilderScreen() {
     const params = useParams()
@@ -77,9 +78,10 @@ export function BookRebuilderScreen() {
         <ErrorTextWidget value={bookRebuildResponse} />
         <ErrorTextWidget value={booksResponse} />
         <div className="container-row container-gap-small">
-            <Link className="app-button" to={`/book/${bookID}`}>На страницу исходной книги</Link>
+            <Link className="app-button" to={BookDetailsLink(bookID)}>На страницу исходной книги</Link>
             {bookRebuildResponse.data?.id ?
-                <Link className="app-button" to={`/book/${bookRebuildResponse.data?.id}`}>На страницу собранной книги</Link> :
+                <Link className="app-button" to={BookDetailsLink(bookRebuildResponse.data.id)}>На страницу собранной книги</Link>
+                :
                 <button
                     className="app"
                     onClick={() => {

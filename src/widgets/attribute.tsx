@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { AttributeColor, AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { ColorizedTextWidget, ContainerWidget } from "./common";
+import { AttributeColorEditLink, BookListLinkAttribute } from "../core/routing";
 
 // FIXME: работать с этим списком через API
 export const attributeCodes = [
@@ -24,7 +25,7 @@ export function AttributeColorListWidget(props: {
         <table style={{ borderSpacing: "20px" }}>
             <thead>
                 <tr>
-                    <td>Код <Link className="app-button" to={`/attribute/color/edit`} >Новый</Link></td>
+                    <td>Код <Link className="app-button" to={AttributeColorEditLink()} >Новый</Link></td>
                     <td>Значение</td>
                     <td>Образец</td>
                     <td>Действия</td>
@@ -39,7 +40,7 @@ export function AttributeColorListWidget(props: {
                     </td>
                     <td>
                         <ContainerWidget direction="column" gap="small">
-                            <Link className="app-button" to={`/attribute/color/edit/${encodeURIComponent(color.code)}/${encodeURIComponent(color.value)}`} >Редактировать</Link>
+                            <Link className="app-button" to={AttributeColorEditLink(color.code, color.value)} >Редактировать</Link>
                             <button className="app" onClick={() => {
                                 props.onDelete(color.code, color.value)
                             }}>
@@ -135,15 +136,7 @@ export function BookAttributeValueWidget(props: {
                 textDecoration: "none",
                 color: "unset",
             }}
-            to={`/list?filter=${encodeURIComponent(JSON.stringify({ // TODO: пока черновой вариант, необходимо вынести генерацию всех ссылок в отдельный пакет.
-                filter: {
-                    attributes: [{
-                        code: props.code,
-                        type: "in",
-                        values: [props.value]
-                    }]
-                }
-            }))}`}
+            to={BookListLinkAttribute(props.code, props.value)}
         >{props.value}</Link>
     </span>
 }

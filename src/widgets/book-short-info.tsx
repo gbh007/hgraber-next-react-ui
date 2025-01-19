@@ -10,6 +10,7 @@ import deadHashBadge from "../assets/dead-hash.png"
 import { AttributeColor } from "../apiclient/api-attribute";
 import { BookAttributeValuesWidget } from "./attribute";
 import { ColorizedTextWidget, ContainerWidget } from "./common";
+import { BookDetailsLink } from "../core/routing";
 
 export type ImageSize = "small" | "medium" | "big" | "superbig"
 
@@ -23,7 +24,7 @@ export function BookShortInfoWidget(props: {
 
     return <ContainerWidget appContainer>
         <ContainerWidget direction="row" gap="medium">
-            <Link to={`/book/${book.info.id}`}>
+            <Link to={BookDetailsLink(book.info.id)}>
                 <BookImagePreviewWidget
                     flags={book.info.flags}
                     preview_url={book.info.preview_url}

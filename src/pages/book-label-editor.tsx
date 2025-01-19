@@ -3,6 +3,8 @@ import { useLabelGet, useLabelPresetList, useLabelSet, useLabelDelete, LabelSetR
 import { ErrorTextWidget } from "../widgets/error-text"
 import { BookLabelEditorWidget } from "../widgets/book-label-editor"
 import { useEffect } from "react"
+import { BookDetailsLink } from "../core/routing"
+import { ContainerWidget } from "../widgets/common"
 
 export function BookLabelsEditorScreen() {
     const params = useParams()
@@ -25,13 +27,13 @@ export function BookLabelsEditorScreen() {
 
     const labels = labelsResponse.data?.labels?.filter(label => !pageNumber || label.page_number == pageNumber)
 
-    return <div className="container-column container-gap-big">
+    return <ContainerWidget direction="column" gap="big">
         <ErrorTextWidget value={labelsResponse} />
         <ErrorTextWidget value={labelPresetsResponse} />
         <ErrorTextWidget value={labelSetResponse} />
         <ErrorTextWidget value={labelDeleteResponse} />
-        <div className="app-container container-row container-gap-middle">
-            <Link className="app-button" to={`/book/${bookID}`}>На страницу книги</Link>
+        <ContainerWidget appContainer direction="row" gap="medium">
+            <Link className="app-button" to={BookDetailsLink(bookID)}>На страницу книги</Link>
             {pageNumber ? <>
                 <span>Выбрана страница {pageNumber}</span>
                 <button
@@ -42,7 +44,7 @@ export function BookLabelsEditorScreen() {
                     }}
                 >смотреть все метки</button>
             </> : null}
-        </div>
+        </ContainerWidget>
         <BookLabelEditorWidget
             bookID={bookID}
             onCreate={(v: LabelSetRequest) => {
@@ -54,5 +56,5 @@ export function BookLabelsEditorScreen() {
             value={labels}
             labelsAutoComplete={labelPresetsResponse.data?.presets}
         />
-    </div>
+    </ContainerWidget>
 }

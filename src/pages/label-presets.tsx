@@ -3,6 +3,7 @@ import { LabelPresetCreateRequest, useLabelPresetCreate, useLabelPresetDelete, u
 import { HumanTimeWidget } from "../widgets/common";
 import { Link, useParams } from "react-router-dom";
 import { ErrorTextWidget } from "../widgets/error-text";
+import { LabelPresetEditLink } from "../core/routing";
 
 export function LabelPresetsScreen() {
     const [labelPresetsResponse, fetchLabelPresets] = useLabelPresetList()
@@ -16,7 +17,7 @@ export function LabelPresetsScreen() {
         <table>
             <thead>
                 <tr>
-                    <td>Название <Link className="app" to={"/label/preset/edit"} >новый</Link></td>
+                    <td>Название <Link className="app" to={LabelPresetEditLink()} >новый</Link></td>
                     <td>Описание</td>
                     <td>Значения</td>
                     <td>Создан</td>
@@ -34,7 +35,7 @@ export function LabelPresetsScreen() {
                         <td>{labelPreset.updated_at ? <HumanTimeWidget value={labelPreset.updated_at} /> : null}</td>
                         <td>
                             <div className="container-column container-gap-smaller">
-                                <Link className="app-button" to={"/label/preset/edit/" + encodeURIComponent(labelPreset.name)} >Редактировать</Link>
+                                <Link className="app-button" to={LabelPresetEditLink(labelPreset.name)} >Редактировать</Link>
                                 <button
                                     className="app"
                                     onClick={() => {

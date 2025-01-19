@@ -10,6 +10,7 @@ import styles from "./details.module.css"
 import { useBookRestore } from "../apiclient/api-book";
 import { useAttributeColorList } from "../apiclient/api-attribute";
 import { ColorizedTextWidget, ContainerWidget } from "../widgets/common";
+import { BookEditLink, BookLabelEditLink, BookReaderLink, BookRebuildLink, BookUniquePagesLink } from "../core/routing";
 
 export function BookDetailsScreen() {
     const params = useParams()
@@ -62,7 +63,7 @@ export function BookDetailsScreen() {
             <ContainerWidget direction="column" gap="big">
                 <ContainerWidget direction="row" gap="medium" wrap>
                     <button className={"app " + styles.mainButton} onClick={() => { window.open('/api/book/archive/' + bookID, "_blank") }}>Скачать</button>
-                    {hasPages ? <Link className={"app-button " + styles.mainButton} to={`/book/${bookID}/read/1`}>Читать</Link> : null}
+                    {hasPages ? <Link className={"app-button " + styles.mainButton} to={BookReaderLink(bookID)}>Читать</Link> : null}
                     {bookDetailsResponse.data.info.flags.is_deleted ? null : <button
                         className={"app " + styles.mainButton}
                         disabled={bookDeleteResponse.isLoading}
@@ -119,15 +120,15 @@ export function BookDetailsScreen() {
                         >Показать дубли</button>
                         : null}
                     {hasUniquePages ?
-                        <Link className={"app-button " + styles.mainButton} to={`/book/${bookDetailsResponse.data.info.id}/unique-pages`}>Показать уникальные страницы</Link>
+                        <Link className={"app-button " + styles.mainButton} to={BookUniquePagesLink(bookDetailsResponse.data.info.id)}>Показать уникальные страницы</Link>
                         : null}
                 </ContainerWidget>
                 <details className="app container-column container-gap-middle">
                     <summary>дополнительные действия</summary>
                     <ContainerWidget direction="row" gap="medium" wrap>
-                        <Link className="app-button" to={`/book/${bookDetailsResponse.data.info.id}/edit`}>Редактировать</Link>
-                        <Link className="app-button" to={`/book/${bookDetailsResponse.data.info.id}/rebuild`}>Пересобрать</Link>
-                        <Link className="app-button" to={`/book/${bookDetailsResponse.data.info.id}/labels`}>Редактировать метки</Link>
+                        <Link className="app-button" to={BookEditLink(bookDetailsResponse.data.info.id)}>Редактировать</Link>
+                        <Link className="app-button" to={BookRebuildLink(bookDetailsResponse.data.info.id)}>Пересобрать</Link>
+                        <Link className="app-button" to={BookLabelEditLink(bookDetailsResponse.data.info.id)}>Редактировать метки</Link>
                         {hasPages ? <>
                             <button
                                 className="app"

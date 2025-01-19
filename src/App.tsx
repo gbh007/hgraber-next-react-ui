@@ -23,6 +23,7 @@ import { BookRebuilderScreen } from "./pages/book-rebuilder";
 import { SelectToCompareScreen } from "./pages/select-to-compare";
 import { BookLabelsEditorScreen } from "./pages/book-label-editor";
 import { AttributeColorEditorScreen, AttributeColorListScreen } from "./pages/attribute-color";
+import { AgentListLink, AttributeColorListLink, BookListLink, LabelPresetsLink, MainScreenLink, MenuLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
 
 const router = createHashRouter([
   {
@@ -131,9 +132,9 @@ function SimpleWrapper(props: PropsWithChildren) {
   return (
     <>
       <div className="app-header">
-        <Link to="/">Главная</Link>
-        <Link to="/list">Список книг</Link>
-        <Link to="/menu">Меню</Link>
+        <Link to={MainScreenLink()}>Главная</Link>
+        <Link to={BookListLink()}>Список книг</Link>
+        <Link to={MenuLink()}>Меню</Link>
       </div>
 
       <div className="app-body">
@@ -147,15 +148,15 @@ function SimpleWrapper(props: PropsWithChildren) {
 function MenuWidget() {
   return <div>
     <ol>
-      <li> <Link to="/">Главная</Link> </li>
-      <li> <Link to="/list">Список книг</Link> </li>
-      <li> <Link to="/agent/list">Агенты</Link> </li>
-      <li> <Link to="/rpc">RPC</Link> </li>
-      <li> <Link to="/tasks">Задачи</Link> </li>
-      <li> <Link to="/label/presets">Пресеты меток</Link> </li>
-      <li> <Link to="/select-to-compare">Выбрать книги для сравнения</Link> </li>
-      <li> <Link to="/attribute/color/list">Цвета аттрибутов</Link> </li>
-      <li> <Link to="/settings">Настройки</Link> </li>
+      <li> <Link to={MainScreenLink()}>Главная</Link> </li>
+      <li> <Link to={BookListLink()}>Список книг</Link> </li>
+      <li> <Link to={AgentListLink()}>Агенты</Link> </li>
+      <li> <Link to={RPCLink()}>RPC</Link> </li>
+      <li> <Link to={TasksLink()}>Задачи</Link> </li>
+      <li> <Link to={LabelPresetsLink()}>Пресеты меток</Link> </li>
+      <li> <Link to={SelectToCompareLink()}>Выбрать книги для сравнения</Link> </li>
+      <li> <Link to={AttributeColorListLink()}>Цвета аттрибутов</Link> </li>
+      <li> <Link to={SettingsLink()}>Настройки</Link> </li>
     </ol>
   </div>
 }

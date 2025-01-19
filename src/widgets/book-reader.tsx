@@ -2,6 +2,7 @@ import { PropsWithChildren, useState } from "react"
 import { BookSimplePage } from "../apiclient/model-book"
 import { ColorizedTextWidget, DialogWidget } from "./common"
 import { Link } from "react-router-dom"
+import { BookLabelEditLink, DeduplicatePageLink } from "../core/routing"
 
 
 export function BookReadActionButtonWidget(props: PropsWithChildren & {
@@ -22,7 +23,7 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
             }}
         >опции</button>
         <DialogWidget open={show} onClose={() => setShow(false)}>
-            <Link className="app-button" to={`/book/${props.bookID}/labels?pageNumber=${props.pageNumber}`}>Редактировать метки</Link>
+            <Link className="app-button" to={BookLabelEditLink(props.bookID, props.pageNumber)}>Редактировать метки</Link>
             {props.currentPage?.has_dead_hash === false ?
                 <button
                     className="app"
@@ -56,7 +57,7 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
                     >
                         <ColorizedTextWidget color="danger" bold>Удалить такие страницы</ColorizedTextWidget>
                     </button>
-                    <Link className="app-button" to={`/deduplicate/${props.bookID}/${props.pageNumber}`}>Книги с этой страницей</Link>
+                    <Link className="app-button" to={DeduplicatePageLink(props.bookID, props.pageNumber)}>Книги с этой страницей</Link>
                 </> : null
             }
             {props.children}

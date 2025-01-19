@@ -11,6 +11,7 @@ import { useAppSettings } from "../apiclient/settings"
 import { useAttributeCount } from "../apiclient/api-attribute"
 import { useLabelPresetList } from "../apiclient/api-labels"
 import { BooksSimpleWidget } from "../widgets/book"
+import { BookCompareLink, BookListLink } from "../core/routing"
 
 
 export function SelectToCompareScreen() {
@@ -89,7 +90,7 @@ export function SelectToCompareScreen() {
                         setTargetPreview(undefined)
                     }}
                 >Сбросить все</button>
-                {originPreview && targetPreview ? <Link className="app-button" to={`/book/${originPreview.info.id}/compare/${targetPreview.info.id}`}>Сравнить</Link> : null}
+                {originPreview && targetPreview ? <Link className="app-button" to={BookCompareLink(originPreview.info.id, targetPreview.info.id)}>Сравнить</Link> : null}
             </div>
         </div>
         <div className="app-container container-column container-gap-middle">
@@ -117,7 +118,7 @@ export function SelectToCompareScreen() {
                 }}>Обновить данные</button>
                 <Link
                     className="app-button"
-                    to={`/list?filter=${encodeURIComponent(JSON.stringify(bookFilter))}`}
+                    to={BookListLink(bookFilter)}
                 >Перейти в список книг</Link>
             </div>
             <span>Всего: {booksResponse.data?.count}</span>

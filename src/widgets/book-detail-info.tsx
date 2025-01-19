@@ -8,6 +8,7 @@ import { AttributeColor } from "../apiclient/api-attribute"
 import { BookAttributeValuesWidget } from "./attribute"
 import { ColorizedTextWidget, ContainerWidget } from "./common"
 import { BooksSimpleWidget } from "./book"
+import { BookCompareLink, BookReaderLink } from "../core/routing"
 
 
 // FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
@@ -112,7 +113,7 @@ export function BookPagesPreviewWidget(props: {
                 .filter((_, i) => pageLimit == -1 || i < pageLimit)
                 .map((page) =>
                     <ContainerWidget appContainer direction="column" style={{ flexGrow: 1, alignItems: "center" }} key={page.page_number}>
-                        <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
+                        <Link to={BookReaderLink(props.bookID, page.page_number)}>
                             <PageImagePreviewWidget
                                 previewSize={imageSize}
                                 flags={page}
@@ -168,7 +169,7 @@ function BookDuplicates(props: {
                 <ContainerWidget direction="column" style={{ alignItems: "center" }}>
                     <span title="Сколько страниц этой книги есть в открытой">Покрытие книги: {prettyPercent(book.origin_covered_target)}% ({prettyPercent(book.origin_covered_target_without_dead_hashes)}%)</span>
                     <span title="Сколько страниц открытой книги есть в этой">Покрытие оригинала: {prettyPercent(book.target_covered_origin)}% ({prettyPercent(book.target_covered_origin_without_dead_hashes)}%)</span>
-                    <Link className="app-button" to={`/book/${props.originID}/compare/${book.book.id}`}>Сравнить</Link>
+                    <Link className="app-button" to={BookCompareLink(props.originID, book.book.id)}>Сравнить</Link>
                 </ContainerWidget>
             </BooksSimpleWidget>
         )}

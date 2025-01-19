@@ -16,6 +16,11 @@ export function UniqueBookPagesScreen() {
         fetchUniquePages({ book_id: bookID })
     }, [fetchUniquePages, bookID])
 
+    const pages = uniquePagesResponse.data?.pages?.filter(page =>
+        deadHashSelector == "all" ||
+        deadHashSelector == "without" && page.has_dead_hash === false ||
+        deadHashSelector == "only" && page.has_dead_hash === true)
+
     return <div className="container-column container-gap-middle">
         <ErrorTextWidget value={uniquePagesResponse} />
 
@@ -33,11 +38,6 @@ export function UniqueBookPagesScreen() {
         </div>
 
 
-        <BookPagesPreviewWidget bookID={bookID} pages={uniquePagesResponse.data?.pages?.filter(page =>
-            deadHashSelector == "all" ||
-            deadHashSelector == "without" && page.has_dead_hash === false ||
-            deadHashSelector == "only" && page.has_dead_hash === true)} />
-
-        { }
+        <BookPagesPreviewWidget bookID={bookID} pages={pages} />
     </div>
 }

@@ -4,6 +4,7 @@ import { BookImagePreviewWidget, ImageSize } from "./book-short-info"
 import { ContainerWidget, HumanTimeWidget } from "./common"
 import { PropsWithChildren } from "react"
 import { Property } from "csstype"
+import { BookDetailsLink } from "../core/routing"
 
 export function BooksSimpleWidget(props: PropsWithChildren & {
     value?: BookSimple
@@ -24,7 +25,7 @@ export function BooksSimpleWidget(props: PropsWithChildren & {
         }}
 
     >
-        <Link to={`/book/${props.value.id}`} style={{ flexGrow: 1 }}>
+        <Link to={BookDetailsLink(props.value.id)} style={{ flexGrow: 1 }}>
             <BookImagePreviewWidget
                 flags={props.value.flags}
                 previewSize={props.previewSize ?? "small"}

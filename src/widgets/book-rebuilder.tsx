@@ -14,6 +14,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ImageSize, PageBadgesWidget, PageImagePreviewWidget } from "./book-short-info";
 import { usePreviewSizeWidget } from "./book-detail-info";
 import { BooksSimpleWidget } from "./book";
+import { BookReaderLink } from "../core/routing";
 
 export function BookRebuilderWidget(props: {
     value: BookRebuildRequest
@@ -277,7 +278,7 @@ function PageListPreview(props: {
         {props.pages?.map(page =>
             <ContainerWidget appContainer key={page.page_number}>
                 {page.preview_url ?
-                    <Link to={`/book/${props.bookID}/read/${page.page_number}`}>
+                    <Link to={BookReaderLink(props.bookID, page.page_number)}>
                         <PageImagePreviewWidget
                             previewSize={props.previewSize}
                             flags={page}

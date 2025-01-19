@@ -8,6 +8,7 @@ import { HumanTimeWidget } from "../widgets/common";
 import { DualReaderWidget } from "../widgets/split-viewer";
 import { BookImagePreviewWidget } from "../widgets/book-short-info";
 import { useAttributeColorList } from "../apiclient/api-attribute";
+import { BookDetailsLink } from "../core/routing";
 
 export function CompareBookScreen() {
     const params = useParams()
@@ -245,7 +246,7 @@ function BookShortInfo(props: {
                 Покрытие: {prettyPercent(props.covered_target)}% ({prettyPercent(props.covered_target_without_dead_hashes)}%)
             </span>
             : null}
-        <Link className="app-button" to={`/book/${props.value.id}`}>Страница книги</Link>
+        <Link className="app-button" to={BookDetailsLink(props.value.id)}>Страница книги</Link>
     </div>
 }
 

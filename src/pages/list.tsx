@@ -11,6 +11,7 @@ import { useLabelPresetList } from "../apiclient/api-labels"
 import { Link, useSearchParams } from "react-router-dom"
 import { useAgentList, useAgentTaskExport } from "../apiclient/api-agent"
 import { ColorizedTextWidget } from "../widgets/common"
+import { SelectToCompareLink } from "../core/routing"
 
 
 export function ListScreen() {
@@ -91,7 +92,7 @@ export function ListScreen() {
                         }}>Обновить данные</button>
                         <Link
                             className="app-button"
-                            to={`/select-to-compare?filter=${encodeURIComponent(JSON.stringify(bookFilter))}`}
+                            to={SelectToCompareLink(bookFilter)}
                         >Перейти в выбор для сравнения</Link>
                     </div>
                     <AgentExportWidget filter={bookFilter} />

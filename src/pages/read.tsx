@@ -8,6 +8,7 @@ import { useCreateDeadHashByPage, useDeleteDeadHashByPage, useDeletePagesByBody 
 import { BookReadActionButtonWidget } from "../widgets/book-reader"
 import { ColorizedTextWidget } from "../widgets/common"
 import { PageBadgesWidget } from "../widgets/book-short-info"
+import { BookDetailsLink, BookReaderLink } from "../core/routing"
 
 export function BookReadScreen() {
     const params = useParams()
@@ -35,7 +36,7 @@ export function BookReadScreen() {
     }, [bookDetailsResponse.data, bookID, pageNumber])
 
     const goPage = useCallback((page: number) => {
-        navigate(`/book/${bookID}/read/${page}`)
+        navigate(BookReaderLink(bookID, page))
     }, [bookID])
 
     const pages = bookDetailsResponse.data?.pages?.
@@ -101,7 +102,7 @@ export function BookReadScreen() {
         <ErrorTextWidget value={deleteAllPageByBodyResponse} />
         <div className={styles.viewScreen}>
             <div className={"app-container " + styles.actions}>
-                <Link className="app-button" to={`/book/${bookID}`}>На страницу книги</Link>
+                <Link className="app-button" to={BookDetailsLink(bookID)}>На страницу книги</Link>
                 <PageBadgesWidget flags={currentPage} badgeSize="medium" />
                 <span>Страница {pageNumber} из {bookDetailsResponse.data?.info.page_count ?? 0}</span>
             </div>

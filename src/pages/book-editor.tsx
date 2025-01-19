@@ -6,6 +6,8 @@ import { BookEditorWidget } from "../widgets/book-editor"
 import { BookRaw } from "../apiclient/model-book"
 import { useLabelPresetList } from "../apiclient/api-labels"
 import { useAttributeCount } from "../apiclient/api-attribute"
+import { BookDetailsLink } from "../core/routing"
+import { ContainerWidget } from "../widgets/common"
 
 export function BookEditorScreen() {
     const params = useParams()
@@ -39,27 +41,25 @@ export function BookEditorScreen() {
         }
     }, [bookRawResponse.data])
 
-    return <div className="container-column container-gap-middle">
+    return <ContainerWidget direction="column" gap="medium">
         <ErrorTextWidget value={bookRawResponse} />
         <ErrorTextWidget value={bookUpdateResponse} />
         <ErrorTextWidget value={labelPresetsResponse} />
         <ErrorTextWidget value={attributeCountResponse} />
-        <div>
-            <Link className="app-button" to={`/book/${bookID}`}>На страницу книги</Link>
-        </div>
-        <BookEditorWidget
-            value={book}
-            onChange={e => setBook(e)}
-            labelsAutoComplete={labelPresetsResponse.data?.presets}
-            attributeCount={attributeCountResponse.data?.attributes}
-        />
-        <div>
+        <ContainerWidget direction="row" gap="medium">
+            <Link className="app-button" to={BookDetailsLink(bookID)}>На страницу книги</Link>
             <button
                 className="app"
                 onClick={() => {
                     doBookUpdate(book).then(() => fetchBookRaw({ id: bookID }))
                 }}
             >Сохранить</button>
-        </div>
-    </div>
+        </ContainerWidget>
+        <BookEditorWidget
+            value={book}
+            onChange={e => setBook(e)}
+            labelsAutoComplete={labelPresetsResponse.data?.presets}
+            attributeCount={attributeCountResponse.data?.attributes}
+        />
+    </ContainerWidget>
 }

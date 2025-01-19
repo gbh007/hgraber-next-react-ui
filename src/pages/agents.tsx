@@ -3,6 +3,7 @@ import { Agent, AgentListResponse, AgentListResponseStatusProblems, useAgentDele
 import { ErrorTextWidget } from "../widgets/error-text"
 import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../widgets/common"
 import { Link, useNavigate, useParams } from "react-router-dom"
+import { AgentEditLink, AgentListLink } from "../core/routing"
 
 export function AgentListScreen() {
     const [agentListResponse, fetchAgentList] = useAgentList()
@@ -16,7 +17,7 @@ export function AgentListScreen() {
             <ErrorTextWidget value={agentDeleteResponse} />
 
             <div>
-                <Link className="app-button" to={`/agent/edit/new`}>Новый</Link>
+                <Link className="app-button" to={AgentEditLink()}>Новый</Link>
             </div>
 
             {agentListResponse.data?.map(agent => <AgentInfoWidget
@@ -75,7 +76,7 @@ export function AgentEditorScreen() {
         if (isExists) {
             doAgentUpdate(data)
         } else {
-            doAgentNew(data).then(() => navigate("/agent/list"))
+            doAgentNew(data).then(() => navigate(AgentListLink()))
         }
     }, [doAgentUpdate, doAgentNew, isExists, data])
 
@@ -130,7 +131,7 @@ function AgentInfoWidget(props: {
         </ContainerWidget>
         <AgentStatusInfoWidget value={props.value.status?.problems} />
         <ContainerWidget direction="row" gap="medium">
-            <Link className="app-button" to={`/agent/edit/${props.value.info.id}`}>Редактировать</Link>
+            <Link className="app-button" to={AgentEditLink(props.value.info.id)}>Редактировать</Link>
             <button className="app" onClick={() => props.onDelete()} >
                 <ColorizedTextWidget bold color="danger">Удалить</ColorizedTextWidget>
             </button>

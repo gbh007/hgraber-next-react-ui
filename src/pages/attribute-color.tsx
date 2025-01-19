@@ -3,6 +3,7 @@ import { AttributeColor, useAttributeColorCreate, useAttributeColorDelete, useAt
 import { AttributeColorEditorWidget, AttributeColorListWidget, attributeDefaultBackgroundColor, attributeDefaultTextColor, BookAttributeAutocompleteWidget } from "../widgets/attribute";
 import { ErrorTextWidget } from "../widgets/error-text";
 import { useNavigate, useParams } from "react-router-dom";
+import { AttributeColorEditLink } from "../core/routing";
 
 export function AttributeColorListScreen() {
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
@@ -72,7 +73,7 @@ export function AttributeColorEditorScreen() {
             doAttributeColorUpdate(data)
         } else {
             doAttributeColorCreate(data).then(() => {
-                navigate(`/attribute/color/edit/${encodeURIComponent(data.code)}/${encodeURIComponent(data.value)}`)
+                navigate(AttributeColorEditLink(data.code, data.value))
             })
         }
     }, [doAttributeColorUpdate, doAttributeColorCreate, navigate, isExists, data])
