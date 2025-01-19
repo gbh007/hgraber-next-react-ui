@@ -123,7 +123,7 @@ export function BookDetailsScreen() {
                         <Link className={"app-button " + styles.mainButton} to={BookUniquePagesLink(bookDetailsResponse.data.info.id)}>Показать уникальные страницы</Link>
                         : null}
                 </ContainerWidget>
-                <details className="app container-column container-gap-middle">
+                <details className="app">
                     <summary>дополнительные действия</summary>
                     <ContainerWidget direction="row" gap="medium" wrap>
                         <Link className="app-button" to={BookEditLink(bookDetailsResponse.data.info.id)}>Редактировать</Link>

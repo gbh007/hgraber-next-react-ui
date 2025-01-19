@@ -118,41 +118,13 @@ input.app:disabled {
   background: var(--app-background);
 }
 
-details.app > summary {
-  user-select: none;
-  cursor: pointer;
-}
-
-.container-row {
-  display: flex;
-  flex-direction: row;
-}
-
-.container-column {
+details.app {
   display: flex;
   flex-direction: column;
-}
-
-.container-gap-biggest {
-  gap: 50px;
-}
-
-.container-gap-bigger {
-  gap: 30px;
-}
-
-.container-gap-big {
-  gap: 15px;
-}
-
-.container-gap-middle {
   gap: 10px;
 }
 
-.container-gap-small {
-  gap: 5px;
-}
-
-.container-gap-smaller {
-  gap: 3px;
+details.app > summary {
+  user-select: none;
+  cursor: pointer;
 }

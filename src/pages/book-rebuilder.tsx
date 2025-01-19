@@ -9,6 +9,7 @@ import { BookRebuilderWidget } from "../widgets/book-rebuilder"
 import { BookFilter } from "../apiclient/model-book-filter"
 import { useBookList } from "../apiclient/api-book-list"
 import { BookDetailsLink } from "../core/routing"
+import { ContainerWidget } from "../widgets/common"
 
 export function BookRebuilderScreen() {
     const params = useParams()
@@ -70,14 +71,14 @@ export function BookRebuilderScreen() {
         }
     }, [bookRawResponse.data])
 
-    return <div className="container-column container-gap-middle">
+    return <ContainerWidget direction="column" gap="medium">
         <ErrorTextWidget value={bookRawResponse} />
         <ErrorTextWidget value={bookDetailsResponse} />
         <ErrorTextWidget value={labelPresetsResponse} />
         <ErrorTextWidget value={attributeCountResponse} />
         <ErrorTextWidget value={bookRebuildResponse} />
         <ErrorTextWidget value={booksResponse} />
-        <div className="container-row container-gap-small">
+        <ContainerWidget direction="row" gap="small">
             <Link className="app-button" to={BookDetailsLink(bookID)}>На страницу исходной книги</Link>
             {bookRebuildResponse.data?.id ?
                 <Link className="app-button" to={BookDetailsLink(bookRebuildResponse.data.id)}>На страницу собранной книги</Link>
@@ -110,7 +111,7 @@ export function BookRebuilderScreen() {
                 >Пересобрать</button>
             }
 
-        </div>
+        </ContainerWidget>
         {!bookRebuildResponse.data?.id ?
             <BookRebuilderWidget
                 value={bookRebuildData}
@@ -126,5 +127,5 @@ export function BookRebuilderScreen() {
                 targetBookResponse={booksResponse.data ?? undefined}
             /> : null
         }
-    </div>
+    </ContainerWidget>
 }

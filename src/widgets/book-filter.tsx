@@ -6,6 +6,7 @@ import { AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
 import { attributeCodes, BookAttributeAutocompleteWidget } from "./attribute";
+import { ContainerWidget } from "./common";
 
 
 export function BookFilterWidget(props: {
@@ -14,7 +15,7 @@ export function BookFilterWidget(props: {
     attributeCount?: Array<AttributeCountResponseAttribute>
     labelsAutoComplete?: Array<LabelPresetListResponseLabel>
 }) {
-    return <div className="container-column container-gap-small">
+    return <ContainerWidget direction="column" gap="small">
         <div>
             Показывать удаленные:
             <ShowSelectWidget value={props.value.delete_status ?? "except"} onChange={(v: string) => {
@@ -108,14 +109,14 @@ export function BookFilterWidget(props: {
             }}
         />
         <BookLabelPresetAutocompleteWidget labelsAutoComplete={props.labelsAutoComplete} />
-    </div>
+    </ContainerWidget>
 }
 
 function BookFilterAttributesWidget(props: {
     value: Array<BookFilterAttribute>
     onChange: (v: Array<BookFilterAttribute>) => void
 }) {
-    return <div className="container-column container-gap-small">
+    return <ContainerWidget direction="column" gap="small">
         <div>
             <span>Аттрибуты </span>
             <button
@@ -129,7 +130,7 @@ function BookFilterAttributesWidget(props: {
             >Добавить фильтр</button>
         </div>
         {props.value.map((v, i) =>
-            <div key={i} className="container-row container-gap-middle">
+            <ContainerWidget key={i} direction="row" gap="medium">
                 <BookFilterAttributeWidget
                     value={v}
                     onChange={e => {
@@ -142,16 +143,16 @@ function BookFilterAttributesWidget(props: {
                         props.onChange(props.value.filter((_, index) => index != i))
                     }}
                 >удалить фильтр</button>
-            </div>
+            </ContainerWidget>
         )}
-    </div>
+    </ContainerWidget>
 }
 
 function BookFilterAttributeWidget(props: {
     value: BookFilterAttribute
     onChange: (v: BookFilterAttribute) => void
 }) {
-    return <div className="container-row container-gap-middle">
+    return <ContainerWidget direction="row" gap="medium">
         <select
             className="app"
             value={props.value.code}
@@ -196,7 +197,7 @@ function BookFilterAttributeWidget(props: {
                 autoCompleteID={"attribute-autocomplete-" + props.value.code}
             />
         }
-    </div>
+    </ContainerWidget>
 }
 
 function ManyStringSelectWidget(props: {
@@ -205,7 +206,7 @@ function ManyStringSelectWidget(props: {
     autoCompleteID?: string
 }) {
     const [value, setValue] = useState("")
-    return <div className="container-column container-gap-smaller">
+    return <ContainerWidget direction="column" gap="smaller">
         <div>
             <input
                 className="app"
@@ -223,7 +224,7 @@ function ManyStringSelectWidget(props: {
             >добавить</button>
         </div>
         {props.value.map((v, i) =>
-            <div key={i} className="container-row container-gap-smaller">
+            <ContainerWidget key={i} direction="row" gap="smaller">
                 <span>{v}</span>
                 <button
                     className="app"
@@ -231,9 +232,9 @@ function ManyStringSelectWidget(props: {
                         props.onChange(props.value.filter((_, index) => index != i))
                     }}
                 >удалить</button>
-            </div>
+            </ContainerWidget>
         )}
-    </div>
+    </ContainerWidget>
 }
 
 
@@ -242,7 +243,7 @@ function BookFilterLabelsWidget(props: {
     value: Array<BookFilterLabel>
     onChange: (v: Array<BookFilterLabel>) => void
 }) {
-    return <div className="container-column container-gap-small">
+    return <ContainerWidget direction="column" gap="small">
         <div>
             <span>Метки </span>
             <button
@@ -256,7 +257,7 @@ function BookFilterLabelsWidget(props: {
             >Добавить фильтр</button>
         </div>
         {props.value.map((v, i) =>
-            <div key={i} className="container-row container-gap-middle">
+            <ContainerWidget key={i} direction="row" gap="medium">
                 <BookFilterLabelWidget
                     value={v}
                     onChange={e => {
@@ -269,16 +270,16 @@ function BookFilterLabelsWidget(props: {
                         props.onChange(props.value.filter((_, index) => index != i))
                     }}
                 >удалить фильтр</button>
-            </div>
+            </ContainerWidget>
         )}
-    </div>
+    </ContainerWidget>
 }
 
 function BookFilterLabelWidget(props: {
     value: BookFilterLabel
     onChange: (v: BookFilterLabel) => void
 }) {
-    return <div className="container-row container-gap-middle">
+    return <ContainerWidget direction="row" gap="medium">
         <input
             className="app"
             list="label-preset-names"
@@ -321,5 +322,5 @@ function BookFilterLabelWidget(props: {
                 autoCompleteID={"label-preset-values-" + props.value.name}
             />
         }
-    </div>
+    </ContainerWidget>
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { LabelPresetCreateRequest, useLabelPresetCreate, useLabelPresetDelete, useLabelPresetGet, useLabelPresetList, useLabelPresetUpdate } from "../apiclient/api-labels";
-import { HumanTimeWidget } from "../widgets/common";
+import { ContainerWidget, HumanTimeWidget } from "../widgets/common";
 import { Link, useParams } from "react-router-dom";
 import { ErrorTextWidget } from "../widgets/error-text";
 import { LabelPresetEditLink } from "../core/routing";
@@ -34,7 +34,7 @@ export function LabelPresetsScreen() {
                         <td><HumanTimeWidget value={labelPreset.created_at} /></td>
                         <td>{labelPreset.updated_at ? <HumanTimeWidget value={labelPreset.updated_at} /> : null}</td>
                         <td>
-                            <div className="container-column container-gap-smaller">
+                            <ContainerWidget direction="column" gap="smaller">
                                 <Link className="app-button" to={LabelPresetEditLink(labelPreset.name)} >Редактировать</Link>
                                 <button
                                     className="app"
@@ -44,7 +44,7 @@ export function LabelPresetsScreen() {
                                     }}
                                     disabled={labelPresetDeleteResponse.isLoading}
                                 >Удалить</button>
-                            </div>
+                            </ContainerWidget>
                         </td>
                     </tr>
                 )}
@@ -79,7 +79,7 @@ export function LabelPresetEditorScreen() {
         }, [doGetLabelPreset, labelPresetName])
     }
 
-    return <div className="app-container container-column container-gap-small">
+    return <ContainerWidget appContainer direction="column" gap="small">
         <ErrorTextWidget value={labelPresetCreateResponse} />
         <ErrorTextWidget value={labelPresetUpdateResponse} />
         <ErrorTextWidget value={labelPresetGetResponse} />
@@ -113,7 +113,7 @@ export function LabelPresetEditorScreen() {
                 }
             }}
         >Сохранить</button>
-    </div>
+    </ContainerWidget>
 }
 
 
@@ -122,7 +122,7 @@ export function StringArrayPickerWidget(props: {
     value?: Array<string>
     onChange: (v: Array<string>) => void
 }) {
-    return <div className="container-column container-gap-smaller">
+    return <ContainerWidget direction="column" gap="smaller">
         <div>
             {props.name ? <span>{props.name}: </span> : null}
             <button className="app" onClick={() => {
@@ -143,5 +143,5 @@ export function StringArrayPickerWidget(props: {
             }}>Удалить</button>
         </div >)
         }
-    </div >
+    </ContainerWidget >
 }

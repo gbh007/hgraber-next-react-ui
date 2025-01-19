@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ErrorTextWidget } from "../widgets/error-text";
 import { BookAttributesWidget, BookPagesPreviewWidget } from "../widgets/book-detail-info";
 import { BookSimple, BookSimplePage } from "../apiclient/model-book";
-import { HumanTimeWidget } from "../widgets/common";
+import { ContainerWidget, HumanTimeWidget } from "../widgets/common";
 import { DualReaderWidget } from "../widgets/split-viewer";
 import { BookImagePreviewWidget } from "../widgets/book-short-info";
 import { useAttributeColorList } from "../apiclient/api-attribute";
@@ -53,15 +53,15 @@ export function CompareBookScreen() {
         deadHashSelector == "without" && page.has_dead_hash === false ||
         deadHashSelector == "only" && page.has_dead_hash === true)
 
-    return <div className="container-column container-gap-bigger">
+    return <ContainerWidget direction="column" gap="bigger">
         <ErrorTextWidget value={compareResult} />
         <ErrorTextWidget value={createDeadHashResponse} />
         <ErrorTextWidget value={deleteDeadHashResponse} />
         <ErrorTextWidget value={deleteAllPageByBodyResponse} />
         <ErrorTextWidget value={attributeColorListResponse} />
 
-        <div className="app-container container-row container-gap-middle" style={{ flexWrap: "wrap" }}>
-            <div className="container-row container-gap-small">
+        <ContainerWidget appContainer direction="row" gap="medium" wrap>
+            <ContainerWidget direction="row" gap="small">
                 <BookImagePreviewWidget
                     flags={compareResult.data?.origin.flags}
                     previewSize="superbig"
@@ -72,9 +72,9 @@ export function CompareBookScreen() {
                     covered_target={compareResult.data?.origin_covered_target}
                     covered_target_without_dead_hashes={compareResult.data?.origin_covered_target_without_dead_hashes}
                 />
-            </div>
+            </ContainerWidget>
             <div style={{ flexGrow: 1, textAlign: "center" }}>
-                <div className="container-column container-gap-small">
+                <ContainerWidget direction="column" gap="small">
                     <select
                         className="app"
                         value={currentShow}
@@ -95,9 +95,9 @@ export function CompareBookScreen() {
                         <option value="without">Кроме</option>
                         <option value="only">Только</option>
                     </select>
-                </div>
+                </ContainerWidget>
             </div>
-            <div className="container-row container-gap-small">
+            <ContainerWidget direction="row" gap="small">
                 <BookShortInfo
                     value={compareResult.data?.target}
                     covered_target={compareResult.data?.target_covered_origin}
@@ -108,23 +108,23 @@ export function CompareBookScreen() {
                     previewSize="superbig"
                     preview_url={compareResult.data?.target.preview_url}
                 />
-            </div>
-        </div>
+            </ContainerWidget>
+        </ContainerWidget>
 
-        <div className="app-container container-row container-gap-middle" style={{ justifyContent: "space-between" }}>
-            <div className="container-column container-gap-small">
+        <ContainerWidget appContainer direction="row" gap="medium" style={{ justifyContent: "space-between" }}>
+            <ContainerWidget direction="row" gap="small">
                 <b>Аттрибуты оригинала</b>
                 <BookAttributesWidget value={compareResult.data?.origin_attributes} colors={attributeColorListResponse.data?.colors} />
-            </div>
-            <div className="container-column container-gap-small">
+            </ContainerWidget>
+            <ContainerWidget direction="row" gap="small">
                 <b>Аттрибуты общие</b>
                 <BookAttributesWidget value={compareResult.data?.both_attributes} colors={attributeColorListResponse.data?.colors} />
-            </div>
-            <div className="container-column container-gap-small">
+            </ContainerWidget>
+            <ContainerWidget direction="row" gap="small">
                 <b>Аттрибуты цели</b>
                 <BookAttributesWidget value={compareResult.data?.target_attributes} colors={attributeColorListResponse.data?.colors} />
-            </div>
-        </div>
+            </ContainerWidget>
+        </ContainerWidget>
 
 
         {/* FIXME: Переделать это непотребство */}
@@ -218,7 +218,7 @@ export function CompareBookScreen() {
                         /> : null
         }
 
-    </div>
+    </ContainerWidget>
 }
 
 function BookShortInfo(props: {
@@ -232,7 +232,7 @@ function BookShortInfo(props: {
 
     const originDomain = /https?:\/\/([\w.]+)\/.*/.exec(props.value.origin_url ?? "")?.[1]
 
-    return <div className="container-column container-gap-small" style={{ maxWidth: "500px" }}>
+    return <ContainerWidget direction="column" gap="small" style={{ maxWidth: "500px" }}>
         <b style={{ wordBreak: "break-all" }}>{props.value.name}</b>
         <span>Создана: <HumanTimeWidget value={props.value.created_at} /> </span>
         <span>Страниц: {props.value.page_count}</span>
@@ -247,7 +247,7 @@ function BookShortInfo(props: {
             </span>
             : null}
         <Link className="app-button" to={BookDetailsLink(props.value.id)}>Страница книги</Link>
-    </div>
+    </ContainerWidget>
 }
 
 

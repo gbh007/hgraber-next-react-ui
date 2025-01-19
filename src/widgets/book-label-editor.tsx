@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { LabelDeleteRequest, LabelGetResponseLabel, LabelPresetListResponseLabel, LabelSetRequest } from "../apiclient/api-labels";
-import { HumanTimeWidget } from "./common";
+import { ContainerWidget, HumanTimeWidget } from "./common";
 
 export function BookLabelEditorWidget(props: {
     bookID: string
@@ -14,8 +14,8 @@ export function BookLabelEditorWidget(props: {
     const [name, setName] = useState("")
     const [value, setValue] = useState("")
 
-    return <div className="container-column container-gap-big">
-        <div className="app-container container-row container-gap-small">
+    return <ContainerWidget direction="column" gap="big">
+        <ContainerWidget appContainer direction="row" gap="small">
             <span>Создать метку</span>
             <input
                 className="app"
@@ -49,8 +49,8 @@ export function BookLabelEditorWidget(props: {
                     })
                 }}
             >создать</button>
-        </div>
-        <div className="app-container container-column">
+        </ContainerWidget>
+        <ContainerWidget appContainer direction="column">
             <table>
                 <thead>
                     <tr>
@@ -84,9 +84,9 @@ export function BookLabelEditorWidget(props: {
                     )}
                 </tbody>
             </table>
-        </div>
+        </ContainerWidget>
         <BookLabelPresetAutocompleteWidget labelsAutoComplete={props.labelsAutoComplete} />
-    </div>
+    </ContainerWidget>
 }
 
 export function BookLabelPresetAutocompleteWidget(props: {

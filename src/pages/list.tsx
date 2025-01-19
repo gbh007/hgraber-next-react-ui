@@ -10,7 +10,7 @@ import { useAttributeColorList, useAttributeCount } from "../apiclient/api-attri
 import { useLabelPresetList } from "../apiclient/api-labels"
 import { Link, useSearchParams } from "react-router-dom"
 import { useAgentList, useAgentTaskExport } from "../apiclient/api-agent"
-import { ColorizedTextWidget } from "../widgets/common"
+import { ColorizedTextWidget, ContainerWidget } from "../widgets/common"
 import { SelectToCompareLink } from "../core/routing"
 
 
@@ -59,22 +59,22 @@ export function ListScreen() {
         }
     }, [setBookFilter, searchParams])
 
-    return <div className="container-column container-gap-middle">
+    return <ContainerWidget direction="column" gap="medium">
         <ErrorTextWidget value={booksResponse} />
         <ErrorTextWidget value={attributeCountResponse} />
         <ErrorTextWidget value={labelPresetsResponse} />
         <ErrorTextWidget value={attributeColorListResponse} />
-        <div className="app-container container-column container-gap-middle">
+        <ContainerWidget appContainer direction="column" gap="medium">
             <details className={"app " + styles.filter}>
                 <summary>Фильтр, всего {booksResponse.data?.count || 0}</summary>
-                <div className="container-column container-gap-middle">
+                <ContainerWidget direction="column" gap="medium">
                     <BookFilterWidget
                         value={bookFilter}
                         onChange={setBookFilter}
                         attributeCount={attributeCountResponse.data?.attributes}
                         labelsAutoComplete={labelPresetsResponse.data?.presets}
                     />
-                    <div className="container-row container-gap-middle">
+                    <ContainerWidget direction="row" gap="medium">
                         <button className="app" onClick={() => {
                             setBookFilter({ ...bookFilter, page: 1 })
                             searchParams.set("filter", JSON.stringify({ ...bookFilter, page: 1 }))
@@ -94,11 +94,11 @@ export function ListScreen() {
                             className="app-button"
                             to={SelectToCompareLink(bookFilter)}
                         >Перейти в выбор для сравнения</Link>
-                    </div>
+                    </ContainerWidget>
                     <AgentExportWidget filter={bookFilter} />
-                </div>
+                </ContainerWidget>
             </details >
-        </div>
+        </ContainerWidget>
         <PaginatorWidget onChange={(v: number) => {
             setBookFilter({ ...bookFilter, page: v })
             searchParams.set("filter", JSON.stringify({ ...bookFilter, page: v }))
@@ -118,7 +118,7 @@ export function ListScreen() {
             searchParams.set("filter", JSON.stringify({ ...bookFilter, page: v }))
             setSearchParams(searchParams)
         }} value={booksResponse.data?.pages || []} />
-    </div>
+    </ContainerWidget>
 }
 
 
@@ -130,9 +130,9 @@ function AgentExportWidget(props: { filter: BookFilter }) {
 
     useEffect(() => { getAgents({ can_export: true, }) }, [getAgents])
 
-    return <details className="app container-column container-gap-middle">
+    return <details className="app">
         <summary>Параметры экспорта</summary>
-        <div className="container-row container-gap-small">
+        <ContainerWidget direction="row" gap="medium">
             <ErrorTextWidget value={agentsResponse} />
 
             <select className="app" value={agentID} onChange={e => { setAgentID(e.target.value) }}>
@@ -165,7 +165,7 @@ function AgentExportWidget(props: { filter: BookFilter }) {
                     exporter: agentID,
                 })
             }}> Выгрузить</button>
-        </div>
+        </ContainerWidget>
     </details>
 }
 
@@ -173,7 +173,7 @@ export function PaginatorWidget(props: {
     value: Array<BookListResponsePages>
     onChange: (v: number) => void
 }) {
-    return <div id="paginator">
+    return <div>
         {props.value.map((page, index) => <span
             key={index}
             className={styles.page}

@@ -4,6 +4,7 @@ import { AttributeColorEditorWidget, AttributeColorListWidget, attributeDefaultB
 import { ErrorTextWidget } from "../widgets/error-text";
 import { useNavigate, useParams } from "react-router-dom";
 import { AttributeColorEditLink } from "../core/routing";
+import { ContainerWidget } from "../widgets/common";
 
 export function AttributeColorListScreen() {
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
@@ -78,7 +79,7 @@ export function AttributeColorEditorScreen() {
         }
     }, [doAttributeColorUpdate, doAttributeColorCreate, navigate, isExists, data])
 
-    return <div className="app-container container-column container-gap-big">
+    return <ContainerWidget appContainer direction="column" gap="big">
         <ErrorTextWidget value={attributeColorGetResponse} />
         <ErrorTextWidget value={attributeColorCreateResponse} />
         <ErrorTextWidget value={attributeColorUpdateResponse} />
@@ -93,5 +94,5 @@ export function AttributeColorEditorScreen() {
             onClick={useSave}
         >Сохранить</button>
         <BookAttributeAutocompleteWidget attributeCount={attributeCountResponse.data?.attributes} />
-    </div>
+    </ContainerWidget>
 }

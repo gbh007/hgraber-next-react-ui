@@ -3,7 +3,7 @@ import { BookFilter } from "../apiclient/model-book-filter"
 import styles from "./select-to-compare.module.css"
 import { BookShortInfo, useBookList } from "../apiclient/api-book-list"
 import { Link, useSearchParams } from "react-router-dom"
-import { ColorizedTextWidget } from "../widgets/common"
+import { ColorizedTextWidget, ContainerWidget } from "../widgets/common"
 import { BookFilterWidget } from "../widgets/book-filter"
 import { PaginatorWidget } from "./list"
 import { ErrorTextWidget } from "../widgets/error-text"
@@ -59,30 +59,30 @@ export function SelectToCompareScreen() {
     const [originPreview, setOriginPreview] = useState<BookShortInfo>()
     const [targetPreview, setTargetPreview] = useState<BookShortInfo>()
 
-    return <div className="container-column container-gap-big">
+    return <ContainerWidget direction="column" gap="big">
         <ErrorTextWidget value={booksResponse} />
         <ErrorTextWidget value={attributeCountResponse} />
         <ErrorTextWidget value={labelPresetsResponse} />
-        <div className="app-container container-column container-gap-big">
-            <div className="app-container container-row container-gap-big">
-                {originPreview ? <div className="container-column container-gap-small">
+        <ContainerWidget appContainer direction="column" gap="big">
+            <ContainerWidget direction="row" gap="big">
+                {originPreview ? <ContainerWidget direction="column" gap="small">
                     <h3>Оригинальная книга</h3>
                     <BooksSimpleWidget value={originPreview.info} align="start" />
                     <button
                         className="app"
                         onClick={() => setOriginPreview(undefined)}
                     >Сбросить</button>
-                </div> : null}
-                {targetPreview ? <div className="container-column container-gap-small">
+                </ContainerWidget> : null}
+                {targetPreview ? <ContainerWidget direction="column" gap="small">
                     <h3>Целевая книга</h3>
                     <BooksSimpleWidget value={targetPreview.info} align="start" />
                     <button
                         className="app"
                         onClick={() => setTargetPreview(undefined)}
                     >Сбросить</button>
-                </div> : null}
-            </div>
-            <div className="container-row container-gap-middle">
+                </ContainerWidget> : null}
+            </ContainerWidget>
+            <ContainerWidget direction="row" gap="medium">
                 <button
                     className="app"
                     onClick={() => {
@@ -91,16 +91,16 @@ export function SelectToCompareScreen() {
                     }}
                 >Сбросить все</button>
                 {originPreview && targetPreview ? <Link className="app-button" to={BookCompareLink(originPreview.info.id, targetPreview.info.id)}>Сравнить</Link> : null}
-            </div>
-        </div>
-        <div className="app-container container-column container-gap-middle">
+            </ContainerWidget>
+        </ContainerWidget>
+        <ContainerWidget appContainer direction="column" gap="medium">
             <BookFilterWidget
                 value={bookFilter}
                 onChange={setBookFilter}
                 attributeCount={attributeCountResponse.data?.attributes}
                 labelsAutoComplete={labelPresetsResponse.data?.presets}
             />
-            <div className="container-row container-gap-middle">
+            <ContainerWidget direction="row" gap="medium">
                 <button className="app" onClick={() => {
                     setBookFilter({ ...bookFilter, page: 1 })
                     searchParams.set("filter", JSON.stringify({ ...bookFilter, page: 1 }))
@@ -120,14 +120,14 @@ export function SelectToCompareScreen() {
                     className="app-button"
                     to={BookListLink(bookFilter)}
                 >Перейти в список книг</Link>
-            </div>
+            </ContainerWidget>
             <span>Всего: {booksResponse.data?.count}</span>
             <PaginatorWidget onChange={(v: number) => {
                 setBookFilter({ ...bookFilter, page: v })
                 searchParams.set("filter", JSON.stringify({ ...bookFilter, page: v }))
                 setSearchParams(searchParams)
             }} value={booksResponse.data?.pages || []} />
-        </div>
+        </ContainerWidget>
         <BooksList
             value={booksResponse.data?.books}
             onChangeOrigin={setOriginPreview}
@@ -135,7 +135,7 @@ export function SelectToCompareScreen() {
             selectedOrigin={originPreview?.info.id}
             selectedTarget={targetPreview?.info.id}
         />
-    </div>
+    </ContainerWidget>
 }
 
 

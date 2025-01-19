@@ -3,6 +3,7 @@ import { useUniqueBookPages } from "../apiclient/api-deduplicate"
 import { useEffect, useState } from "react"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { BookPagesPreviewWidget } from "../widgets/book-detail-info"
+import { ContainerWidget } from "../widgets/common"
 
 // TODO: выглядит скорее как виджет обрезок, подумать что с этим можно сделать
 export function UniqueBookPagesScreen() {
@@ -21,10 +22,10 @@ export function UniqueBookPagesScreen() {
         deadHashSelector == "without" && page.has_dead_hash === false ||
         deadHashSelector == "only" && page.has_dead_hash === true)
 
-    return <div className="container-column container-gap-middle">
+    return <ContainerWidget direction="column" gap="medium">
         <ErrorTextWidget value={uniquePagesResponse} />
 
-        <div className="app-container container-row container-gap-small">
+        <ContainerWidget appContainer direction="row" gap="small">
             <span>Показывать страницы с мертвыми хешами</span>
             <select
                 className="app"
@@ -35,9 +36,9 @@ export function UniqueBookPagesScreen() {
                 <option value="without">Кроме</option>
                 <option value="only">Только</option>
             </select>
-        </div>
+        </ContainerWidget>
 
 
         <BookPagesPreviewWidget bookID={bookID} pages={pages} />
-    </div>
+    </ContainerWidget>
 }

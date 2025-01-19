@@ -3,6 +3,7 @@ import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookRaw, BookRawAttribute, BookRawLabel } from "../apiclient/model-book";
 import { attributeCodes, BookAttributeAutocompleteWidget } from "./attribute";
 import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
+import { ContainerWidget } from "./common";
 import { DatetimePickerWidget } from "./datetime-picker";
 
 
@@ -12,7 +13,7 @@ export function BookEditorWidget(props: {
     labelsAutoComplete?: Array<LabelPresetListResponseLabel>
     attributeCount?: Array<AttributeCountResponseAttribute>
 }) {
-    return <div className="container-column container-gap-middle">
+    return <ContainerWidget direction="column" gap="medium">
         <BookMainInfoEditorWidget
             value={props.value}
             onChange={props.onChange}
@@ -27,14 +28,14 @@ export function BookEditorWidget(props: {
             onChange={e => props.onChange({ ...props.value, attributes: e })}
             attributeCount={props.attributeCount}
         />
-    </div>
+    </ContainerWidget>
 }
 
 export function BookMainInfoEditorWidget(props: {
     value: BookRaw
     onChange: (v: BookRaw) => void
 }) {
-    return <div className="app-container container-column container-gap-small">
+    return <ContainerWidget appContainer direction="column" gap="small">
         <b>Основная информация</b>
         <label>Название: <input
             className="app"
@@ -50,7 +51,7 @@ export function BookMainInfoEditorWidget(props: {
                 props.onChange({ ...props.value, origin_url: e.target.value || undefined })
             }}
         /></label>
-    </div>
+    </ContainerWidget>
 }
 
 
@@ -59,8 +60,8 @@ export function BookLabelInfoEditorWidget(props: {
     onChange: (v: Array<BookRawLabel>) => void
     labelsAutoComplete?: Array<LabelPresetListResponseLabel>
 }) {
-    return <div className="app-container container-column container-gap-middle">
-        <div className="container-row container-gap-small">
+    return <ContainerWidget appContainer direction="column" gap="medium">
+        <ContainerWidget direction="row" gap="small">
             <b>Метки</b>
             <button
                 className="app"
@@ -73,7 +74,7 @@ export function BookLabelInfoEditorWidget(props: {
                     }])
                 }}
             >создать</button>
-        </div>
+        </ContainerWidget>
         {props.value.map((label, i) =>
             <LabelEditor
                 key={i}
@@ -83,7 +84,7 @@ export function BookLabelInfoEditorWidget(props: {
             />
         )}
         <BookLabelPresetAutocompleteWidget labelsAutoComplete={props.labelsAutoComplete} />
-    </div>
+    </ContainerWidget>
 }
 
 function LabelEditor(props: {
@@ -91,7 +92,7 @@ function LabelEditor(props: {
     onChange: (v: BookRawLabel) => void
     onDelete: () => void
 }) {
-    return <div className="container-row container-gap-smaller">
+    return <ContainerWidget direction="row" gap="smaller">
         <input
             className="app"
             list="label-preset-names"
@@ -118,7 +119,7 @@ function LabelEditor(props: {
             onChange={e => props.onChange({ ...props.value, create_at: e })}
         />
         <button className="app" onClick={props.onDelete} >удалить</button>
-    </div>
+    </ContainerWidget>
 }
 
 export function BookAttributeInfoEditorWidget(props: {
@@ -126,8 +127,8 @@ export function BookAttributeInfoEditorWidget(props: {
     onChange: (v: Array<BookRawAttribute>) => void
     attributeCount?: Array<AttributeCountResponseAttribute>
 }) {
-    return <div className="app-container container-column container-gap-middle">
-        <div className="container-row container-gap-small">
+    return <ContainerWidget appContainer direction="column" gap="medium">
+        <ContainerWidget direction="row" gap="small">
             <b>Аттрибуты</b>
             <button
                 className="app"
@@ -138,7 +139,7 @@ export function BookAttributeInfoEditorWidget(props: {
                     }])
                 }}
             >создать</button>
-        </div>
+        </ContainerWidget>
         {props.value.map((label, i) =>
             <AttributeEditor
                 key={i}
@@ -148,7 +149,7 @@ export function BookAttributeInfoEditorWidget(props: {
             />
         )}
         <BookAttributeAutocompleteWidget attributeCount={props.attributeCount} />
-    </div>
+    </ContainerWidget>
 }
 
 function AttributeEditor(props: {
@@ -156,7 +157,7 @@ function AttributeEditor(props: {
     onChange: (v: BookRawAttribute) => void
     onDelete: () => void
 }) {
-    return <div className="container-row container-gap-small">
+    return <ContainerWidget direction="row" gap="small">
         <select
             className="app"
             value={props.value.code}
@@ -174,7 +175,7 @@ function AttributeEditor(props: {
             onChange={e => props.onChange({ ...props.value, values: e })}
             autoCompleteID={"attribute-autocomplete-" + props.value.code}
         />
-    </div>
+    </ContainerWidget>
 }
 
 function ManyStringSelectWidget(props: {
@@ -182,7 +183,7 @@ function ManyStringSelectWidget(props: {
     onChange: (v: Array<string>) => void
     autoCompleteID?: string
 }) {
-    return <div className="container-column container-gap-smaller">
+    return <ContainerWidget direction="column" gap="smaller">
         <div>
             <button
                 className="app"
@@ -192,7 +193,7 @@ function ManyStringSelectWidget(props: {
             >добавить</button>
         </div>
         {props.value.map((value, i) =>
-            <div key={i} className="container-row container-gap-smaller">
+            <ContainerWidget key={i} direction="row" gap="smaller">
                 <input
                     className="app"
                     value={value}
@@ -205,7 +206,7 @@ function ManyStringSelectWidget(props: {
                         props.onChange(props.value.filter((_, index) => index != i))
                     }}
                 >удалить</button>
-            </div>
+            </ContainerWidget>
         )}
-    </div>
+    </ContainerWidget>
 }
