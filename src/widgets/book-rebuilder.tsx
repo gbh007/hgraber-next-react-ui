@@ -277,14 +277,20 @@ function PageListPreview(props: {
     return <div className={styles.preview}>
         {props.pages?.map(page =>
             <ContainerWidget appContainer key={page.page_number}>
-                {page.preview_url ?
-                    <Link to={BookReaderLink(props.bookID, page.page_number)}>
-                        <PageImagePreviewWidget
-                            previewSize={props.previewSize}
-                            flags={page}
-                            preview_url={page.preview_url}
-                        />
-                    </Link> : null}
+                {page.preview_url ? <PageImagePreviewWidget
+                    previewSize={props.previewSize}
+                    flags={page}
+                    preview_url={page.preview_url}
+                    onClick={() => {
+                        const checked = props.value.includes(page.page_number)
+                        props.onChange(
+                            !checked ?
+                                [...props.value, page.page_number]
+                                :
+                                props.value.filter(v => v != page.page_number)
+                        )
+                    }}
+                /> : null}
                 <span>Страница: {page.page_number}</span>
                 <label><input
                     className="app"
@@ -297,6 +303,11 @@ function PageListPreview(props: {
                             props.value.filter(v => v != page.page_number)
                     )}
                 /> выбрать</label>
+                <Link
+                    className="app-button"
+                    to={BookReaderLink(props.bookID, page.page_number)}>
+                    Открыть в читалке
+                </Link>
             </ContainerWidget>
         )}
     </div>

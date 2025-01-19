@@ -121,6 +121,7 @@ export function PageImagePreviewWidget(props: {
         has_dead_hash?: boolean
     }
     previewSize: ImageSize
+    onClick?: () => void
 }) {
     const activeBadge = [deadHashBadge]
         .filter(badge => badge == deadHashBadge && props.flags?.has_dead_hash)
@@ -154,6 +155,7 @@ export function PageImagePreviewWidget(props: {
                 maxHeight: `${imageHeight}${heightUnit}`,
             }}
             src={props.preview_url ?? missingImage}
+            onClick={props.onClick}
         />
         <div style={{
             position: "absolute",
