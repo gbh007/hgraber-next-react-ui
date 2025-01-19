@@ -32,13 +32,9 @@ export function TaskScreen() {
                 onChange={e => setTaskCode(e.target.value)}
             >
                 <option value="">Не выбрано</option>
-                <option value="deduplicate_files">Дедуплицировать файлы</option>
-                <option value="remove_detached_files">Удалить ни с чем не связанные файлы</option>
-                <option value="remove_mismatch_files">Удалить не синхронизированные (FS/DB) файлы</option>
-                <option value="fill_dead_hashes">Наполнить мертвые хеши</option>
-                <option value="fill_dead_hashes_with_remove_deleted_pages">Наполнить мертвые хеши и удалить удаленные страницы с ними</option>
-                <option value="clean_deleted_pages">Очистить удаленные страницы</option>
-                <option value="clean_deleted_rebuilds">Очистить удаленные ребилды</option>
+                {taskResultsResponse.data?.tasks.map(task =>
+                    <option value={task.code} key={task.code} title={task.description}>{task.name}</option>
+                )}
             </select>
             <button className="app" onClick={() => { doCreateTask({ code: taskCode }) }}>Создать задачу</button>
             <button className="app" onClick={() => { fetchTaskResults() }}>Обновить</button>

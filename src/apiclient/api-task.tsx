@@ -5,13 +5,20 @@ export interface TaskCreateRequest {
 }
 
 export function useTaskCreate(): [Response<void | null>, PostAction<TaskCreateRequest>] {
-    const [response, fetchData] = useAPIPost<TaskCreateRequest, void>('/api/task/create')
+    const [response, fetchData] = useAPIPost<TaskCreateRequest, void>('/api/system/task/create')
 
     return [response, fetchData]
 }
 
 export interface TaskResultsResponse {
+    tasks: Array<TaskResultsResponseTask>
     results?: Array<TaskResultsResponseResult>
+}
+
+export interface TaskResultsResponseTask {
+    code: string
+    name: string
+    description?: string
 }
 
 export interface TaskResultsResponseResult {
@@ -23,6 +30,7 @@ export interface TaskResultsResponseResult {
     ended_at: string
     stages?: Array<TaskResultsResponseResultStage>
 }
+
 
 export interface TaskResultsResponseResultStage {
     name: string
@@ -36,7 +44,7 @@ export interface TaskResultsResponseResultStage {
 }
 
 export function useTaskResults(): [Response<TaskResultsResponse | null>, GetAction] {
-    const [response, fetchData] = useAPIGet<TaskResultsResponse>('/api/task/results')
+    const [response, fetchData] = useAPIGet<TaskResultsResponse>('/api/system/task/results')
 
     return [response, fetchData]
 }
