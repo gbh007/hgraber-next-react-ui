@@ -169,6 +169,11 @@ function BookDuplicates(props: {
                 <ContainerWidget direction="column" style={{ alignItems: "center" }}>
                     <span title="Сколько страниц этой книги есть в открытой">Покрытие книги: {prettyPercent(book.origin_covered_target)}% ({prettyPercent(book.origin_covered_target_without_dead_hashes)}%)</span>
                     <span title="Сколько страниц открытой книги есть в этой">Покрытие оригинала: {prettyPercent(book.target_covered_origin)}% ({prettyPercent(book.target_covered_origin_without_dead_hashes)}%)</span>
+                </ContainerWidget>
+                <ContainerWidget direction="column" style={{ alignItems: "center" }}>
+                    <span>Размер: {book.target_size_formatted}</span>
+                    <span>Общий размер: {book.shared_size_formatted} ({book.shared_size_without_dead_hashes_formatted})</span>
+                    <span>Общие страницы: {book.shared_page_count} ({book.shared_page_count_without_dead_hashes})</span>
                     <Link className="app-button" to={BookCompareLink(props.originID, book.book.id)}>Сравнить</Link>
                 </ContainerWidget>
             </BooksSimpleWidget>

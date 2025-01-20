@@ -15,6 +15,16 @@ export interface DeduplicateBookByPageBodyResponseResult {
     target_covered_origin: number
     origin_covered_target_without_dead_hashes: number
     target_covered_origin_without_dead_hashes: number
+
+    target_size: number
+    shared_size: number
+    shared_size_without_dead_hashes: number
+    shared_page_count: number
+    shared_page_count_without_dead_hashes: number
+
+    target_size_formatted: string
+    shared_size_formatted: string
+    shared_size_without_dead_hashes_formatted: string
 }
 
 export function useDeduplicateBookByPageBody(): [Response<DeduplicateBookByPageBodyResponse | null>, PostAction<DeduplicateBookByPageBodyRequest>] {
