@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { DeduplicateBookByPageBodyResponseResult } from "../apiclient/api-deduplicate"
 import { PropsWithChildren, ReactNode, useEffect, useState } from "react"
-import { BookAttribute, BookSimplePage } from "../apiclient/model-book"
+import { BookAttribute, BookDetailsSize, BookSimplePage } from "../apiclient/model-book"
 import { BookDetails } from "../apiclient/api-book-details"
 import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget } from "./book-short-info"
 import { AttributeColor } from "../apiclient/api-attribute"
@@ -47,14 +47,7 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
                     {originDomain ? <span>({originDomain})</span> : null}
                 </ContainerWidget>
                 <BookAttributesWidget value={props.book.attributes} colors={props.colors} />
-                {props.book.size ? <ContainerWidget direction="column">
-                    <b>Размер:</b>
-                    <span>уникальный (без мертвых хешей) {props.book.size.unique_without_dead_hashes_formatted}</span>
-                    <span>уникальный (с мертвыми хешами) {props.book.size.unique_formatted}</span>
-                    <span>разделяемый {props.book.size.shared_formatted}</span>
-                    <span>мертвые хеши {props.book.size.dead_hashes_formatted}</span>
-                    <span>общий {props.book.size.total_formatted}</span>
-                </ContainerWidget> : null}
+                <BookSizeWidget value={props.book.size} />
                 {props.children}
             </ContainerWidget>
         </ContainerWidget>
@@ -63,6 +56,24 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
             bookID={props.book.info.id}
             pages={props.book.pages}
         />
+    </ContainerWidget>
+}
+
+function BookSizeWidget(props: {
+    value?: BookDetailsSize
+}) {
+    if (!props.value) {
+        return null
+    }
+
+    return <ContainerWidget direction="column">
+        <b>Размер:</b>
+        <span>уникальный (без мертвых хешей) <b>{props.value.unique_without_dead_hashes_formatted}</b> ({props.value.unique_without_dead_hashes_count} шт)</span>
+        <span>уникальный (с мертвыми хешами) <b>{props.value.unique_formatted}</b> ({props.value.unique_count} шт)</span>
+        <span>разделяемый <b>{props.value.shared_formatted}</b> ({props.value.shared_count} шт)</span>
+        <span>мертвые хеши <b>{props.value.dead_hashes_formatted}</b> ({props.value.dead_hashes_count} шт)</span>
+        <span>количество внутренних дублей <b>{props.value.inner_duplicate_count}</b></span>
+        <span>общий <b>{props.value.total_formatted}</b></span>
     </ContainerWidget>
 }
 
@@ -167,13 +178,39 @@ function BookDuplicates(props: {
         {props.deduplicateBookInfo?.map(book =>
             <BooksSimpleWidget value={book.book} align="center" key={book.book.id}>
                 <ContainerWidget direction="column" style={{ alignItems: "center" }}>
-                    <span title="Сколько страниц этой книги есть в открытой">Покрытие книги: {prettyPercent(book.origin_covered_target)}% ({prettyPercent(book.origin_covered_target_without_dead_hashes)}%)</span>
-                    <span title="Сколько страниц открытой книги есть в этой">Покрытие оригинала: {prettyPercent(book.target_covered_origin)}% ({prettyPercent(book.target_covered_origin_without_dead_hashes)}%)</span>
+                    <ContainerWidget direction="row" gap="small">
+                        <span title="Сколько страниц этой книги есть в открытой">Покрытие книги:</span>
+                        <ColorizedTextWidget bold color={book.origin_covered_target == 1 ? "good" : undefined}>
+                            {prettyPercent(book.origin_covered_target)}%
+                        </ColorizedTextWidget>
+                        {book.origin_covered_target != book.origin_covered_target_without_dead_hashes ?
+                            <span>({prettyPercent(book.origin_covered_target_without_dead_hashes)}%)</span>
+                            : null}
+                    </ContainerWidget>
+                    <ContainerWidget direction="row" gap="small">
+                        <span title="Сколько страниц открытой книги есть в этой">Покрытие оригинала:</span>
+                        <ColorizedTextWidget bold color={book.target_covered_origin == 1 ? "good" : undefined}>
+                            {prettyPercent(book.target_covered_origin)}%
+                        </ColorizedTextWidget>
+                        {book.target_covered_origin != book.target_covered_origin_without_dead_hashes ?
+                            <span>({prettyPercent(book.target_covered_origin_without_dead_hashes)}%)</span>
+                            : null}
+                    </ContainerWidget>
                 </ContainerWidget>
                 <ContainerWidget direction="column" style={{ alignItems: "center" }}>
                     <span>Размер: {book.target_size_formatted}</span>
-                    <span>Общий размер: {book.shared_size_formatted} ({book.shared_size_without_dead_hashes_formatted})</span>
-                    <span>Общие страницы: {book.shared_page_count} ({book.shared_page_count_without_dead_hashes})</span>
+                    <ContainerWidget direction="row" gap="small">
+                        <span>Общий размер: {book.shared_size_formatted}</span>
+                        {book.shared_size_formatted != book.shared_size_without_dead_hashes_formatted ?
+                            <span>({book.shared_size_without_dead_hashes_formatted})</span>
+                            : null}
+                    </ContainerWidget>
+                    <ContainerWidget direction="row" gap="small">
+                        <span>Общие страницы: {book.shared_page_count}</span>
+                        {book.shared_page_count != book.shared_page_count_without_dead_hashes ?
+                            <span>({book.shared_page_count_without_dead_hashes})</span>
+                            : null}
+                    </ContainerWidget>
                     <Link className="app-button" to={BookCompareLink(props.originID, book.book.id)}>Сравнить</Link>
                 </ContainerWidget>
             </BooksSimpleWidget>
