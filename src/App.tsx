@@ -6,7 +6,7 @@ import {
 import { MainScreen } from "./pages/main";
 
 
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { SettingsScreen } from "./pages/settings";
 import { RPCScreen } from "./pages/rpc";
 import { AgentEditorScreen, AgentListScreen } from "./pages/agents";
@@ -24,6 +24,7 @@ import { SelectToCompareScreen } from "./pages/select-to-compare";
 import { BookLabelsEditorScreen } from "./pages/book-label-editor";
 import { AttributeColorEditorScreen, AttributeColorListScreen } from "./pages/attribute-color";
 import { AgentListLink, AttributeColorListLink, BookListLink, LabelPresetsLink, MainScreenLink, MenuLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
+import { AppTheme, ThemeContext } from "./core/context";
 
 const router = createHashRouter([
   {
@@ -121,10 +122,28 @@ const router = createHashRouter([
 ]);
 
 function App() {
+  const [theme, setTheme] = useState<AppTheme>(
+    localStorage.getItem("theme") == "dark" ? "dark" : "light"
+  )
+
   return (
-    <>
-      <RouterProvider router={router} />
-    </ >
+    <div
+      data-theme={theme}
+      style={{
+        flexGrow: 1,
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "var(--app-background)",
+        color: "var(--app-color)"
+      }}
+    >
+      <ThemeContext.Provider value={{
+        theme: theme,
+        setTheme: setTheme,
+      }}>
+        <RouterProvider router={router} />
+      </ThemeContext.Provider>
+    </div>
   )
 }
 

@@ -7,11 +7,31 @@
   --app-error-background: #fd000047;
   --app-font-family: system-ui;
   --color-shadow: #00000029;
+  --app-border-color: var(--app-primary);
+  --app-disabled-background-color: var(--app-background);
+  --app-disabled-color: var(--app-color);
+}
+
+[data-theme="dark"] {
+  --app-background: #2d2d2d;
+  --container-background: #1f1f1f;
+  --app-primary: #000000;
+  --app-secondary: #414141;
+  --app-color: #bcbcbc;
+  --app-error-background: #fd000047;
+  --app-font-family: system-ui;
+  --color-shadow: #7d7d7d29;
+  --app-border-color: #6d6d6d;
+  --app-disabled-background-color: #c2c2c2;
+  --app-disabled-color: #000000;
+}
+
+dialog {
+  color: var(--app-color);
+  font-family: var(--app-font-family);
 }
 
 body {
-  background: var(--app-background);
-  color: var(--app-color);
   display: flex;
   flex-direction: column;
   margin: 0px;
@@ -62,7 +82,7 @@ div.app-container {
 Link.app-button,
 a.app-button,
 button.app {
-  border: 1px solid var(--app-primary);
+  border: 1px solid var(--app-border-color);
   background: var(--app-secondary);
   border-radius: 3px;
   padding: 3px;
@@ -90,13 +110,14 @@ button.app:hover {
 }
 
 button.app:disabled {
-  background: var(--app-background);
+  background: var(--app-disabled-background-color);
+  color: var(--app-disabled-color);
 }
 
 select.app,
 textarea.app,
 input.app {
-  border: 1px solid var(--app-primary);
+  border: 1px solid var(--app-border-color);
   color: var(--app-color);
   background: var(--container-background);
   border-radius: 3px;
@@ -108,14 +129,15 @@ input.app {
 select.app:focus,
 textarea.app:focus,
 input.app:focus {
-  border: 1px dotted var(--app-primary);
+  border: 1px dotted var(--app-border-color);
   background: var(--app-secondary);
 }
 
 select.app:disabled,
 textarea.app:disabled,
 input.app:disabled {
-  background: var(--app-background);
+  background: var(--app-disabled-background-color);
+  color: var(--app-disabled-color);
 }
 
 details.app {

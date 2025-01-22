@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useUserLogin } from "../apiclient/api-user-login"
 import { useAppSettings } from "../apiclient/settings"
 
-import "./settings.css"
+import { ThemeContext } from "../core/context"
+import { ContainerWidget } from "../widgets/common"
+import { ErrorTextWidget } from "../widgets/error-text"
 
 export function SettingsScreen() {
-    const [{ isError, errorText }, login] = useUserLogin()
+    const theme = useContext(ThemeContext)
+    const [loginResponse, doLogin] = useUserLogin()
 
     const [appSettings, setSettings] = useAppSettings()
 
@@ -16,39 +19,34 @@ export function SettingsScreen() {
         setPageCount(appSettings.book_on_page)
     }, [appSettings, setPageCount])
 
-    return (
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div className="app-container top-bar-settings">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td className="head" colSpan={2}>Данные приложения</td>
-                        </tr>
-                        <tr>
-                            <td>Количество на странице</td>
-                            <td>
-                                <input
-                                    className="app"
-                                    type="number"
-                                    id="on-page"
-                                    value={pageCount}
-                                    onChange={e => setPageCount(parseInt(e.target.value))}
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colSpan={2}>
-                                <button className="app" onClick={() => setSettings({ ...appSettings, book_on_page: pageCount })}>Сохранить</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div >
+    useEffect(() => {
+        localStorage.setItem("theme", theme.theme)
+    }, [theme.theme])
 
-            <div className="app-container">
-                {isError ? <div className="app-error-container">
-                    {errorText}
-                </div> : null}
+    return (
+        <ContainerWidget direction="column" gap="big">
+            <ContainerWidget appContainer direction="column" gap="medium">
+                <b>Данные приложения</b>
+                <ContainerWidget direction="2-column" gap="small">
+                    <span>Количество на странице</span>
+                    <input
+                        className="app"
+                        type="number"
+                        id="on-page"
+                        value={pageCount}
+                        onChange={e => setPageCount(parseInt(e.target.value))}
+                    />
+                </ContainerWidget>
+                <div>
+                    <button
+                        className="app"
+                        onClick={() => setSettings({ ...appSettings, book_on_page: pageCount })}
+                    >Сохранить</button>
+                </div>
+            </ContainerWidget>
+
+            <ContainerWidget appContainer direction="row" gap="smaller">
+                <ErrorTextWidget value={loginResponse} />
                 <input
                     className="app"
                     value={token}
@@ -58,9 +56,30 @@ export function SettingsScreen() {
                     type="password"
                 />
                 <button className="app" onClick={() => {
-                    login({ token }).then(() => setToken(""))
+                    doLogin({ token }).then(() => setToken(""))
                 }}>Авторизоваться</button>
-            </div >
-        </div>
+            </ContainerWidget>
+            <ContainerWidget appContainer direction="column" gap="medium">
+                <b>Выбрать тему</b>
+                <label>
+                    <input
+                        className="app"
+                        type="radio"
+                        checked={theme.theme == "light"}
+                        onChange={() => theme.setTheme("light")}
+                    />
+                    <span>Светлая</span>
+                </label>
+                <label>
+                    <input
+                        className="app"
+                        type="radio"
+                        checked={theme.theme == "dark"}
+                        onChange={() => theme.setTheme("dark")}
+                    />
+                    <span>Темная</span>
+                </label>
+            </ContainerWidget>
+        </ContainerWidget>
     )
 }
