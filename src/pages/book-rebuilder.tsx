@@ -31,14 +31,22 @@ export function BookRebuilderScreen() {
 
 
     const [bookFilter, setBookFilter] = useState<BookFilter>({
-        count: 10,
-        delete_status: "except",
-        download_status: "only",
-        verify_status: "only",
-        show_rebuilded: "only",
-        page: 1,
-        sort_field: "created_at",
-        sort_desc: true,
+        pagination: {
+            count: 10,
+            page: 1,
+        },
+        filter: {
+            flags: {
+                delete_status: "except",
+                download_status: "only",
+                verify_status: "only",
+                show_rebuilded: "only",
+            }
+        },
+        sort: {
+            field: "created_at",
+            desc: true,
+        }
     })
 
     const [bookRawResponse, fetchBookRaw] = useBookRaw()

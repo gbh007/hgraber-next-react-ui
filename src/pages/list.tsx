@@ -18,14 +18,22 @@ export function ListScreen() {
     const [settings, _] = useAppSettings()
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const defaultFilterValue = {
-        count: settings.book_on_page,
-        delete_status: "except",
-        download_status: "only",
-        verify_status: "only",
-        page: 1,
-        sort_field: "created_at",
-        sort_desc: true,
+    const defaultFilterValue: BookFilter = {
+        pagination: {
+            count: settings.book_on_page,
+            page: 1,
+        },
+        filter: {
+            flags: {
+                delete_status: "except",
+                download_status: "only",
+                verify_status: "only",
+            }
+        },
+        sort: {
+            field: "created_at",
+            desc: true,
+        }
     }
 
     const [bookFilter, setBookFilter] = useState<BookFilter>(defaultFilterValue)
@@ -76,8 +84,8 @@ export function ListScreen() {
                     />
                     <ContainerWidget direction="row" gap="medium">
                         <button className="app" onClick={() => {
-                            setBookFilter({ ...bookFilter, page: 1 })
-                            searchParams.set("filter", JSON.stringify({ ...bookFilter, page: 1 }))
+                            setBookFilter({ ...bookFilter, pagination: { ...bookFilter.pagination, page: 1 } })
+                            searchParams.set("filter", JSON.stringify({ ...bookFilter, pagination: { ...bookFilter.pagination, page: 1 } }))
                             setSearchParams(searchParams)
                         }}>Применить фильтр</button>
                         <button className="app" onClick={() => {
@@ -100,8 +108,8 @@ export function ListScreen() {
             </details >
         </ContainerWidget>
         <PaginatorWidget onChange={(v: number) => {
-            setBookFilter({ ...bookFilter, page: v })
-            searchParams.set("filter", JSON.stringify({ ...bookFilter, page: v }))
+            setBookFilter({ ...bookFilter, pagination: { ...bookFilter.pagination, page: v } })
+            searchParams.set("filter", JSON.stringify({ ...bookFilter, pagination: { ...bookFilter.pagination, page: v } }))
             setSearchParams(searchParams)
         }} value={booksResponse.data?.pages || []} />
         <div className={styles.bookList}>
@@ -114,8 +122,8 @@ export function ListScreen() {
             )}
         </div>
         <PaginatorWidget onChange={(v: number) => {
-            setBookFilter({ ...bookFilter, page: v })
-            searchParams.set("filter", JSON.stringify({ ...bookFilter, page: v }))
+            setBookFilter({ ...bookFilter, pagination: { ...bookFilter.pagination, page: v } })
+            searchParams.set("filter", JSON.stringify({ ...bookFilter, pagination: { ...bookFilter.pagination, page: v } }))
             setSearchParams(searchParams)
         }} value={booksResponse.data?.pages || []} />
     </ContainerWidget>
@@ -160,7 +168,7 @@ function AgentExportWidget(props: { filter: BookFilter }) {
                 }
 
                 makeExport({
-                    book_filter: { ...props.filter, count: undefined, page: undefined }, // Принудительно срезаем параметры пагинации.
+                    book_filter: { ...props.filter, pagination: undefined }, // Принудительно срезаем параметры пагинации. 
                     delete_after: deleteAfterExport,
                     exporter: agentID,
                 })

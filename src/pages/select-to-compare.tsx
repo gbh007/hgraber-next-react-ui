@@ -18,14 +18,22 @@ export function SelectToCompareScreen() {
     const [settings, _] = useAppSettings()
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const defaultFilterValue = {
-        count: settings.book_on_page,
-        delete_status: "except",
-        download_status: "only",
-        verify_status: "only",
-        page: 1,
-        sort_field: "created_at",
-        sort_desc: true,
+    const defaultFilterValue: BookFilter = {
+        pagination: {
+            count: settings.book_on_page,
+            page: 1,
+        },
+        filter: {
+            flags: {
+                delete_status: "except",
+                download_status: "only",
+                verify_status: "only",
+            }
+        },
+        sort: {
+            field: "created_at",
+            desc: true,
+        }
     }
 
     const [bookFilter, setBookFilter] = useState<BookFilter>(defaultFilterValue)
@@ -102,8 +110,8 @@ export function SelectToCompareScreen() {
             />
             <ContainerWidget direction="row" gap="medium">
                 <button className="app" onClick={() => {
-                    setBookFilter({ ...bookFilter, page: 1 })
-                    searchParams.set("filter", JSON.stringify({ ...bookFilter, page: 1 }))
+                    setBookFilter({ ...bookFilter, pagination: { ...bookFilter.pagination, page: 1 } })
+                    searchParams.set("filter", JSON.stringify({ ...bookFilter, pagination: { ...bookFilter.pagination, page: 1 } }))
                     setSearchParams(searchParams)
                 }}>Применить фильтр</button>
                 <button className="app" onClick={() => {
@@ -123,8 +131,8 @@ export function SelectToCompareScreen() {
             </ContainerWidget>
             <span>Всего: {booksResponse.data?.count}</span>
             <PaginatorWidget onChange={(v: number) => {
-                setBookFilter({ ...bookFilter, page: v })
-                searchParams.set("filter", JSON.stringify({ ...bookFilter, page: v }))
+                setBookFilter({ ...bookFilter, pagination: { ...bookFilter.pagination, page: v } })
+                searchParams.set("filter", JSON.stringify({ ...bookFilter, pagination: { ...bookFilter.pagination, page: v } }))
                 setSearchParams(searchParams)
             }} value={booksResponse.data?.pages || []} />
         </ContainerWidget>

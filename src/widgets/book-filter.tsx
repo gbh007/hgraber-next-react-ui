@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookFilter, BookFilterAttribute, BookFilterLabel } from "../apiclient/model-book-filter";
+import { BookFilter, BookFilterAttribute, BookFilterFlags, BookFilterLabel } from "../apiclient/model-book-filter";
 import { DatetimePickerWidget } from "./datetime-picker";
 import { ShowSelectWidget } from "./show-select";
 import { AttributeCountResponseAttribute } from "../apiclient/api-attribute";
@@ -16,74 +16,50 @@ export function BookFilterWidget(props: {
     labelsAutoComplete?: Array<LabelPresetListResponseLabel>
 }) {
     return <ContainerWidget direction="column" gap="small">
-        <div>
-            Показывать удаленные:
-            <ShowSelectWidget value={props.value.delete_status ?? "except"} onChange={(v: string) => {
-                props.onChange({ ...props.value, delete_status: v })
-            }} />
-        </div>
-        <div>
-            Показывать подтвержденные:
-            <ShowSelectWidget value={props.value.verify_status ?? "only"} onChange={(v: string) => {
-                props.onChange({ ...props.value, verify_status: v })
-            }} />
-        </div>
-        <div>
-            Показывать загруженные:
-            <ShowSelectWidget value={props.value.download_status ?? "only"} onChange={(v: string) => {
-                props.onChange({ ...props.value, download_status: v })
-            }} />
-        </div>
-        <div>
-            Показывать пересобранные:
-            <ShowSelectWidget value={props.value.show_rebuilded ?? "all"} onChange={(v: string) => {
-                props.onChange({ ...props.value, show_rebuilded: v })
-            }} />
-        </div>
-        <div>
-            Показывать без страниц:
-            <ShowSelectWidget value={props.value.show_without_pages ?? "all"} onChange={(v: string) => {
-                props.onChange({ ...props.value, show_without_pages: v })
-            }} />
-        </div>
-        <div>
-            Показывать без превью:
-            <ShowSelectWidget value={props.value.show_without_preview ?? "all"} onChange={(v: string) => {
-                props.onChange({ ...props.value, show_without_preview: v })
-            }} />
-        </div>
-        <div>
-            Сортировать по:
-            <select className="app" value={props.value.sort_field ?? "created_at"} onChange={e => {
-                props.onChange({ ...props.value, sort_field: e.target.value })
+        <BookFilterFlagsWidget
+            value={props.value.filter?.flags ?? {}}
+            onChange={v => props.onChange({ ...props.value, filter: { ...props.value.filter, flags: v } })}
+        />
+        <ContainerWidget direction="2-column" gap="small">
+            <span>Сортировать по:</span>
+            <select className="app" value={props.value.sort?.field ?? "created_at"} onChange={e => {
+                props.onChange({ ...props.value, sort: { ...props.value.sort, field: e.target.value } })
             }}>
                 <option value="created_at">Дате создания</option>
                 <option value="name">Названию</option>
                 <option value="id">ИД</option>
                 <option value="page_count">Количеству страниц</option>
             </select>
-        </div>
+        </ContainerWidget>
         <label>
             <span>Сортировать по убыванию</span>
             <input
                 className="app"
-                checked={props.value.sort_desc ?? true}
+                checked={props.value.sort?.desc ?? true}
                 onChange={e => {
-                    props.onChange({ ...props.value, sort_desc: e.target.checked })
+                    props.onChange({ ...props.value, sort: { ...props.value.sort, desc: e.target.checked } })
                 }}
                 placeholder="Сортировать по убыванию"
                 type="checkbox"
                 autoComplete="off"
             />
         </label>
-        <div>
-            <span>С <DatetimePickerWidget value={props.value.from ?? ""} onChange={
-                v => props.onChange({ ...props.value, from: v })
-            } /></span>
-            <span> По <DatetimePickerWidget value={props.value.to ?? ""} onChange={
-                v => props.onChange({ ...props.value, to: v })
-            } /></span>
-        </div>
+        <ContainerWidget direction="row" gap="small" wrap>
+            <span>С</span>
+            <DatetimePickerWidget
+                value={props.value.filter?.created_at?.from ?? ""}
+                onChange={
+                    v => props.onChange({ ...props.value, filter: { ...props.value.filter, created_at: { ...props.value.filter?.created_at, from: v } } })
+                }
+            />
+            <span>По</span>
+            <DatetimePickerWidget
+                value={props.value.filter?.created_at?.to ?? ""}
+                onChange={
+                    v => props.onChange({ ...props.value, filter: { ...props.value.filter, created_at: { ...props.value.filter?.created_at, to: v } } })
+                }
+            />
+        </ContainerWidget>
         <div>
             <span>Название </span>
             <input
@@ -109,6 +85,38 @@ export function BookFilterWidget(props: {
             }}
         />
         <BookLabelPresetAutocompleteWidget labelsAutoComplete={props.labelsAutoComplete} />
+    </ContainerWidget>
+}
+
+function BookFilterFlagsWidget(props: {
+    value: BookFilterFlags
+    onChange: (v: BookFilterFlags) => void
+}) {
+    return <ContainerWidget direction="2-column" gap="small">
+        <span>Показывать удаленные:</span>
+        <ShowSelectWidget value={props.value.delete_status ?? "except"} onChange={(v: string) => {
+            props.onChange({ ...props.value, delete_status: v })
+        }} />
+        <span>Показывать подтвержденные:</span>
+        <ShowSelectWidget value={props.value.verify_status ?? "only"} onChange={(v: string) => {
+            props.onChange({ ...props.value, verify_status: v })
+        }} />
+        <span>Показывать загруженные:</span>
+        <ShowSelectWidget value={props.value.download_status ?? "only"} onChange={(v: string) => {
+            props.onChange({ ...props.value, download_status: v })
+        }} />
+        <span>Показывать пересобранные:</span>
+        <ShowSelectWidget value={props.value.show_rebuilded ?? "all"} onChange={(v: string) => {
+            props.onChange({ ...props.value, show_rebuilded: v })
+        }} />
+        <span>Показывать без страниц:</span>
+        <ShowSelectWidget value={props.value.show_without_pages ?? "all"} onChange={(v: string) => {
+            props.onChange({ ...props.value, show_without_pages: v })
+        }} />
+        <span>Показывать без превью:</span>
+        <ShowSelectWidget value={props.value.show_without_preview ?? "all"} onChange={(v: string) => {
+            props.onChange({ ...props.value, show_without_preview: v })
+        }} />
     </ContainerWidget>
 }
 

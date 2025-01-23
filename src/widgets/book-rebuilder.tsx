@@ -66,11 +66,11 @@ export function BookRebuilderWidget(props: {
                             onChange={props.targetBookFilterChange}
                         />
                         <button className="app" onClick={() => {
-                            props.getTargetBooks({ ...props.targetBookFilter, page: 1 })
+                            props.getTargetBooks({ ...props.targetBookFilter, pagination: { ...props.targetBookFilter.pagination, page: 1 } })
                         }}>Применить</button>
                         <PaginatorWidget onChange={(v: number) => {
-                            props.targetBookFilterChange({ ...props.targetBookFilter, page: v })
-                            props.getTargetBooks({ ...props.targetBookFilter, page: v })
+                            props.targetBookFilterChange({ ...props.targetBookFilter, pagination: { ...props.targetBookFilter.pagination, page: v } })
+                            props.getTargetBooks({ ...props.targetBookFilter, pagination: { ...props.targetBookFilter.pagination, page: v } })
                         }} value={props.targetBookResponse?.pages || []} />
                     </ContainerWidget>
                     <BooksList

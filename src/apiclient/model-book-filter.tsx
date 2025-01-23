@@ -1,23 +1,24 @@
 export interface BookFilter {
-    sort_desc?: boolean
-    sort_field?: string
-    count?: number
-    page?: number
-    from?: string
-    to?: string
-    verify_status?: string
-    delete_status?: string
-    download_status?: string
-    show_rebuilded?: string
-    show_without_pages?: string
-    show_without_preview?: string
+    sort?: {
+        desc?: boolean
+        field?: string
+    }
+    pagination?: {
+        count?: number
+        page?: number
+    }
     filter?: BookFilterAdditional
 }
 
 export interface BookFilterAdditional {
     name?: string
+    created_at?: {
+        from?: string
+        to?: string
+    }
     attributes?: Array<BookFilterAttribute>
     labels?: Array<BookFilterLabel>
+    flags?: BookFilterFlags
 }
 
 export interface BookFilterAttribute {
@@ -32,4 +33,13 @@ export interface BookFilterLabel {
     type: string
     values?: Array<string>
     count?: number
+}
+
+export interface BookFilterFlags {
+    verify_status?: string
+    delete_status?: string
+    download_status?: string
+    show_rebuilded?: string
+    show_without_pages?: string
+    show_without_preview?: string
 }
