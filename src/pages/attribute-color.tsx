@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { AttributeColor, useAttributeColorCreate, useAttributeColorDelete, useAttributeColorGet, useAttributeColorList, useAttributeColorUpdate, useAttributeCount } from "../apiclient/api-attribute";
-import { AttributeColorEditorWidget, AttributeColorListWidget, attributeDefaultBackgroundColor, attributeDefaultTextColor, BookAttributeAutocompleteWidget } from "../widgets/attribute";
+import { AttributeColorEditorWidget, AttributeColorListWidget, BookAttributeAutocompleteWidget } from "../widgets/attribute";
 import { ErrorTextWidget } from "../widgets/error-text";
 import { useNavigate, useParams } from "react-router-dom";
 import { AttributeColorEditLink } from "../core/routing";
@@ -40,8 +40,8 @@ export function AttributeColorEditorScreen() {
     const [data, setData] = useState<AttributeColor>({
         code: attributeCode || "tag",
         value: attributeValue || "",
-        text_color: attributeDefaultTextColor,
-        background_color: attributeDefaultBackgroundColor,
+        text_color: "#000000", // TODO: подумать можно ли это вытащить из цветов темы, и должны ли быть отдельные цвета на темы
+        background_color: "#dfdfdf", // TODO: подумать можно ли это вытащить из цветов темы, и должны ли быть отдельные цвета на темы
         created_at: new Date().toJSON(),
     })
 

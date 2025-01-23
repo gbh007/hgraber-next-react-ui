@@ -14,9 +14,6 @@ export const attributeCodes = [
     "tag",
 ]
 
-export const attributeDefaultTextColor = "#000000"
-export const attributeDefaultBackgroundColor = "#dfdfdf"
-
 export function AttributeColorListWidget(props: {
     value?: Array<AttributeColor>
     onDelete: (code: string, value: string) => void
@@ -127,8 +124,8 @@ export function BookAttributeValueWidget(props: {
         borderRadius: "3px",
         padding: "3px",
         margin: "2px",
-        color: props.color?.text_color ?? attributeDefaultTextColor,
-        backgroundColor: props.color?.background_color ?? attributeDefaultBackgroundColor,
+        color: props.color?.text_color ?? "var(--app-attribute-color)",
+        backgroundColor: props.color?.background_color ?? "var(--app-attribute-background-color)",
         display: "inline-block",
     }}>
         <Link

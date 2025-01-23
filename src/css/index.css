@@ -10,6 +10,8 @@
   --app-border-color: var(--app-primary);
   --app-disabled-background-color: var(--app-background);
   --app-disabled-color: var(--app-color);
+  --app-attribute-color: var(--app-color);
+  --app-attribute-background-color: var(--app-background);
 }
 
 [data-theme="dark"] {
@@ -24,6 +26,18 @@
   --app-border-color: #6d6d6d;
   --app-disabled-background-color: #c2c2c2;
   --app-disabled-color: #000000;
+  --app-attribute-color: var(--app-color);
+  --app-attribute-background-color: #464646;
+}
+
+[data-theme="dark"] Link,
+[data-theme="dark"] a {
+  color: #5858ff;
+}
+
+[data-theme="dark"] Link:visited,
+[data-theme="dark"] a:visited {
+  color: #7b7bb9;
 }
 
 dialog {
@@ -51,7 +65,8 @@ div.app-header {
   display: flex;
   justify-content: space-between;
 }
-
+div.app-header > Link:visited,
+div.app-header > a:visited,
 div.app-header > Link,
 div.app-header > a {
   text-decoration: none;
@@ -79,6 +94,8 @@ div.app-container {
   /* box-shadow: 0px 2px 6px var(--color-shadow); */
 }
 
+Link.app-button:visited,
+a.app-button:visited,
 Link.app-button,
 a.app-button,
 button.app {
