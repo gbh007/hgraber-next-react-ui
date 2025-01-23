@@ -19,6 +19,7 @@ div.pageView {
   justify-content: center;
   width: calc(100vw - 40px);
   height: calc(100vh - 200px);
+  position: relative;
 }
 
 div.pageViewActions {

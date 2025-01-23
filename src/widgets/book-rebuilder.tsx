@@ -274,6 +274,11 @@ function PageListPreview(props: {
     pages?: Array<BookSimplePage>
     previewSize: ImageSize
 }) {
+    const fontSize = props.previewSize == "superbig" ? 60
+        : props.previewSize == "big" ? 30
+            : props.previewSize == "medium" ? 15
+                : 10
+
     return <div className={styles.preview}>
         {props.pages?.map(page =>
             <ContainerWidget appContainer key={page.page_number}>
@@ -290,7 +295,22 @@ function PageListPreview(props: {
                                 props.value.filter(v => v != page.page_number)
                         )
                     }}
-                /> : null}
+                >
+                    {props.previewSize != "small" && props.previewSize != "medium" && props.value.includes(page.page_number) ? <div
+                        style={{
+                            position: "absolute",
+                            top: "50%",
+                            width: "calc(100% - 40px)",
+                            textAlign: "center",
+                            fontSize: fontSize,
+                            color: "green",
+                            fontWeight: "bolder",
+                            background: "var(--app-background)",
+                            padding: "20px",
+                            borderRadius: "10px",
+                        }}
+                    >Выбрана</div> : null}
+                </PageImagePreviewWidget> : null}
                 <span>Страница: {page.page_number}</span>
                 <label><input
                     className="app"
@@ -413,6 +433,20 @@ function PageSelectorReaderWidget(props: {
                 }}
                 onClick={goGo}
             /> : null}
+            {props.value.includes(currentPage?.page_number ?? -1) ? <div
+                style={{
+                    position: "absolute",
+                    top: "50%",
+                    width: "100%",
+                    textAlign: "center",
+                    fontSize: 60,
+                    color: "green",
+                    fontWeight: "bolder",
+                    background: "var(--app-background)",
+                    padding: "20px",
+                    borderRadius: "10px",
+                }}
+            >Выбрана</div> : null}
         </div>
     </ContainerWidget>
 }

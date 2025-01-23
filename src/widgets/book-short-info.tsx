@@ -11,6 +11,7 @@ import { AttributeColor } from "../apiclient/api-attribute";
 import { BookAttributeValuesWidget } from "./attribute";
 import { ColorizedTextWidget, ContainerWidget } from "./common";
 import { BookDetailsLink } from "../core/routing";
+import { PropsWithChildren } from "react";
 
 export type ImageSize = "small" | "medium" | "big" | "superbig"
 
@@ -115,7 +116,7 @@ export function BookImagePreviewWidget(props: {
 }
 
 
-export function PageImagePreviewWidget(props: {
+export function PageImagePreviewWidget(props: PropsWithChildren & {
     preview_url?: string
     flags?: {
         has_dead_hash?: boolean
@@ -173,7 +174,7 @@ export function PageImagePreviewWidget(props: {
                 key={badge}
             />)}
         </div>
-
+        {props.children}
     </div>
 }
 
