@@ -5,6 +5,7 @@ interface AgentListRequest {
     can_parse?: boolean
     can_export?: boolean
     can_parse_multi?: boolean
+    has_fs?: boolean
     include_status?: boolean
 }
 
@@ -16,6 +17,7 @@ export interface Agent {
     can_parse: boolean
     can_parse_multi: boolean
     can_export: boolean
+    has_fs: boolean
     priority: number
     created_at: string
 }
@@ -61,6 +63,7 @@ export interface AgentNewRequest {
     can_parse: boolean
     can_parse_multi: boolean
     can_export: boolean
+    has_fs: boolean
     priority: number
 }
 

@@ -50,6 +50,7 @@ export function AgentEditorScreen() {
         can_export: false,
         can_parse: false,
         can_parse_multi: false,
+        has_fs: false,
         name: "",
         priority: 0,
         token: "",
@@ -111,22 +112,24 @@ function AgentInfoWidget(props: {
         </h3>
         <ContainerWidget direction="2-column" gap="medium">
             {props.value.status?.start_at ? <>
-                <b>Запущен: </b>
+                <b>Запущен:</b>
                 <HumanTimeWidget value={props.value.status.start_at} />
             </> : null}
-            <b>ID: </b>
+            <b>ID:</b>
             <span>{props.value.info.id}</span>
-            <b>Адрес: </b>
+            <b>Адрес:</b>
             <span>{props.value.info.addr}</span>
-            <b>Может обрабатывать новые: </b>
+            <b>Может обрабатывать новые:</b>
             <span>{props.value.info.can_parse ? 'Да' : 'Нет'}</span>
-            <b>Может обрабатывать новые массово: </b>
+            <b>Может обрабатывать новые массово:</b>
             <span>{props.value.info.can_parse_multi ? 'Да' : 'Нет'}</span>
-            <b>Может экспортировать: </b>
+            <b>Может экспортировать:</b>
             <span>{props.value.info.can_export ? 'Да' : 'Нет'}</span>
-            <b>Приоритет: </b>
+            <b>Есть ФС:</b>
+            <span>{props.value.info.has_fs ? 'Да' : 'Нет'}</span>
+            <b>Приоритет:</b>
             <span>{props.value.info.priority}</span>
-            <b>Создан: </b>
+            <b>Создан:</b>
             <HumanTimeWidget value={props.value.info.created_at} />
         </ContainerWidget>
         <AgentStatusInfoWidget value={props.value.status?.problems} />
@@ -230,6 +233,20 @@ function AgentEditorWidget(props: {
                     }}
                 />
                 <span>Поддерживает экспорт</span>
+            </label>
+
+            <label>
+                <input
+                    className="app"
+                    placeholder="Есть ФС"
+                    type="checkbox"
+                    autoComplete="off"
+                    checked={props.value.has_fs}
+                    onChange={(e) => {
+                        props.onChange({ ...props.value, has_fs: e.target.checked })
+                    }}
+                />
+                <span>Есть ФС</span>
             </label>
         </ContainerWidget>
         <span>Приоритет</span>

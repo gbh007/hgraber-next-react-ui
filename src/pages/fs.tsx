@@ -4,6 +4,7 @@ import { FSEditLink, FSListLink } from "../core/routing";
 import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../widgets/common";
 import { useCallback, useEffect, useState } from "react";
 import { ErrorTextWidget } from "../widgets/error-text";
+import { AgentListResponse, useAgentList } from "../apiclient/api-agent";
 
 export function FSListScreen() {
     const [fsListResponse, fetchFSList] = useFSList()
@@ -82,10 +83,15 @@ export function FSEditorScreen() {
         }
     }, [doFSUpdate, doFSCreate, isExists, data])
 
+
+    const [agentsResponse, getAgents] = useAgentList()
+    useEffect(() => { getAgents({ has_fs: true, }) }, [getAgents])
+
     return <div>
         <ErrorTextWidget value={fsGetResponse} />
         <ErrorTextWidget value={fsCreateResponse} />
         <ErrorTextWidget value={fsUpdateResponse} />
+        <ErrorTextWidget value={agentsResponse} />
 
         <ContainerWidget appContainer direction="column" gap="medium">
             <b>Редактор FS</b>
@@ -93,6 +99,7 @@ export function FSEditorScreen() {
             <FSEditorWidget
                 value={data}
                 onChange={setData}
+                agents={agentsResponse.data ?? undefined}
             />
 
             <button className="app" onClick={useSave}>Сохранить</button>
@@ -166,6 +173,7 @@ function FSInfoWidget(props: {
 function FSEditorWidget(props: {
     value: FileSystemInfo
     onChange: (v: FileSystemInfo) => void
+    agents?: Array<AgentListResponse>
 }) {
     return <ContainerWidget direction="2-column" gap="medium">
         <span>Название</span>
@@ -192,18 +200,20 @@ function FSEditorWidget(props: {
             }}
         />
 
-        {/* FIXME: сделать нормальный выбор агентов, как минимум как при экспорте книг */}
         <span>Agent ID</span>
-        <input
+        <select
             className="app"
-            placeholder="Agent ID"
-            type="text"
-            autoComplete="off"
             value={props.value.agent_id}
             onChange={(e) => {
                 props.onChange({ ...props.value, agent_id: e.target.value })
             }}
-        />
+        >
+            <option value="">Не выбран</option>
+            {props.agents?.map(agent => <option value={agent.info.id} key={agent.info.id}>
+                {agent.info.name}
+            </option>
+            )}
+        </select>
 
 
         <span>Путь в локальной системе</span>
