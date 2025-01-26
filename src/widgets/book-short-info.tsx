@@ -39,7 +39,6 @@ export function BookShortInfoWidget(props: {
                 }
                 <ContainerWidget direction="row" gap="small" wrap style={{ justifyContent: "space-between" }}>
                     <ColorizedTextWidget color={book.info.flags.parsed_page ? undefined : 'danger'}>Страниц: {book.info.page_count}</ColorizedTextWidget>
-                    <ColorizedTextWidget color={book.page_loaded_percent != 100.0 ? 'danger' : undefined}> Загружено: {book.page_loaded_percent}%</ColorizedTextWidget>
                     <span>{new Date(book.info.created_at).toLocaleString()}</span>
                 </ContainerWidget>
                 {tags ? <span>

@@ -10,7 +10,6 @@ export interface BookListResponse {
 
 export interface BookShortInfo {
     info: BookSimple
-    page_loaded_percent: number
     tags?: Array<string>
 }
 
