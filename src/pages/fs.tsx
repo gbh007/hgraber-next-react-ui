@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { FileSystemInfo, FSListResponseUnit, useFSCreate, useFSDelete, useFSGet, useFSList, useFSUpdate } from "../apiclient/api-fs";
+import { FileSystemInfo, FSListResponseUnit, useFSCreate, useFSDelete, useFSGet, useFSList, useFSRemoveMismatch, useFSUpdate, useFSValidate } from "../apiclient/api-fs";
 import { FSEditLink, FSListLink } from "../core/routing";
 import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../widgets/common";
 import { useCallback, useEffect, useState } from "react";
@@ -9,6 +9,8 @@ import { AgentListResponse, useAgentList } from "../apiclient/api-agent";
 export function FSListScreen() {
     const [fsListResponse, fetchFSList] = useFSList()
     const [fsDeleteResponse, doFSDelete] = useFSDelete()
+    const [fsValidateResponse, doFSValidate] = useFSValidate()
+    const [fsRemoveMismatchResponse, doFSRemoveMismatch] = useFSRemoveMismatch()
 
     useEffect(() => { fetchFSList({ include_db_file_size: true }) }, [fetchFSList])
 
@@ -16,6 +18,8 @@ export function FSListScreen() {
         <ContainerWidget direction="column" gap="big">
             <ErrorTextWidget value={fsListResponse} />
             <ErrorTextWidget value={fsDeleteResponse} />
+            <ErrorTextWidget value={fsValidateResponse} />
+            <ErrorTextWidget value={fsRemoveMismatchResponse} />
 
             <div>
                 <Link className="app-button" to={FSEditLink()}>Новая</Link>
@@ -32,6 +36,17 @@ export function FSListScreen() {
                     doFSDelete({ id: fs.info.id }).then(() => {
                         fetchFSList({ include_db_file_size: true })
                     })
+                }}
+                validationLoading={fsValidateResponse.isLoading}
+                onValidate={() => {
+                    doFSValidate({ id: fs.info.id })
+                }}
+                onRemoveMismatch={() => {
+                    if (!confirm("Удалить рассинхронизированные файлы (ЭТО НЕОБРАТИМО)?")) {
+                        return
+                    }
+
+                    doFSRemoveMismatch({ id: fs.info.id })
                 }}
             />)}
         </ContainerWidget>
@@ -110,6 +125,9 @@ export function FSEditorScreen() {
 function FSInfoWidget(props: {
     value: FSListResponseUnit
     onDelete: () => void
+    onValidate: () => void
+    validationLoading: boolean
+    onRemoveMismatch: () => void
 }) {
     return <ContainerWidget appContainer direction="column" gap="medium">
         <h3>
@@ -158,14 +176,18 @@ function FSInfoWidget(props: {
             <b>Создан:</b>
             <HumanTimeWidget value={props.value.info.created_at} />
         </ContainerWidget>
-        {!props.value.is_legacy ?
-            <ContainerWidget direction="row" gap="medium">
+        <ContainerWidget direction="row" gap="medium" wrap>
+            {!props.value.is_legacy ? <>
                 <Link className="app-button" to={FSEditLink(props.value.info.id)}>Редактировать</Link>
                 <button className="app" onClick={() => props.onDelete()} >
                     <ColorizedTextWidget bold color="danger">Удалить</ColorizedTextWidget>
                 </button>
-            </ContainerWidget>
-            : null}
+            </> : null}
+            <button className="app" onClick={() => props.onValidate()} disabled={props.validationLoading}>Запустить валидацию файлов</button>
+            <button className="app" onClick={() => props.onRemoveMismatch()} >
+                <ColorizedTextWidget bold color="danger">Удалить рассинхронизированные файлы</ColorizedTextWidget>
+            </button>
+        </ContainerWidget>
     </ContainerWidget>
 }
 

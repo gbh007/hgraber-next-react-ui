@@ -75,3 +75,23 @@ export function useFSList(): [Response<FSListResponse | null>, PostAction<FSList
 
     return [response, fetchData]
 }
+
+export interface FSValidateRequest {
+    id: string
+}
+
+export function useFSValidate(): [Response<void | null>, PostAction<FSValidateRequest>] {
+    const [response, fetchData] = useAPIPost<FSValidateRequest, void>('/api/fs/validate')
+
+    return [response, fetchData]
+}
+
+export interface FSRemoveMismatchRequest {
+    id: string
+}
+
+export function useFSRemoveMismatch(): [Response<void | null>, PostAction<FSRemoveMismatchRequest>] {
+    const [response, fetchData] = useAPIPost<FSRemoveMismatchRequest, void>('/api/fs/remove-mismatch')
+
+    return [response, fetchData]
+}
