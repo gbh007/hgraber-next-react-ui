@@ -4,6 +4,7 @@ import { ErrorTextWidget } from "../widgets/error-text"
 import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../widgets/common"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { AgentEditLink, AgentListLink } from "../core/routing"
+import { AgentStatusWidget } from "../widgets/agent"
 
 export function AgentListScreen() {
     const [agentListResponse, fetchAgentList] = useAgentList()
@@ -261,21 +262,4 @@ function AgentEditorWidget(props: {
             }}
         />
     </ContainerWidget>
-}
-
-function AgentStatusWidget(props: {
-    value?: string
-}) {
-    const color = props.value == "ok" ? "green" :
-        props.value == "error" ? "red" :
-            props.value == "warning" ? "yellow" :
-                props.value == "offline" ? "gray" : "purple"
-
-    return <div><div
-        style={{
-            backgroundColor: color,
-            padding: "10px",
-            borderRadius: "10px",
-        }}
-    /></div>
 }

@@ -5,6 +5,7 @@ import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../widget
 import { useCallback, useEffect, useState } from "react";
 import { ErrorTextWidget } from "../widgets/error-text";
 import { AgentListResponse, useAgentList } from "../apiclient/api-agent";
+import { AgentStatusWidget } from "../widgets/agent";
 
 export function FSListScreen() {
     const [fsListResponse, fetchFSList] = useFSList()
@@ -12,8 +13,10 @@ export function FSListScreen() {
     const [fsValidateResponse, doFSValidate] = useFSValidate()
     const [fsRemoveMismatchResponse, doFSRemoveMismatch] = useFSRemoveMismatch()
     const [fsTransferResponse, doFSTransfer] = useFSTransfer()
+    const [agentListResponse, fetchAgentList] = useAgentList()
 
     useEffect(() => { fetchFSList({ include_db_file_size: true }) }, [fetchFSList])
+    useEffect(() => { fetchAgentList({ include_status: true }) }, [fetchAgentList])
 
     const [transferRequest, setTransferRequest] = useState<FSTransferRequest>({
         from: "",
@@ -27,10 +30,17 @@ export function FSListScreen() {
             <ErrorTextWidget value={fsValidateResponse} />
             <ErrorTextWidget value={fsRemoveMismatchResponse} />
             <ErrorTextWidget value={fsTransferResponse} />
+            <ErrorTextWidget value={agentListResponse} />
 
             <ContainerWidget appContainer direction="row" gap="medium">
                 <Link className="app-button" to={FSEditLink()}>Новая</Link>
-                <button className="app" onClick={() => fetchFSList({ include_db_file_size: true })}>Обновить данные</button>
+                <button
+                    className="app"
+                    onClick={() => {
+                        fetchFSList({ include_db_file_size: true })
+                        fetchAgentList({ include_status: true })
+                    }}
+                >Обновить данные</button>
             </ContainerWidget>
 
             <ContainerWidget appContainer direction="column" gap="medium">
@@ -105,6 +115,7 @@ export function FSListScreen() {
 
                     doFSRemoveMismatch({ id: fs.info.id })
                 }}
+                agents={agentListResponse.data ?? undefined}
             />)}
         </ContainerWidget>
     )
@@ -189,6 +200,7 @@ function FSInfoWidget(props: {
     onValidate: () => void
     validationLoading: boolean
     onRemoveMismatch: () => void
+    agents?: AgentListResponse[]
 }) {
     return <ContainerWidget appContainer direction="column" gap="medium">
         <h3>
@@ -206,7 +218,12 @@ function FSInfoWidget(props: {
             </> : null}
 
             {props.value.info.agent_id ? <>
-                <b>Агент ID:</b>
+                <ContainerWidget direction="row" gap="medium">
+                    <b>Агент ID:</b>
+                    {props.agents?.filter(agent => agent.info.id == props.value.info.agent_id).map(agent =>
+                        <AgentStatusWidget key={agent.info.id} value={agent.status?.status} />
+                    )}
+                </ContainerWidget>
                 <span>{props.value.info.agent_id}</span>
             </> : null}
 
