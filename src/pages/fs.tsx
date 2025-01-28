@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { FileSystemInfo, FSListResponseUnit, useFSCreate, useFSDelete, useFSGet, useFSList, useFSRemoveMismatch, useFSUpdate, useFSValidate } from "../apiclient/api-fs";
+import { FileSystemInfo, FSListResponseUnit, FSTransferRequest, useFSCreate, useFSDelete, useFSGet, useFSList, useFSRemoveMismatch, useFSTransfer, useFSUpdate, useFSValidate } from "../apiclient/api-fs";
 import { FSEditLink, FSListLink } from "../core/routing";
 import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../widgets/common";
 import { useCallback, useEffect, useState } from "react";
@@ -11,8 +11,14 @@ export function FSListScreen() {
     const [fsDeleteResponse, doFSDelete] = useFSDelete()
     const [fsValidateResponse, doFSValidate] = useFSValidate()
     const [fsRemoveMismatchResponse, doFSRemoveMismatch] = useFSRemoveMismatch()
+    const [fsTransferResponse, doFSTransfer] = useFSTransfer()
 
     useEffect(() => { fetchFSList({ include_db_file_size: true }) }, [fetchFSList])
+
+    const [transferRequest, setTransferRequest] = useState<FSTransferRequest>({
+        from: "",
+        to: "",
+    })
 
     return (
         <ContainerWidget direction="column" gap="big">
@@ -20,10 +26,61 @@ export function FSListScreen() {
             <ErrorTextWidget value={fsDeleteResponse} />
             <ErrorTextWidget value={fsValidateResponse} />
             <ErrorTextWidget value={fsRemoveMismatchResponse} />
+            <ErrorTextWidget value={fsTransferResponse} />
 
-            <div>
+            <ContainerWidget appContainer direction="row" gap="medium">
                 <Link className="app-button" to={FSEditLink()}>Новая</Link>
-            </div>
+                <button className="app" onClick={() => fetchFSList({ include_db_file_size: true })}>Обновить данные</button>
+            </ContainerWidget>
+
+            <ContainerWidget appContainer direction="column" gap="medium">
+                <b>Перенести файлы</b>
+                <ContainerWidget direction="2-column" gap="medium">
+                    <span>Из</span>
+                    <select
+                        className="app"
+                        value={transferRequest.from}
+                        onChange={e => setTransferRequest({ ...transferRequest, from: e.target.value })}
+                    >
+                        <option value="">Не выбрана</option>
+                        {fsListResponse.data?.file_systems?.map(fs =>
+                            <option key={fs.info.id} value={fs.info.id}>{fs.info.name}</option>
+                        )}
+                    </select>
+                    <span>В</span>
+                    <select
+                        className="app"
+                        value={transferRequest.to}
+                        onChange={e => setTransferRequest({ ...transferRequest, to: e.target.value })}
+                    >
+                        <option value="">Не выбрана</option>
+                        {fsListResponse.data?.file_systems?.map(fs =>
+                            <option key={fs.info.id} value={fs.info.id}>{fs.info.name}</option>
+                        )}
+                    </select>
+                </ContainerWidget>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={transferRequest.only_preview_pages ?? false}
+                        onChange={e => setTransferRequest({ ...transferRequest, only_preview_pages: e.target.checked })}
+                    />
+                    <span>Только превью</span>
+                </label>
+                <button
+                    className="app"
+                    onClick={() => {
+                        if (!confirm("Перенести файлы между файловыми системами?")) {
+                            return
+                        }
+
+                        doFSTransfer(transferRequest)
+                    }}
+                    disabled={fsTransferResponse.isLoading}
+                >
+                    <ColorizedTextWidget color="danger-lite">Перенести файлы</ColorizedTextWidget>
+                </button>
+            </ContainerWidget>
 
             {fsListResponse.data?.file_systems?.map(fs => <FSInfoWidget
                 key={fs.info.id}
@@ -102,11 +159,15 @@ export function FSEditorScreen() {
     const [agentsResponse, getAgents] = useAgentList()
     useEffect(() => { getAgents({ has_fs: true, }) }, [getAgents])
 
-    return <div>
+    return <ContainerWidget direction="column" gap="big">
         <ErrorTextWidget value={fsGetResponse} />
         <ErrorTextWidget value={fsCreateResponse} />
         <ErrorTextWidget value={fsUpdateResponse} />
         <ErrorTextWidget value={agentsResponse} />
+
+        <div>
+            <Link className="app-button" to={FSListLink()}>Список файловых систем</Link>
+        </div>
 
         <ContainerWidget appContainer direction="column" gap="medium">
             <b>Редактор FS</b>
@@ -119,7 +180,7 @@ export function FSEditorScreen() {
 
             <button className="app" onClick={useSave}>Сохранить</button>
         </ContainerWidget>
-    </div>
+    </ContainerWidget>
 }
 
 function FSInfoWidget(props: {

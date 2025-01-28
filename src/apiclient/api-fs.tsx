@@ -95,3 +95,15 @@ export function useFSRemoveMismatch(): [Response<void | null>, PostAction<FSRemo
 
     return [response, fetchData]
 }
+
+export interface FSTransferRequest {
+    from: string
+    to: string
+    only_preview_pages?: boolean
+}
+
+export function useFSTransfer(): [Response<void | null>, PostAction<FSTransferRequest>] {
+    const [response, fetchData] = useAPIPost<FSTransferRequest, void>('/api/fs/transfer')
+
+    return [response, fetchData]
+}
