@@ -107,3 +107,16 @@ export function useFSTransfer(): [Response<void | null>, PostAction<FSTransferRe
 
     return [response, fetchData]
 }
+
+export interface FSTransferBookRequest {
+    book_id: string
+    to: string
+    page_number?: number
+    only_preview_pages?: boolean
+}
+
+export function useFSTransferBook(): [Response<void | null>, PostAction<FSTransferBookRequest>] {
+    const [response, fetchData] = useAPIPost<FSTransferBookRequest, void>('/api/fs/transfer/book')
+
+    return [response, fetchData]
+}

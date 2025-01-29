@@ -11,6 +11,7 @@ import { useBookRestore } from "../apiclient/api-book";
 import { useAttributeColorList } from "../apiclient/api-attribute";
 import { ColorizedTextWidget, ContainerWidget } from "../widgets/common";
 import { BookEditLink, BookLabelEditLink, BookReaderLink, BookRebuildLink, BookUniquePagesLink } from "../core/routing";
+import { BookTransferCoordinatorWidget } from "../widgets/book";
 
 export function BookDetailsScreen() {
     const params = useParams()
@@ -201,6 +202,7 @@ export function BookDetailsScreen() {
                             >
                                 <ColorizedTextWidget bold color="danger">Удалить все страницы из книги и их копии</ColorizedTextWidget>
                             </button>
+                            <BookTransferCoordinatorWidget bookID={bookID} />
                         </> : null}
                         {!hasPages || hasDeletedPages || bookDetailsResponse.data.info.flags.is_deleted ? <button
                             className="app"
