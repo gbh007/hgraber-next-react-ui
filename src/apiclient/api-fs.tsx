@@ -63,11 +63,15 @@ export interface FSListResponse {
 export interface FSListResponseUnit {
     info: FileSystemInfo
     is_legacy: boolean
-    db_files_info?: {
-        count: number
-        size: number
-        size_formatted: string
-    }
+    db_files_info?: FSDBFilesInfo
+    db_invalid_files_info?: FSDBFilesInfo
+    db_detached_files_info?: FSDBFilesInfo
+}
+
+export interface FSDBFilesInfo {
+    count: number
+    size: number
+    size_formatted: string
 }
 
 export function useFSList(): [Response<FSListResponse | null>, PostAction<FSListRequest>] {

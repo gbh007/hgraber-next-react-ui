@@ -245,10 +245,18 @@ function FSInfoWidget(props: {
 
 
             {props.value.db_files_info ? <>
-                <b>Количество файлов:</b>
-                <span>{props.value.db_files_info.count}</span>
-                <b>Размер файлов:</b>
-                <span>{props.value.db_files_info.size_formatted}</span>
+                <b>Файлов:</b>
+                <span>{props.value.db_files_info.size_formatted} ({props.value.db_files_info.count} шт)</span>
+            </> : null}
+
+            {props.value.db_invalid_files_info?.count ? <>
+                <b>Невалидных файлов:</b>
+                <span>{props.value.db_invalid_files_info.size_formatted} ({props.value.db_invalid_files_info.count} шт)</span>
+            </> : null}
+
+            {props.value.db_detached_files_info?.count ? <>
+                <b>Неиспользуемых файлов:</b>
+                <span>{props.value.db_detached_files_info.size_formatted} ({props.value.db_detached_files_info.count} шт)</span>
             </> : null}
 
             <b>Создан:</b>
