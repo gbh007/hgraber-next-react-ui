@@ -3,6 +3,7 @@ import { BookSimplePage } from "../apiclient/model-book"
 import { ColorizedTextWidget, DialogWidget } from "./common"
 import { Link } from "react-router-dom"
 import { BookLabelEditLink, DeduplicatePageLink } from "../core/routing"
+import { BookTransferCoordinatorWidget } from "./book"
 
 
 export function BookReadActionButtonWidget(props: PropsWithChildren & {
@@ -60,6 +61,8 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
                     <Link className="app-button" to={DeduplicatePageLink(props.bookID, props.pageNumber)}>Книги с этой страницей</Link>
                 </> : null
             }
+            {/* TODO: возможно не самое подходящее место */}
+            <BookTransferCoordinatorWidget bookID={props.bookID} pageNumber={props.pageNumber} />
             {props.children}
         </DialogWidget>
     </>

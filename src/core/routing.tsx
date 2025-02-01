@@ -121,3 +121,11 @@ export function LabelPresetsLink() {
 export function AttributeColorListLink() {
     return `/attribute/color/list`
 }
+
+export function FSEditLink(fsID?: string) {
+    return `/fs/edit/${fsID ?? 'new'}`
+}
+
+export function FSListLink() {
+    return `/fs/list`
+}

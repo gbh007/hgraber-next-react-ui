@@ -23,8 +23,9 @@ import { BookRebuilderScreen } from "./pages/book-rebuilder";
 import { SelectToCompareScreen } from "./pages/select-to-compare";
 import { BookLabelsEditorScreen } from "./pages/book-label-editor";
 import { AttributeColorEditorScreen, AttributeColorListScreen } from "./pages/attribute-color";
-import { AgentListLink, AttributeColorListLink, BookListLink, LabelPresetsLink, MainScreenLink, MenuLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
+import { AgentListLink, AttributeColorListLink, BookListLink, FSListLink, LabelPresetsLink, MainScreenLink, MenuLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
 import { AppTheme, ThemeContext } from "./core/context";
+import { FSEditorScreen, FSListScreen } from "./pages/fs";
 
 const router = createHashRouter([
   {
@@ -119,6 +120,14 @@ const router = createHashRouter([
     path: "/attribute/color/edit/:code/:value",
     element: <SimpleWrapper> <AttributeColorEditorScreen /></SimpleWrapper>,
   },
+  {
+    path: "/fs/list",
+    element: <SimpleWrapper> <FSListScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/fs/edit/:id",
+    element: <SimpleWrapper> <FSEditorScreen /></SimpleWrapper>,
+  },
 ]);
 
 function App() {
@@ -175,6 +184,7 @@ function MenuWidget() {
       <li> <Link to={LabelPresetsLink()}>Пресеты меток</Link> </li>
       <li> <Link to={SelectToCompareLink()}>Выбрать книги для сравнения</Link> </li>
       <li> <Link to={AttributeColorListLink()}>Цвета аттрибутов</Link> </li>
+      <li> <Link to={FSListLink()}>Файловые системы</Link> </li>
       <li> <Link to={SettingsLink()}>Настройки</Link> </li>
     </ol>
   </div>

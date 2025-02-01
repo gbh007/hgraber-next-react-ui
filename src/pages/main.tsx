@@ -28,14 +28,16 @@ export function MainScreen() {
                     <span>Незагруженно: <b>{systemInfoResponse.data?.not_load_page_count ?? 0}</b></span>
                     <span>Без тела (файла): <b>{systemInfoResponse.data?.page_without_body_count ?? 0}</b></span>
                     <span>Удалено: <b>{systemInfoResponse.data?.deleted_page_count ?? 0}</b></span>
+                    <span>Объем: <b>{systemInfoResponse.data?.pages_size_formatted ?? 0}</b></span>
                 </ContainerWidget>
                 <ContainerWidget direction="column" gap="smaller">
                     <b>Файлы</b>
                     <span>Всего: <b>{systemInfoResponse.data?.file_count ?? 0}</b></span>
                     <span>Без хешей: <b>{systemInfoResponse.data?.unhashed_file_count ?? 0}</b></span>
+                    <span>Поврежденные: <b>{systemInfoResponse.data?.invalid_file_count ?? 0}</b></span>
+                    <span>Неиспользуемые: <b>{systemInfoResponse.data?.detached_file_count ?? 0}</b></span>
                     <span>Мертвых хешей: <b>{systemInfoResponse.data?.dead_hash_count ?? 0}</b></span>
-                    <span>Объем страниц: <b>{systemInfoResponse.data?.pages_size_formatted ?? 0}</b></span>
-                    <span>Объем файлов: <b>{systemInfoResponse.data?.files_size_formatted ?? 0}</b></span>
+                    <span>Объем: <b>{systemInfoResponse.data?.files_size_formatted ?? 0}</b></span>
                 </ContainerWidget>
                 <div><AutoRefresherWidget callback={fetchSystemInfo} /></div>
             </ContainerWidget>
