@@ -11,13 +11,12 @@ import { BooksSimpleWidget } from "./book"
 import { BookCompareLink, BookReaderLink } from "../core/routing"
 
 
-// FIXME: необходимо разобрать виджет на компоненты и перенести часть в модель выше.
 export function BookDetailInfoWidget(props: PropsWithChildren & {
     book: BookDetails
     deduplicateBookInfo?: Array<DeduplicateBookByPageBodyResponseResult>
     colors?: Array<AttributeColor>
 }) {
-    const originDomain = /https?:\/\/([\w.]+)\/.*/.exec(props.book.info.origin_url ?? "")?.[1]
+    const originDomain = /https?:\/\/([^\/]+)\/.*/.exec(props.book.info.origin_url ?? "")?.[1]
     return <ContainerWidget direction="column" gap="big">
         <ContainerWidget appContainer direction="row">
             <div>
@@ -50,6 +49,15 @@ export function BookDetailInfoWidget(props: PropsWithChildren & {
                 <BookSizeWidget value={props.book.size} />
                 {props.children}
             </ContainerWidget>
+        </ContainerWidget>
+        <ContainerWidget direction="row" gap="medium" wrap>
+            {props.book.fs_disposition?.map(fs =>
+                <ContainerWidget key={fs.id} appContainer direction="column" gap="small">
+                    <b>{fs.name}</b>
+                    <span>{fs.id}</span>
+                    <span>{fs.files.size_formatted} ({fs.files.count})</span>
+                </ContainerWidget>
+            )}
         </ContainerWidget>
         <BookDuplicates deduplicateBookInfo={props.deduplicateBookInfo} originID={props.book.info.id} />
         <BookPagesPreviewWidget

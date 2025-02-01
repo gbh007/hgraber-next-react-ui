@@ -230,7 +230,7 @@ function BookShortInfo(props: {
         return
     }
 
-    const originDomain = /https?:\/\/([\w.]+)\/.*/.exec(props.value.origin_url ?? "")?.[1]
+    const originDomain = /https?:\/\/([^\/]+)\/.*/.exec(props.value.origin_url ?? "")?.[1]
 
     return <ContainerWidget direction="column" gap="small" style={{ maxWidth: "500px" }}>
         <b style={{ wordBreak: "break-all" }}>{props.value.name}</b>

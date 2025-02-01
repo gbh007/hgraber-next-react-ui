@@ -1,4 +1,5 @@
 import { PostAction, useAPIPost, Response } from "./client-hooks"
+import { FSDBFilesInfo } from "./model-fs"
 
 
 export interface FileSystemInfo {
@@ -53,6 +54,7 @@ export function useFSDelete(): [Response<void | null>, PostAction<FSDeleteReques
 
 export interface FSListRequest {
     include_db_file_size?: boolean
+    include_available_size?: boolean
 }
 
 export interface FSListResponse {
@@ -66,12 +68,8 @@ export interface FSListResponseUnit {
     db_files_info?: FSDBFilesInfo
     db_invalid_files_info?: FSDBFilesInfo
     db_detached_files_info?: FSDBFilesInfo
-}
-
-export interface FSDBFilesInfo {
-    count: number
-    size: number
-    size_formatted: string
+    available_size?: number
+    available_size_formatted?: string
 }
 
 export function useFSList(): [Response<FSListResponse | null>, PostAction<FSListRequest>] {

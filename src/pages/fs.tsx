@@ -15,7 +15,14 @@ export function FSListScreen() {
     const [fsTransferResponse, doFSTransfer] = useFSTransfer()
     const [agentListResponse, fetchAgentList] = useAgentList()
 
-    useEffect(() => { fetchFSList({ include_db_file_size: true }) }, [fetchFSList])
+    const fetchFS = useCallback(() => {
+        fetchFSList({
+            include_db_file_size: true,
+            include_available_size: true,
+        })
+    }, [fetchFSList])
+
+    useEffect(() => { fetchFS() }, [fetchFS])
     useEffect(() => { fetchAgentList({ include_status: true }) }, [fetchAgentList])
 
     const [transferRequest, setTransferRequest] = useState<FSTransferRequest>({
@@ -37,7 +44,7 @@ export function FSListScreen() {
                 <button
                     className="app"
                     onClick={() => {
-                        fetchFSList({ include_db_file_size: true })
+                        fetchFS()
                         fetchAgentList({ include_status: true })
                     }}
                 >Обновить данные</button>
@@ -101,7 +108,7 @@ export function FSListScreen() {
                     }
 
                     doFSDelete({ id: fs.info.id }).then(() => {
-                        fetchFSList({ include_db_file_size: true })
+                        fetchFS()
                     })
                 }}
                 validationLoading={fsValidateResponse.isLoading}
@@ -257,6 +264,12 @@ function FSInfoWidget(props: {
             {props.value.db_detached_files_info?.count ? <>
                 <b>Неиспользуемых файлов:</b>
                 <span>{props.value.db_detached_files_info.size_formatted} ({props.value.db_detached_files_info.count} шт)</span>
+            </> : null}
+
+
+            {props.value.available_size_formatted ? <>
+                <b>Свободное место:</b>
+                <span>{props.value.available_size_formatted}</span>
             </> : null}
 
             <b>Создан:</b>
