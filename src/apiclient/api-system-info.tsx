@@ -13,6 +13,8 @@ interface systemInfo {
   deleted_page_count: number
   file_count: number
   unhashed_file_count: number
+  invalid_file_count: number
+  detached_file_count: number
   dead_hash_count: number
   pages_size: number
   pages_size_formatted: string
