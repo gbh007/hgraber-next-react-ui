@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { systemWorkerRunnerConfig, useSystemWorkerConfig } from "../apiclient/api-system-worker-config"
 
-import { useSystemInfo } from "../apiclient/api-system-info"
+import { useSystemInfoWorkers } from "../apiclient/api-system-info"
 
 export function RPCScreen() {
     return (
@@ -28,13 +28,13 @@ export function RPCScreen() {
 
 function RunnersWidget() {
     const [runners, setRunners] = useState<Array<systemWorkerRunnerConfig>>()
-    const [runnerObj, fetchRunnerData] = useSystemInfo()
+    const [runnerObj, fetchRunnerData] = useSystemInfoWorkers()
 
     useEffect(() => { fetchRunnerData() }, [fetchRunnerData])
     useEffect(() => {
         let newRunners: Array<systemWorkerRunnerConfig> = [];
 
-        (runnerObj.data?.monitor?.workers || []).map(e => {
+        (runnerObj.data?.workers || []).map(e => {
             newRunners.push({
                 count: e.runners,
                 name: e.name,

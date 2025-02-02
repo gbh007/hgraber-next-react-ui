@@ -1,47 +1,50 @@
 import { useEffect, useState } from "react"
-import { useSystemInfo } from "../apiclient/api-system-info"
+import { useSystemInfoSize, useSystemInfoWorkers } from "../apiclient/api-system-info"
 import { useSystemHandle } from "../apiclient/api-system-handle"
 import { AutoRefresherWidget, ContainerWidget } from "../widgets/common"
 import { ErrorTextWidget } from "../widgets/error-text"
 
 export function MainScreen() {
-    const [systemInfoResponse, fetchSystemInfo] = useSystemInfo()
+    const [systemInfoSizeResponse, fetchSystemInfoSize] = useSystemInfoSize()
+    const [systemInfoWorkersResponse, fetchSystemInfoWorkers] = useSystemInfoWorkers()
 
-    useEffect(() => { fetchSystemInfo() }, [fetchSystemInfo])
+    useEffect(() => { fetchSystemInfoSize() }, [fetchSystemInfoSize])
+    useEffect(() => { fetchSystemInfoWorkers() }, [fetchSystemInfoWorkers])
 
     return (
         <ContainerWidget direction="column" gap="bigger">
-            <ErrorTextWidget value={systemInfoResponse} />
+            <ErrorTextWidget value={systemInfoSizeResponse} />
+            <ErrorTextWidget value={systemInfoWorkersResponse} />
             <ContainerWidget appContainer direction="row" gap="big" wrap>
                 <ContainerWidget direction="column" gap="smaller">
                     <b>Книги</b>
-                    <span>Всего: <b>{systemInfoResponse.data?.count ?? 0}</b></span>
-                    <span>Загружено: <b>{systemInfoResponse.data?.downloaded_count ?? 0}</b></span>
-                    <span>Подтверждено: <b>{systemInfoResponse.data?.verified_count ?? 0}</b></span>
-                    <span>Пересобрано: <b>{systemInfoResponse.data?.rebuilded_count ?? 0}</b></span>
-                    <span>Незагруженно: <b>{systemInfoResponse.data?.not_load_count ?? 0}</b></span>
-                    <span>Удалено: <b>{systemInfoResponse.data?.deleted_count ?? 0}</b></span>
+                    <span>Всего: <b>{systemInfoSizeResponse.data?.count ?? 0}</b></span>
+                    <span>Загружено: <b>{systemInfoSizeResponse.data?.downloaded_count ?? 0}</b></span>
+                    <span>Подтверждено: <b>{systemInfoSizeResponse.data?.verified_count ?? 0}</b></span>
+                    <span>Пересобрано: <b>{systemInfoSizeResponse.data?.rebuilded_count ?? 0}</b></span>
+                    <span>Незагруженно: <b>{systemInfoSizeResponse.data?.not_load_count ?? 0}</b></span>
+                    <span>Удалено: <b>{systemInfoSizeResponse.data?.deleted_count ?? 0}</b></span>
                 </ContainerWidget>
                 <ContainerWidget direction="column" gap="smaller">
                     <b>Страницы</b>
-                    <span>Всего: <b>{systemInfoResponse.data?.page_count ?? 0}</b></span>
-                    <span>Незагруженно: <b>{systemInfoResponse.data?.not_load_page_count ?? 0}</b></span>
-                    <span>Без тела (файла): <b>{systemInfoResponse.data?.page_without_body_count ?? 0}</b></span>
-                    <span>Удалено: <b>{systemInfoResponse.data?.deleted_page_count ?? 0}</b></span>
-                    <span>Объем: <b>{systemInfoResponse.data?.pages_size_formatted ?? 0}</b></span>
+                    <span>Всего: <b>{systemInfoSizeResponse.data?.page_count ?? 0}</b></span>
+                    <span>Незагруженно: <b>{systemInfoSizeResponse.data?.not_load_page_count ?? 0}</b></span>
+                    <span>Без тела (файла): <b>{systemInfoSizeResponse.data?.page_without_body_count ?? 0}</b></span>
+                    <span>Удалено: <b>{systemInfoSizeResponse.data?.deleted_page_count ?? 0}</b></span>
+                    <span>Объем: <b>{systemInfoSizeResponse.data?.pages_size_formatted ?? 0}</b></span>
                 </ContainerWidget>
                 <ContainerWidget direction="column" gap="smaller">
                     <b>Файлы</b>
-                    <span>Всего: <b>{systemInfoResponse.data?.file_count ?? 0}</b></span>
-                    <span>Без хешей: <b>{systemInfoResponse.data?.unhashed_file_count ?? 0}</b></span>
-                    <span>Поврежденные: <b>{systemInfoResponse.data?.invalid_file_count ?? 0}</b></span>
-                    <span>Неиспользуемые: <b>{systemInfoResponse.data?.detached_file_count ?? 0}</b></span>
-                    <span>Мертвых хешей: <b>{systemInfoResponse.data?.dead_hash_count ?? 0}</b></span>
-                    <span>Объем: <b>{systemInfoResponse.data?.files_size_formatted ?? 0}</b></span>
+                    <span>Всего: <b>{systemInfoSizeResponse.data?.file_count ?? 0}</b></span>
+                    <span>Без хешей: <b>{systemInfoSizeResponse.data?.unhashed_file_count ?? 0}</b></span>
+                    <span>Поврежденные: <b>{systemInfoSizeResponse.data?.invalid_file_count ?? 0}</b></span>
+                    <span>Неиспользуемые: <b>{systemInfoSizeResponse.data?.detached_file_count ?? 0}</b></span>
+                    <span>Мертвых хешей: <b>{systemInfoSizeResponse.data?.dead_hash_count ?? 0}</b></span>
+                    <span>Объем: <b>{systemInfoSizeResponse.data?.files_size_formatted ?? 0}</b></span>
                 </ContainerWidget>
-                <div><AutoRefresherWidget callback={fetchSystemInfo} /></div>
+                <div><AutoRefresherWidget callback={fetchSystemInfoSize} /></div>
             </ContainerWidget>
-            <ContainerWidget appContainer>
+            <ContainerWidget appContainer direction="row" wrap gap="medium">
                 <table>
                     <thead>
                         <tr>
@@ -52,7 +55,7 @@ export function MainScreen() {
                         </tr>
                     </thead>
                     <tbody>
-                        {(systemInfoResponse.data?.monitor?.workers || []).map((worker) =>
+                        {(systemInfoWorkersResponse.data?.workers || []).map((worker) =>
                             <tr key={worker.name}>
                                 <td>{worker.name}</td>
                                 <td>{worker.in_queue}</td>
@@ -62,6 +65,8 @@ export function MainScreen() {
                         )}
                     </tbody>
                 </table>
+
+                <div><AutoRefresherWidget callback={fetchSystemInfoWorkers} /></div>
             </ContainerWidget>
             <BookHandleWidget />
         </ContainerWidget>

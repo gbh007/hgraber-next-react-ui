@@ -1,6 +1,6 @@
 import { GetAction, useAPIGet, Response } from "./client-hooks"
 
-interface systemInfo {
+export interface SystemInfoSizeResponse {
   count: number
   downloaded_count: number
   verified_count: number
@@ -20,22 +20,27 @@ interface systemInfo {
   pages_size_formatted: string
   files_size: number
   files_size_formatted: string
-  monitor?: systemInfoMonitor
 }
 
-interface systemInfoMonitor {
-  workers?: Array<systemInfoMonitorWorker>
+export interface SystemInfoWorkersResponse {
+  workers?: Array<SystemInfoWorkersResponseWorker>
 }
 
-export interface systemInfoMonitorWorker {
+export interface SystemInfoWorkersResponseWorker {
   name: string
   in_queue: number
   in_work: number
   runners: number
 }
 
-export function useSystemInfo(): [Response<systemInfo | null>, GetAction] {
-  const [response, fetchData] = useAPIGet<systemInfo>('/api/system/info')
+export function useSystemInfoSize(): [Response<SystemInfoSizeResponse | null>, GetAction] {
+  const [response, fetchData] = useAPIGet<SystemInfoSizeResponse>('/api/system/info/size')
+
+  return [response, fetchData]
+}
+
+export function useSystemInfoWorkers(): [Response<SystemInfoWorkersResponse | null>, GetAction] {
+  const [response, fetchData] = useAPIGet<SystemInfoWorkersResponse>('/api/system/info/workers')
 
   return [response, fetchData]
 }
