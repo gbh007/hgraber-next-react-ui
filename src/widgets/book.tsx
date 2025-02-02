@@ -12,6 +12,7 @@ export function BooksSimpleWidget(props: PropsWithChildren & {
     value?: BookSimple
     align?: Property.AlignItems
     previewSize?: ImageSize
+    actualPageCount?: number
 }) {
     if (!props.value) {
         return null
@@ -36,7 +37,7 @@ export function BooksSimpleWidget(props: PropsWithChildren & {
         </Link>
         <b>{props.value.name}</b>
         <span>Создана: <HumanTimeWidget value={props.value.created_at} /></span>
-        <span>Страниц: {props.value.page_count}</span>
+        <span>Страниц: {props.value.page_count}{props.actualPageCount ? ` (${props.actualPageCount})` : null}</span>
         {props.children}
     </ContainerWidget>
 }

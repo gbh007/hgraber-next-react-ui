@@ -44,6 +44,8 @@ export interface BookDetailsSize {
     shared_count: number
     dead_hashes_count: number
     inner_duplicate_count: number
+    avg_page_size: number
+    avg_page_size_formatted: string
 }
 
 export interface BookRaw {

@@ -25,6 +25,11 @@ export interface DeduplicateBookByPageBodyResponseResult {
     target_size_formatted: string
     shared_size_formatted: string
     shared_size_without_dead_hashes_formatted: string
+
+
+    target_avg_page_size: number
+    target_avg_page_size_formatted: string
+    target_page_count: number
 }
 
 export function useDeduplicateBookByPageBody(): [Response<DeduplicateBookByPageBodyResponse | null>, PostAction<DeduplicateBookByPageBodyRequest>] {

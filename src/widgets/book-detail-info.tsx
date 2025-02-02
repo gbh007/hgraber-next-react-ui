@@ -81,7 +81,7 @@ function BookSizeWidget(props: {
         <span>разделяемый <b>{props.value.shared_formatted}</b> ({props.value.shared_count} шт)</span>
         <span>мертвые хеши <b>{props.value.dead_hashes_formatted}</b> ({props.value.dead_hashes_count} шт)</span>
         <span>количество внутренних дублей <b>{props.value.inner_duplicate_count}</b></span>
-        <span>общий <b>{props.value.total_formatted}</b></span>
+        <span>общий <b>{props.value.total_formatted}</b> / {props.value.avg_page_size_formatted}</span>
     </ContainerWidget>
 }
 
@@ -184,7 +184,12 @@ function BookDuplicates(props: {
 
     return <ContainerWidget direction="row" gap="medium" wrap>
         {props.deduplicateBookInfo?.map(book =>
-            <BooksSimpleWidget value={book.book} align="center" key={book.book.id}>
+            <BooksSimpleWidget
+                value={book.book}
+                align="center"
+                key={book.book.id}
+                actualPageCount={book.book.page_count != book.target_page_count ? book.target_page_count : undefined}
+            >
                 <ContainerWidget direction="column" style={{ alignItems: "center" }}>
                     <ContainerWidget direction="row" gap="small">
                         <span title="Сколько страниц этой книги есть в открытой">Покрытие книги:</span>
@@ -206,7 +211,7 @@ function BookDuplicates(props: {
                     </ContainerWidget>
                 </ContainerWidget>
                 <ContainerWidget direction="column" style={{ alignItems: "center" }}>
-                    <span>Размер: {book.target_size_formatted}</span>
+                    <span>Размер: {book.target_size_formatted} / {book.target_avg_page_size_formatted}</span>
                     <ContainerWidget direction="row" gap="small">
                         <span>Общий размер: {book.shared_size_formatted}</span>
                         {book.shared_size_formatted != book.shared_size_without_dead_hashes_formatted ?
