@@ -27,6 +27,7 @@ export function BookRebuilderScreen() {
             auto_verify: true,
         },
         selected_pages: [],
+        page_order: [],
     })
 
 
@@ -75,7 +76,12 @@ export function BookRebuilderScreen() {
 
     useEffect(() => {
         if (bookRawResponse.data) {
-            setBookRebuildData({ ...bookRebuildData, old_book: { ...bookRawResponse.data, name: 'Rebuild: ' + bookRawResponse.data.name }, selected_pages: [] })
+            setBookRebuildData({
+                ...bookRebuildData,
+                old_book: { ...bookRawResponse.data, name: 'Rebuild: ' + bookRawResponse.data.name },
+                selected_pages: [],
+                page_order: bookRawResponse.data.pages?.map(e => e.page_number) ?? [],
+            })
         }
     }, [bookRawResponse.data])
 

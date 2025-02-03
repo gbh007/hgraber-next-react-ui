@@ -106,6 +106,9 @@ export function BookRebuilderWidget(props: {
             bookID={props.value.old_book.id}
             pages={props.pages}
             pageCount={props.pageCount}
+            pageOrder={props.value.page_order}
+            onPageOrderChange={e => props.onChange({ ...props.value, page_order: e })}
+            enablePageReOrder={props.value.flags?.page_re_order ?? false}
         />
     </ContainerWidget>
 }
@@ -162,6 +165,14 @@ function BuilderFlagsWidget(props: {
             <input
                 className="app"
                 type="checkbox"
+                checked={props.value?.page_re_order ?? false}
+                onChange={e => props.onChange({ ...props.value, page_re_order: e.target.checked })}
+            />Применить новый порядок страниц
+        </label>
+        <label>
+            <input
+                className="app"
+                type="checkbox"
                 checked={props.value?.extract_mode ?? false}
                 onChange={e => props.onChange({ ...props.value, extract_mode: e.target.checked })}
             />
@@ -203,6 +214,9 @@ function BookPagesSelectWidget(props: {
     bookID: string
     pages?: Array<BookSimplePage>
     pageCount?: number
+    pageOrder: Array<number>
+    onPageOrderChange: (v: Array<number>) => void
+    enablePageReOrder: boolean
 }) {
     const [viewMode, setViewMode] = useState("reader")
     const [showOnlySelected, setShowOnlySelected] = useState(false)
@@ -213,7 +227,8 @@ function BookPagesSelectWidget(props: {
 
     const pages = props.pages?.
         filter(page => !showOnlySelected || props.value.includes(page.page_number)).
-        filter(page => showDeadHash || !page.has_dead_hash)
+        filter(page => showDeadHash || !page.has_dead_hash).
+        sort((a: BookSimplePage, b: BookSimplePage) => props.pageOrder.findIndex(v => v == a.page_number) - props.pageOrder.findIndex(v => v == b.page_number))
 
     return <ContainerWidget direction="column" gap="medium">
         <ContainerWidget appContainer direction="column" gap="medium">
@@ -263,6 +278,16 @@ function BookPagesSelectWidget(props: {
                         value={props.value}
                         pages={pages}
                         previewSize={imageSize}
+                        pageDragAndDrop={(a, b) => {
+                            const valueA = pages[a]
+                            const valueB = pages[b]
+
+                            const targetIndex = props.pageOrder.findIndex((v) => v == valueA.page_number)
+                            const beforeIndex = props.pageOrder.findIndex((v) => v == valueB.page_number)
+
+                            props.onPageOrderChange?.(movePageBefore(targetIndex, beforeIndex, props.pageOrder))
+                        }}
+                        enablePageReOrder={props.enablePageReOrder}
                     /> : null}
     </ContainerWidget>
 }
@@ -273,15 +298,25 @@ function PageListPreview(props: {
     bookID: string
     pages?: Array<BookSimplePage>
     previewSize: ImageSize
+    pageDragAndDrop?: (a: number, b: number) => void
+    enablePageReOrder: boolean
 }) {
     const fontSize = props.previewSize == "superbig" ? 60
         : props.previewSize == "big" ? 30
             : props.previewSize == "medium" ? 15
                 : 10
 
+    const [aIndex, setAIndex] = useState(-1)
+    const [bIndex, setBIndex] = useState(-1)
+
+
     return <div className={styles.preview}>
-        {props.pages?.map(page =>
-            <ContainerWidget appContainer key={page.page_number}>
+        {props.pages?.map((page, index) =>
+            <ContainerWidget
+                appContainer
+                key={page.page_number}
+                style={{ borderLeft: bIndex == index ? "10px dashed var(--app-color)" : undefined }}
+            >
                 {page.preview_url ? <PageImagePreviewWidget
                     previewSize={props.previewSize}
                     flags={page}
@@ -311,7 +346,23 @@ function PageListPreview(props: {
                         }}
                     >Выбрана</div> : null}
                 </PageImagePreviewWidget> : null}
-                <span>Страница: {page.page_number}</span>
+                <span
+                    style={props.enablePageReOrder ? {
+                        cursor: "grab",
+                        userSelect: "none",
+                    } : undefined}
+                    draggable={props.enablePageReOrder ? "true" : "false"}
+                    onDragStart={() => {
+                        setAIndex(index)
+                    }}
+                    onDragOver={() => {
+                        setBIndex(index)
+                    }}
+                    onDragEnd={() => {
+                        props.pageDragAndDrop?.(aIndex, bIndex)
+                        setBIndex(-1)
+                    }}
+                >Страница: {page.page_number}</span>
                 <label><input
                     className="app"
                     type="checkbox"
@@ -449,4 +500,24 @@ function PageSelectorReaderWidget(props: {
             >Выбрана</div> : null}
         </div>
     </ContainerWidget>
+}
+
+function movePageBefore(targetIndex: number, beforeIndex: number, pages?: Array<number>): Array<number> {
+    if (!pages) {
+        return []
+    }
+
+    if (targetIndex < 0 || targetIndex > pages.length) {
+        return pages
+    }
+
+    if (beforeIndex < 0 || beforeIndex > pages.length) {
+        return pages
+    }
+
+    return [
+        ...pages.filter((_, i) => i != targetIndex && i < beforeIndex),
+        ...pages.filter((_, i) => i == targetIndex),
+        ...pages.filter((_, i) => i != targetIndex && i >= beforeIndex),
+    ]
 }

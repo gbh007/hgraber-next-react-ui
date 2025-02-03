@@ -24,6 +24,7 @@ export interface BookRebuildRequest {
     selected_pages: Array<number>
     merge_with_book?: string
     flags?: BookRebuildRequestFlags
+    page_order: Array<number>
 }
 
 export interface BookRebuildRequestFlags {
@@ -36,6 +37,7 @@ export interface BookRebuildRequestFlags {
     mark_unused_pages_as_deleted?: boolean
     mark_empty_book_as_deleted_after_remove_pages?: boolean
     auto_verify?: boolean
+    page_re_order?: boolean
 }
 
 export interface BookRebuildResponse {
