@@ -23,9 +23,10 @@ import { BookRebuilderScreen } from "./pages/book-rebuilder";
 import { SelectToCompareScreen } from "./pages/select-to-compare";
 import { BookLabelsEditorScreen } from "./pages/book-label-editor";
 import { AttributeColorEditorScreen, AttributeColorListScreen } from "./pages/attribute-color";
-import { AgentListLink, AttributeColorListLink, BookListLink, FSListLink, LabelPresetsLink, MainScreenLink, MenuLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
+import { AgentListLink, AttributeColorListLink, BookListLink, FSListLink, LabelPresetsLink, MainScreenLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
 import { AppTheme, ThemeContext } from "./core/context";
 import { FSEditorScreen, FSListScreen } from "./pages/fs";
+import { ParsingMirrorEditorScreen, ParsingMirrorsScreen } from "./pages/parsing-mirrors";
 
 const router = createHashRouter([
   {
@@ -128,6 +129,18 @@ const router = createHashRouter([
     path: "/fs/edit/:id",
     element: <SimpleWrapper> <FSEditorScreen /></SimpleWrapper>,
   },
+  {
+    path: "/parsing/mirrors",
+    element: <SimpleWrapper> <ParsingMirrorsScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/parsing/mirror/edit/:id",
+    element: <SimpleWrapper> <ParsingMirrorEditorScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/parsing/mirror/edit",
+    element: <SimpleWrapper> <ParsingMirrorEditorScreen /></SimpleWrapper>,
+  },
 ]);
 
 function App() {
@@ -185,6 +198,7 @@ function MenuWidget() {
       <li> <Link to={SelectToCompareLink()}>Выбрать книги для сравнения</Link> </li>
       <li> <Link to={AttributeColorListLink()}>Цвета аттрибутов</Link> </li>
       <li> <Link to={FSListLink()}>Файловые системы</Link> </li>
+      <li> <Link to={ParsingMirrorsLink()}>Зеркала для парсинга</Link> </li>
       <li> <Link to={SettingsLink()}>Настройки</Link> </li>
     </ol>
   </div>

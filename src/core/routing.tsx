@@ -44,6 +44,15 @@ export function LabelPresetEditLink(name?: string) {
 }
 
 
+export function ParsingMirrorEditLink(id?: string) {
+    if (!id) {
+        return "/parsing/mirror/edit"
+    }
+
+    return "/parsing/mirror/edit/" + id
+}
+
+
 export function BookListLink(filter?: BookFilter) {
     if (!filter) {
         return `/list`
@@ -128,4 +137,9 @@ export function FSEditLink(fsID?: string) {
 
 export function FSListLink() {
     return `/fs/list`
+}
+
+
+export function ParsingMirrorsLink() {
+    return `/parsing/mirrors`
 }

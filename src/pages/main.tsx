@@ -77,6 +77,7 @@ function BookHandleWidget() {
     const [bookList, setBookList] = useState("")
     const [isMultiParse, setIsMultiParse] = useState(false)
     const [isAutoVerify, setIsAutoVerify] = useState(false)
+    const [isReadOnlyMode, setIsReadOnlyMode] = useState(false)
 
     const [systemHandleResponse, doSystemHandle] = useSystemHandle()
 
@@ -115,6 +116,16 @@ function BookHandleWidget() {
                         autoComplete="off"
                     />
                 </label>
+                <label>
+                    <span>Режим моделирования без изменений данных</span>
+                    <input
+                        className="app"
+                        onChange={(e) => { setIsReadOnlyMode(e.target.checked) }}
+                        type="checkbox"
+                        checked={isReadOnlyMode}
+                        autoComplete="off"
+                    />
+                </label>
                 <button
                     className="app"
                     onClick={() => {
@@ -122,6 +133,7 @@ function BookHandleWidget() {
                             urls: bookList.split("\n").map((s) => s.trim()).filter(e => e.length > 0),
                             is_multi: isMultiParse,
                             auto_verify: isAutoVerify,
+                            read_only_mode: isReadOnlyMode,
                         })
                     }}
                     disabled={systemHandleResponse.isLoading}

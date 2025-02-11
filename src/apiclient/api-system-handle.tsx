@@ -4,6 +4,7 @@ interface systemHandleRequest {
     urls: Array<string>
     is_multi: boolean
     auto_verify: boolean
+    read_only_mode: boolean
 }
 
 interface systemHandleResponse {
@@ -18,14 +19,15 @@ interface systemHandleResponse {
 interface systemHandleResponseDetails {
     url: string
     is_duplicate: boolean
-    duplicate_id?: string
+    duplicate_ids?: Array<string>
     is_handled: boolean
+    id?: string
     error_reason?: string
 }
 
 
 export function useSystemHandle(): [Response<systemHandleResponse | null>, PostAction<systemHandleRequest>] {
-    const [response, fetchData] = useAPIPost<systemHandleRequest, systemHandleResponse>('/api/system/handle')
+    const [response, fetchData] = useAPIPost<systemHandleRequest, systemHandleResponse>('/api/parsing/handle')
 
     return [response, fetchData]
 }
