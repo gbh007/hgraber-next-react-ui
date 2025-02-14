@@ -1,10 +1,11 @@
 export function AgentStatusWidget(props: {
     value?: string
 }) {
-    const color = props.value == "ok" ? "green" :
-        props.value == "error" ? "red" :
-            props.value == "warning" ? "yellow" :
-                props.value == "offline" ? "gray" : "purple"
+    const color = props.value == "ok" ? "var(--app-agent-status-color-ok)"
+        : props.value == "error" ? "var(--app-agent-status-color-error)"
+            : props.value == "warning" ? "var(--app-agent-status-color-warning)"
+                : props.value == "offline" ? "var(--app-agent-status-color-offline)"
+                    : "var(--app-agent-status-color-unknown)"
 
     return <div><div
         style={{

@@ -59,9 +59,9 @@ export function ColorizedTextWidget(props: PropsWithChildren<{
     color?: "danger" | "danger-lite" | "good"
     bold?: boolean
 }>) {
-    const color = props.color == "danger" ? "#f00" :
-        props.color == "danger-lite" ? "#b00" :
-            props.color == "good" ? "#008b33" : undefined
+    const color = props.color == "danger" ? "var(--app-color-danger)" :
+        props.color == "danger-lite" ? "var(--app-color-danger-lite)" :
+            props.color == "good" ? "var(--app-color-good)" : undefined
 
     if (props.bold) {
         return <b style={{ color: color }}>{props.children}</b>
