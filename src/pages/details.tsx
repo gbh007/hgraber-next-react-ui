@@ -3,11 +3,10 @@ import { useBookDetails } from "../apiclient/api-book-details";
 import { ErrorTextWidget } from "../widgets/error-text";
 import { BookDetailInfoWidget } from "../widgets/book-detail-info";
 import { useBookDelete } from "../apiclient/api-book-delete";
-import { useBookVerify } from "../apiclient/api-book-verify";
 import { Link, useParams } from "react-router-dom";
 import { useCreateDeadHashByBookPages, useDeduplicateBookByPageBody, useDeleteAllPagesByBook, useDeleteBookDeadHashedPages, useDeleteDeadHashByBookPages } from "../apiclient/api-deduplicate";
 import styles from "./details.module.css"
-import { useBookRestore } from "../apiclient/api-book";
+import { useBookRestore, useBookStatusSet } from "../apiclient/api-book";
 import { useAttributeColorList } from "../apiclient/api-attribute";
 import { ColorizedTextWidget, ContainerWidget } from "../widgets/common";
 import { BookEditLink, BookLabelEditLink, BookReaderLink, BookRebuildLink, BookUniquePagesLink } from "../core/routing";
@@ -19,7 +18,7 @@ export function BookDetailsScreen() {
 
     const [bookDetailsResponse, getBookDetails] = useBookDetails()
     const [bookDeleteResponse, postBookDelete] = useBookDelete()
-    const [bookVerifyResponse, postBookVerify] = useBookVerify()
+    const [bookSetStatusResponse, doBookSetStatus] = useBookStatusSet()
     const [bookDeduplicateResponse, doBookDeduplicate] = useDeduplicateBookByPageBody()
     const [createDeadHashByBookResponse, doCreateDeadHashByBook] = useCreateDeadHashByBookPages()
     const [deleteDeadHashByBookResponse, doDeleteDeadHashByBook] = useDeleteDeadHashByBookPages()
@@ -48,7 +47,7 @@ export function BookDetailsScreen() {
     return <ContainerWidget direction="column" gap="big">
         <ErrorTextWidget value={bookDetailsResponse} />
         <ErrorTextWidget value={bookDeleteResponse} />
-        <ErrorTextWidget value={bookVerifyResponse} />
+        <ErrorTextWidget value={bookSetStatusResponse} />
         <ErrorTextWidget value={bookDeduplicateResponse} />
         <ErrorTextWidget value={createDeadHashByBookResponse} />
         <ErrorTextWidget value={deleteDeadHashByBookResponse} />
@@ -85,13 +84,14 @@ export function BookDetailsScreen() {
                     {bookDetailsResponse.data.info.flags.is_verified ?
                         <button
                             className={"app " + styles.mainButton}
-                            disabled={bookVerifyResponse.isLoading}
+                            disabled={bookSetStatusResponse.isLoading}
                             onClick={() => {
                                 if (!confirm(`Снять подтверждение с книги: ${bookDetailsResponse.data?.info.name}?`)) {
                                     return;
                                 }
 
-                                postBookVerify({ id: bookID, verify_status: false }).then(() => { getBookDetails({ id: bookID }) })
+                                doBookSetStatus({ id: bookID, status: "verify", value: false })
+                                    .then(() => { getBookDetails({ id: bookID }) })
                             }}
                         >
                             <ColorizedTextWidget color="danger-lite">Снять статус подтвержденной</ColorizedTextWidget>
@@ -99,13 +99,14 @@ export function BookDetailsScreen() {
                         :
                         <button
                             className={"app " + styles.mainButton}
-                            disabled={bookVerifyResponse.isLoading}
+                            disabled={bookSetStatusResponse.isLoading}
                             onClick={() => {
                                 if (!confirm(`Подтвердить книгу: ${bookDetailsResponse.data?.info.name}?`)) {
                                     return;
                                 }
 
-                                postBookVerify({ id: bookID, verify_status: true }).then(() => { getBookDetails({ id: bookID }) })
+                                doBookSetStatus({ id: bookID, status: "verify", value: true })
+                                    .then(() => { getBookDetails({ id: bookID }) })
                             }}
                         >
                             <ColorizedTextWidget color="good">Подтвердить</ColorizedTextWidget>
@@ -224,6 +225,39 @@ export function BookDetailsScreen() {
                         >
                             <ColorizedTextWidget color="good">Восстановить книгу</ColorizedTextWidget>
                         </button> : null}
+
+
+                        {bookDetailsResponse.data.info.flags.is_rebuild ?
+                            <button
+                                className={"app " + styles.mainButton}
+                                disabled={bookSetStatusResponse.isLoading}
+                                onClick={() => {
+                                    if (!confirm(`Снять статус пересобранной с книги: ${bookDetailsResponse.data?.info.name}?`)) {
+                                        return;
+                                    }
+
+                                    doBookSetStatus({ id: bookID, status: "rebuild", value: false })
+                                        .then(() => { getBookDetails({ id: bookID }) })
+                                }}
+                            >
+                                <ColorizedTextWidget color="danger-lite">Снять статус пересобранной</ColorizedTextWidget>
+                            </button>
+                            :
+                            <button
+                                className={"app " + styles.mainButton}
+                                disabled={bookSetStatusResponse.isLoading}
+                                onClick={() => {
+                                    if (!confirm(`Установить статус пересобранной книге: ${bookDetailsResponse.data?.info.name}?`)) {
+                                        return;
+                                    }
+
+                                    doBookSetStatus({ id: bookID, status: "rebuild", value: true })
+                                        .then(() => { getBookDetails({ id: bookID }) })
+                                }}
+                            >
+                                <ColorizedTextWidget color="danger-lite">Установить статус пересобранной</ColorizedTextWidget>
+                            </button>
+                        }
                     </ContainerWidget>
                 </details>
             </ContainerWidget>

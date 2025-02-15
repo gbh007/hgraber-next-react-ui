@@ -60,3 +60,15 @@ export function useBookRestore(): [Response<void | null>, PostAction<BookRestore
 
     return [response, fetchData]
 }
+
+export interface BookStatusSetRequest {
+    id: string
+    status: "verify" | "rebuild"
+    value: boolean
+}
+
+export function useBookStatusSet(): [Response<void | null>, PostAction<BookStatusSetRequest>] {
+    const [response, fetchData] = useAPIPost<BookStatusSetRequest, void>('/api/book/status/set')
+
+    return [response, fetchData]
+}
