@@ -86,8 +86,20 @@ export function useAgentTaskExport(): [Response<void | null>, PostAction<AgentTa
 }
 
 
-export function useAgentUpdate(): [Response<void | null>, PostAction<Agent>] {
-    const [response, fetchData] = useAPIPost<Agent, void>('/api/agent/update')
+export interface AgentUpdateRequest {
+    id: string
+    name: string
+    token: string
+    addr: string
+    can_parse: boolean
+    can_parse_multi: boolean
+    can_export: boolean
+    has_fs: boolean
+    priority: number
+}
+
+export function useAgentUpdate(): [Response<void | null>, PostAction<AgentUpdateRequest>] {
+    const [response, fetchData] = useAPIPost<AgentUpdateRequest, void>('/api/agent/update')
 
     return [response, fetchData]
 }
