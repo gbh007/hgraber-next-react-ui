@@ -96,24 +96,14 @@ export function useDeduplicateBooksByPage(): [Response<DeduplicateBooksByPageRes
     return [response, fetchData]
 }
 
-export interface CreateDeadHashByPageRequest {
+export interface SetDeadHashRequest {
     book_id: string
-    page_number: number
+    page_number?: number
+    value: boolean
 }
 
-export function useCreateDeadHashByPage(): [Response<void | null>, PostAction<CreateDeadHashByPageRequest>] {
-    const [response, fetchData] = useAPIPost<CreateDeadHashByPageRequest, void>('/api/deduplicate/dead-hash-by-page/create')
-
-    return [response, fetchData]
-}
-
-export interface DeleteDeadHashByPageRequest {
-    book_id: string
-    page_number: number
-}
-
-export function useDeleteDeadHashByPage(): [Response<void | null>, PostAction<DeleteDeadHashByPageRequest>] {
-    const [response, fetchData] = useAPIPost<DeleteDeadHashByPageRequest, void>('/api/deduplicate/dead-hash-by-page/delete')
+export function useSetDeadHash(): [Response<void | null>, PostAction<SetDeadHashRequest>] {
+    const [response, fetchData] = useAPIPost<SetDeadHashRequest, void>('/api/deduplicate/dead-hash/set')
 
     return [response, fetchData]
 }
@@ -126,27 +116,6 @@ export interface DeletePagesByBodyRequest {
 
 export function useDeletePagesByBody(): [Response<void | null>, PostAction<DeletePagesByBodyRequest>] {
     const [response, fetchData] = useAPIPost<DeletePagesByBodyRequest, void>('/api/deduplicate/delete-all-pages-by-hash')
-
-    return [response, fetchData]
-}
-
-
-export interface CreateDeadHashByBookPagesRequest {
-    book_id: string
-}
-
-export function useCreateDeadHashByBookPages(): [Response<void | null>, PostAction<CreateDeadHashByBookPagesRequest>] {
-    const [response, fetchData] = useAPIPost<CreateDeadHashByBookPagesRequest, void>('/api/deduplicate/dead-hash-by-book-pages/create')
-
-    return [response, fetchData]
-}
-
-export interface DeleteDeadHashByBookPagesRequest {
-    book_id: string
-}
-
-export function useDeleteDeadHashByBookPages(): [Response<void | null>, PostAction<DeleteDeadHashByBookPagesRequest>] {
-    const [response, fetchData] = useAPIPost<DeleteDeadHashByBookPagesRequest, void>('/api/deduplicate/dead-hash-by-book-pages/delete')
 
     return [response, fetchData]
 }

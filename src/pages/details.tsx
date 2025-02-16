@@ -4,7 +4,7 @@ import { ErrorTextWidget } from "../widgets/error-text";
 import { BookDetailInfoWidget } from "../widgets/book-detail-info";
 import { useBookDelete } from "../apiclient/api-book-delete";
 import { Link, useParams } from "react-router-dom";
-import { useCreateDeadHashByBookPages, useDeduplicateBookByPageBody, useDeleteAllPagesByBook, useDeleteBookDeadHashedPages, useDeleteDeadHashByBookPages } from "../apiclient/api-deduplicate";
+import { useDeduplicateBookByPageBody, useDeleteAllPagesByBook, useDeleteBookDeadHashedPages, useSetDeadHash } from "../apiclient/api-deduplicate";
 import styles from "./details.module.css"
 import { useBookRestore, useBookStatusSet } from "../apiclient/api-book";
 import { useAttributeColorList } from "../apiclient/api-attribute";
@@ -20,8 +20,7 @@ export function BookDetailsScreen() {
     const [bookDeleteResponse, postBookDelete] = useBookDelete()
     const [bookSetStatusResponse, doBookSetStatus] = useBookStatusSet()
     const [bookDeduplicateResponse, doBookDeduplicate] = useDeduplicateBookByPageBody()
-    const [createDeadHashByBookResponse, doCreateDeadHashByBook] = useCreateDeadHashByBookPages()
-    const [deleteDeadHashByBookResponse, doDeleteDeadHashByBook] = useDeleteDeadHashByBookPages()
+    const [setDeadHashResponse, doSetDeadHash] = useSetDeadHash()
     const [deleteAllPagesByBookResponse, doDeleteAllPagesByBook] = useDeleteAllPagesByBook()
     const [bookRestoreResponse, doBookRestore] = useBookRestore()
     const [deleteBookDeadHashedPagesResponse, doDeleteBookDeadHashedPages] = useDeleteBookDeadHashedPages()
@@ -49,8 +48,7 @@ export function BookDetailsScreen() {
         <ErrorTextWidget value={bookDeleteResponse} />
         <ErrorTextWidget value={bookSetStatusResponse} />
         <ErrorTextWidget value={bookDeduplicateResponse} />
-        <ErrorTextWidget value={createDeadHashByBookResponse} />
-        <ErrorTextWidget value={deleteDeadHashByBookResponse} />
+        <ErrorTextWidget value={setDeadHashResponse} />
         <ErrorTextWidget value={deleteAllPagesByBookResponse} />
         <ErrorTextWidget value={bookRestoreResponse} />
         <ErrorTextWidget value={deleteBookDeadHashedPagesResponse} />
@@ -134,14 +132,15 @@ export function BookDetailsScreen() {
                         {hasPages ? <>
                             <button
                                 className="app"
-                                disabled={createDeadHashByBookResponse.isLoading}
+                                disabled={setDeadHashResponse.isLoading}
                                 onClick={() => {
                                     if (!confirm("Создать мертвых хеш для всех страниц этой книги?")) {
                                         return
                                     }
 
-                                    doCreateDeadHashByBook({
+                                    doSetDeadHash({
                                         book_id: bookID,
+                                        value: true,
                                     }).then(() => {
                                         getBookDetails({ id: bookID })
                                     })
@@ -151,14 +150,15 @@ export function BookDetailsScreen() {
                             </button>
                             <button
                                 className="app"
-                                disabled={deleteDeadHashByBookResponse.isLoading}
+                                disabled={setDeadHashResponse.isLoading}
                                 onClick={() => {
                                     if (!confirm("Удалить мертвых хеш для всех страниц этой книги?")) {
                                         return
                                     }
 
-                                    doDeleteDeadHashByBook({
+                                    doSetDeadHash({
                                         book_id: bookID,
+                                        value: false,
                                     }).then(() => {
                                         getBookDetails({ id: bookID })
                                     })

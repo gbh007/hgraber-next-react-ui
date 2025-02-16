@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { useCreateDeadHashByPage, useDeduplicateCompare, useDeleteDeadHashByPage, useDeletePagesByBody } from "../apiclient/api-deduplicate";
+import { useDeduplicateCompare, useDeletePagesByBody, useSetDeadHash } from "../apiclient/api-deduplicate";
 import { useEffect, useState } from "react";
 import { ErrorTextWidget } from "../widgets/error-text";
 import { BookAttributesWidget, BookPagesPreviewWidget } from "../widgets/book-detail-info";
@@ -20,8 +20,7 @@ export function CompareBookScreen() {
 
 
     const [compareResult, doCompare] = useDeduplicateCompare()
-    const [createDeadHashResponse, doCreateDeadHash] = useCreateDeadHashByPage()
-    const [deleteDeadHashResponse, doDeleteDeadHash] = useDeleteDeadHashByPage()
+    const [setDeadHashResponse, doSetDeadHash] = useSetDeadHash()
     const [deleteAllPageByBodyResponse, doDeleteAllPageByBody] = useDeletePagesByBody()
 
 
@@ -55,8 +54,7 @@ export function CompareBookScreen() {
 
     return <ContainerWidget direction="column" gap="bigger">
         <ErrorTextWidget value={compareResult} />
-        <ErrorTextWidget value={createDeadHashResponse} />
-        <ErrorTextWidget value={deleteDeadHashResponse} />
+        <ErrorTextWidget value={setDeadHashResponse} />
         <ErrorTextWidget value={deleteAllPageByBodyResponse} />
         <ErrorTextWidget value={attributeColorListResponse} />
 
@@ -149,7 +147,11 @@ export function CompareBookScreen() {
                                     return
                                 }
 
-                                doCreateDeadHash({ book_id: bookID, page_number: page.page_number })
+                                doSetDeadHash({
+                                    book_id: bookID,
+                                    page_number: page.page_number,
+                                    value: true,
+                                })
                                     .then(() => doCompare({
                                         origin_book_id: originBookID,
                                         target_book_id: targetBookID,
@@ -166,7 +168,11 @@ export function CompareBookScreen() {
                                     return
                                 }
 
-                                doDeleteDeadHash({ book_id: bookID, page_number: page.page_number })
+                                doSetDeadHash({
+                                    book_id: bookID,
+                                    page_number: page.page_number,
+                                    value: false,
+                                })
                                     .then(() => doCompare({
                                         origin_book_id: originBookID,
                                         target_book_id: targetBookID,

@@ -4,7 +4,7 @@ import { useBookDetails } from "../apiclient/api-book-details"
 import { useCallback, useEffect, useState } from "react"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { BookSimplePage } from "../apiclient/model-book"
-import { useCreateDeadHashByPage, useDeleteDeadHashByPage, useDeletePagesByBody } from "../apiclient/api-deduplicate"
+import { useDeletePagesByBody, useSetDeadHash } from "../apiclient/api-deduplicate"
 import { BookReadActionButtonWidget } from "../widgets/book-reader"
 import { ColorizedTextWidget } from "../widgets/common"
 import { PageBadgesWidget } from "../widgets/book-short-info"
@@ -20,8 +20,7 @@ export function BookReadScreen() {
     const [showPageWithDeadHash, setShowPageWithDeadHash] = useState(true)
 
     const [bookDetailsResponse, getBookDetails] = useBookDetails()
-    const [createDeadHashResponse, doCreateDeadHash] = useCreateDeadHashByPage()
-    const [deleteDeadHashResponse, doDeleteDeadHash] = useDeleteDeadHashByPage()
+    const [setDeadHashResponse, doSetDeadHash] = useSetDeadHash()
     const [deleteAllPageByBodyResponse, doDeleteAllPageByBody] = useDeletePagesByBody()
 
     const navigate = useNavigate();
@@ -97,8 +96,7 @@ export function BookReadScreen() {
 
     return <div>
         <ErrorTextWidget value={bookDetailsResponse} />
-        <ErrorTextWidget value={createDeadHashResponse} />
-        <ErrorTextWidget value={deleteDeadHashResponse} />
+        <ErrorTextWidget value={setDeadHashResponse} />
         <ErrorTextWidget value={deleteAllPageByBodyResponse} />
         <div className={styles.viewScreen}>
             <div className={"app-container " + styles.actions}>
@@ -156,9 +154,10 @@ export function BookReadScreen() {
                             return
                         }
 
-                        doCreateDeadHash({
+                        doSetDeadHash({
                             book_id: bookID,
-                            page_number: currentPage.page_number
+                            page_number: currentPage.page_number,
+                            value: true,
                         }).then(() => {
                             getBookDetails({ id: bookID })
                         })
@@ -172,9 +171,10 @@ export function BookReadScreen() {
                             return
                         }
 
-                        doDeleteDeadHash({
+                        doSetDeadHash({
                             book_id: bookID,
-                            page_number: currentPage.page_number
+                            page_number: currentPage.page_number,
+                            value: false,
                         }).then(() => {
                             getBookDetails({ id: bookID })
                         })
