@@ -12,6 +12,7 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
     currentPage?: BookSimplePage
     onCreateDeadHash: () => void
     onDeleteDeadHash: () => void
+    onDeletePage: () => void
     onDeleteAllPages: () => void
 }) {
     const [show, setShow] = useState(false)
@@ -49,6 +50,15 @@ export function BookReadActionButtonWidget(props: PropsWithChildren & {
             }
             {props.currentPage ?
                 <>
+                    <button
+                        className="app"
+                        onClick={() => {
+                            setShow(false)
+                            props.onDeletePage()
+                        }}
+                    >
+                        <ColorizedTextWidget color="danger-lite" bold>Удалить эту страницу</ColorizedTextWidget>
+                    </button>
                     <button
                         className="app"
                         onClick={() => {

@@ -15,6 +15,7 @@ export function DualReaderWidget(props: {
     bPages?: Array<BookSimplePage>
     onCreateDeadHash: (bookID: string, page: BookSimplePage) => void
     onDeleteDeadHash: (bookID: string, page: BookSimplePage) => void
+    onDeletePage: (bookID: string, page: BookSimplePage) => void
     onDeleteAllPages: (bookID: string, page: BookSimplePage) => void
     onDeleteAllPagesWithDeadHash: (bookID: string, page: BookSimplePage) => void
 }) {
@@ -97,6 +98,7 @@ export function DualReaderWidget(props: {
                     pageNumber={currentAPage.page_number}
                     currentPage={currentAPage}
                     onCreateDeadHash={() => props.onCreateDeadHash(props.aBookID, currentAPage)}
+                    onDeletePage={() => props.onDeletePage(props.aBookID, currentAPage)}
                     onDeleteAllPages={() => props.onDeleteAllPages(props.aBookID, currentAPage)}
                     onDeleteDeadHash={() => props.onDeleteDeadHash(props.aBookID, currentAPage)}
                 />
@@ -123,6 +125,7 @@ export function DualReaderWidget(props: {
                     pageNumber={currentBPage.page_number}
                     currentPage={currentBPage}
                     onCreateDeadHash={() => props.onCreateDeadHash(props.bBookID, currentBPage)}
+                    onDeletePage={() => props.onDeletePage(props.bBookID, currentBPage)}
                     onDeleteAllPages={() => props.onDeleteAllPages(props.bBookID, currentBPage)}
                     onDeleteDeadHash={() => props.onDeleteDeadHash(props.bBookID, currentBPage)}
                 />

@@ -107,15 +107,3 @@ export function useSetDeadHash(): [Response<void | null>, PostAction<SetDeadHash
 
     return [response, fetchData]
 }
-
-export interface DeletePagesByBodyRequest {
-    book_id: string
-    page_number: number
-    set_dead_hash?: boolean
-}
-
-export function useDeletePagesByBody(): [Response<void | null>, PostAction<DeletePagesByBodyRequest>] {
-    const [response, fetchData] = useAPIPost<DeletePagesByBodyRequest, void>('/api/deduplicate/delete-all-pages-by-hash')
-
-    return [response, fetchData]
-}

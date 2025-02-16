@@ -11,3 +11,16 @@ export function useBookDelete(): [Response<void | null>, PostAction<BookDeleteRe
 
     return [response, fetchData]
 }
+
+export interface DeleteBookPageRequest {
+    type: "one" | "all_copy"
+    book_id: string
+    page_number: number
+    set_dead_hash?: boolean
+}
+
+export function useDeleteBookPage(): [Response<void | null>, PostAction<DeleteBookPageRequest>] {
+    const [response, fetchData] = useAPIPost<DeleteBookPageRequest, void>('/api/book/page/delete')
+
+    return [response, fetchData]
+}

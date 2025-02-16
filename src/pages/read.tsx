@@ -4,11 +4,12 @@ import { useBookDetails } from "../apiclient/api-book-details"
 import { useCallback, useEffect, useState } from "react"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { BookSimplePage } from "../apiclient/model-book"
-import { useDeletePagesByBody, useSetDeadHash } from "../apiclient/api-deduplicate"
+import { useSetDeadHash } from "../apiclient/api-deduplicate"
 import { BookReadActionButtonWidget } from "../widgets/book-reader"
 import { ColorizedTextWidget } from "../widgets/common"
 import { PageBadgesWidget } from "../widgets/book-short-info"
 import { BookDetailsLink, BookReaderLink } from "../core/routing"
+import { useDeleteBookPage } from "../apiclient/api-book-delete"
 
 export function BookReadScreen() {
     const params = useParams()
@@ -21,7 +22,7 @@ export function BookReadScreen() {
 
     const [bookDetailsResponse, getBookDetails] = useBookDetails()
     const [setDeadHashResponse, doSetDeadHash] = useSetDeadHash()
-    const [deleteAllPageByBodyResponse, doDeleteAllPageByBody] = useDeletePagesByBody()
+    const [deletePageResponse, doDeletePage] = useDeleteBookPage()
 
     const navigate = useNavigate();
 
@@ -97,7 +98,7 @@ export function BookReadScreen() {
     return <div>
         <ErrorTextWidget value={bookDetailsResponse} />
         <ErrorTextWidget value={setDeadHashResponse} />
-        <ErrorTextWidget value={deleteAllPageByBodyResponse} />
+        <ErrorTextWidget value={deletePageResponse} />
         <div className={styles.viewScreen}>
             <div className={"app-container " + styles.actions}>
                 <Link className="app-button" to={BookDetailsLink(bookID)}>На страницу книги</Link>
@@ -128,7 +129,8 @@ export function BookReadScreen() {
                                 return
                             }
 
-                            doDeleteAllPageByBody({
+                            doDeletePage({
+                                type: "all_copy",
                                 book_id: bookID,
                                 page_number: currentPage.page_number,
                                 set_dead_hash: true,
@@ -179,6 +181,23 @@ export function BookReadScreen() {
                             getBookDetails({ id: bookID })
                         })
                     }}
+                    onDeletePage={() => {
+                        if (!currentPage) {
+                            return
+                        }
+
+                        if (!confirm("Удалить эту страницу? (ЭТО НЕОБРАТИМО)")) {
+                            return
+                        }
+
+                        doDeletePage({
+                            type: "one",
+                            book_id: bookID,
+                            page_number: currentPage.page_number,
+                        }).then(() => {
+                            getBookDetails({ id: bookID })
+                        })
+                    }}
                     onDeleteAllPages={() => {
                         if (!currentPage) {
                             return
@@ -190,7 +209,8 @@ export function BookReadScreen() {
 
                         const setDeadHash = confirm("Установить для текущих страниц мертвый хеш?")
 
-                        doDeleteAllPageByBody({
+                        doDeletePage({
+                            type: "all_copy",
                             book_id: bookID,
                             page_number: currentPage.page_number,
                             set_dead_hash: setDeadHash,

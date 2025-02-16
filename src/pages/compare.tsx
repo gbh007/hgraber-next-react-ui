@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { useDeduplicateCompare, useDeletePagesByBody, useSetDeadHash } from "../apiclient/api-deduplicate";
+import { useDeduplicateCompare, useSetDeadHash } from "../apiclient/api-deduplicate";
 import { useEffect, useState } from "react";
 import { ErrorTextWidget } from "../widgets/error-text";
 import { BookAttributesWidget, BookPagesPreviewWidget } from "../widgets/book-detail-info";
@@ -9,6 +9,7 @@ import { DualReaderWidget } from "../widgets/split-viewer";
 import { BookImagePreviewWidget } from "../widgets/book-short-info";
 import { useAttributeColorList } from "../apiclient/api-attribute";
 import { BookDetailsLink } from "../core/routing";
+import { useDeleteBookPage } from "../apiclient/api-book-delete";
 
 export function CompareBookScreen() {
     const params = useParams()
@@ -21,7 +22,7 @@ export function CompareBookScreen() {
 
     const [compareResult, doCompare] = useDeduplicateCompare()
     const [setDeadHashResponse, doSetDeadHash] = useSetDeadHash()
-    const [deleteAllPageByBodyResponse, doDeleteAllPageByBody] = useDeletePagesByBody()
+    const [deletePageResponse, doDeletePage] = useDeleteBookPage()
 
 
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
@@ -55,7 +56,7 @@ export function CompareBookScreen() {
     return <ContainerWidget direction="column" gap="bigger">
         <ErrorTextWidget value={compareResult} />
         <ErrorTextWidget value={setDeadHashResponse} />
-        <ErrorTextWidget value={deleteAllPageByBodyResponse} />
+        <ErrorTextWidget value={deletePageResponse} />
         <ErrorTextWidget value={attributeColorListResponse} />
 
         <ContainerWidget appContainer direction="row" gap="medium" wrap>
@@ -178,6 +179,27 @@ export function CompareBookScreen() {
                                         target_book_id: targetBookID,
                                     }))
                             }}
+                            onDeletePage={(bookID: string, page: BookSimplePage) => {
+                                const bookName = originBookID == bookID ? originBookName :
+                                    targetBookID == bookID ? targetBookName : undefined
+                                if (!bookName) {
+                                    return
+                                }
+
+                                if (!confirm(`Удалить эту страницу ${bookName} (${page.page_number})? (ЭТО НЕОБРАТИМО)`)) {
+                                    return
+                                }
+
+                                doDeletePage({
+                                    type: "one",
+                                    book_id: bookID,
+                                    page_number: page.page_number,
+                                })
+                                    .then(() => doCompare({
+                                        origin_book_id: originBookID,
+                                        target_book_id: targetBookID,
+                                    }))
+                            }}
                             onDeleteAllPages={(bookID: string, page: BookSimplePage) => {
                                 const bookName = originBookID == bookID ? originBookName :
                                     targetBookID == bookID ? targetBookName : undefined
@@ -192,7 +214,8 @@ export function CompareBookScreen() {
 
                                 const setDeadHash = confirm("Установить для страниц мертвый хеш?")
 
-                                doDeleteAllPageByBody({
+                                doDeletePage({
+                                    type: "all_copy",
                                     book_id: bookID,
                                     page_number: page.page_number,
                                     set_dead_hash: setDeadHash,
@@ -207,7 +230,8 @@ export function CompareBookScreen() {
                                     return
                                 }
 
-                                doDeleteAllPageByBody({
+                                doDeletePage({
+                                    type: "all_copy",
                                     book_id: bookID,
                                     page_number: page.page_number,
                                     set_dead_hash: true,
