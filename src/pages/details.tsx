@@ -4,7 +4,7 @@ import { ErrorTextWidget } from "../widgets/error-text";
 import { BookDetailInfoWidget } from "../widgets/book-detail-info";
 import { useBookDelete } from "../apiclient/api-book-delete";
 import { Link, useParams } from "react-router-dom";
-import { useDeduplicateBookByPageBody, useDeleteAllPagesByBook, useDeleteBookDeadHashedPages, useSetDeadHash } from "../apiclient/api-deduplicate";
+import { useDeduplicateBookByPageBody, useSetDeadHash } from "../apiclient/api-deduplicate";
 import styles from "./details.module.css"
 import { useBookRestore, useBookStatusSet } from "../apiclient/api-book";
 import { useAttributeColorList } from "../apiclient/api-attribute";
@@ -21,9 +21,7 @@ export function BookDetailsScreen() {
     const [bookSetStatusResponse, doBookSetStatus] = useBookStatusSet()
     const [bookDeduplicateResponse, doBookDeduplicate] = useDeduplicateBookByPageBody()
     const [setDeadHashResponse, doSetDeadHash] = useSetDeadHash()
-    const [deleteAllPagesByBookResponse, doDeleteAllPagesByBook] = useDeleteAllPagesByBook()
     const [bookRestoreResponse, doBookRestore] = useBookRestore()
-    const [deleteBookDeadHashedPagesResponse, doDeleteBookDeadHashedPages] = useDeleteBookDeadHashedPages()
 
 
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
@@ -49,9 +47,7 @@ export function BookDetailsScreen() {
         <ErrorTextWidget value={bookSetStatusResponse} />
         <ErrorTextWidget value={bookDeduplicateResponse} />
         <ErrorTextWidget value={setDeadHashResponse} />
-        <ErrorTextWidget value={deleteAllPagesByBookResponse} />
         <ErrorTextWidget value={bookRestoreResponse} />
-        <ErrorTextWidget value={deleteBookDeadHashedPagesResponse} />
         <ErrorTextWidget value={attributeColorListResponse} />
         {bookDetailsResponse.data ? <BookDetailInfoWidget
             book={bookDetailsResponse.data}
@@ -74,7 +70,10 @@ export function BookDetailsScreen() {
                                 return;
                             }
 
-                            postBookDelete({ id: bookID }).then(() => { getBookDetails({ id: bookID }) })
+                            postBookDelete({
+                                book_id: bookID,
+                                type: "soft",
+                            }).then(() => { getBookDetails({ id: bookID }) })
                         }}
                     >
                         <ColorizedTextWidget color="danger">Удалить</ColorizedTextWidget>
@@ -168,14 +167,15 @@ export function BookDetailsScreen() {
                             </button>
                             <button
                                 className="app"
-                                disabled={deleteBookDeadHashedPagesResponse.isLoading}
+                                disabled={bookDeleteResponse.isLoading}
                                 onClick={() => {
                                     if (!confirm("Удалить все страницы из этой книги с мертвым хешом? (ЭТО НЕОБРАТИМО)")) {
                                         return
                                     }
 
-                                    doDeleteBookDeadHashedPages({
+                                    postBookDelete({
                                         book_id: bookID,
+                                        type: "dead_hashed_pages",
                                     }).then(() => {
                                         getBookDetails({ id: bookID })
                                     })
@@ -185,7 +185,7 @@ export function BookDetailsScreen() {
                             </button>
                             <button
                                 className="app"
-                                disabled={deleteAllPagesByBookResponse.isLoading}
+                                disabled={bookDeleteResponse.isLoading}
                                 onClick={() => {
                                     if (!confirm("Удалить все страницы из этой книги и их копии? (ЭТО НЕОБРАТИМО)")) {
                                         return
@@ -193,8 +193,9 @@ export function BookDetailsScreen() {
 
                                     const markAsDeletedEmptyBook = confirm("Удалить книги которые станут пустыми?")
 
-                                    doDeleteAllPagesByBook({
+                                    postBookDelete({
                                         book_id: bookID,
+                                        type: "page_and_copy",
                                         mark_as_deleted_empty_book: markAsDeletedEmptyBook,
                                     }).then(() => {
                                         getBookDetails({ id: bookID })

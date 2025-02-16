@@ -119,24 +119,3 @@ export function useDeletePagesByBody(): [Response<void | null>, PostAction<Delet
 
     return [response, fetchData]
 }
-
-export interface DeleteAllPagesByBookRequest {
-    book_id: string
-    mark_as_deleted_empty_book?: boolean
-}
-
-export function useDeleteAllPagesByBook(): [Response<void | null>, PostAction<DeleteAllPagesByBookRequest>] {
-    const [response, fetchData] = useAPIPost<DeleteAllPagesByBookRequest, void>('/api/deduplicate/delete-all-pages-by-book')
-
-    return [response, fetchData]
-}
-
-export interface DeleteBookDeadHashedPagesRequest {
-    book_id: string
-}
-
-export function useDeleteBookDeadHashedPages(): [Response<void | null>, PostAction<DeleteBookDeadHashedPagesRequest>] {
-    const [response, fetchData] = useAPIPost<DeleteBookDeadHashedPagesRequest, void>('/api/deduplicate/delete-book-dead-hashed-pages')
-
-    return [response, fetchData]
-}
