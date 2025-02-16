@@ -14,13 +14,15 @@ export function FSListScreen() {
     const [fsRemoveMismatchResponse, doFSRemoveMismatch] = useFSRemoveMismatch()
     const [fsTransferResponse, doFSTransfer] = useFSTransfer()
     const [agentListResponse, fetchAgentList] = useAgentList()
+    const [includeAvailableSize, setIncludeAvailableSize] = useState(true)
+    const [includeDbFileSize, setIncludeDbFileSize] = useState(true)
 
     const fetchFS = useCallback(() => {
         fetchFSList({
-            include_db_file_size: true,
-            include_available_size: true,
+            include_db_file_size: includeDbFileSize,
+            include_available_size: includeAvailableSize,
         })
-    }, [fetchFSList])
+    }, [fetchFSList, includeDbFileSize, includeAvailableSize])
 
     useEffect(() => { fetchFS() }, [fetchFS])
     useEffect(() => { fetchAgentList({ include_status: true }) }, [fetchAgentList])
@@ -39,8 +41,26 @@ export function FSListScreen() {
             <ErrorTextWidget value={fsTransferResponse} />
             <ErrorTextWidget value={agentListResponse} />
 
-            <ContainerWidget appContainer direction="row" gap="medium">
+            <ContainerWidget appContainer direction="row" gap="medium" wrap>
                 <Link className="app-button" to={FSEditLink()}>Новая</Link>
+                <label>
+                    <input
+                        className="app"
+                        type="checkbox"
+                        checked={includeAvailableSize}
+                        onChange={e => setIncludeAvailableSize(e.target.checked)}
+                    />
+                    <span>Показывать доступное место</span>
+                </label>
+                <label>
+                    <input
+                        className="app"
+                        type="checkbox"
+                        checked={includeDbFileSize}
+                        onChange={e => setIncludeDbFileSize(e.target.checked)}
+                    />
+                    <span>Показывать занятое место в БД</span>
+                </label>
                 <button
                     className="app"
                     onClick={() => {

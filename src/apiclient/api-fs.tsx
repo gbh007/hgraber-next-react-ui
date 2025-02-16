@@ -26,18 +26,45 @@ export function useFSGet(): [Response<FileSystemInfo | null>, PostAction<FSGetRe
     return [response, fetchData]
 }
 
+
+export interface FSCreateRequest {
+    name: string
+    description?: string
+    agent_id?: string
+    path?: string
+    download_priority: number
+    deduplicate_priority: number
+    highway_enabled: boolean
+    highway_addr?: string
+};
+
+
 export interface FSCreateResponse {
     id: string
 }
 
-export function useFSCreate(): [Response<FSCreateResponse | null>, PostAction<FileSystemInfo>] {
-    const [response, fetchData] = useAPIPost<FileSystemInfo, FSCreateResponse>('/api/fs/create')
+export function useFSCreate(): [Response<FSCreateResponse | null>, PostAction<FSCreateRequest>] {
+    const [response, fetchData] = useAPIPost<FSCreateRequest, FSCreateResponse>('/api/fs/create')
 
     return [response, fetchData]
 }
 
-export function useFSUpdate(): [Response<void | null>, PostAction<FileSystemInfo>] {
-    const [response, fetchData] = useAPIPost<FileSystemInfo, void>('/api/fs/update')
+
+export interface FSUpdateRequest {
+    id: string
+    name: string
+    description?: string
+    agent_id?: string
+    path?: string
+    download_priority: number
+    deduplicate_priority: number
+    highway_enabled: boolean
+    highway_addr?: string
+};
+
+
+export function useFSUpdate(): [Response<void | null>, PostAction<FSUpdateRequest>] {
+    const [response, fetchData] = useAPIPost<FSUpdateRequest, void>('/api/fs/update')
 
     return [response, fetchData]
 }
