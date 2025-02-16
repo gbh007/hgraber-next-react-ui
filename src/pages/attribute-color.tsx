@@ -18,6 +18,10 @@ export function AttributeColorListScreen() {
         <AttributeColorListWidget
             value={attributeColorListResponse.data?.colors}
             onDelete={(code: string, value: string) => {
+                if (!confirm(`Удалить окраску аттрибута ${code}/${value}`)) {
+                    return
+                }
+
                 doAttributeColorDelete({
                     code: code,
                     value: value,

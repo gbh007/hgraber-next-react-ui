@@ -56,14 +56,32 @@ export function useAttributeColorGet(): [Response<AttributeColor | null>, PostAc
     return [response, fetchData]
 }
 
-export function useAttributeColorCreate(): [Response<void | null>, PostAction<AttributeColor>] {
-    const [response, fetchData] = useAPIPost<AttributeColor, void>('/api/attribute/color/create')
+
+export interface AttributeColorCreateRequest {
+    code: string
+    value: string
+    text_color: string
+    background_color: string
+}
+
+
+export function useAttributeColorCreate(): [Response<void | null>, PostAction<AttributeColorCreateRequest>] {
+    const [response, fetchData] = useAPIPost<AttributeColorCreateRequest, void>('/api/attribute/color/create')
 
     return [response, fetchData]
 }
 
-export function useAttributeColorUpdate(): [Response<void | null>, PostAction<AttributeColor>] {
-    const [response, fetchData] = useAPIPost<AttributeColor, void>('/api/attribute/color/update')
+
+export interface AttributeColorUpdateRequest {
+    code: string
+    value: string
+    text_color: string
+    background_color: string
+}
+
+
+export function useAttributeColorUpdate(): [Response<void | null>, PostAction<AttributeColorUpdateRequest>] {
+    const [response, fetchData] = useAPIPost<AttributeColorUpdateRequest, void>('/api/attribute/color/update')
 
     return [response, fetchData]
 }
