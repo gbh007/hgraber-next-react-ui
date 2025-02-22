@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import { useSystemInfoSize, useSystemInfoWorkers } from "../apiclient/api-system-info"
-import { useSystemHandle } from "../apiclient/api-system-handle"
-import { AutoRefresherWidget, ContainerWidget } from "../widgets/common"
+import { systemHandleResponseDetails, useSystemHandle } from "../apiclient/api-system-handle"
+import { AutoRefresherWidget, ColorizedTextWidget, ContainerWidget } from "../widgets/common"
 import { ErrorTextWidget } from "../widgets/error-text"
+import { Link } from "react-router-dom"
+import { BookDetailsLink } from "../core/routing"
 
 export function MainScreen() {
     const [systemInfoSizeResponse, fetchSystemInfoSize] = useSystemInfoSize()
@@ -11,66 +13,64 @@ export function MainScreen() {
     useEffect(() => { fetchSystemInfoSize() }, [fetchSystemInfoSize])
     useEffect(() => { fetchSystemInfoWorkers() }, [fetchSystemInfoWorkers])
 
-    return (
-        <ContainerWidget direction="column" gap="bigger">
-            <ErrorTextWidget value={systemInfoSizeResponse} />
-            <ErrorTextWidget value={systemInfoWorkersResponse} />
-            <ContainerWidget appContainer direction="row" gap="big" wrap>
-                <ContainerWidget direction="column" gap="smaller">
-                    <b>Книги</b>
-                    <span>Всего: <b>{systemInfoSizeResponse.data?.count ?? 0}</b></span>
-                    <span>Загружено: <b>{systemInfoSizeResponse.data?.downloaded_count ?? 0}</b></span>
-                    <span>Подтверждено: <b>{systemInfoSizeResponse.data?.verified_count ?? 0}</b></span>
-                    <span>Пересобрано: <b>{systemInfoSizeResponse.data?.rebuilded_count ?? 0}</b></span>
-                    <span>Незагруженно: <b>{systemInfoSizeResponse.data?.not_load_count ?? 0}</b></span>
-                    <span>Удалено: <b>{systemInfoSizeResponse.data?.deleted_count ?? 0}</b></span>
-                </ContainerWidget>
-                <ContainerWidget direction="column" gap="smaller">
-                    <b>Страницы</b>
-                    <span>Всего: <b>{systemInfoSizeResponse.data?.page_count ?? 0}</b></span>
-                    <span>Незагруженно: <b>{systemInfoSizeResponse.data?.not_load_page_count ?? 0}</b></span>
-                    <span>Без тела (файла): <b>{systemInfoSizeResponse.data?.page_without_body_count ?? 0}</b></span>
-                    <span>Удалено: <b>{systemInfoSizeResponse.data?.deleted_page_count ?? 0}</b></span>
-                    <span>Объем: <b>{systemInfoSizeResponse.data?.pages_size_formatted ?? 0}</b></span>
-                </ContainerWidget>
-                <ContainerWidget direction="column" gap="smaller">
-                    <b>Файлы</b>
-                    <span>Всего: <b>{systemInfoSizeResponse.data?.file_count ?? 0}</b></span>
-                    <span>Без хешей: <b>{systemInfoSizeResponse.data?.unhashed_file_count ?? 0}</b></span>
-                    <span>Поврежденные: <b>{systemInfoSizeResponse.data?.invalid_file_count ?? 0}</b></span>
-                    <span>Неиспользуемые: <b>{systemInfoSizeResponse.data?.detached_file_count ?? 0}</b></span>
-                    <span>Мертвых хешей: <b>{systemInfoSizeResponse.data?.dead_hash_count ?? 0}</b></span>
-                    <span>Объем: <b>{systemInfoSizeResponse.data?.files_size_formatted ?? 0}</b></span>
-                </ContainerWidget>
-                <div><AutoRefresherWidget callback={fetchSystemInfoSize} /></div>
+    return <ContainerWidget direction="column" gap="bigger">
+        <ErrorTextWidget value={systemInfoSizeResponse} />
+        <ErrorTextWidget value={systemInfoWorkersResponse} />
+        <ContainerWidget appContainer direction="row" gap="big" wrap>
+            <ContainerWidget direction="column" gap="smaller">
+                <b>Книги</b>
+                <span>Всего: <b>{systemInfoSizeResponse.data?.count ?? 0}</b></span>
+                <span>Загружено: <b>{systemInfoSizeResponse.data?.downloaded_count ?? 0}</b></span>
+                <span>Подтверждено: <b>{systemInfoSizeResponse.data?.verified_count ?? 0}</b></span>
+                <span>Пересобрано: <b>{systemInfoSizeResponse.data?.rebuilded_count ?? 0}</b></span>
+                <span>Незагруженно: <b>{systemInfoSizeResponse.data?.not_load_count ?? 0}</b></span>
+                <span>Удалено: <b>{systemInfoSizeResponse.data?.deleted_count ?? 0}</b></span>
             </ContainerWidget>
-            <ContainerWidget appContainer direction="row" wrap gap="medium">
-                <table>
-                    <thead>
-                        <tr>
-                            <td>Название</td>
-                            <td>В очереди</td>
-                            <td>В работе</td>
-                            <td>Раннеров</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {(systemInfoWorkersResponse.data?.workers || []).map((worker) =>
-                            <tr key={worker.name}>
-                                <td>{worker.name}</td>
-                                <td>{worker.in_queue}</td>
-                                <td>{worker.in_work}</td>
-                                <td>{worker.runners}</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-
-                <div><AutoRefresherWidget callback={fetchSystemInfoWorkers} /></div>
+            <ContainerWidget direction="column" gap="smaller">
+                <b>Страницы</b>
+                <span>Всего: <b>{systemInfoSizeResponse.data?.page_count ?? 0}</b></span>
+                <span>Незагруженно: <b>{systemInfoSizeResponse.data?.not_load_page_count ?? 0}</b></span>
+                <span>Без тела (файла): <b>{systemInfoSizeResponse.data?.page_without_body_count ?? 0}</b></span>
+                <span>Удалено: <b>{systemInfoSizeResponse.data?.deleted_page_count ?? 0}</b></span>
+                <span>Объем: <b>{systemInfoSizeResponse.data?.pages_size_formatted ?? 0}</b></span>
             </ContainerWidget>
-            <BookHandleWidget />
+            <ContainerWidget direction="column" gap="smaller">
+                <b>Файлы</b>
+                <span>Всего: <b>{systemInfoSizeResponse.data?.file_count ?? 0}</b></span>
+                <span>Без хешей: <b>{systemInfoSizeResponse.data?.unhashed_file_count ?? 0}</b></span>
+                <span>Поврежденные: <b>{systemInfoSizeResponse.data?.invalid_file_count ?? 0}</b></span>
+                <span>Неиспользуемые: <b>{systemInfoSizeResponse.data?.detached_file_count ?? 0}</b></span>
+                <span>Мертвых хешей: <b>{systemInfoSizeResponse.data?.dead_hash_count ?? 0}</b></span>
+                <span>Объем: <b>{systemInfoSizeResponse.data?.files_size_formatted ?? 0}</b></span>
+            </ContainerWidget>
+            <div><AutoRefresherWidget callback={fetchSystemInfoSize} /></div>
         </ContainerWidget>
-    )
+        <ContainerWidget appContainer direction="row" wrap gap="medium">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Название</td>
+                        <td>В очереди</td>
+                        <td>В работе</td>
+                        <td>Раннеров</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {(systemInfoWorkersResponse.data?.workers || []).map((worker) =>
+                        <tr key={worker.name}>
+                            <td>{worker.name}</td>
+                            <td>{worker.in_queue}</td>
+                            <td>{worker.in_work}</td>
+                            <td>{worker.runners}</td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
+
+            <div><AutoRefresherWidget callback={fetchSystemInfoWorkers} /></div>
+        </ContainerWidget>
+        <BookHandleWidget />
+    </ContainerWidget>
 }
 
 function BookHandleWidget() {
@@ -85,7 +85,7 @@ function BookHandleWidget() {
         if (!systemHandleResponse.isError) setBookList((systemHandleResponse.data?.not_handled || []).join("\n"))
     }, [systemHandleResponse.data, systemHandleResponse.isError, setBookList])
 
-    return (
+    return <ContainerWidget direction="column" gap="big">
         <ContainerWidget appContainer direction="row" gap="medium" wrap>
             <ContainerWidget direction="column">
                 <textarea
@@ -146,6 +146,62 @@ function BookHandleWidget() {
                 <div><b>Дубликаты: </b>{systemHandleResponse.data?.duplicate_count || 0}</div>
                 <div><b>Ошибки: </b>{systemHandleResponse.data?.error_count || 0}</div>
             </ContainerWidget>
-        </ContainerWidget >
-    )
+        </ContainerWidget>
+        <ParseDetailsWidget value={systemHandleResponse.data?.details} />
+    </ContainerWidget>
+}
+
+function ParseDetailsWidget(props: {
+    value?: Array<systemHandleResponseDetails>
+}) {
+    if (!props.value) {
+        return null
+    }
+
+    const newBooks = props.value.filter(v => v.is_handled)
+    const duplicateBooks = props.value.filter(v => v.is_duplicate)
+    const errorBooks = props.value.filter(v => v.error_reason)
+
+    return <details className="app">
+        <summary>Показать подробности парсинга</summary>
+        <ContainerWidget direction="column" gap="big">
+
+            {newBooks.length ?
+                <ContainerWidget appContainer direction="column" gap="medium">
+                    <b>Новые книги</b>
+                    {newBooks.map((v, i) => <ContainerWidget key={i} direction="row" gap="small">
+                        <span>{v.url}</span>
+                        {v.id ?
+                            <Link className="app-button" to={BookDetailsLink(v.id)}>{v.id}</Link>
+                            : <span></span>
+                        }
+                    </ContainerWidget>)}
+                </ContainerWidget>
+                : null}
+
+            {errorBooks.length ?
+                <ContainerWidget appContainer direction="column" gap="medium">
+                    <b>Ошибки при обработке</b>
+                    {errorBooks.map((v, i) => <ContainerWidget key={i} direction="row" gap="small">
+                        <span>{v.url}</span>
+                        {v.error_reason ?
+                            <ColorizedTextWidget color="danger-lite">{v.error_reason}</ColorizedTextWidget>
+                            : null
+                        }
+                    </ContainerWidget>)}
+                </ContainerWidget>
+                : null}
+
+            {duplicateBooks.length ?
+
+                <ContainerWidget appContainer direction="column" gap="medium">
+                    <b>Дубликаты</b>
+                    {duplicateBooks.map((v, i) => <ContainerWidget key={i} direction="row" gap="small">
+                        <span>{v.url}</span>
+                        {v.duplicate_ids?.map(id => <Link key={id} className="app-button" to={BookDetailsLink(id)}>{id}</Link>)}
+                    </ContainerWidget>)}
+                </ContainerWidget>
+                : null}
+        </ContainerWidget>
+    </details>
 }

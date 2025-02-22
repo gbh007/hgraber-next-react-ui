@@ -16,7 +16,7 @@ interface systemHandleResponse {
     details: Array<systemHandleResponseDetails>
 }
 
-interface systemHandleResponseDetails {
+export interface systemHandleResponseDetails {
     url: string
     is_duplicate: boolean
     duplicate_ids?: Array<string>
