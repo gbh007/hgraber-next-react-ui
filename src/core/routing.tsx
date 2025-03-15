@@ -143,3 +143,7 @@ export function FSListLink() {
 export function ParsingMirrorsLink() {
     return `/parsing/mirrors`
 }
+
+export function AttributeRemapListLink() {
+    return `/attribute/remap/list`
+}
