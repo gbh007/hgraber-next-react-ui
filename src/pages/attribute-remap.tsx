@@ -34,10 +34,10 @@ export function AttributeRemapListScreen() {
     useEffect(() => { getAttributeOriginCount() }, [getAttributeOriginCount])
     useEffect(() => { fetchAttributeRemapList() }, [fetchAttributeRemapList])
 
-    const remappedAttributes = attributeRemapListResponse.data?.remaps?.filter(v => !v.is_delete && (valueFilter == "" || v.value.includes(valueFilter)))
-    const droppedAttributes = attributeRemapListResponse.data?.remaps?.filter(v => v.is_delete && (valueFilter == "" || v.value.includes(valueFilter)))
+    const remappedAttributes = attributeRemapListResponse.data?.remaps?.filter(v => !v.is_delete && (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase())))
+    const droppedAttributes = attributeRemapListResponse.data?.remaps?.filter(v => v.is_delete && (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase())))
     const newAttributes = attributeOriginCountResponse.data?.attributes?.filter(v =>
-        (valueFilter == "" || v.value.includes(valueFilter)) &&
+        (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase())) &&
         !attributeRemapListResponse.data?.remaps?.find((attr => attr.code == v.code && attr.value == v.value))
     )
 
