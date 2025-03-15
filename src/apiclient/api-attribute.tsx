@@ -16,6 +16,22 @@ export function useAttributeCount(): [Response<AttributeCountResponse | null>, G
     return [response, fetchData]
 }
 
+export interface AttributeOriginCountResponse {
+    attributes?: Array<AttributeOriginCountResponseAttribute>
+}
+
+export interface AttributeOriginCountResponseAttribute {
+    code: string
+    value: string
+    count: number
+}
+
+export function useAttributeOriginCount(): [Response<AttributeOriginCountResponse | null>, GetAction] {
+    const [response, fetchData] = useAPIGet<AttributeOriginCountResponse>('/api/attribute/origin/count')
+
+    return [response, fetchData]
+}
+
 export interface AttributeColor {
     code: string
     value: string

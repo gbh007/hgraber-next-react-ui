@@ -3,7 +3,7 @@ import { BookRebuildRequest, useBookRaw, useBookRebuild } from "../apiclient/api
 import { useEffect, useState } from "react"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { useLabelPresetList } from "../apiclient/api-labels"
-import { useAttributeCount } from "../apiclient/api-attribute"
+import { useAttributeOriginCount } from "../apiclient/api-attribute"
 import { useBookDetails } from "../apiclient/api-book-details"
 import { BookRebuilderWidget } from "../widgets/book-rebuilder"
 import { BookFilter } from "../apiclient/model-book-filter"
@@ -58,7 +58,7 @@ export function BookRebuilderScreen() {
     // TODO: сделать другой запрос, который возвращает только нужные данные страниц
     const [bookDetailsResponse, getBookDetails] = useBookDetails()
     const [labelPresetsResponse, fetchLabelPresets] = useLabelPresetList()
-    const [attributeCountResponse, getAttributeCount] = useAttributeCount()
+    const [attributeOriginCountResponse, getAttributeOriginCount] = useAttributeOriginCount()
 
 
 
@@ -72,7 +72,7 @@ export function BookRebuilderScreen() {
 
     useEffect(() => { getBooks(bookFilter) }, [getBooks])
     useEffect(() => { fetchLabelPresets() }, [fetchLabelPresets])
-    useEffect(() => { getAttributeCount() }, [getAttributeCount])
+    useEffect(() => { getAttributeOriginCount() }, [getAttributeOriginCount])
 
     useEffect(() => {
         if (bookRawResponse.data) {
@@ -89,7 +89,7 @@ export function BookRebuilderScreen() {
         <ErrorTextWidget value={bookRawResponse} />
         <ErrorTextWidget value={bookDetailsResponse} />
         <ErrorTextWidget value={labelPresetsResponse} />
-        <ErrorTextWidget value={attributeCountResponse} />
+        <ErrorTextWidget value={attributeOriginCountResponse} />
         <ErrorTextWidget value={bookRebuildResponse} />
         <ErrorTextWidget value={booksResponse} />
         <ContainerWidget direction="row" gap="small">
@@ -131,7 +131,7 @@ export function BookRebuilderScreen() {
                 value={bookRebuildData}
                 onChange={e => setBookRebuildData(e)}
                 labelsAutoComplete={labelPresetsResponse.data?.presets}
-                attributeCount={attributeCountResponse.data?.attributes}
+                attributeCount={attributeOriginCountResponse.data?.attributes}
                 pages={bookDetailsResponse.data?.pages}
                 pageCount={bookDetailsResponse.data?.info.page_count}
 

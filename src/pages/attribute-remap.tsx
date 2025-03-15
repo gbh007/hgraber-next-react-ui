@@ -6,13 +6,14 @@ import {
     AttributeRemapUpdateRequest,
     useAttributeColorList,
     useAttributeCount,
+    useAttributeOriginCount,
     useAttributeRemapCreate,
     useAttributeRemapDelete,
     useAttributeRemapList,
     useAttributeRemapUpdate,
 } from "../apiclient/api-attribute"
 import { ErrorTextWidget } from "../widgets/error-text"
-import { attributeCodes, BookAttributeAutocompleteWidget, BookAttributeValueWidget } from "../widgets/attribute"
+import { attributeCodes, BookAttributeAutocompleteList, BookAttributeAutocompleteWidget, BookAttributeValueWidget } from "../widgets/attribute"
 import { ColorizedTextWidget, ContainerWidget } from "../widgets/common"
 
 export function AttributeRemapListScreen() {
@@ -20,6 +21,7 @@ export function AttributeRemapListScreen() {
 
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
     const [attributeCountResponse, getAttributeCount] = useAttributeCount()
+    const [attributeOriginCountResponse, getAttributeOriginCount] = useAttributeOriginCount()
     const [attributeRemapListResponse, fetchAttributeRemapList] = useAttributeRemapList()
 
 
@@ -29,11 +31,12 @@ export function AttributeRemapListScreen() {
 
     useEffect(() => { fetchAttributeColorList() }, [fetchAttributeColorList])
     useEffect(() => { getAttributeCount() }, [getAttributeCount])
+    useEffect(() => { getAttributeOriginCount() }, [getAttributeOriginCount])
     useEffect(() => { fetchAttributeRemapList() }, [fetchAttributeRemapList])
 
     const remappedAttributes = attributeRemapListResponse.data?.remaps?.filter(v => !v.is_delete && (valueFilter == "" || v.value.includes(valueFilter)))
     const droppedAttributes = attributeRemapListResponse.data?.remaps?.filter(v => v.is_delete && (valueFilter == "" || v.value.includes(valueFilter)))
-    const newAttributes = attributeCountResponse.data?.attributes?.filter(v =>
+    const newAttributes = attributeOriginCountResponse.data?.attributes?.filter(v =>
         (valueFilter == "" || v.value.includes(valueFilter)) &&
         !attributeRemapListResponse.data?.remaps?.find((attr => attr.code == v.code && attr.value == v.value))
     )
@@ -42,6 +45,7 @@ export function AttributeRemapListScreen() {
         <ContainerWidget appContainer direction="column" gap="medium">
             <ErrorTextWidget value={attributeColorListResponse} />
             <ErrorTextWidget value={attributeCountResponse} />
+            <ErrorTextWidget value={attributeOriginCountResponse} />
             <ErrorTextWidget value={attributeRemapListResponse} />
             <ErrorTextWidget value={attributeRemapDeleteResponse} />
             <ErrorTextWidget value={attributeRemapCreateResponse} />
@@ -140,6 +144,7 @@ export function AttributeRemapListScreen() {
         }
 
         <BookAttributeAutocompleteWidget attributeCount={attributeCountResponse.data?.attributes} />
+        <BookAttributeAutocompleteWidget attributeCount={attributeOriginCountResponse.data?.attributes} isOrigin={true} />
     </ContainerWidget>
 }
 
@@ -196,7 +201,7 @@ function AttributeRemapEditorWidget(props: {
             className="app"
             value={remap.value}
             onChange={e => setRemap({ ...remap, value: e.target.value })}
-            list={"attribute-autocomplete-" + remap.code}
+            list={BookAttributeAutocompleteList(remap.code, true)}
         />
         <label style={{ display: "flex" }}>
             <input
@@ -224,7 +229,7 @@ function AttributeRemapEditorWidget(props: {
                 className="app"
                 value={remap.to_value}
                 onChange={e => setRemap({ ...remap, to_value: e.target.value })}
-                list={"attribute-autocomplete-" + remap.to_code}
+                list={BookAttributeAutocompleteList(remap.to_code ?? "")}
             />
             {remap.to_code && remap.to_value ?
                 <AttributeAutoColorWidget

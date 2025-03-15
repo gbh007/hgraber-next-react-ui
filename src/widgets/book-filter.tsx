@@ -5,7 +5,7 @@ import { ShowSelectWidget } from "./show-select";
 import { AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
-import { attributeCodes, BookAttributeAutocompleteWidget } from "./attribute";
+import { attributeCodes, BookAttributeAutocompleteList, BookAttributeAutocompleteWidget } from "./attribute";
 import { ContainerWidget } from "./common";
 
 
@@ -202,7 +202,7 @@ function BookFilterAttributeWidget(props: {
                 onChange={e => {
                     props.onChange({ ...props.value, values: e })
                 }}
-                autoCompleteID={"attribute-autocomplete-" + props.value.code}
+                autoCompleteID={BookAttributeAutocompleteList(props.value.code)}
             />
         }
     </ContainerWidget>
