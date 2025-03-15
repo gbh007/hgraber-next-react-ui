@@ -215,6 +215,7 @@ function AttributeRemapEditorWidget(props: {
                     setRemap({ ...remap, to_code: e.target.value })
                 }}
             >
+                <option value="">Не выбрано</option>
                 {attributeCodes.map(code =>
                     <option value={code} key={code}>{code}</option>
                 )}
@@ -223,7 +224,7 @@ function AttributeRemapEditorWidget(props: {
                 className="app"
                 value={remap.to_value}
                 onChange={e => setRemap({ ...remap, to_value: e.target.value })}
-                list={"attribute-autocomplete-" + remap.code}
+                list={"attribute-autocomplete-" + remap.to_code}
             />
             {remap.to_code && remap.to_value ?
                 <AttributeAutoColorWidget
