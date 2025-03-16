@@ -18,6 +18,8 @@ import { ColorizedTextWidget, ContainerWidget } from "../widgets/common"
 
 export function AttributeRemapListScreen() {
     const [valueFilter, setValueFilter] = useState("")
+    const [showLimit, setShowLimit] = useState(true)
+    const [maxShowOnLimit, setMaxShowOnLimit] = useState(100)
 
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
     const [attributeCountResponse, getAttributeCount] = useAttributeCount()
@@ -34,12 +36,18 @@ export function AttributeRemapListScreen() {
     useEffect(() => { getAttributeOriginCount() }, [getAttributeOriginCount])
     useEffect(() => { fetchAttributeRemapList() }, [fetchAttributeRemapList])
 
-    const remappedAttributes = attributeRemapListResponse.data?.remaps?.filter(v => !v.is_delete && (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase())))
-    const droppedAttributes = attributeRemapListResponse.data?.remaps?.filter(v => v.is_delete && (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase())))
-    const newAttributes = attributeOriginCountResponse.data?.attributes?.filter(v =>
-        (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase())) &&
-        !attributeRemapListResponse.data?.remaps?.find((attr => attr.code == v.code && attr.value == v.value))
-    )
+    const remappedAttributes = attributeRemapListResponse.data?.remaps?.
+        filter(v => !v.is_delete && (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase()))).
+        filter((_, i) => !showLimit || i < maxShowOnLimit)
+    const droppedAttributes = attributeRemapListResponse.data?.remaps?.
+        filter(v => v.is_delete && (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase()))).
+        filter((_, i) => !showLimit || i < maxShowOnLimit)
+    const newAttributes = attributeOriginCountResponse.data?.attributes?.
+        filter(v =>
+            (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase())) &&
+            !attributeRemapListResponse.data?.remaps?.find((attr => attr.code == v.code && attr.value == v.value))
+        ).
+        filter((_, i) => !showLimit || i < maxShowOnLimit)
 
     return <ContainerWidget direction="column" gap="big">
         <ContainerWidget appContainer direction="column" gap="medium">
@@ -51,11 +59,30 @@ export function AttributeRemapListScreen() {
             <ErrorTextWidget value={attributeRemapCreateResponse} />
             <ErrorTextWidget value={attributeRemapUpdateResponse} />
 
-            <input
-                className="app"
-                value={valueFilter}
-                onChange={e => setValueFilter(e.target.value)}
-            />
+            <ContainerWidget direction="row" gap="medium" wrap>
+                <input
+                    placeholder="Фильтр по названию"
+                    className="app"
+                    value={valueFilter}
+                    onChange={e => setValueFilter(e.target.value)}
+                />
+
+                <label style={{ display: "flex" }}>
+                    <input
+                        className="app"
+                        type="checkbox"
+                        checked={showLimit}
+                        onChange={e => setShowLimit(e.target.checked)}
+                    />
+                    <span>Ограничить вывод {maxShowOnLimit} первых</span>
+                </label>
+                <input
+                    className="app"
+                    type="number"
+                    value={maxShowOnLimit}
+                    onChange={e => setMaxShowOnLimit(e.target.valueAsNumber)}
+                />
+            </ContainerWidget>
         </ContainerWidget>
 
         {!remappedAttributes ? null :
