@@ -8,7 +8,7 @@ import rebuildedBadge from "../assets/rebuilded.png"
 import verifiedBadge from "../assets/verified.png"
 import deadHashBadge from "../assets/dead-hash.png"
 import { AttributeColor } from "../apiclient/api-attribute";
-import { BookAttributeValuesWidget } from "./attribute";
+import { BookAttributeValueWidget } from "./attribute";
 import { ColorizedTextWidget, ContainerWidget } from "./common";
 import { BookDetailsLink } from "../core/routing";
 import { PropsWithChildren } from "react";
@@ -20,8 +20,6 @@ export function BookShortInfoWidget(props: {
     colors?: Array<AttributeColor>
 }) {
     const book = props.value
-    const tags = book.tags?.filter((_, i) => i < 8)
-    const hasMoreTags = book.tags?.length ?? 0 > 8
 
     return <ContainerWidget appContainer>
         <ContainerWidget direction="row" gap="medium">
@@ -41,14 +39,16 @@ export function BookShortInfoWidget(props: {
                     <ColorizedTextWidget color={book.info.flags.parsed_page ? undefined : 'danger'}>Страниц: {book.info.page_count}</ColorizedTextWidget>
                     <span>{new Date(book.info.created_at).toLocaleString()}</span>
                 </ContainerWidget>
-                {tags ? <span>
-                    <BookAttributeValuesWidget
-                        code="tag" // FIXME: прибито гвоздями, устранить
-                        values={tags}
-                        colors={props.colors}
-                    />
-                    {hasMoreTags ? <b>и больше!</b> : null}
-                </span> : null}
+                <ContainerWidget direction="row" gap="smaller" wrap>
+                    {book.color_attributes?.map(attr => <BookAttributeValueWidget
+                        code={attr.code}
+                        value={attr.value}
+                        color={{
+                            text_color: attr.text_color,
+                            background_color: attr.background_color,
+                        }}
+                    />)}
+                </ContainerWidget>
             </ContainerWidget>
         </ContainerWidget>
     </ContainerWidget>

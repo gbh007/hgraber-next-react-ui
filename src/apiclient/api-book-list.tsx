@@ -10,7 +10,14 @@ export interface BookListResponse {
 
 export interface BookShortInfo {
     info: BookSimple
-    tags?: Array<string>
+    color_attributes?: Array<BookShortInfoColorAttributes>
+}
+
+export interface BookShortInfoColorAttributes {
+    code: string
+    value: string
+    text_color: string
+    background_color: string
 }
 
 export interface BookListResponsePages {

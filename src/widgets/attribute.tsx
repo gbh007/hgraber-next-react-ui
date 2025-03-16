@@ -118,7 +118,10 @@ export function BookAttributeValuesWidget(props: {
 export function BookAttributeValueWidget(props: {
     value: string
     code: string
-    color?: AttributeColor
+    color?: {
+        text_color: string
+        background_color: string
+    }
 }) {
     return <span key={props.value} style={{
         borderRadius: "3px",
