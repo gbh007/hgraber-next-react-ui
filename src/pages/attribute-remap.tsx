@@ -37,14 +37,25 @@ export function AttributeRemapListScreen() {
     useEffect(() => { fetchAttributeRemapList() }, [fetchAttributeRemapList])
 
     const remappedAttributes = attributeRemapListResponse.data?.remaps?.
-        filter(v => !v.is_delete && (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase()))).
+        filter(v => !v.is_delete && (
+            valueFilter == "" ||
+            v.value.toLowerCase().includes(valueFilter.toLowerCase()) ||
+            v.to_value?.toLowerCase().includes(valueFilter.toLowerCase())
+        )).
         filter((_, i) => !showLimit || i < maxShowOnLimit)
     const droppedAttributes = attributeRemapListResponse.data?.remaps?.
-        filter(v => v.is_delete && (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase()))).
+        filter(v => v.is_delete && (
+            valueFilter == "" ||
+            v.value.toLowerCase().includes(valueFilter.toLowerCase()) ||
+            v.to_value?.toLowerCase().includes(valueFilter.toLowerCase())
+        )).
         filter((_, i) => !showLimit || i < maxShowOnLimit)
     const newAttributes = attributeOriginCountResponse.data?.attributes?.
         filter(v =>
-            (valueFilter == "" || v.value.toLowerCase().includes(valueFilter.toLowerCase())) &&
+            (
+                valueFilter == "" ||
+                v.value.toLowerCase().includes(valueFilter.toLowerCase())
+            ) &&
             !attributeRemapListResponse.data?.remaps?.find((attr => attr.code == v.code && attr.value == v.value))
         ).
         filter((_, i) => !showLimit || i < maxShowOnLimit)
