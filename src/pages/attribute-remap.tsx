@@ -18,6 +18,7 @@ import { ColorizedTextWidget, ContainerWidget } from "../widgets/common"
 
 export function AttributeRemapListScreen() {
     const [valueFilter, setValueFilter] = useState("")
+    const [codeFilter, setCodeFilter] = useState("")
     const [showLimit, setShowLimit] = useState(true)
     const [maxShowOnLimit, setMaxShowOnLimit] = useState(100)
 
@@ -41,20 +42,31 @@ export function AttributeRemapListScreen() {
             valueFilter == "" ||
             v.value.toLowerCase().includes(valueFilter.toLowerCase()) ||
             v.to_value?.toLowerCase().includes(valueFilter.toLowerCase())
-        )).
+        ) && (
+                codeFilter == "" ||
+                v.code == codeFilter ||
+                v.to_code == codeFilter
+            )).
         filter((_, i) => !showLimit || i < maxShowOnLimit)
     const droppedAttributes = attributeRemapListResponse.data?.remaps?.
         filter(v => v.is_delete && (
             valueFilter == "" ||
             v.value.toLowerCase().includes(valueFilter.toLowerCase()) ||
             v.to_value?.toLowerCase().includes(valueFilter.toLowerCase())
-        )).
+        ) && (
+                codeFilter == "" ||
+                v.code == codeFilter ||
+                v.to_code == codeFilter
+            )).
         filter((_, i) => !showLimit || i < maxShowOnLimit)
     const newAttributes = attributeOriginCountResponse.data?.attributes?.
         filter(v =>
             (
                 valueFilter == "" ||
                 v.value.toLowerCase().includes(valueFilter.toLowerCase())
+            ) && (
+                codeFilter == "" ||
+                v.code == codeFilter
             ) &&
             !attributeRemapListResponse.data?.remaps?.find((attr => attr.code == v.code && attr.value == v.value))
         ).
@@ -77,6 +89,20 @@ export function AttributeRemapListScreen() {
                     value={valueFilter}
                     onChange={e => setValueFilter(e.target.value)}
                 />
+
+
+                <select
+                    className="app"
+                    value={codeFilter}
+                    onChange={e => {
+                        setCodeFilter(e.target.value)
+                    }}
+                >
+                    <option value="">Не выбрано</option>
+                    {attributeCodes.map(code =>
+                        <option value={code} key={code}>{code}</option>
+                    )}
+                </select>
 
                 <label style={{ display: "flex" }}>
                     <input
