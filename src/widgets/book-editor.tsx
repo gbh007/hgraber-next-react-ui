@@ -1,7 +1,7 @@
 import { AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookRaw, BookRawAttribute, BookRawLabel } from "../apiclient/model-book";
-import { attributeCodes, BookAttributeAutocompleteWidget } from "./attribute";
+import { attributeCodes, BookAttributeAutocompleteList, BookAttributeAutocompleteWidget } from "./attribute";
 import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
 import { ContainerWidget } from "./common";
 import { DatetimePickerWidget } from "./datetime-picker";
@@ -148,7 +148,7 @@ export function BookAttributeInfoEditorWidget(props: {
                 onDelete={() => props.onChange(props.value.filter((_, index) => i != index))}
             />
         )}
-        <BookAttributeAutocompleteWidget attributeCount={props.attributeCount} />
+        <BookAttributeAutocompleteWidget attributeCount={props.attributeCount} isOrigin={true} />
     </ContainerWidget>
 }
 
@@ -173,7 +173,7 @@ function AttributeEditor(props: {
         <ManyStringSelectWidget
             value={props.value.values}
             onChange={e => props.onChange({ ...props.value, values: e })}
-            autoCompleteID={"attribute-autocomplete-" + props.value.code}
+            autoCompleteID={BookAttributeAutocompleteList(props.value.code, true)}
         />
     </ContainerWidget>
 }

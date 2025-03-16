@@ -76,7 +76,7 @@ export function AttributeColorEditorWidget(props: {
             value={props.value.value}
             onChange={e => props.onChange({ ...props.value, value: e.target.value })}
             disabled={!props.isNew}
-            list={"attribute-autocomplete-" + props.value.code}
+            list={BookAttributeAutocompleteList(props.value.code)}
         />
         <span>Цвет текста</span>
         <input
@@ -140,6 +140,7 @@ export function BookAttributeValueWidget(props: {
 
 export function BookAttributeAutocompleteWidget(props: {
     attributeCount?: Array<AttributeCountResponseAttribute>
+    isOrigin?: boolean
 }) {
     if (!props.attributeCount) {
         return null
@@ -147,11 +148,15 @@ export function BookAttributeAutocompleteWidget(props: {
 
     return <>
         {attributeCodes.map(code =>
-            <datalist key={code} id={"attribute-autocomplete-" + code}>
+            <datalist key={code} id={BookAttributeAutocompleteList(code, props.isOrigin)}>
                 {props.attributeCount?.filter(e => e.code == code).map(attr =>
                     <option value={attr.value} key={attr.value} />
                 )}
             </datalist>
         )}
     </>
+}
+
+export function BookAttributeAutocompleteList(code: string, isOrigin?: boolean) {
+    return (isOrigin ? "origin-" : "") + "attribute-autocomplete-" + code
 }

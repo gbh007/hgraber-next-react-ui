@@ -5,7 +5,7 @@ import { ErrorTextWidget } from "../widgets/error-text"
 import { BookEditorWidget } from "../widgets/book-editor"
 import { BookRaw } from "../apiclient/model-book"
 import { useLabelPresetList } from "../apiclient/api-labels"
-import { useAttributeCount } from "../apiclient/api-attribute"
+import { useAttributeOriginCount } from "../apiclient/api-attribute"
 import { BookDetailsLink } from "../core/routing"
 import { ContainerWidget } from "../widgets/common"
 
@@ -24,7 +24,7 @@ export function BookEditorScreen() {
     const [bookUpdateResponse, doBookUpdate] = useBookUpdate()
     const [labelPresetsResponse, fetchLabelPresets] = useLabelPresetList()
 
-    const [attributeCountResponse, getAttributeCount] = useAttributeCount()
+    const [attributeOriginCountResponse, getAttributeOriginCount] = useAttributeOriginCount()
 
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export function BookEditorScreen() {
 
 
     useEffect(() => { fetchLabelPresets() }, [fetchLabelPresets])
-    useEffect(() => { getAttributeCount() }, [getAttributeCount])
+    useEffect(() => { getAttributeOriginCount() }, [getAttributeOriginCount])
 
     useEffect(() => {
         if (bookRawResponse.data) {
@@ -45,7 +45,7 @@ export function BookEditorScreen() {
         <ErrorTextWidget value={bookRawResponse} />
         <ErrorTextWidget value={bookUpdateResponse} />
         <ErrorTextWidget value={labelPresetsResponse} />
-        <ErrorTextWidget value={attributeCountResponse} />
+        <ErrorTextWidget value={attributeOriginCountResponse} />
         <ContainerWidget direction="row" gap="medium">
             <Link className="app-button" to={BookDetailsLink(bookID)}>На страницу книги</Link>
             <button
@@ -59,7 +59,7 @@ export function BookEditorScreen() {
             value={book}
             onChange={e => setBook(e)}
             labelsAutoComplete={labelPresetsResponse.data?.presets}
-            attributeCount={attributeCountResponse.data?.attributes}
+            attributeCount={attributeOriginCountResponse.data?.attributes}
         />
     </ContainerWidget>
 }

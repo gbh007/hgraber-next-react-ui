@@ -23,10 +23,11 @@ import { BookRebuilderScreen } from "./pages/book-rebuilder";
 import { SelectToCompareScreen } from "./pages/select-to-compare";
 import { BookLabelsEditorScreen } from "./pages/book-label-editor";
 import { AttributeColorEditorScreen, AttributeColorListScreen } from "./pages/attribute-color";
-import { AgentListLink, AttributeColorListLink, BookListLink, FSListLink, LabelPresetsLink, MainScreenLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
+import { AgentListLink, AttributeColorListLink, AttributeRemapListLink, BookListLink, FSListLink, LabelPresetsLink, MainScreenLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
 import { AppTheme, ThemeContext } from "./core/context";
 import { FSEditorScreen, FSListScreen } from "./pages/fs";
 import { ParsingMirrorEditorScreen, ParsingMirrorsScreen } from "./pages/parsing-mirrors";
+import { AttributeRemapListScreen } from "./pages/attribute-remap";
 
 const router = createHashRouter([
   {
@@ -141,6 +142,10 @@ const router = createHashRouter([
     path: "/parsing/mirror/edit",
     element: <SimpleWrapper> <ParsingMirrorEditorScreen /></SimpleWrapper>,
   },
+  {
+    path: "/attribute/remap/list",
+    element: <SimpleWrapper> <AttributeRemapListScreen /></SimpleWrapper>,
+  },
 ]);
 
 function App() {
@@ -197,6 +202,7 @@ function MenuWidget() {
       <li> <Link to={LabelPresetsLink()}>Пресеты меток</Link> </li>
       <li> <Link to={SelectToCompareLink()}>Выбрать книги для сравнения</Link> </li>
       <li> <Link to={AttributeColorListLink()}>Цвета аттрибутов</Link> </li>
+      <li> <Link to={AttributeRemapListLink()}>Ремапинг аттрибутов</Link> </li>
       <li> <Link to={FSListLink()}>Файловые системы</Link> </li>
       <li> <Link to={ParsingMirrorsLink()}>Зеркала для парсинга</Link> </li>
       <li> <Link to={SettingsLink()}>Настройки</Link> </li>
