@@ -70,6 +70,8 @@ export function CompareBookScreen() {
                     value={compareResult.data?.origin}
                     covered_target={compareResult.data?.origin_covered_target}
                     covered_target_without_dead_hashes={compareResult.data?.origin_covered_target_without_dead_hashes}
+                    book_size={compareResult.data?.origin_book_size_formatted}
+                    page_size={compareResult.data?.origin_page_avg_size_formatted}
                 />
             </ContainerWidget>
             <div style={{ flexGrow: 1, textAlign: "center" }}>
@@ -101,6 +103,8 @@ export function CompareBookScreen() {
                     value={compareResult.data?.target}
                     covered_target={compareResult.data?.target_covered_origin}
                     covered_target_without_dead_hashes={compareResult.data?.target_covered_origin_without_dead_hashes}
+                    book_size={compareResult.data?.target_book_size_formatted}
+                    page_size={compareResult.data?.target_page_avg_size_formatted}
                 />
                 <BookImagePreviewWidget
                     flags={compareResult.data?.target.flags}
@@ -255,6 +259,8 @@ function BookShortInfo(props: {
     value?: BookSimple
     covered_target?: number
     covered_target_without_dead_hashes?: number
+    book_size?: string
+    page_size?: string
 }) {
     if (!props.value) {
         return
@@ -276,6 +282,7 @@ function BookShortInfo(props: {
                 Покрытие: {prettyPercent(props.covered_target)}% ({prettyPercent(props.covered_target_without_dead_hashes)}%)
             </span>
             : null}
+        {props.book_size ? <span>Размер: {props.book_size}{props.page_size ? ` (${props.page_size})` : ""}</span> : null}
         <Link className="app-button" to={BookDetailsLink(props.value.id)}>Страница книги</Link>
     </ContainerWidget>
 }

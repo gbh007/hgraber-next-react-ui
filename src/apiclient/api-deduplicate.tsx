@@ -59,6 +59,15 @@ export interface DeduplicateCompareResponse {
     origin_attributes?: Array<BookAttribute>
     both_attributes?: Array<BookAttribute>
     target_attributes?: Array<BookAttribute>
+
+    origin_book_size?: number
+    origin_book_size_formatted?: string
+    target_book_size?: number
+    target_book_size_formatted?: string
+    origin_page_avg_size?: number
+    origin_page_avg_size_formatted?: string
+    target_page_avg_size?: number
+    target_page_avg_size_formatted?: string
 }
 
 export function useDeduplicateCompare(): [Response<DeduplicateCompareResponse | null>, PostAction<DeduplicateCompareRequest>] {
