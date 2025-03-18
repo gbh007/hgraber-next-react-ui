@@ -13,7 +13,7 @@ import { ColorizedTextWidget, ContainerWidget } from "./common";
 import { BookDetailsLink } from "../core/routing";
 import { PropsWithChildren } from "react";
 
-export type ImageSize = "small" | "medium" | "big" | "superbig"
+export type ImageSize = "small" | "medium" | "big" | "bigger" | "biggest" | "superbig"
 
 export function BookShortInfoWidget(props: {
     value: BookShortInfo
@@ -65,19 +65,25 @@ export function BookImagePreviewWidget(props: {
             badge == rebuildedBadge && props.flags?.is_rebuild)
 
     const badgeSize = props.previewSize == "superbig" ? 5
-        : props.previewSize == "big" ? 60
-            : props.previewSize == "medium" ? 45
-                : 30
+        : props.previewSize == "biggest" ? 120
+            : props.previewSize == "bigger" ? 90
+                : props.previewSize == "big" ? 60
+                    : props.previewSize == "medium" ? 45
+                        : 30
 
     const imageWidth = props.previewSize == "superbig" ? 20
-        : props.previewSize == "big" ? 260
-            : props.previewSize == "medium" ? 195
-                : 130
+        : props.previewSize == "biggest" ? 500
+            : props.previewSize == "bigger" ? 350
+                : props.previewSize == "big" ? 260
+                    : props.previewSize == "medium" ? 195
+                        : 130
 
     const imageHeight = props.previewSize == "superbig" ? 50
-        : props.previewSize == "big" ? 400
-            : props.previewSize == "medium" ? 300
-                : 200
+        : props.previewSize == "biggest" ? 700
+            : props.previewSize == "bigger" ? 550
+                : props.previewSize == "big" ? 400
+                    : props.previewSize == "medium" ? 300
+                        : 200
 
     const widthUnit = props.previewSize == "superbig" ? "vw" : "px"
     const heightUnit = props.previewSize == "superbig" ? "vh" : "px"
@@ -127,19 +133,25 @@ export function PageImagePreviewWidget(props: PropsWithChildren & {
         .filter(badge => badge == deadHashBadge && props.flags?.has_dead_hash)
 
     const badgeSize = props.previewSize == "superbig" ? 5
-        : props.previewSize == "big" ? 60
-            : props.previewSize == "medium" ? 40
-                : 20
+        : props.previewSize == "biggest" ? 120
+            : props.previewSize == "bigger" ? 90
+                : props.previewSize == "big" ? 60
+                    : props.previewSize == "medium" ? 40
+                        : 20
 
     const imageWidth = props.previewSize == "superbig" ? 80
-        : props.previewSize == "big" ? 600
-            : props.previewSize == "medium" ? 400
-                : 200
+        : props.previewSize == "biggest" ? 1200
+            : props.previewSize == "bigger" ? 900
+                : props.previewSize == "big" ? 600
+                    : props.previewSize == "medium" ? 400
+                        : 200
 
     const imageHeight = props.previewSize == "superbig" ? 80
-        : props.previewSize == "big" ? 300
-            : props.previewSize == "medium" ? 200
-                : 100
+        : props.previewSize == "biggest" ? 600
+            : props.previewSize == "bigger" ? 450
+                : props.previewSize == "big" ? 300
+                    : props.previewSize == "medium" ? 200
+                        : 100
 
     const widthUnit = props.previewSize == "superbig" ? "vw" : "px"
     const heightUnit = props.previewSize == "superbig" ? "vh" : "px"
@@ -188,9 +200,11 @@ export function PageBadgesWidget(props: {
         .filter(badge => badge == deadHashBadge && props.flags?.has_dead_hash)
 
     const badgeSize = props.badgeSize == "superbig" ? 5
-        : props.badgeSize == "big" ? 60
-            : props.badgeSize == "medium" ? 40
-                : 20
+        : props.badgeSize == "biggest" ? 120
+            : props.badgeSize == "bigger" ? 90
+                : props.badgeSize == "big" ? 60
+                    : props.badgeSize == "medium" ? 40
+                        : 20
 
 
     const widthUnit = props.badgeSize == "superbig" ? "vw" : "px"

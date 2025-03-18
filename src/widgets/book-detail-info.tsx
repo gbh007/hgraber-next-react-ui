@@ -98,6 +98,8 @@ export function usePreviewSizeWidget(
         <option value={"small"}>маленький</option>
         <option value={"medium"}>средний</option>
         <option value={"big"}>большой</option>
+        <option value={"bigger"}>очень большой</option>
+        <option value={"biggest"}>супер большой</option>
         <option value={"superbig"}>огромный</option>
     </select>]
 }
