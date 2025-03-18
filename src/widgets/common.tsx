@@ -30,9 +30,10 @@ export function ContainerWidget(props: PropsWithChildren<{
     appContainer?: boolean
     style?: React.CSSProperties
     columns?: number
+    className?: string | undefined
 }>) {
     return <div
-        className={props.appContainer ? "app-container" : ""}
+        className={(props.className ? props.className + " " : "") + (props.appContainer ? "app-container" : "")}
         style={{
             ...{
                 display: props.direction == "row" || props.direction == "column" ? "flex" :

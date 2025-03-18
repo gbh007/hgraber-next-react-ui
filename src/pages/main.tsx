@@ -5,6 +5,7 @@ import { AutoRefresherWidget, ColorizedTextWidget, ContainerWidget } from "../wi
 import { ErrorTextWidget } from "../widgets/error-text"
 import { Link } from "react-router-dom"
 import { BookDetailsLink } from "../core/routing"
+import styles from "./main.module.css"
 
 export function MainScreen() {
     const [systemInfoSizeResponse, fetchSystemInfoSize] = useSystemInfoSize()
@@ -19,29 +20,66 @@ export function MainScreen() {
         <ContainerWidget appContainer direction="row" gap="big" wrap>
             <ContainerWidget direction="column" gap="smaller">
                 <b>Книги</b>
-                <span>Всего: <b>{systemInfoSizeResponse.data?.count ?? 0}</b></span>
-                <span>Загружено: <b>{systemInfoSizeResponse.data?.downloaded_count ?? 0}</b></span>
-                <span>Подтверждено: <b>{systemInfoSizeResponse.data?.verified_count ?? 0}</b></span>
-                <span>Пересобрано: <b>{systemInfoSizeResponse.data?.rebuilded_count ?? 0}</b></span>
-                <span>Незагруженно: <b>{systemInfoSizeResponse.data?.not_load_count ?? 0}</b></span>
-                <span>Удалено: <b>{systemInfoSizeResponse.data?.deleted_count ?? 0}</b></span>
+                <ContainerWidget direction="2-column" gap="small" className={styles.statAlign}>
+                    <span className="">Всего:</span>
+                    <ColorizedTextWidget bold>{systemInfoSizeResponse.data?.count ?? 0}</ColorizedTextWidget>
+                    <span>Загружено:</span>
+                    <ColorizedTextWidget bold>{systemInfoSizeResponse.data?.downloaded_count ?? 0}</ColorizedTextWidget>
+                    <span>Подтверждено:</span>
+                    <ColorizedTextWidget bold>{systemInfoSizeResponse.data?.verified_count ?? 0}</ColorizedTextWidget>
+                    <span>Пересобрано:</span>
+                    <ColorizedTextWidget bold>{systemInfoSizeResponse.data?.rebuilded_count ?? 0}</ColorizedTextWidget>
+                    <span>Незагруженно:</span>
+                    <ColorizedTextWidget bold color={systemInfoSizeResponse.data?.not_load_count ?? 0 > 0 ? "danger" : "good"}>
+                        {systemInfoSizeResponse.data?.not_load_count ?? 0}
+                    </ColorizedTextWidget>
+                    <span>Удалено:</span>
+                    <ColorizedTextWidget bold>{systemInfoSizeResponse.data?.deleted_count ?? 0}</ColorizedTextWidget>
+                </ContainerWidget>
             </ContainerWidget>
             <ContainerWidget direction="column" gap="smaller">
                 <b>Страницы</b>
-                <span>Всего: <b>{systemInfoSizeResponse.data?.page_count ?? 0}</b></span>
-                <span>Незагруженно: <b>{systemInfoSizeResponse.data?.not_load_page_count ?? 0}</b></span>
-                <span>Без тела (файла): <b>{systemInfoSizeResponse.data?.page_without_body_count ?? 0}</b></span>
-                <span>Удалено: <b>{systemInfoSizeResponse.data?.deleted_page_count ?? 0}</b></span>
-                <span>Объем: <b>{systemInfoSizeResponse.data?.pages_size_formatted ?? 0}</b></span>
+                <ContainerWidget direction="2-column" gap="small" className={styles.statAlign}>
+                    <span>Всего:</span>
+                    <ColorizedTextWidget bold>{systemInfoSizeResponse.data?.page_count ?? 0}</ColorizedTextWidget>
+                    <span>Незагруженно:</span>
+                    <ColorizedTextWidget bold color={systemInfoSizeResponse.data?.not_load_page_count ?? 0 > 0 ? "danger" : "good"}>
+                        {systemInfoSizeResponse.data?.not_load_page_count ?? 0}
+                    </ColorizedTextWidget>
+                    <span>Без тела (файла):</span>
+                    <ColorizedTextWidget bold color={systemInfoSizeResponse.data?.page_without_body_count ?? 0 > 0 ? "danger" : "good"}>
+                        {systemInfoSizeResponse.data?.page_without_body_count ?? 0}
+                    </ColorizedTextWidget>
+                    <span>Удалено:</span>
+                    <ColorizedTextWidget bold color={systemInfoSizeResponse.data?.deleted_page_count ?? 0 > 0 ? "danger-lite" : "good"}>
+                        {systemInfoSizeResponse.data?.deleted_page_count ?? 0}
+                    </ColorizedTextWidget>
+                    <span>Объем:</span>
+                    <ColorizedTextWidget bold>{systemInfoSizeResponse.data?.pages_size_formatted ?? 0}</ColorizedTextWidget>
+                </ContainerWidget>
             </ContainerWidget>
             <ContainerWidget direction="column" gap="smaller">
                 <b>Файлы</b>
-                <span>Всего: <b>{systemInfoSizeResponse.data?.file_count ?? 0}</b></span>
-                <span>Без хешей: <b>{systemInfoSizeResponse.data?.unhashed_file_count ?? 0}</b></span>
-                <span>Поврежденные: <b>{systemInfoSizeResponse.data?.invalid_file_count ?? 0}</b></span>
-                <span>Неиспользуемые: <b>{systemInfoSizeResponse.data?.detached_file_count ?? 0}</b></span>
-                <span>Мертвых хешей: <b>{systemInfoSizeResponse.data?.dead_hash_count ?? 0}</b></span>
-                <span>Объем: <b>{systemInfoSizeResponse.data?.files_size_formatted ?? 0}</b></span>
+                <ContainerWidget direction="2-column" gap="small" className={styles.statAlign}>
+                    <span>Всего:</span>
+                    <ColorizedTextWidget bold>{systemInfoSizeResponse.data?.file_count ?? 0}</ColorizedTextWidget>
+                    <span>Без хешей:</span>
+                    <ColorizedTextWidget bold color={systemInfoSizeResponse.data?.unhashed_file_count ?? 0 > 0 ? "danger" : "good"}>
+                        {systemInfoSizeResponse.data?.unhashed_file_count ?? 0}
+                    </ColorizedTextWidget>
+                    <span>Поврежденные:</span>
+                    <ColorizedTextWidget bold color={systemInfoSizeResponse.data?.invalid_file_count ?? 0 > 0 ? "danger" : "good"}>
+                        {systemInfoSizeResponse.data?.invalid_file_count ?? 0}
+                    </ColorizedTextWidget>
+                    <span>Неиспользуемые:</span>
+                    <ColorizedTextWidget bold color={systemInfoSizeResponse.data?.detached_file_count ?? 0 > 0 ? "danger-lite" : "good"}>
+                        {systemInfoSizeResponse.data?.detached_file_count ?? 0}
+                    </ColorizedTextWidget>
+                    <span>Мертвых хешей:</span>
+                    <ColorizedTextWidget bold>{systemInfoSizeResponse.data?.dead_hash_count ?? 0}</ColorizedTextWidget>
+                    <span>Объем:</span>
+                    <ColorizedTextWidget bold>{systemInfoSizeResponse.data?.files_size_formatted ?? 0}</ColorizedTextWidget>
+                </ContainerWidget>
             </ContainerWidget>
             <div><AutoRefresherWidget callback={fetchSystemInfoSize} /></div>
         </ContainerWidget>
