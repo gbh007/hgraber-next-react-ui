@@ -221,6 +221,7 @@ function BookPagesSelectWidget(props: {
     const [viewMode, setViewMode] = useState("reader")
     const [showOnlySelected, setShowOnlySelected] = useState(false)
     const [showDeadHash, setShowDeadHash] = useState(true)
+    const [imageOnRow, setImageOnRow] = useState(4)
 
 
     const [imageSize, imageSizeWidget] = usePreviewSizeWidget("medium")
@@ -245,8 +246,15 @@ function BookPagesSelectWidget(props: {
                 >
                     <option value="reader">Режим просмотра: постранично</option>
                     <option value="list">Режим просмотра: все страницы</option>
+                    <option value="columns">Режим просмотра: колонки</option>
                 </select>
-                {viewMode == "list" ? imageSizeWidget : null}
+                {viewMode == "list" || viewMode == "columns" ? imageSizeWidget : null}
+                {viewMode == "columns" ? <input
+                    className="app"
+                    value={imageOnRow}
+                    type="number"
+                    onChange={e => setImageOnRow(e.target.valueAsNumber)}
+                /> : null}
             </ContainerWidget>
             <ContainerWidget direction="column" gap="medium">
                 <label><input
@@ -271,13 +279,14 @@ function BookPagesSelectWidget(props: {
                     value={props.value}
                     pages={pages}
                     pageCount={props.pageCount}
-                /> : viewMode == "list" ?
+                /> : viewMode == "list" || viewMode == "columns" ?
                     <PageListPreview
                         bookID={props.bookID}
                         onChange={props.onChange}
                         value={props.value}
                         pages={pages}
                         previewSize={imageSize}
+                        imageColumns={viewMode == "columns" ? imageOnRow : undefined}
                         pageDragAndDrop={(a, b) => {
                             const valueA = pages[a]
                             const valueB = pages[b]
@@ -300,6 +309,7 @@ function PageListPreview(props: {
     previewSize: ImageSize
     pageDragAndDrop?: (a: number, b: number) => void
     enablePageReOrder: boolean
+    imageColumns?: number
 }) {
     const fontSize = props.previewSize == "superbig" ? 60
         : props.previewSize == "big" ? 30
@@ -310,77 +320,90 @@ function PageListPreview(props: {
     const [bIndex, setBIndex] = useState(-1)
 
 
-    return <div className={styles.preview}>
-        {props.pages?.map((page, index) =>
-            <ContainerWidget
-                appContainer
-                key={page.page_number}
-                style={{ borderLeft: bIndex == index ? "10px dashed var(--app-color)" : undefined }}
-            >
-                {page.preview_url ? <PageImagePreviewWidget
-                    previewSize={props.previewSize}
-                    flags={page}
-                    preview_url={page.preview_url}
-                    onClick={() => {
-                        const checked = props.value.includes(page.page_number)
-                        props.onChange(
-                            !checked ?
-                                [...props.value, page.page_number]
-                                :
-                                props.value.filter(v => v != page.page_number)
-                        )
-                    }}
-                >
-                    {props.previewSize != "small" && props.previewSize != "medium" && props.value.includes(page.page_number) ? <div
-                        style={{
-                            position: "absolute",
-                            top: "50%",
-                            width: "calc(100% - 40px)",
-                            textAlign: "center",
-                            fontSize: fontSize,
-                            color: "var(--app-color-good)",
-                            fontWeight: "bolder",
-                            background: "var(--app-background)",
-                            padding: "20px",
-                            borderRadius: "10px",
-                        }}
-                    >Выбрана</div> : null}
-                </PageImagePreviewWidget> : null}
-                <span
-                    style={props.enablePageReOrder ? {
-                        cursor: "grab",
-                        userSelect: "none",
-                    } : undefined}
-                    draggable={props.enablePageReOrder ? "true" : "false"}
-                    onDragStart={() => {
-                        setAIndex(index)
-                    }}
-                    onDragOver={() => {
-                        setBIndex(index)
-                    }}
-                    onDragEnd={() => {
-                        props.pageDragAndDrop?.(aIndex, bIndex)
-                        setBIndex(-1)
-                    }}
-                >Страница: {page.page_number}</span>
-                <label><input
-                    className="app"
-                    type="checkbox"
-                    checked={props.value.includes(page.page_number)}
-                    onChange={e => props.onChange(
-                        e.target.checked ?
+    const imagePreviews = props.pages?.map((page, index) =>
+        <ContainerWidget
+            appContainer
+            direction="column"
+            key={page.page_number}
+            style={{
+                borderLeft: bIndex == index ? "10px dashed var(--app-color)" : undefined,
+                flexGrow: 1,
+                alignItems: "center",
+            }}
+        >
+            {page.preview_url ? <PageImagePreviewWidget
+                previewSize={props.previewSize}
+                flags={page}
+                preview_url={page.preview_url}
+                onClick={() => {
+                    const checked = props.value.includes(page.page_number)
+                    props.onChange(
+                        !checked ?
                             [...props.value, page.page_number]
                             :
                             props.value.filter(v => v != page.page_number)
-                    )}
-                /> выбрать</label>
-                <Link
-                    className="app-button"
-                    to={BookReaderLink(props.bookID, page.page_number)}>
-                    Открыть в читалке
-                </Link>
-            </ContainerWidget>
-        )}
+                    )
+                }}
+            >
+                {props.previewSize != "small" && props.previewSize != "medium" && props.value.includes(page.page_number) ? <div
+                    style={{
+                        position: "absolute",
+                        top: "50%",
+                        width: "calc(100% - 40px)",
+                        textAlign: "center",
+                        fontSize: fontSize,
+                        color: "var(--app-color-good)",
+                        fontWeight: "bolder",
+                        background: "var(--app-background)",
+                        padding: "20px",
+                        borderRadius: "10px",
+                    }}
+                >Выбрана</div> : null}
+            </PageImagePreviewWidget> : null}
+            <span
+                style={props.enablePageReOrder ? {
+                    cursor: "grab",
+                    userSelect: "none",
+                } : undefined}
+                draggable={props.enablePageReOrder ? "true" : "false"}
+                onDragStart={() => {
+                    setAIndex(index)
+                }}
+                onDragOver={() => {
+                    setBIndex(index)
+                }}
+                onDragEnd={() => {
+                    props.pageDragAndDrop?.(aIndex, bIndex)
+                    setBIndex(-1)
+                }}
+            >Страница: {page.page_number}</span>
+            <label><input
+                className="app"
+                type="checkbox"
+                checked={props.value.includes(page.page_number)}
+                onChange={e => props.onChange(
+                    e.target.checked ?
+                        [...props.value, page.page_number]
+                        :
+                        props.value.filter(v => v != page.page_number)
+                )}
+            /> выбрать</label>
+            <Link
+                className="app-button"
+                to={BookReaderLink(props.bookID, page.page_number)}>
+                Открыть в читалке
+            </Link>
+        </ContainerWidget>
+    )
+
+    if (props.imageColumns) {
+        return <ContainerWidget direction="columns" gap="medium" columns={props.imageColumns}>
+            {imagePreviews}
+        </ContainerWidget>
+    }
+
+    return <div className={styles.preview}>
+        {imagePreviews}
     </div>
 }
 
