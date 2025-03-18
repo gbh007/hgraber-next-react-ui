@@ -76,13 +76,26 @@ export function BookLabelInfoEditorWidget(props: {
             >создать</button>
         </ContainerWidget>
         {props.value.map((label, i) =>
-            <LabelEditor
+            label.page_number == 0 ? <LabelEditor
                 key={i}
                 value={label}
                 onChange={e => props.onChange(props.value.map((v, index) => i == index ? e : v))}
                 onDelete={() => props.onChange(props.value.filter((_, index) => i != index))}
-            />
+            /> : null
         )}
+        <details className="app">
+            <summary>Метки страниц</summary>
+            <ContainerWidget appContainer direction="column" gap="medium">
+                {props.value.map((label, i) =>
+                    label.page_number != 0 ? <LabelEditor
+                        key={i}
+                        value={label}
+                        onChange={e => props.onChange(props.value.map((v, index) => i == index ? e : v))}
+                        onDelete={() => props.onChange(props.value.filter((_, index) => i != index))}
+                    /> : null
+                )}
+            </ContainerWidget>
+        </details>
         <BookLabelPresetAutocompleteWidget labelsAutoComplete={props.labelsAutoComplete} />
     </ContainerWidget>
 }
