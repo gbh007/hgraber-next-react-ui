@@ -31,6 +31,7 @@ export function ContainerWidget(props: PropsWithChildren<{
     style?: React.CSSProperties
     columns?: number
     className?: string | undefined
+    id?: string
 }>) {
     return <div
         className={(props.className ? props.className + " " : "") + (props.appContainer ? "app-container" : "")}
@@ -57,6 +58,7 @@ export function ContainerWidget(props: PropsWithChildren<{
             },
             ...props.style
         }}
+        id={props.id}
     >
         {props.children}
     </div>

@@ -231,7 +231,8 @@ function BookPagesSelectWidget(props: {
         filter(page => showDeadHash || !page.has_dead_hash).
         sort((a: BookSimplePage, b: BookSimplePage) => props.pageOrder.findIndex(v => v == a.page_number) - props.pageOrder.findIndex(v => v == b.page_number))
 
-    return <ContainerWidget direction="column" gap="medium">
+
+    return <ContainerWidget direction="column" gap="medium" id="pageSelector">
         <ContainerWidget appContainer direction="column" gap="medium">
             <ContainerWidget direction="row" gap="medium">
                 <button className="app" onClick={() => props.onChange(props.pages?.map(page => page.page_number) ?? [])}>Выбрать все</button>
@@ -320,6 +321,13 @@ function PageListPreview(props: {
     const [bIndex, setBIndex] = useState(-1)
 
 
+    const scrollToTop = () => {
+        document.getElementById('pageSelector')?.scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
+
     const imagePreviews = props.pages?.map((page, index) =>
         <ContainerWidget
             appContainer
@@ -397,14 +405,20 @@ function PageListPreview(props: {
     )
 
     if (props.imageColumns) {
-        return <ContainerWidget direction="columns" gap="medium" columns={props.imageColumns}>
-            {imagePreviews}
-        </ContainerWidget>
+        return <>
+            <ContainerWidget direction="columns" gap="medium" columns={props.imageColumns}>
+                {imagePreviews}
+            </ContainerWidget>
+            <button className="app" onClick={scrollToTop}>Наверх</button>
+        </>
     }
 
-    return <div className={styles.preview}>
-        {imagePreviews}
-    </div>
+    return <>
+        <div className={styles.preview}>
+            {imagePreviews}
+        </div>
+        <button className="app" onClick={scrollToTop}>Наверх</button>
+    </>
 }
 
 

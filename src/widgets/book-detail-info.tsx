@@ -118,13 +118,21 @@ export function BookPagesPreviewWidget(props: {
 
     const [imageSize, imageSizeWidget] = usePreviewSizeWidget("medium")
 
+    const scrollToTop = () => {
+        document.getElementById('BookPagesPreviewWidgetTop')?.scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
     if (!props.pages?.length) {
         return null
     }
 
-    return <ContainerWidget direction="column" gap="medium">
+    const notAllPages = pageLimit != -1 && (pageLimit < props.pages.length)
+
+    return <ContainerWidget direction="column" gap="medium" id="BookPagesPreviewWidgetTop">
         <ContainerWidget appContainer direction="row" gap="medium">
-            {pageLimit != -1 && (pageLimit < props.pages.length) ?
+            {notAllPages ?
                 <button className="app" onClick={() => setPageLimit(-1)}>Показать все страницы</button>
                 : null}
             {imageSizeWidget}
@@ -144,6 +152,9 @@ export function BookPagesPreviewWidget(props: {
                     </ContainerWidget>
                 )}
         </ContainerWidget>
+        {!notAllPages ?
+            <button className="app" onClick={scrollToTop}>Наверх</button>
+            : null}
     </ContainerWidget>
 }
 
