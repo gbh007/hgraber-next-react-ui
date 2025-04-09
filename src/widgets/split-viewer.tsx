@@ -53,6 +53,12 @@ export function DualReaderWidget(props: {
     }, [props.aPages, currentAIndex])
 
 
+    const goAPage = useCallback((i: number) => {
+        if (i < 1 || i >= props.aPages!.length - 1) return
+        setCurrentAIndex(i - 1)
+    }, [props.aPages, currentAIndex])
+
+
     const prevBPage = useCallback(() => {
         if (currentBIndex == 0) return
         setCurrentBIndex(currentBIndex - 1)
@@ -63,6 +69,10 @@ export function DualReaderWidget(props: {
         setCurrentBIndex(currentBIndex + 1)
     }, [props.bPages, currentBIndex])
 
+    const goBPage = useCallback((i: number) => {
+        if (i < 1 || i >= props.bPages!.length - 1) return
+        setCurrentBIndex(i - 1)
+    }, [props.bPages, currentBIndex])
 
     const prevBothPage = useCallback(() => {
         if (currentBIndex == 0) return
@@ -92,6 +102,7 @@ export function DualReaderWidget(props: {
                 currentPage={currentAPage}
                 pageCount={props.aPageCount}
                 pages={props.aPages}
+                goPage={goAPage}
             >{currentAPage ? <>
                 <BookReadActionButtonWidget
                     bookID={props.aBookID}
@@ -119,6 +130,7 @@ export function DualReaderWidget(props: {
                 currentPage={currentBPage}
                 pageCount={props.bPageCount}
                 pages={props.bPages}
+                goPage={goBPage}
             >{currentBPage ? <>
                 <BookReadActionButtonWidget
                     bookID={props.bBookID}
@@ -149,7 +161,10 @@ function ReaderWidget(props: PropsWithChildren & {
     currentIndex: number
     prevPage: () => void
     nextPage: () => void
+    goPage: (i: number) => void
 }) {
+    const [goToIndex, setGoToIndex] = useState(0)
+
     if (!props.pages) {
         return null
     }
@@ -165,19 +180,33 @@ function ReaderWidget(props: PropsWithChildren & {
     }, [props.prevPage, props.nextPage])
 
     return <ContainerWidget direction="column" gap="medium">
-        <div className={"app-container " + styles.pageViewActions}>
-            <span>
-                <button className="app" onClick={props.prevPage}><span className={styles.pageViewActionsPageNavigate}>{"<"}</span></button>
-                <button className="app" onClick={props.nextPage}><span className={styles.pageViewActionsPageNavigate}>{">"}</span></button>
-            </span>
-            <PageBadgesWidget flags={props.currentPage} badgeSize="medium" />
-            <span>
-                {`Страница ${props.currentPage?.page_number}` +
-                    ` из ${props.pageCount ?? props.pages.length ?? 0}` +
-                    (props.pageCount && props.pageCount != props.pages.length ? ` (${props.currentIndex + 1}/${props.pages.length})` : '')
-                }
-            </span>
-        </div>
+        <ContainerWidget appContainer direction="column" gap="medium">
+            <ContainerWidget direction="row" gap="small">
+                <input
+                    className="app"
+                    type="number"
+                    value={goToIndex}
+                    onChange={e => setGoToIndex(e.target.valueAsNumber)}
+                />
+                <button
+                    className="app"
+                    onClick={() => props.goPage(goToIndex)}
+                >Перейти</button>
+            </ContainerWidget>
+            <div className={styles.pageViewActions}>
+                <span>
+                    <button className="app" onClick={props.prevPage}><span className={styles.pageViewActionsPageNavigate}>{"<"}</span></button>
+                    <button className="app" onClick={props.nextPage}><span className={styles.pageViewActionsPageNavigate}>{">"}</span></button>
+                </span>
+                <PageBadgesWidget flags={props.currentPage} badgeSize="medium" />
+                <span>
+                    {`Страница ${props.currentPage?.page_number}` +
+                        ` из ${props.pageCount ?? props.pages.length ?? 0}` +
+                        (props.pageCount && props.pageCount != props.pages.length ? ` (${props.currentIndex + 1}/${props.pages.length})` : '')
+                    }
+                </span>
+            </div>
+        </ContainerWidget>
         <div className={styles.pageView}>
             {props.currentPage?.preview_url ? <img
                 src={props.currentPage?.preview_url}
