@@ -147,3 +147,19 @@ export function ParsingMirrorsLink() {
 export function AttributeRemapListLink() {
     return `/attribute/remap/list`
 }
+
+export function HProxyListLink(url?: string) {
+    if (!url) {
+        return `/hproxy/list`
+    }
+
+    return `/hproxy/list?url=${encodeURIComponent(url)}`
+}
+
+export function HProxyBookLink(url?: string) {
+    if (!url) {
+        return `/hproxy/book`
+    }
+
+    return `/hproxy/book?url=${encodeURIComponent(url)}`
+}
