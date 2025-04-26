@@ -1,3 +1,157 @@
+import { useState, useEffect } from "react"
+import { useSearchParams, Link } from "react-router-dom"
+import { HProxyBookResponsePage, useHProxyBook } from "../apiclient/api-hproxy"
+import { HProxyListLink } from "../core/routing"
+import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget } from "../widgets/book-short-info"
+import { ContainerWidget } from "../widgets/common"
+import { ErrorTextWidget } from "../widgets/error-text"
+import { useAttributeColorList } from "../apiclient/api-attribute"
+import { BookOneAttributeWidget } from "../widgets/attribute"
+
 export function HProxyBookScreen() {
-    return null
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [hProxyBookResponse, doHProxyBook] = useHProxyBook()
+
+    const [currentURL, setCurrentURL] = useState("")
+
+
+    const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
+    useEffect(() => { fetchAttributeColorList() }, [fetchAttributeColorList])
+
+    useEffect(() => {
+        const u = searchParams.get("url")
+        if (!u) {
+            return
+        }
+
+        setCurrentURL(u)
+        doHProxyBook({ url: u })
+    }, [doHProxyBook, searchParams])
+
+    return <ContainerWidget direction="column" gap="medium">
+        <ErrorTextWidget value={hProxyBookResponse} />
+        <ErrorTextWidget value={attributeColorListResponse} />
+
+        <ContainerWidget appContainer direction="row" gap="medium">
+            <input
+                className="app"
+                value={currentURL}
+                onChange={e => setCurrentURL(e.target.value)}
+            />
+            <button
+                className="app"
+                onClick={() => {
+                    searchParams.set("url", currentURL)
+                    setSearchParams(searchParams)
+                }}
+            >Перейти</button>
+        </ContainerWidget>
+
+
+        <ContainerWidget appContainer direction="row" gap="medium">
+            <div>
+                <BookImagePreviewWidget
+                    previewSize="superbig"
+                    preview_url={hProxyBookResponse.data?.preview_url}
+                />
+            </div>
+            <ContainerWidget direction="column" gap="medium">
+                <h1 style={{ wordBreak: "break-all", margin: 0 }}>{hProxyBookResponse.data?.name}</h1>
+                <span>Страниц: {hProxyBookResponse.data?.page_count}</span>
+                {hProxyBookResponse.data?.attributes.map((attr, i) => <ContainerWidget
+                    key={i}
+                    direction="row"
+                    gap="small"
+                    wrap
+                >
+                    <span>{attr.name}:</span>
+                    {attr.values.map((v, i) => <ContainerWidget
+                        key={i}
+                        direction="row"
+                        gap="small"
+                    >
+                        {v.ext_url ?
+                            <Link to={HProxyListLink(v.ext_url)} className="app-button">{v.ext_name}</Link>
+                            : <span>{v.ext_name}</span>
+                        }
+                        {v.name ? <BookOneAttributeWidget
+                            code={attr.code}
+                            value={v.name}
+                            colors={attributeColorListResponse.data?.colors}
+                        /> : null}
+                    </ContainerWidget>)}
+                </ContainerWidget>)}
+            </ContainerWidget>
+        </ContainerWidget>
+
+        <BookPagesPreviewWidget
+            url={hProxyBookResponse.data?.ext_url ?? ""}
+            pages={hProxyBookResponse.data?.pages}
+            pageLimit={10}
+        />
+    </ContainerWidget>
+}
+
+
+
+
+function BookPagesPreviewWidget(props: {
+    url: string
+    pages?: Array<HProxyBookResponsePage>
+    pageLimit?: number
+}) {
+    const [pageLimit, setPageLimit] = useState(20)
+    const [size, setSize] = useState<ImageSize>("small")
+
+    useEffect(() => {
+        setPageLimit(props.pageLimit ?? 20)
+    }, [setPageLimit, props.pageLimit, props.url])
+
+
+    const scrollToTop = () => {
+        document.getElementById('BookPagesPreviewWidgetTop')?.scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+
+    if (!props.pages?.length) {
+        return null
+    }
+
+    const notAllPages = pageLimit != -1 && (pageLimit < props.pages.length)
+
+    return <ContainerWidget direction="column" gap="medium" id="BookPagesPreviewWidgetTop">
+        <ContainerWidget appContainer direction="row" gap="medium">
+            {notAllPages ?
+                <button className="app" onClick={() => setPageLimit(-1)}>Показать все страницы</button>
+                : null}
+            <select
+                className="app"
+                value={size}
+                onChange={e => setSize(e.target.value as ImageSize)}
+            >
+                <option value={"small"}>маленький</option>
+                <option value={"medium"}>средний</option>
+                <option value={"big"}>большой</option>
+                <option value={"bigger"}>очень большой</option>
+                <option value={"biggest"}>супер большой</option>
+                <option value={"superbig"}>огромный</option>
+            </select>
+        </ContainerWidget>
+        <ContainerWidget direction="row" gap="medium" wrap>
+            {props.pages?.filter(page => page.preview_url)
+                .filter((_, i) => pageLimit == -1 || i < pageLimit)
+                .map((page) =>
+                    <ContainerWidget appContainer direction="column" style={{ flexGrow: 1, alignItems: "center" }} key={page.page_number}>
+                        <PageImagePreviewWidget
+                            previewSize={size}
+                            preview_url={page.preview_url}
+                        />
+                    </ContainerWidget>
+                )}
+        </ContainerWidget>
+        {!notAllPages ?
+            <button className="app" onClick={scrollToTop}>Наверх</button>
+            : null}
+    </ContainerWidget>
 }

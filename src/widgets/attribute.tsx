@@ -115,6 +115,23 @@ export function BookAttributeValuesWidget(props: {
     </>
 }
 
+export function BookOneAttributeWidget(props: {
+    code: string
+    value: string
+    colors?: Array<AttributeColor>
+}) {
+    const color = props.colors?.
+        filter(color => color.code == props.code)?.
+        find(color => color.value == props.value)
+
+    return <BookAttributeValueWidget
+        code={props.code}
+        value={props.value}
+        color={color}
+        key={props.value}
+    />
+}
+
 export function BookAttributeValueWidget(props: {
     value: string
     code: string
