@@ -10,6 +10,7 @@ export interface HProxyListResponseBook {
     ext_url: string
     name?: string
     preview_url?: string
+    exists_ids?: Array<string>
 }
 
 export interface HProxyListResponsePage {
@@ -32,6 +33,7 @@ export interface HProxyBookResponse {
     ext_url: string
     preview_url?: string
     page_count: number
+    exists_ids?: Array<string>
     pages: Array<HProxyBookResponsePage>
     attributes: Array<HProxyBookResponseAttribute>
 }

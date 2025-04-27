@@ -1,18 +1,21 @@
 import { useState, useEffect } from "react"
 import { useSearchParams, Link } from "react-router-dom"
 import { HProxyBookResponsePage, useHProxyBook } from "../apiclient/api-hproxy"
-import { HProxyListLink } from "../core/routing"
+import { BookDetailsLink, HProxyListLink } from "../core/routing"
 import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget } from "../widgets/book-short-info"
 import { ContainerWidget } from "../widgets/common"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { useAttributeColorList } from "../apiclient/api-attribute"
 import { BookOneAttributeWidget } from "../widgets/attribute"
+import { useSystemHandle } from "../apiclient/api-system-handle"
 
 export function HProxyBookScreen() {
     const [searchParams, setSearchParams] = useSearchParams()
     const [hProxyBookResponse, doHProxyBook] = useHProxyBook()
+    const [systemHandleResponse, doSystemHandle] = useSystemHandle()
 
     const [currentURL, setCurrentURL] = useState("")
+    const [isReadOnlyMode, setIsReadOnlyMode] = useState(false)
 
 
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
@@ -28,11 +31,22 @@ export function HProxyBookScreen() {
         doHProxyBook({ url: u })
     }, [doHProxyBook, searchParams])
 
+
+    const downloadedFlags = {
+        is_deleted: false,
+        is_rebuild: false,
+        is_verified: true,
+        parsed_name: false,
+        parsed_page: false,
+    }
+
+    const isDownloaded = hProxyBookResponse?.data?.exists_ids?.length ?? 0 > 0
+
     return <ContainerWidget direction="column" gap="medium">
         <ErrorTextWidget value={hProxyBookResponse} />
         <ErrorTextWidget value={attributeColorListResponse} />
 
-        <ContainerWidget appContainer direction="row" gap="medium">
+        <ContainerWidget appContainer direction="row" gap="medium" wrap>
             <input
                 className="app"
                 value={currentURL}
@@ -45,6 +59,36 @@ export function HProxyBookScreen() {
                     setSearchParams(searchParams)
                 }}
             >Перейти</button>
+
+            <label>
+                <span>Расчет</span>
+                <input
+                    className="app"
+                    onChange={(e) => { setIsReadOnlyMode(e.target.checked) }}
+                    type="checkbox"
+                    checked={isReadOnlyMode}
+                    autoComplete="off"
+                />
+            </label>
+            <button
+                className="app"
+                onClick={() => {
+                    doSystemHandle({
+                        auto_verify: false,
+                        is_multi: false,
+                        read_only_mode: isReadOnlyMode,
+                        urls: [currentURL]
+                    })
+                }}
+            >Загрузить</button>
+
+            <ContainerWidget direction="row" gap="small" wrap>
+                <ErrorTextWidget value={systemHandleResponse} />
+                <div><b>Всего: </b>{systemHandleResponse.data?.total_count || 0}</div>
+                <div><b>Загружено: </b>{systemHandleResponse.data?.loaded_count || 0}</div>
+                <div><b>Дубликаты: </b>{systemHandleResponse.data?.duplicate_count || 0}</div>
+                <div><b>Ошибки: </b>{systemHandleResponse.data?.error_count || 0}</div>
+            </ContainerWidget>
         </ContainerWidget>
 
 
@@ -53,6 +97,7 @@ export function HProxyBookScreen() {
                 <BookImagePreviewWidget
                     previewSize="superbig"
                     preview_url={hProxyBookResponse.data?.preview_url}
+                    flags={isDownloaded ? downloadedFlags : undefined}
                 />
             </div>
             <ContainerWidget direction="column" gap="medium">
@@ -81,6 +126,12 @@ export function HProxyBookScreen() {
                         /> : null}
                     </ContainerWidget>)}
                 </ContainerWidget>)}
+                {isDownloaded ?
+                    <ContainerWidget direction="row" gap="medium" wrap>
+                        <span>Скачанно:</span>
+                        {hProxyBookResponse.data?.exists_ids?.map(id => <Link className="app-button" to={BookDetailsLink(id)}>{id}</Link>)}
+                    </ContainerWidget>
+                    : null}
             </ContainerWidget>
         </ContainerWidget>
 
