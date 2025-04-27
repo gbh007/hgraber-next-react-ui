@@ -52,6 +52,7 @@ export function AgentEditorScreen() {
         can_parse: false,
         can_parse_multi: false,
         has_fs: false,
+        has_hproxy: false,
         name: "",
         priority: 0,
         token: "",
@@ -128,6 +129,8 @@ function AgentInfoWidget(props: {
             <span>{props.value.info.can_export ? 'Да' : 'Нет'}</span>
             <b>Есть ФС:</b>
             <span>{props.value.info.has_fs ? 'Да' : 'Нет'}</span>
+            <b>Есть HProxy:</b>
+            <span>{props.value.info.has_hproxy ? 'Да' : 'Нет'}</span>
             <b>Приоритет:</b>
             <span>{props.value.info.priority}</span>
             <b>Создан:</b>
@@ -248,6 +251,20 @@ function AgentEditorWidget(props: {
                     }}
                 />
                 <span>Есть ФС</span>
+            </label>
+
+            <label>
+                <input
+                    className="app"
+                    placeholder="Есть HProxy"
+                    type="checkbox"
+                    autoComplete="off"
+                    checked={props.value.has_hproxy}
+                    onChange={(e) => {
+                        props.onChange({ ...props.value, has_hproxy: e.target.checked })
+                    }}
+                />
+                <span>Есть HProxy</span>
             </label>
         </ContainerWidget>
         <span>Приоритет</span>
