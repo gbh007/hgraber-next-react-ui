@@ -11,8 +11,7 @@ import { BookListResponse, BookShortInfo } from "../apiclient/api-book-list";
 import { PaginatorWidget } from "../pages/list";
 import { ColorizedTextWidget, ContainerWidget } from "./common";
 import { useCallback, useEffect, useState } from "react";
-import { ImageSize, PageBadgesWidget, PageImagePreviewWidget } from "./book-short-info";
-import { usePreviewSizeWidget } from "./book-detail-info";
+import { ImageSize, PageBadgesWidget, PageImagePreviewWidget, PreviewSizeWidget } from "./book-short-info";
 import { BooksSimpleWidget } from "./book";
 import { BookReaderLink } from "../core/routing";
 
@@ -224,7 +223,7 @@ function BookPagesSelectWidget(props: {
     const [imageOnRow, setImageOnRow] = useState(4)
 
 
-    const [imageSize, imageSizeWidget] = usePreviewSizeWidget("medium")
+    const [imageSize, setImageSize] = useState<ImageSize>("medium")
 
     const pages = props.pages?.
         filter(page => !showOnlySelected || props.value.includes(page.page_number)).
@@ -249,7 +248,7 @@ function BookPagesSelectWidget(props: {
                     <option value="list">Режим просмотра: все страницы</option>
                     <option value="columns">Режим просмотра: колонки</option>
                 </select>
-                {viewMode == "list" || viewMode == "columns" ? imageSizeWidget : null}
+                {viewMode == "list" || viewMode == "columns" ? <PreviewSizeWidget value={imageSize} onChange={setImageSize} /> : null}
                 {viewMode == "columns" ? <input
                     className="app"
                     value={imageOnRow}

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 import { DeduplicateBookByPageBodyResponseResult } from "../apiclient/api-deduplicate"
-import { PropsWithChildren, ReactNode, useEffect, useState } from "react"
+import { PropsWithChildren, useEffect, useState } from "react"
 import { BookAttribute, BookDetailsSize, BookSimplePage } from "../apiclient/model-book"
 import { BookDetails } from "../apiclient/api-book-details"
-import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget } from "./book-short-info"
+import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget, PreviewSizeWidget } from "./book-short-info"
 import { AttributeColor } from "../apiclient/api-attribute"
 import { BookAttributeValuesWidget } from "./attribute"
 import { ColorizedTextWidget, ContainerWidget } from "./common"
@@ -85,25 +85,6 @@ function BookSizeWidget(props: {
     </ContainerWidget>
 }
 
-export function usePreviewSizeWidget(
-    defaultSize?: ImageSize
-): [ImageSize, ReactNode] {
-    const [size, setSize] = useState<ImageSize>(defaultSize ?? "small")
-
-    return [size, <select
-        className="app"
-        value={size}
-        onChange={e => setSize(e.target.value as ImageSize)}
-    >
-        <option value={"small"}>маленький</option>
-        <option value={"medium"}>средний</option>
-        <option value={"big"}>большой</option>
-        <option value={"bigger"}>очень большой</option>
-        <option value={"biggest"}>супер большой</option>
-        <option value={"superbig"}>огромный</option>
-    </select>]
-}
-
 export function BookPagesPreviewWidget(props: {
     bookID: string
     pages?: Array<BookSimplePage>
@@ -116,7 +97,7 @@ export function BookPagesPreviewWidget(props: {
     }, [setPageLimit, props.pageLimit, props.bookID])
 
 
-    const [imageSize, imageSizeWidget] = usePreviewSizeWidget("medium")
+    const [imageSize, setImageSize] = useState<ImageSize>("medium")
 
     const scrollToTop = () => {
         document.getElementById('BookPagesPreviewWidgetTop')?.scrollIntoView({
@@ -135,7 +116,7 @@ export function BookPagesPreviewWidget(props: {
             {notAllPages ?
                 <button className="app" onClick={() => setPageLimit(-1)}>Показать все страницы</button>
                 : null}
-            {imageSizeWidget}
+            <PreviewSizeWidget value={imageSize} onChange={setImageSize} />
         </ContainerWidget>
         <ContainerWidget direction="row" gap="medium" wrap>
             {props.pages?.filter(page => page.preview_url)

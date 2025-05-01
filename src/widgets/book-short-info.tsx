@@ -225,3 +225,22 @@ export function PageBadgesWidget(props: {
         />)}
     </ContainerWidget>
 }
+
+
+export function PreviewSizeWidget(props: {
+    value: ImageSize
+    onChange: (v: ImageSize) => void
+}) {
+    return <select
+        className="app"
+        value={props.value}
+        onChange={e => props.onChange(e.target.value as ImageSize)}
+    >
+        <option value={"small"}>маленький</option>
+        <option value={"medium"}>средний</option>
+        <option value={"big"}>большой</option>
+        <option value={"bigger"}>очень большой</option>
+        <option value={"biggest"}>супер большой</option>
+        <option value={"superbig"}>огромный</option>
+    </select>
+}

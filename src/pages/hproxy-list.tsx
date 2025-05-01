@@ -4,13 +4,15 @@ import { useEffect, useState } from "react"
 import { ColorizedTextWidget, ContainerWidget } from "../widgets/common"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { HProxyBookLink, HProxyListLink } from "../core/routing"
-import { BookImagePreviewWidget } from "../widgets/book-short-info"
+import { BookImagePreviewWidget, ImageSize, PreviewSizeWidget } from "../widgets/book-short-info"
 import { useSystemHandle } from "../apiclient/api-system-handle"
 
 export function HProxyListScreen() {
     const [searchParams, setSearchParams] = useSearchParams()
     const [hProxyListResponse, doHProxyList] = useHProxyList()
     const [systemHandleResponse, doSystemHandle] = useSystemHandle()
+    const [imageSize, setImageSize] = useState<ImageSize>("medium")
+    const [bookOnRow, setBookOnRow] = useState(4)
 
     const [currentURL, setCurrentURL] = useState("")
     const [isReadOnlyMode, setIsReadOnlyMode] = useState(false)
@@ -50,6 +52,13 @@ export function HProxyListScreen() {
                 }}
             >Перейти</button>
 
+            <PreviewSizeWidget value={imageSize} onChange={setImageSize} />
+            <input
+                className="app"
+                value={bookOnRow}
+                type="number"
+                onChange={e => setBookOnRow(e.target.valueAsNumber)}
+            />
 
             <label>
                 <span>Расчет</span>
@@ -95,7 +104,7 @@ export function HProxyListScreen() {
 
         <ContainerWidget
             direction="columns"
-            columns={5}
+            columns={bookOnRow}
             gap="medium"
             wrap
         >
@@ -111,7 +120,7 @@ export function HProxyListScreen() {
                 >
                     <BookImagePreviewWidget
                         preview_url={book.preview_url}
-                        previewSize="small"
+                        previewSize={imageSize}
                         flags={book.exists_ids?.length ?? 0 > 0 ? downloadedFlags : undefined}
                     />
                     <ColorizedTextWidget bold>{book.name}</ColorizedTextWidget>

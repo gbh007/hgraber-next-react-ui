@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useSearchParams, Link } from "react-router-dom"
 import { HProxyBookResponsePage, useHProxyBook } from "../apiclient/api-hproxy"
 import { BookDetailsLink, HProxyListLink } from "../core/routing"
-import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget } from "../widgets/book-short-info"
+import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget, PreviewSizeWidget } from "../widgets/book-short-info"
 import { ContainerWidget } from "../widgets/common"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { useAttributeColorList } from "../apiclient/api-attribute"
@@ -152,7 +152,8 @@ function BookPagesPreviewWidget(props: {
     pageLimit?: number
 }) {
     const [pageLimit, setPageLimit] = useState(20)
-    const [size, setSize] = useState<ImageSize>("small")
+    const [imageSize, setImageSize] = useState<ImageSize>("medium")
+
 
     useEffect(() => {
         setPageLimit(props.pageLimit ?? 20)
@@ -176,18 +177,7 @@ function BookPagesPreviewWidget(props: {
             {notAllPages ?
                 <button className="app" onClick={() => setPageLimit(-1)}>Показать все страницы</button>
                 : null}
-            <select
-                className="app"
-                value={size}
-                onChange={e => setSize(e.target.value as ImageSize)}
-            >
-                <option value={"small"}>маленький</option>
-                <option value={"medium"}>средний</option>
-                <option value={"big"}>большой</option>
-                <option value={"bigger"}>очень большой</option>
-                <option value={"biggest"}>супер большой</option>
-                <option value={"superbig"}>огромный</option>
-            </select>
+            <PreviewSizeWidget value={imageSize} onChange={setImageSize} />
         </ContainerWidget>
         <ContainerWidget direction="row" gap="medium" wrap>
             {props.pages?.filter(page => page.preview_url)
@@ -195,7 +185,7 @@ function BookPagesPreviewWidget(props: {
                 .map((page) =>
                     <ContainerWidget appContainer direction="column" style={{ flexGrow: 1, alignItems: "center" }} key={page.page_number}>
                         <PageImagePreviewWidget
-                            previewSize={size}
+                            previewSize={imageSize}
                             preview_url={page.preview_url}
                         />
                     </ContainerWidget>
