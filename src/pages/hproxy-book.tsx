@@ -2,12 +2,14 @@ import { useState, useEffect } from "react"
 import { useSearchParams, Link } from "react-router-dom"
 import { HProxyBookResponsePage, useHProxyBook } from "../apiclient/api-hproxy"
 import { BookDetailsLink, HProxyListLink } from "../core/routing"
-import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget, PreviewSizeWidget } from "../widgets/book-short-info"
+import { BadgeWidget, BookImagePreviewWidget, ImageSize, PageImagePreviewWidget, PreviewSizeWidget } from "../widgets/book-short-info"
 import { ContainerWidget } from "../widgets/common"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { useAttributeColorList } from "../apiclient/api-attribute"
 import { BookOneAttributeWidget } from "../widgets/attribute"
 import { useSystemHandle } from "../apiclient/api-system-handle"
+
+import deletedBadge from "../assets/deleted.png"
 
 export function HProxyBookScreen() {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -106,14 +108,23 @@ export function HProxyBookScreen() {
                 {hProxyBookResponse.data?.attributes.map((attr, i) => <ContainerWidget
                     key={i}
                     direction="row"
-                    gap="small"
+                    gap="medium"
                     wrap
+                    style={{
+                        alignItems: "center"
+                    }}
                 >
                     <span>{attr.name}:</span>
                     {attr.values.map((v, i) => <ContainerWidget
                         key={i}
                         direction="row"
-                        gap="small"
+                        style={{
+                            // border: "1px solid var(--app-color)",
+                            backgroundColor: "var(--app-secondary)",
+                            borderRadius: "5px",
+                            alignItems: "center",
+                            padding: "3px",
+                        }}
                     >
                         {v.ext_url ?
                             <Link to={HProxyListLink(v.ext_url)} className="app-button">{v.ext_name}</Link>
@@ -123,7 +134,10 @@ export function HProxyBookScreen() {
                             code={attr.code}
                             value={v.name}
                             colors={attributeColorListResponse.data?.colors}
-                        /> : null}
+                        /> : <BadgeWidget
+                            previewSize="small"
+                            src={deletedBadge}
+                        />}
                     </ContainerWidget>)}
                 </ContainerWidget>)}
                 {isDownloaded ?

@@ -107,17 +107,39 @@ export function BookImagePreviewWidget(props: {
             top: 0,
             right: 0,
         }}>
-            {activeBadge.map(badge => <img
-                style={{
-                    maxWidth: `${badgeSize}${widthUnit}`,
-                    maxHeight: `${badgeSize}${heightUnit}`,
-                }}
+            {activeBadge.map(badge => <BadgeWidget
                 src={badge}
+                previewSize={props.previewSize}
                 key={badge}
             />)}
         </div>
 
     </div>
+}
+
+
+export function BadgeWidget(props: {
+    src: string
+    previewSize: ImageSize
+}) {
+    const badgeSize = props.previewSize == "superbig" ? 5
+        : props.previewSize == "biggest" ? 120
+            : props.previewSize == "bigger" ? 90
+                : props.previewSize == "big" ? 60
+                    : props.previewSize == "medium" ? 45
+                        : 30
+
+
+    const widthUnit = props.previewSize == "superbig" ? "vw" : "px"
+    const heightUnit = props.previewSize == "superbig" ? "vh" : "px"
+
+    return <img
+        style={{
+            maxWidth: `${badgeSize}${widthUnit}`,
+            maxHeight: `${badgeSize}${heightUnit}`,
+        }}
+        src={props.src}
+    />
 }
 
 
