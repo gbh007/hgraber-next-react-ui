@@ -236,6 +236,24 @@ function BookPagesSelectWidget(props: {
             <ContainerWidget direction="row" gap="medium">
                 <button className="app" onClick={() => props.onChange(props.pages?.map(page => page.page_number) ?? [])}>Выбрать все</button>
                 <button className="app" onClick={() => props.onChange([])}>Снять все</button>
+                {props.enablePageReOrder ?
+                    <button className="app" onClick={() => {
+                        if (!props.value) {
+                            return
+                        }
+
+                        const firstIndex = props.pageOrder.findIndex(v => props.value.includes(v))
+                        if (firstIndex < 0) {
+                            return
+                        }
+
+                        let newPageOrder = props.pageOrder.filter((_, i) => i < firstIndex)
+                        newPageOrder.push(...props.pageOrder.filter((v) => props.value.includes(v)))
+                        newPageOrder.push(...props.pageOrder.filter((v, i) => i > firstIndex && !props.value.includes(v)))
+
+                        props.onPageOrderChange?.(newPageOrder)
+                    }}>Скомпоновать выделенные по порядку</button>
+                    : null}
                 <span>Выбрано {props.value.length} из {props.pages?.length}</span>
             </ContainerWidget>
             <ContainerWidget direction="row" gap="medium">
