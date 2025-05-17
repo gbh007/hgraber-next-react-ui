@@ -285,6 +285,7 @@ function BookPagesSelectWidget(props: {
                         onChange={props.onChange}
                         value={props.value}
                         pages={pages}
+                        pageOrder={props.pageOrder}
                         previewSize={imageSize}
                         imageColumns={viewMode == "columns" ? imageOnRow : undefined}
                         pageDragAndDrop={(a, b) => {
@@ -310,6 +311,7 @@ function PageListPreview(props: {
     pageDragAndDrop?: (a: number, b: number) => void
     enablePageReOrder: boolean
     imageColumns?: number
+    pageOrder: Array<number>
 }) {
     const fontSize = props.previewSize == "superbig" ? 60
         : props.previewSize == "big" ? 30
@@ -383,7 +385,8 @@ function PageListPreview(props: {
                     props.pageDragAndDrop?.(aIndex, bIndex)
                     setBIndex(-1)
                 }}
-            >Страница: {page.page_number}</span>
+            >Страница: {page.page_number}{props.enablePageReOrder && (props.pageOrder.findIndex(v => v == page.page_number) + 1 != page.page_number) ?
+                ` (${props.pageOrder.findIndex(v => v == page.page_number) + 1})` : ""}</span>
             <label><input
                 className="app"
                 type="checkbox"
