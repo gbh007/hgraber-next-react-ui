@@ -1,4 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from "react"
+import deletedBadge from "../assets/deleted.png"
 import styles from "./common.module.css"
 
 export function HumanTimeWidget(props: {
@@ -108,4 +109,26 @@ export function AutoRefresherWidget(props: {
         <option value={1 * 60 * 1000}>Раз в минуту</option>
         <option value={5 * 60 * 1000}>Раз в 5 минут</option>
     </select>
+}
+
+export function DeleteButtonWidget(props: {
+    onClick: () => void
+    disabled?: boolean
+}) {
+    return <button
+        className="app"
+        onClick={props.onClick}
+        disabled={props.disabled}
+    >
+        <img
+            style={{
+                maxWidth: "18px",
+                maxHeight: "18px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+            src={deletedBadge}
+        />
+    </button>
 }

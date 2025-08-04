@@ -6,7 +6,7 @@ import { AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
 import { attributeCodes, BookAttributeAutocompleteList, BookAttributeAutocompleteWidget } from "./attribute";
-import { ContainerWidget } from "./common";
+import { ContainerWidget, DeleteButtonWidget } from "./common";
 
 
 export function BookFilterWidget(props: {
@@ -60,8 +60,8 @@ export function BookFilterWidget(props: {
                 }
             />
         </ContainerWidget>
-        <div>
-            <span>Название </span>
+        <ContainerWidget direction="row" gap="small">
+            <span>Название</span>
             <input
                 className="app"
                 type="text"
@@ -70,7 +70,14 @@ export function BookFilterWidget(props: {
                     props.onChange({ ...props.value, filter: { ...props.value.filter, name: e.target.value } })
                 }}
             />
-        </div>
+            {props.value.filter?.name ?
+                <DeleteButtonWidget
+                    onClick={() => {
+                        props.onChange({ ...props.value, filter: { ...props.value.filter, name: "" } })
+                    }}
+                ></DeleteButtonWidget>
+                : null}
+        </ContainerWidget>
         <BookFilterAttributesWidget
             value={props.value.filter?.attributes ?? []}
             onChange={e => {
@@ -145,12 +152,11 @@ function BookFilterAttributesWidget(props: {
                         props.onChange(props.value.map((ov, index) => index == i ? e : ov))
                     }}
                 />
-                <button
-                    className="app"
+                <DeleteButtonWidget
                     onClick={() => {
                         props.onChange(props.value.filter((_, index) => index != i))
                     }}
-                >удалить фильтр</button>
+                ></DeleteButtonWidget>
             </ContainerWidget>
         )}
     </ContainerWidget>
@@ -160,7 +166,7 @@ function BookFilterAttributeWidget(props: {
     value: BookFilterAttribute
     onChange: (v: BookFilterAttribute) => void
 }) {
-    return <ContainerWidget direction="row" gap="medium">
+    return <ContainerWidget direction="row" gap="medium" wrap>
         <select
             className="app"
             value={props.value.code}
@@ -234,12 +240,11 @@ function ManyStringSelectWidget(props: {
         {props.value.map((v, i) =>
             <ContainerWidget key={i} direction="row" gap="smaller">
                 <span>{v}</span>
-                <button
-                    className="app"
+                <DeleteButtonWidget
                     onClick={() => {
                         props.onChange(props.value.filter((_, index) => index != i))
                     }}
-                >удалить</button>
+                ></DeleteButtonWidget>
             </ContainerWidget>
         )}
     </ContainerWidget>
@@ -272,12 +277,11 @@ function BookFilterLabelsWidget(props: {
                         props.onChange(props.value.map((ov, index) => index == i ? e : ov))
                     }}
                 />
-                <button
-                    className="app"
+                <DeleteButtonWidget
                     onClick={() => {
                         props.onChange(props.value.filter((_, index) => index != i))
                     }}
-                >удалить фильтр</button>
+                ></DeleteButtonWidget>
             </ContainerWidget>
         )}
     </ContainerWidget>
@@ -287,7 +291,7 @@ function BookFilterLabelWidget(props: {
     value: BookFilterLabel
     onChange: (v: BookFilterLabel) => void
 }) {
-    return <ContainerWidget direction="row" gap="medium">
+    return <ContainerWidget direction="row" gap="medium" wrap>
         <input
             className="app"
             list="label-preset-names"

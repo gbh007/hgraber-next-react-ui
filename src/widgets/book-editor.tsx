@@ -3,7 +3,7 @@ import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookRaw, BookRawAttribute, BookRawLabel } from "../apiclient/model-book";
 import { attributeCodes, BookAttributeAutocompleteList, BookAttributeAutocompleteWidget } from "./attribute";
 import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
-import { ContainerWidget } from "./common";
+import { ContainerWidget, DeleteButtonWidget } from "./common";
 import { DatetimePickerWidget } from "./datetime-picker";
 
 
@@ -105,7 +105,7 @@ function LabelEditor(props: {
     onChange: (v: BookRawLabel) => void
     onDelete: () => void
 }) {
-    return <ContainerWidget direction="row" gap="smaller">
+    return <ContainerWidget direction="row" gap="smaller" wrap>
         <input
             className="app"
             list="label-preset-names"
@@ -131,7 +131,7 @@ function LabelEditor(props: {
             value={props.value.create_at}
             onChange={e => props.onChange({ ...props.value, create_at: e })}
         />
-        <button className="app" onClick={props.onDelete} >удалить</button>
+        <DeleteButtonWidget onClick={props.onDelete}></DeleteButtonWidget>
     </ContainerWidget>
 }
 
@@ -182,7 +182,7 @@ function AttributeEditor(props: {
                 <option value={code} key={code}>{code}</option>
             )}
         </select>
-        <button className="app" onClick={props.onDelete}>удалить</button>
+        <DeleteButtonWidget onClick={props.onDelete}></DeleteButtonWidget>
         <ManyStringSelectWidget
             value={props.value.values}
             onChange={e => props.onChange({ ...props.value, values: e })}
@@ -213,12 +213,11 @@ function ManyStringSelectWidget(props: {
                     onChange={e => props.onChange(props.value.map((v, index) => i == index ? e.target.value : v))}
                     list={props.autoCompleteID}
                 />
-                <button
-                    className="app"
+                <DeleteButtonWidget
                     onClick={() => {
                         props.onChange(props.value.filter((_, index) => index != i))
                     }}
-                >удалить</button>
+                ></DeleteButtonWidget>
             </ContainerWidget>
         )}
     </ContainerWidget>

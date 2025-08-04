@@ -41,6 +41,7 @@ export function BookShortInfoWidget(props: {
                 </ContainerWidget>
                 <ContainerWidget direction="row" gap="smaller" wrap>
                     {book.color_attributes?.map(attr => <BookAttributeValueWidget
+                        key={attr.code + attr.value}
                         code={attr.code}
                         value={attr.value}
                         color={{
