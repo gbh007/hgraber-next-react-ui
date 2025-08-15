@@ -2,6 +2,7 @@ import { GetAction, PostAction, Response, useAPIGet, useAPIPost } from "./client
 
 export interface MassloadInfo {
     id: number
+    name: string
     description?: string
     is_deduplicated: boolean
     page_size?: number
@@ -34,6 +35,7 @@ export interface MassloadInfoAttribute {
 
 export interface MassloadInfoCreateRequest {
     id: number
+    name: string
     description?: string
     is_deduplicated: boolean
 }
@@ -50,6 +52,7 @@ export function useMassloadInfoCreate(): [Response<MassloadInfoCreateResponse | 
 
 export interface MassloadInfoUpdateRequest {
     id: number
+    name: string
     description?: string
     is_deduplicated: boolean
 }
