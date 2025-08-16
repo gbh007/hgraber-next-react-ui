@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useAttributeColorList, useAttributeCount } from "../apiclient/api-attribute";
 import { ContainerWidget } from "../widgets/common";
 import { ErrorTextWidget } from "../widgets/error-text";
-import { MassloadAttributeEditorWidget, MassloadInfoEditorWidget, MassloadListWidget } from "../widgets/massload";
-import { MassloadInfo, useMassloadAttributeCreate, useMassloadAttributeDelete, useMassloadInfoCreate, useMassloadInfoDelete, useMassloadInfoGet, useMassloadInfoList, useMassloadInfoUpdate } from "../apiclient/api-massload";
-import { useNavigate, useParams } from "react-router-dom";
+import { MassloadAttributeEditorWidget, MassloadExternalLinkEditorWidget, MassloadInfoEditorWidget, MassloadListWidget } from "../widgets/massload";
+import { MassloadInfo, useMassloadAttributeCreate, useMassloadAttributeDelete, useMassloadExternalLinkCreate, useMassloadExternalLinkDelete, useMassloadInfoCreate, useMassloadInfoDelete, useMassloadInfoGet, useMassloadInfoList, useMassloadInfoUpdate } from "../apiclient/api-massload";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { MassloadListLink } from "../core/routing";
 import { BookAttributeAutocompleteWidget } from "../widgets/attribute";
 
@@ -65,6 +65,9 @@ export function MassloadEditorScreen() {
     const [massLoadAttributeCreateResponse, doMassloadAttributeCreate] = useMassloadAttributeCreate()
     const [massLoadAttributeDeleteResponse, doMassloadAttributeDelete] = useMassloadAttributeDelete()
 
+    const [massLoadExternalLinkCreateResponse, doMassloadExternalLinkCreate] = useMassloadExternalLinkCreate()
+    const [massLoadExternalLinkDeleteResponse, doMassloadExternalLinkDelete] = useMassloadExternalLinkDelete()
+
     useEffect(() => {
         if (massLoadGetResponse.data) {
             setData(massLoadGetResponse.data!)
@@ -99,6 +102,10 @@ export function MassloadEditorScreen() {
         <ErrorTextWidget value={massLoadDeleteResponse} />
         <ErrorTextWidget value={massLoadAttributeCreateResponse} />
         <ErrorTextWidget value={massLoadAttributeDeleteResponse} />
+        <ErrorTextWidget value={massLoadExternalLinkCreateResponse} />
+        <ErrorTextWidget value={massLoadExternalLinkDeleteResponse} />
+
+        <Link className="app-button" to={MassloadListLink()} >Список</Link>
 
         <MassloadInfoEditorWidget
             onChange={setData}
@@ -134,6 +141,25 @@ export function MassloadEditorScreen() {
                     })
                 }}
                 colors={attributeColorListResponse.data?.colors}
+            />
+            <MassloadExternalLinkEditorWidget
+                value={data.external_links}
+                onCreate={(url: string) => {
+                    doMassloadExternalLinkCreate({
+                        url: url,
+                        massload_id: data.id,
+                    }).then(() => {
+                        fetchMassloadGet({ id: massloadID })
+                    })
+                }}
+                onDelete={(url: string) => {
+                    doMassloadExternalLinkDelete({
+                        url: url,
+                        massload_id: data.id,
+                    }).then(() => {
+                        fetchMassloadGet({ id: massloadID })
+                    })
+                }}
             />
         </> : null}
 
