@@ -30,7 +30,7 @@ import { ParsingMirrorEditorScreen, ParsingMirrorsScreen } from "./pages/parsing
 import { AttributeRemapListScreen } from "./pages/attribute-remap";
 import { HProxyBookScreen } from "./pages/hproxy-book";
 import { HProxyListScreen } from "./pages/hproxy-list";
-import { MassloadEditorScreen, MassloadListScreen } from "./pages/massload";
+import { MassloadEditorScreen, MassloadListScreen, MassloadViewScreen } from "./pages/massload";
 
 const router = createHashRouter([
   {
@@ -164,6 +164,10 @@ const router = createHashRouter([
   {
     path: "/massload/edit/:id",
     element: <SimpleWrapper><MassloadEditorScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/massload/view/:id",
+    element: <SimpleWrapper><MassloadViewScreen /></SimpleWrapper>,
   },
 ]);
 

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { MassloadInfo, MassloadInfoAttribute, MassloadInfoExternalLink } from "../apiclient/api-massload";
 import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "./common";
-import { MassloadEditorLink } from "../core/routing";
+import { HProxyListLink, MassloadEditorLink, MassloadViewLink } from "../core/routing";
 import { attributeCodes, BookAttributeAutocompleteList, BookOneAttributeWidget } from "./attribute";
 import { AttributeColor } from "../apiclient/api-attribute";
 import { useState } from "react";
@@ -31,14 +31,15 @@ export function MassloadListWidget(props: {
                     <td>{ml.is_deduplicated ? <ColorizedTextWidget color="good">Дедуплицирована</ColorizedTextWidget> : null}</td>
                     <td>
                         <ContainerWidget direction="row" gap="smaller" wrap>
-                            {ml.attributes?.map(attr =>
-                                <BookOneAttributeWidget value={attr.value} colors={props.colors} code={attr.code} />
+                            {ml.attributes?.map((attr, i) =>
+                                <BookOneAttributeWidget key={i} value={attr.value} colors={props.colors} code={attr.code} />
                             )}
                         </ContainerWidget>
                     </td>
                     <td>
                         <ContainerWidget direction="column" gap="small">
-                            <Link className="app-button" to={MassloadEditorLink(ml.id)} >Редактировать</Link>
+                            <Link className="app-button" to={MassloadViewLink(ml.id)}>Посмотреть</Link>
+                            <Link className="app-button" to={MassloadEditorLink(ml.id)}>Редактировать</Link>
                             <button className="app" onClick={() => {
                                 props.onDelete(ml.id)
                             }}>
@@ -204,5 +205,43 @@ export function MassloadExternalLinkEditorWidget(props: {
                 </tr>)}
             </tbody>
         </table>
+    </ContainerWidget>
+}
+
+export function MassloadViewWidget(props: {
+    value: MassloadInfo
+    colors?: Array<AttributeColor>
+}) {
+    return <ContainerWidget appContainer direction="column" gap="medium">
+        <ContainerWidget direction="2-column" gap="medium">
+            <b>Название</b>
+            <span>{props.value.name}</span>
+
+            <b>Описание</b>
+            <span>{props.value.description}</span>
+
+            <b>Флаги</b>
+            <span>{props.value.is_deduplicated ? <ColorizedTextWidget color="good">Дедуплицирована</ColorizedTextWidget> : null}</span>
+
+            <b>Аттрибуты</b>
+            <span>
+                <ContainerWidget direction="row" gap="smaller" wrap>
+                    {props.value.attributes?.map((attr, i) =>
+                        <BookOneAttributeWidget key={i} value={attr.value} colors={props.colors} code={attr.code} />
+                    )}
+                </ContainerWidget>
+            </span>
+
+
+            <b>Ссылки</b>
+            <span>
+                <ContainerWidget direction="row" gap="smaller" wrap>
+                    {props.value.external_links?.map((link, i) =>
+                        <Link className="app-button" key={i} to={HProxyListLink(link.url)}>{link.url}</Link>
+                    )}
+                </ContainerWidget>
+            </span>
+
+        </ContainerWidget>
     </ContainerWidget>
 }

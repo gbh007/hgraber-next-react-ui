@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAttributeColorList, useAttributeCount } from "../apiclient/api-attribute";
 import { ContainerWidget } from "../widgets/common";
 import { ErrorTextWidget } from "../widgets/error-text";
-import { MassloadAttributeEditorWidget, MassloadExternalLinkEditorWidget, MassloadInfoEditorWidget, MassloadListWidget } from "../widgets/massload";
+import { MassloadAttributeEditorWidget, MassloadExternalLinkEditorWidget, MassloadInfoEditorWidget, MassloadListWidget, MassloadViewWidget } from "../widgets/massload";
 import { MassloadInfo, useMassloadAttributeCreate, useMassloadAttributeDelete, useMassloadExternalLinkCreate, useMassloadExternalLinkDelete, useMassloadInfoCreate, useMassloadInfoDelete, useMassloadInfoGet, useMassloadInfoList, useMassloadInfoUpdate } from "../apiclient/api-massload";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { MassloadListLink } from "../core/routing";
@@ -164,5 +164,35 @@ export function MassloadEditorScreen() {
         </> : null}
 
         <BookAttributeAutocompleteWidget attributeCount={attributeCountResponse.data?.attributes} />
+    </ContainerWidget>
+}
+
+
+export function MassloadViewScreen() {
+    const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
+
+    useEffect(() => { fetchAttributeColorList() }, [fetchAttributeColorList])
+
+    const params = useParams()
+    const massloadID = parseInt(params.id!)
+
+    const [massLoadGetResponse, fetchMassloadGet] = useMassloadInfoGet()
+
+
+    useEffect(() => {
+        fetchMassloadGet({ id: massloadID })
+    }, [fetchMassloadGet, massloadID])
+
+
+    return <ContainerWidget direction="column" gap="big">
+        <ErrorTextWidget value={attributeColorListResponse} />
+        <ErrorTextWidget value={massLoadGetResponse} />
+
+        <Link className="app-button" to={MassloadListLink()} >Список</Link>
+        {massLoadGetResponse.data ?
+            <MassloadViewWidget
+                value={massLoadGetResponse.data}
+                colors={attributeColorListResponse.data?.colors}
+            /> : null}
     </ContainerWidget>
 }

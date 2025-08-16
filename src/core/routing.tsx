@@ -171,3 +171,7 @@ export function MassloadListLink() {
 export function MassloadEditorLink(id?: number) {
     return `/massload/edit/${id ?? "new"}`
 }
+
+export function MassloadViewLink(id: number) {
+    return `/massload/view/${id}`
+}
