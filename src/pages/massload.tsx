@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAttributeColorList } from "../apiclient/api-attribute";
+import { useAttributeColorList, useAttributeCount } from "../apiclient/api-attribute";
 import { ContainerWidget } from "../widgets/common";
 import { ErrorTextWidget } from "../widgets/error-text";
-import { MassloadInfoEditorWidget, MassloadListWidget } from "../widgets/massload";
-import { MassloadInfo, useMassloadInfoCreate, useMassloadInfoDelete, useMassloadInfoGet, useMassloadInfoList, useMassloadInfoUpdate } from "../apiclient/api-massload";
+import { MassloadAttributeEditorWidget, MassloadInfoEditorWidget, MassloadListWidget } from "../widgets/massload";
+import { MassloadInfo, useMassloadAttributeCreate, useMassloadAttributeDelete, useMassloadInfoCreate, useMassloadInfoDelete, useMassloadInfoGet, useMassloadInfoList, useMassloadInfoUpdate } from "../apiclient/api-massload";
 import { useNavigate, useParams } from "react-router-dom";
 import { MassloadListLink } from "../core/routing";
+import { BookAttributeAutocompleteWidget } from "../widgets/attribute";
 
 export function MassloadListScreen() {
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
@@ -36,6 +37,12 @@ export function MassloadListScreen() {
 }
 
 export function MassloadEditorScreen() {
+    const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
+    const [attributeCountResponse, getAttributeCount] = useAttributeCount()
+
+    useEffect(() => { fetchAttributeColorList() }, [fetchAttributeColorList])
+    useEffect(() => { getAttributeCount() }, [getAttributeCount])
+
     const params = useParams()
     const massloadID = params.id == "new" ? 0 : parseInt(params.id ?? "0")
     const isExists = massloadID > 0
@@ -54,6 +61,9 @@ export function MassloadEditorScreen() {
     const [massLoadGetResponse, fetchMassloadGet] = useMassloadInfoGet()
     const [massLoadDeleteResponse, doMassloadDelete] = useMassloadInfoDelete()
 
+
+    const [massLoadAttributeCreateResponse, doMassloadAttributeCreate] = useMassloadAttributeCreate()
+    const [massLoadAttributeDeleteResponse, doMassloadAttributeDelete] = useMassloadAttributeDelete()
 
     useEffect(() => {
         if (massLoadGetResponse.data) {
@@ -81,10 +91,14 @@ export function MassloadEditorScreen() {
     }, [doMassloadUpdate, doMassloadCreate, navigate, isExists, data])
 
     return <ContainerWidget direction="column" gap="big">
+        <ErrorTextWidget value={attributeColorListResponse} />
+        <ErrorTextWidget value={attributeCountResponse} />
         <ErrorTextWidget value={massLoadCreateResponse} />
         <ErrorTextWidget value={massLoadUpdateResponse} />
         <ErrorTextWidget value={massLoadGetResponse} />
         <ErrorTextWidget value={massLoadDeleteResponse} />
+        <ErrorTextWidget value={massLoadAttributeCreateResponse} />
+        <ErrorTextWidget value={massLoadAttributeDeleteResponse} />
 
         <MassloadInfoEditorWidget
             onChange={setData}
@@ -98,5 +112,31 @@ export function MassloadEditorScreen() {
             value={data}
             onSave={useSave}
         />
+        {isExists ? <>
+            <MassloadAttributeEditorWidget
+                value={data.attributes}
+                onCreate={(code: string, value: string) => {
+                    doMassloadAttributeCreate({
+                        code: code,
+                        massload_id: data.id,
+                        value: value,
+                    }).then(() => {
+                        fetchMassloadGet({ id: massloadID })
+                    })
+                }}
+                onDelete={(code: string, value: string) => {
+                    doMassloadAttributeDelete({
+                        code: code,
+                        massload_id: data.id,
+                        value: value,
+                    }).then(() => {
+                        fetchMassloadGet({ id: massloadID })
+                    })
+                }}
+                colors={attributeColorListResponse.data?.colors}
+            />
+        </> : null}
+
+        <BookAttributeAutocompleteWidget attributeCount={attributeCountResponse.data?.attributes} />
     </ContainerWidget>
 }
