@@ -13,7 +13,7 @@ import {
     useAttributeRemapUpdate,
 } from "../apiclient/api-attribute"
 import { ErrorTextWidget } from "../widgets/error-text"
-import { attributeCodes, BookAttributeAutocompleteList, BookAttributeAutocompleteWidget, BookAttributeValueWidget } from "../widgets/attribute"
+import { attributeCodes, BookAttributeAutocompleteList, BookAttributeAutocompleteWidget, BookOneAttributeWidget } from "../widgets/attribute"
 import { ColorizedTextWidget, ContainerWidget } from "../widgets/common"
 
 export function AttributeRemapListScreen() {
@@ -245,7 +245,7 @@ function AttributeRemapEditorWidget(props: {
 
 
     return <ContainerWidget direction="row" gap="medium">
-        <AttributeAutoColorWidget
+        <BookOneAttributeWidget
             code={remap.code}
             value={remap.value}
             colors={props.colors}
@@ -296,7 +296,7 @@ function AttributeRemapEditorWidget(props: {
                 list={BookAttributeAutocompleteList(remap.to_code ?? "")}
             />
             {remap.to_code && remap.to_value ?
-                <AttributeAutoColorWidget
+                <BookOneAttributeWidget
                     code={remap.to_code}
                     value={remap.to_value}
                     colors={props.colors}
@@ -324,18 +324,3 @@ function AttributeRemapEditorWidget(props: {
     </ContainerWidget>
 }
 
-
-function AttributeAutoColorWidget(props: {
-    code: string
-    value: string
-    colors?: Array<AttributeColor>
-}) {
-    const color = props.colors?.find(color => color.code == props.code && color.value == props.value)
-
-    return <BookAttributeValueWidget
-        code={props.code}
-        value={props.value}
-        color={color}
-        key={props.value}
-    />
-}

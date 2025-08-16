@@ -23,13 +23,14 @@ import { BookRebuilderScreen } from "./pages/book-rebuilder";
 import { SelectToCompareScreen } from "./pages/select-to-compare";
 import { BookLabelsEditorScreen } from "./pages/book-label-editor";
 import { AttributeColorEditorScreen, AttributeColorListScreen } from "./pages/attribute-color";
-import { AgentListLink, AttributeColorListLink, AttributeRemapListLink, BookListLink, FSListLink, HProxyListLink, LabelPresetsLink, MainScreenLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
+import { AgentListLink, AttributeColorListLink, AttributeRemapListLink, BookListLink, FSListLink, HProxyListLink, LabelPresetsLink, MainScreenLink, MassloadListLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
 import { AppTheme, ThemeContext } from "./core/context";
 import { FSEditorScreen, FSListScreen } from "./pages/fs";
 import { ParsingMirrorEditorScreen, ParsingMirrorsScreen } from "./pages/parsing-mirrors";
 import { AttributeRemapListScreen } from "./pages/attribute-remap";
 import { HProxyBookScreen } from "./pages/hproxy-book";
 import { HProxyListScreen } from "./pages/hproxy-list";
+import { MassloadEditorScreen, MassloadListScreen } from "./pages/massload";
 
 const router = createHashRouter([
   {
@@ -156,7 +157,14 @@ const router = createHashRouter([
     path: "/hproxy/book",
     element: <SimpleWrapper><HProxyBookScreen /></SimpleWrapper>,
   },
-
+  {
+    path: "/massload/list",
+    element: <SimpleWrapper><MassloadListScreen /></SimpleWrapper>,
+  },
+  {
+    path: "/massload/edit/:id",
+    element: <SimpleWrapper><MassloadEditorScreen /></SimpleWrapper>,
+  },
 ]);
 
 function App() {
@@ -218,6 +226,7 @@ function MenuWidget() {
       <li><Link to={FSListLink()}>Файловые системы</Link></li>
       <li><Link to={ParsingMirrorsLink()}>Зеркала для парсинга</Link></li>
       <li><Link to={HProxyListLink()}>HProxy</Link></li>
+      <li><Link to={MassloadListLink()}>Массовые загрузки</Link></li>
       <li><Link to={SettingsLink()}>Настройки</Link></li>
     </ol>
   </div>
