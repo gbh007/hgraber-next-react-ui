@@ -89,16 +89,18 @@ export interface MassloadInfoListRequest {
         name?: string
         external_link?: string
         flags?: Array<string>
-        attributes?: Array<{
-            code: string
-            type: "in" | "like"
-            values: Array<string>
-        }>
+        attributes?: Array<MassloadInfoListRequestAttribute>
     }
     sort?: {
         desc?: boolean
-        field?: "id" | "name" | "page_size" | "file_size"
+        field?: string
     }
+}
+
+export interface MassloadInfoListRequestAttribute {
+    code: string
+    type: string
+    values: Array<string>
 }
 
 export interface MassloadInfoListResponse {

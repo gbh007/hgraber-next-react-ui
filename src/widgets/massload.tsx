@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { MassloadFlag, MassloadInfo, MassloadInfoAttribute, MassloadInfoExternalLink } from "../apiclient/api-massload";
-import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "./common";
+import { MassloadFlag, MassloadInfo, MassloadInfoAttribute, MassloadInfoExternalLink, MassloadInfoListRequest, MassloadInfoListRequestAttribute } from "../apiclient/api-massload";
+import { ColorizedTextWidget, ContainerWidget, DeleteButtonWidget, HumanTimeWidget, ManyStringSelectWidget } from "./common";
 import { HProxyListLink, MassloadEditorLink, MassloadViewLink } from "../core/routing";
-import { attributeCodes, BookAttributeAutocompleteList, BookOneAttributeWidget } from "./attribute";
-import { AttributeColor } from "../apiclient/api-attribute";
+import { attributeCodes, BookAttributeAutocompleteList, BookAttributeAutocompleteWidget, BookOneAttributeWidget } from "./attribute";
+import { AttributeColor, AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { useState } from "react";
 
 export function MassloadListWidget(props: {
@@ -304,3 +304,169 @@ function MassloadFlagPickerWidget(props: {
         </label>)}
     </ContainerWidget>
 }
+
+export function MassloadFilterWidget(props: {
+    value: MassloadInfoListRequest
+    onChange: (v: MassloadInfoListRequest) => void
+    attributeCount?: Array<AttributeCountResponseAttribute>
+    flagInfos: Array<MassloadFlag>
+}) {
+    return <ContainerWidget direction="column" gap="medium">
+        <ContainerWidget direction="row" gap="small">
+            <span>Название</span>
+            <input
+                className="app"
+                type="text"
+                value={props.value.filter?.name ?? ""}
+                onChange={e => {
+                    props.onChange({ ...props.value, filter: { ...props.value.filter, name: e.target.value } })
+                }}
+            />
+            {props.value.filter?.name ?
+                <DeleteButtonWidget
+                    onClick={() => {
+                        props.onChange({ ...props.value, filter: { ...props.value.filter, name: "" } })
+                    }}
+                ></DeleteButtonWidget>
+                : null}
+        </ContainerWidget>
+        <ContainerWidget direction="row" gap="small">
+            <span>Внешняя ссылка</span>
+            <input
+                className="app"
+                type="text"
+                value={props.value.filter?.external_link ?? ""}
+                onChange={e => {
+                    props.onChange({ ...props.value, filter: { ...props.value.filter, external_link: e.target.value } })
+                }}
+            />
+            {props.value.filter?.external_link ?
+                <DeleteButtonWidget
+                    onClick={() => {
+                        props.onChange({ ...props.value, filter: { ...props.value.filter, external_link: "" } })
+                    }}
+                ></DeleteButtonWidget>
+                : null}
+        </ContainerWidget>
+
+
+        <ContainerWidget direction="row" gap="small">
+            <span>Флаги</span>
+            <MassloadFlagPickerWidget
+                flagInfos={props.flagInfos}
+                onChange={e => {
+                    props.onChange({ ...props.value, filter: { ...props.value.filter, flags: e } })
+                }}
+                value={props.value.filter?.flags ?? []}
+            />
+        </ContainerWidget>
+
+
+        <FilterAttributesWidget
+            value={props.value.filter?.attributes ?? []}
+            onChange={e => {
+                props.onChange({ ...props.value, filter: { ...props.value.filter, attributes: e } })
+            }}
+        />
+        <BookAttributeAutocompleteWidget attributeCount={props.attributeCount} />
+
+        <ContainerWidget direction="2-column" gap="small">
+            <span>Сортировать по:</span>
+            <select className="app" value={props.value.sort?.field ?? "created_at"} onChange={e => {
+                props.onChange({ ...props.value, sort: { ...props.value.sort, field: e.target.value } })
+            }}>
+                <option value="name">Названию</option>
+                <option value="id">ИД</option>
+                <option value="page_size">Размеру страниц</option>
+                <option value="file_size">Размеру файлов</option>
+            </select>
+        </ContainerWidget>
+        <label>
+            <span>Сортировать по убыванию</span>
+            <input
+                className="app"
+                checked={props.value.sort?.desc ?? true}
+                onChange={e => {
+                    props.onChange({ ...props.value, sort: { ...props.value.sort, desc: e.target.checked } })
+                }}
+                placeholder="Сортировать по убыванию"
+                type="checkbox"
+                autoComplete="off"
+            />
+        </label>
+    </ContainerWidget>
+}
+
+function FilterAttributesWidget(props: {
+    value: Array<MassloadInfoListRequestAttribute>
+    onChange: (v: Array<MassloadInfoListRequestAttribute>) => void
+}) {
+    return <ContainerWidget direction="column" gap="small">
+        <div>
+            <span>Аттрибуты</span>
+            <button
+                className="app"
+                onClick={() => {
+                    props.onChange([...props.value, {
+                        code: "tag", // TODO: не прибивать гвоздями
+                        type: "like", // TODO: не прибивать гвоздями
+                        values: [],
+                    }])
+                }}
+            >Добавить фильтр</button>
+        </div>
+        {props.value.map((v, i) =>
+            <ContainerWidget key={i} direction="row" gap="medium">
+                <FilterAttributeWidget
+                    value={v}
+                    onChange={e => {
+                        props.onChange(props.value.map((ov, index) => index == i ? e : ov))
+                    }}
+                />
+                <DeleteButtonWidget
+                    onClick={() => {
+                        props.onChange(props.value.filter((_, index) => index != i))
+                    }}
+                ></DeleteButtonWidget>
+            </ContainerWidget>
+        )}
+    </ContainerWidget>
+}
+
+function FilterAttributeWidget(props: {
+    value: MassloadInfoListRequestAttribute
+    onChange: (v: MassloadInfoListRequestAttribute) => void
+}) {
+    return <ContainerWidget direction="row" gap="medium" wrap>
+        <select
+            className="app"
+            value={props.value.code}
+            onChange={e => {
+                props.onChange({ ...props.value, code: e.target.value })
+            }}
+        >
+            {attributeCodes.map(code =>
+                <option value={code} key={code}>{code}</option>
+            )}
+        </select>
+        <select
+            className="app"
+            value={props.value.type}
+            onChange={e => {
+                props.onChange({ ...props.value, type: e.target.value })
+            }}
+        >
+            <option value="like">LIKE</option>
+            <option value="in">IN</option>
+        </select>
+        <ManyStringSelectWidget
+            value={props.value.values ?? []}
+            onChange={e => {
+                props.onChange({ ...props.value, values: e })
+            }}
+            autoCompleteID={BookAttributeAutocompleteList(props.value.code)}
+        />
+    </ContainerWidget>
+}
+
+
