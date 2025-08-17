@@ -19,6 +19,7 @@ export function MassloadListWidget(props: {
                     <td>Название</td>
                     <td>Описание</td>
                     <td>Флаги</td>
+                    <td>Размер</td>
                     <td>Аттрибуты</td>
                     <td>Действия</td>
                 </tr>
@@ -29,6 +30,17 @@ export function MassloadListWidget(props: {
                     <td>{ml.name}</td>
                     <td>{ml.description}</td>
                     <td>{ml.is_deduplicated ? <ColorizedTextWidget color="good">Дедуплицирована</ColorizedTextWidget> : null}</td>
+                    <td>
+                        <ContainerWidget direction="row" gap="small" wrap>
+                            {ml.page_size_formatted ? <>
+                                <span>{ml.page_size_formatted}</span>
+                            </> : null}
+
+                            {ml.file_size_formatted && ml.file_size_formatted != ml.page_size_formatted ? <>
+                                <span>({ml.file_size_formatted})</span>
+                            </> : null}
+                        </ContainerWidget>
+                    </td>
                     <td>
                         <ContainerWidget direction="row" gap="smaller" wrap>
                             {ml.attributes?.map((attr, i) =>
@@ -220,28 +232,40 @@ export function MassloadViewWidget(props: {
             <b>Описание</b>
             <span>{props.value.description}</span>
 
+            {props.value.page_size_formatted ? <>
+                <b>Размер страниц</b>
+                <span>{props.value.page_size_formatted}</span>
+            </> : null}
+
+            {props.value.file_size_formatted ? <>
+                <b>Размер файлов</b>
+                <span>{props.value.file_size_formatted}</span>
+            </> : null}
+
             <b>Флаги</b>
             <span>{props.value.is_deduplicated ? <ColorizedTextWidget color="good">Дедуплицирована</ColorizedTextWidget> : null}</span>
-
-            <b>Аттрибуты</b>
-            <span>
-                <ContainerWidget direction="row" gap="smaller" wrap>
-                    {props.value.attributes?.map((attr, i) =>
-                        <BookOneAttributeWidget key={i} value={attr.value} colors={props.colors} code={attr.code} />
-                    )}
-                </ContainerWidget>
-            </span>
-
-
-            <b>Ссылки</b>
-            <span>
-                <ContainerWidget direction="row" gap="smaller" wrap>
-                    {props.value.external_links?.map((link, i) =>
-                        <Link className="app-button" key={i} to={HProxyListLink(link.url)}>{link.url}</Link>
-                    )}
-                </ContainerWidget>
-            </span>
-
         </ContainerWidget>
+
+        <b>Аттрибуты</b>
+        {props.value.attributes?.map((attr, i) =>
+            <ContainerWidget key={i} direction="row" gap="small" style={{ alignItems: "center" }}>
+                <BookOneAttributeWidget value={attr.value} colors={props.colors} code={attr.code} />
+                {attr.page_size_formatted ? <>
+                    <span>{attr.page_size_formatted}</span>
+                </> : null}
+
+                {attr.file_size_formatted && attr.file_size_formatted != attr.page_size_formatted ? <>
+                    <span>({attr.file_size_formatted})</span>
+                </> : null}
+            </ContainerWidget>
+        )}
+
+
+        <b>Ссылки</b>
+        {props.value.external_links?.map((link, i) =>
+            <ContainerWidget key={i} direction="row" gap="smaller">
+                <Link className="app-button" to={HProxyListLink(link.url)}>{link.url}</Link>
+            </ContainerWidget>
+        )}
     </ContainerWidget>
 }
