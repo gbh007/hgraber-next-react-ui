@@ -5,7 +5,7 @@ import { ErrorTextWidget } from "../widgets/error-text";
 import { MassloadAttributeEditorWidget, MassloadExternalLinkEditorWidget, MassloadFilterWidget, MassloadInfoEditorWidget, MassloadListWidget, MassloadViewWidget } from "../widgets/massload";
 import { MassloadInfo, MassloadInfoListRequest, useMassloadAttributeCreate, useMassloadAttributeDelete, useMassloadExternalLinkCreate, useMassloadExternalLinkDelete, useMassloadFlagList, useMassloadInfoCreate, useMassloadInfoDelete, useMassloadInfoGet, useMassloadInfoList, useMassloadInfoUpdate } from "../apiclient/api-massload";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { MassloadListLink } from "../core/routing";
+import { MassloadEditorLink, MassloadListLink } from "../core/routing";
 import { BookAttributeAutocompleteWidget } from "../widgets/attribute";
 
 export function MassloadListScreen() {
@@ -113,6 +113,12 @@ export function MassloadEditorScreen() {
 
 
     useEffect(() => {
+        if (massLoadCreateResponse.data?.id ?? 0 > 0) {
+            navigate(MassloadEditorLink(massLoadCreateResponse.data?.id))
+        }
+    }, [massLoadCreateResponse.data?.id])
+
+    useEffect(() => {
         if (isExists) {
             fetchMassloadGet({ id: massloadID })
         }
@@ -120,12 +126,13 @@ export function MassloadEditorScreen() {
 
     const useSave = useCallback(() => {
         if (isExists) {
-            doMassloadUpdate(data)
+            doMassloadUpdate(data).then(() => {
+                fetchMassloadGet({ id: massloadID })
+            })
         } else {
             doMassloadCreate(data).then(() => {
                 // FIXME: работает криво, нужно в промис докидывать данные ответа.
                 // navigate(MassloadEditorLink(massLoadCreateResponse.data?.id))
-                navigate(MassloadListLink())
             })
         }
     }, [doMassloadUpdate, doMassloadCreate, navigate, isExists, data])
