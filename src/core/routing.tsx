@@ -163,3 +163,15 @@ export function HProxyBookLink(url?: string) {
 
     return `/hproxy/book?url=${encodeURIComponent(url)}`
 }
+
+export function MassloadListLink() {
+    return `/massload/list`
+}
+
+export function MassloadEditorLink(id?: number) {
+    return `/massload/edit/${id ?? "new"}`
+}
+
+export function MassloadViewLink(id: number) {
+    return `/massload/view/${id}`
+}

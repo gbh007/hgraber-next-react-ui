@@ -134,6 +134,7 @@ button.app {
 Link.app-button,
 a.app-button {
   text-decoration: underline;
+  text-align: center;
 }
 
 Link.app-button:hover,

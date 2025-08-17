@@ -73,7 +73,7 @@ export function ListScreen() {
         <ErrorTextWidget value={labelPresetsResponse} />
         <ErrorTextWidget value={attributeColorListResponse} />
         <ContainerWidget appContainer direction="column" gap="medium">
-            <details className={"app " + styles.filter}>
+            <details className="app">
                 <summary>Фильтр, всего {booksResponse.data?.count || 0}</summary>
                 <ContainerWidget direction="column" gap="medium">
                     <BookFilterWidget

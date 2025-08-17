@@ -12,7 +12,7 @@ export function AttributeColorListScreen() {
 
     useEffect(() => { fetchAttributeColorList() }, [fetchAttributeColorList])
 
-    return <div className="app-container">
+    return <ContainerWidget appContainer>
         <ErrorTextWidget value={attributeColorListResponse} />
         <ErrorTextWidget value={attributeColorDeleteResponse} />
         <AttributeColorListWidget
@@ -30,7 +30,7 @@ export function AttributeColorListScreen() {
                 })
             }}
         />
-    </div>
+    </ContainerWidget>
 }
 
 export function AttributeColorEditorScreen() {

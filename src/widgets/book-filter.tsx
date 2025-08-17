@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BookFilter, BookFilterAttribute, BookFilterFlags, BookFilterLabel } from "../apiclient/model-book-filter";
 import { DatetimePickerWidget } from "./datetime-picker";
 import { ShowSelectWidget } from "./show-select";
@@ -6,7 +5,7 @@ import { AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
 import { attributeCodes, BookAttributeAutocompleteList, BookAttributeAutocompleteWidget } from "./attribute";
-import { ContainerWidget, DeleteButtonWidget } from "./common";
+import { ContainerWidget, DeleteButtonWidget, ManyStringSelectWidget } from "./common";
 
 
 export function BookFilterWidget(props: {
@@ -214,41 +213,6 @@ function BookFilterAttributeWidget(props: {
     </ContainerWidget>
 }
 
-function ManyStringSelectWidget(props: {
-    value: Array<string>
-    onChange: (v: Array<string>) => void
-    autoCompleteID?: string
-}) {
-    const [value, setValue] = useState("")
-    return <ContainerWidget direction="column" gap="smaller">
-        <div>
-            <input
-                className="app"
-                value={value}
-                onChange={e => setValue(e.target.value)}
-                list={props.autoCompleteID}
-            />
-            <button
-                className="app"
-                onClick={() => {
-                    props.onChange([...props.value, value])
-                    setValue("")
-                }}
-                disabled={value == ""}
-            >добавить</button>
-        </div>
-        {props.value.map((v, i) =>
-            <ContainerWidget key={i} direction="row" gap="smaller">
-                <span>{v}</span>
-                <DeleteButtonWidget
-                    onClick={() => {
-                        props.onChange(props.value.filter((_, index) => index != i))
-                    }}
-                ></DeleteButtonWidget>
-            </ContainerWidget>
-        )}
-    </ContainerWidget>
-}
 
 
 
