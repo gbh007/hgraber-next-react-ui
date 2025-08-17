@@ -4,7 +4,7 @@ export interface MassloadInfo {
     id: number
     name: string
     description?: string
-    is_deduplicated: boolean
+    flags?: Array<string>
     page_size?: number
     page_size_formatted?: string
     file_size?: number
@@ -37,7 +37,7 @@ export interface MassloadInfoCreateRequest {
     id: number
     name: string
     description?: string
-    is_deduplicated: boolean
+    flags?: Array<string>
 }
 
 export interface MassloadInfoCreateResponse {
@@ -54,7 +54,7 @@ export interface MassloadInfoUpdateRequest {
     id: number
     name: string
     description?: string
-    is_deduplicated: boolean
+    flags?: Array<string>
 }
 
 
@@ -84,13 +84,46 @@ export function useMassloadInfoGet(): [Response<MassloadInfo | null>, PostAction
     return [response, fetchData]
 }
 
+export interface MassloadInfoListRequest {
+    filter?: {
+        name?: string
+        external_link?: string
+        flags?: Array<string>
+        attributes?: Array<{
+            code: string
+            type: "in" | "like"
+            values: Array<string>
+        }>
+    }
+    sort?: {
+        desc?: boolean
+        field?: "id" | "name" | "page_size" | "file_size"
+    }
+}
 
 export interface MassloadInfoListResponse {
     massloads?: Array<MassloadInfo>
 }
 
-export function useMassloadInfoList(): [Response<MassloadInfoListResponse | null>, GetAction] {
-    const [response, fetchData] = useAPIGet<MassloadInfoListResponse>('/api/massload/info/list')
+export function useMassloadInfoList(): [Response<MassloadInfoListResponse | null>, PostAction<MassloadInfoListRequest>] {
+    const [response, fetchData] = useAPIPost<MassloadInfoListRequest, MassloadInfoListResponse>('/api/massload/info/list')
+
+    return [response, fetchData]
+}
+
+export interface MassloadFlag {
+    code: string
+    name: string
+    description?: string
+    created_at: string
+}
+
+export interface MassloadFlagListResponse {
+    flags?: Array<MassloadFlag>
+}
+
+export function useMassloadFlagList(): [Response<MassloadFlagListResponse | null>, GetAction] {
+    const [response, fetchData] = useAPIGet<MassloadFlagListResponse>('/api/massload/flag/list')
 
     return [response, fetchData]
 }

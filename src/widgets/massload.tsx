@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MassloadInfo, MassloadInfoAttribute, MassloadInfoExternalLink } from "../apiclient/api-massload";
+import { MassloadFlag, MassloadInfo, MassloadInfoAttribute, MassloadInfoExternalLink } from "../apiclient/api-massload";
 import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "./common";
 import { HProxyListLink, MassloadEditorLink, MassloadViewLink } from "../core/routing";
 import { attributeCodes, BookAttributeAutocompleteList, BookOneAttributeWidget } from "./attribute";
@@ -10,6 +10,7 @@ export function MassloadListWidget(props: {
     value: Array<MassloadInfo>
     colors?: Array<AttributeColor>
     onDelete: (id: number) => void
+    flagInfos?: Array<MassloadFlag>
 }) {
     return <ContainerWidget appContainer gap="medium" direction="column">
         <table style={{ borderSpacing: "20px" }}>
@@ -29,7 +30,7 @@ export function MassloadListWidget(props: {
                     <td>{ml.id}</td>
                     <td>{ml.name}</td>
                     <td>{ml.description}</td>
-                    <td>{ml.is_deduplicated ? <ColorizedTextWidget color="good">Дедуплицирована</ColorizedTextWidget> : null}</td>
+                    <td><MassloadFlagViewWidget flags={ml.flags} flagInfos={props.flagInfos} /></td>
                     <td>
                         <ContainerWidget direction="row" gap="small" wrap>
                             {ml.page_size_formatted ? <>
@@ -70,6 +71,7 @@ export function MassloadInfoEditorWidget(props: {
     onChange: (v: MassloadInfo) => void
     onSave: () => void
     onDelete: () => void
+    flagInfos?: Array<MassloadFlag>
 }) {
     return <ContainerWidget appContainer direction="column" gap="medium">
         <ContainerWidget direction="row" gap="medium" wrap>
@@ -94,17 +96,11 @@ export function MassloadInfoEditorWidget(props: {
                 onChange={e => props.onChange({ ...props.value, description: e.target.value })}
             />
             <span>Флаги</span>
-            <ContainerWidget direction="column" gap="small">
-                <label>
-                    <input
-                        className="app"
-                        type="checkbox"
-                        checked={props.value.is_deduplicated}
-                        onChange={e => props.onChange({ ...props.value, is_deduplicated: e.target.checked })}
-                    />
-                    <span>Дедуплицирована</span>
-                </label>
-            </ContainerWidget>
+            <MassloadFlagPickerWidget
+                value={props.value.flags ?? []}
+                onChange={e => props.onChange({ ...props.value, flags: e })}
+                flagInfos={props.flagInfos ?? []}
+            />
         </ContainerWidget>
     </ContainerWidget>
 }
@@ -223,6 +219,7 @@ export function MassloadExternalLinkEditorWidget(props: {
 export function MassloadViewWidget(props: {
     value: MassloadInfo
     colors?: Array<AttributeColor>
+    flagInfos?: Array<MassloadFlag>
 }) {
     return <ContainerWidget appContainer direction="column" gap="medium">
         <ContainerWidget direction="2-column" gap="medium">
@@ -243,7 +240,7 @@ export function MassloadViewWidget(props: {
             </> : null}
 
             <b>Флаги</b>
-            <span>{props.value.is_deduplicated ? <ColorizedTextWidget color="good">Дедуплицирована</ColorizedTextWidget> : null}</span>
+            <span><MassloadFlagViewWidget flags={props.value.flags} flagInfos={props.flagInfos} /></span>
         </ContainerWidget>
 
         <b>Аттрибуты</b>
@@ -267,5 +264,43 @@ export function MassloadViewWidget(props: {
                 <Link className="app-button" to={HProxyListLink(link.url)}>{link.url}</Link>
             </ContainerWidget>
         )}
+    </ContainerWidget>
+}
+
+function MassloadFlagViewWidget(props: {
+    flags?: Array<string>
+    flagInfos?: Array<MassloadFlag>
+}) {
+    if (!props.flags) {
+        return null
+    }
+
+    return <ContainerWidget direction="row" gap="small" wrap>
+        {props.flags.map((flag, i) => <span key={i} style={{
+            borderRadius: "3px",
+            padding: "3px",
+            border: "1px solid var(--app-color)"
+        }}>
+            {props.flagInfos?.find((v) => v.code == flag)?.name ?? flag}
+        </span>)}
+    </ContainerWidget>
+}
+
+
+function MassloadFlagPickerWidget(props: {
+    value: Array<string>
+    onChange: (v: Array<string>) => void
+    flagInfos: Array<MassloadFlag>
+}) {
+    return <ContainerWidget direction="column" gap="small" wrap>
+        {props.flagInfos.map((flag) => <label key={flag.code}>
+            <input
+                className="app"
+                type="checkbox"
+                checked={props.value.includes(flag.code)}
+                onChange={e => props.onChange(e.target.checked ? [...props.value, flag.code] : props.value.filter(v => v != flag.code))}
+            />
+            <span>{flag.name || flag.code}</span>
+        </label>)}
     </ContainerWidget>
 }
