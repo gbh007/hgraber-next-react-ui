@@ -29,7 +29,7 @@ export function MassloadListWidget(props: {
                 {props.value?.map(ml => <tr key={ml.id}>
                     <td>{ml.id}</td>
                     <td>{ml.name}</td>
-                    <td>{ml.description}</td>
+                    <td><pre className="app">{ml.description}</pre></td>
                     <td><MassloadFlagViewWidget flags={ml.flags} flagInfos={props.flagInfos} /></td>
                     <td>
                         <ContainerWidget direction="row" gap="small" wrap>
@@ -90,8 +90,10 @@ export function MassloadInfoEditorWidget(props: {
                 onChange={e => props.onChange({ ...props.value, name: e.target.value })}
             />
             <span>Описание</span>
-            <input
+            <textarea
                 className="app"
+                rows={10}
+                cols={50}
                 value={props.value.description}
                 onChange={e => props.onChange({ ...props.value, description: e.target.value })}
             />
@@ -227,7 +229,7 @@ export function MassloadViewWidget(props: {
             <span>{props.value.name}</span>
 
             <b>Описание</b>
-            <span>{props.value.description}</span>
+            <pre className="app">{props.value.description}</pre>
 
             {props.value.page_size_formatted ? <>
                 <b>Размер страниц</b>

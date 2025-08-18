@@ -185,3 +185,10 @@ details.app > summary {
   user-select: none;
   cursor: pointer;
 }
+
+pre.app {
+  padding: 3px;
+  box-sizing: border-box;
+  font-family: var(--app-font-family);
+  color: var(--app-color);
+}
