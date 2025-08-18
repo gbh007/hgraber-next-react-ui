@@ -5,7 +5,7 @@ import { ErrorTextWidget } from "../widgets/error-text";
 import { MassloadAttributeEditorWidget, MassloadExternalLinkEditorWidget, MassloadFilterWidget, MassloadInfoEditorWidget, MassloadListWidget, MassloadViewWidget } from "../widgets/massload";
 import { MassloadInfo, MassloadInfoListRequest, useMassloadAttributeCreate, useMassloadAttributeDelete, useMassloadExternalLinkCreate, useMassloadExternalLinkDelete, useMassloadFlagList, useMassloadInfoCreate, useMassloadInfoDelete, useMassloadInfoGet, useMassloadInfoList, useMassloadInfoUpdate } from "../apiclient/api-massload";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { MassloadEditorLink, MassloadListLink } from "../core/routing";
+import { MassloadEditorLink, MassloadListLink, MassloadViewLink } from "../core/routing";
 import { BookAttributeAutocompleteWidget } from "../widgets/attribute";
 
 export function MassloadListScreen() {
@@ -150,7 +150,12 @@ export function MassloadEditorScreen() {
         <ErrorTextWidget value={massLoadExternalLinkDeleteResponse} />
         <ErrorTextWidget value={massloadFlagListResponse} />
 
-        <Link className="app-button" to={MassloadListLink()} >Список</Link>
+        <ContainerWidget direction="row" gap="medium" wrap>
+            <Link className="app-button" to={MassloadListLink()}>Список</Link>
+            {isExists ?
+                <Link className="app-button" to={MassloadViewLink(massloadID)}>Посмотреть</Link>
+                : null}
+        </ContainerWidget>
 
         <MassloadInfoEditorWidget
             onChange={setData}
@@ -237,7 +242,11 @@ export function MassloadViewScreen() {
         <ErrorTextWidget value={massLoadGetResponse} />
         <ErrorTextWidget value={massloadFlagListResponse} />
 
-        <Link className="app-button" to={MassloadListLink()} >Список</Link>
+        <ContainerWidget direction="row" gap="medium" wrap>
+            <Link className="app-button" to={MassloadListLink()}>Список</Link>
+            <Link className="app-button" to={MassloadEditorLink(massloadID)}>Редактировать</Link>
+        </ContainerWidget>
+
         {massLoadGetResponse.data ?
             <MassloadViewWidget
                 value={massLoadGetResponse.data}

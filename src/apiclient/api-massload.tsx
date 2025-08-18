@@ -89,6 +89,7 @@ export interface MassloadInfoListRequest {
         name?: string
         external_link?: string
         flags?: Array<string>
+        excluded_flags?: Array<string>
         attributes?: Array<MassloadInfoListRequestAttribute>
     }
     sort?: {

@@ -351,7 +351,7 @@ export function MassloadFilterWidget(props: {
 
 
         <ContainerWidget direction="row" gap="small">
-            <span>Флаги</span>
+            <span>Флаги которые должны быть (все из)</span>
             <MassloadFlagPickerWidget
                 flagInfos={props.flagInfos}
                 onChange={e => {
@@ -361,6 +361,16 @@ export function MassloadFilterWidget(props: {
             />
         </ContainerWidget>
 
+        <ContainerWidget direction="row" gap="small">
+            <span>Флаги которых не должно быть (любой из)</span>
+            <MassloadFlagPickerWidget
+                flagInfos={props.flagInfos}
+                onChange={e => {
+                    props.onChange({ ...props.value, filter: { ...props.value.filter, excluded_flags: e } })
+                }}
+                value={props.value.filter?.excluded_flags ?? []}
+            />
+        </ContainerWidget>
 
         <FilterAttributesWidget
             value={props.value.filter?.attributes ?? []}
