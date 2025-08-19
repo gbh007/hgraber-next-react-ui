@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import {
     AttributeColor,
+    AttributeCountResponseAttribute,
+    AttributeOriginCountResponseAttribute,
     AttributeRemapCreateRequest,
     AttributeRemapDeleteRequest,
     AttributeRemapUpdateRequest,
@@ -144,6 +146,8 @@ export function AttributeRemapListScreen() {
                                 doAttributeRemapDelete(v).then(() => fetchAttributeRemapList())
 
                             }}
+                            attributeCount={attributeCountResponse.data?.attributes}
+                            originAttributeCount={attributeOriginCountResponse.data?.attributes}
                         />)}
                     </ContainerWidget>
                 </details>
@@ -172,6 +176,8 @@ export function AttributeRemapListScreen() {
                                 doAttributeRemapDelete(v).then(() => fetchAttributeRemapList())
 
                             }}
+                            attributeCount={attributeCountResponse.data?.attributes}
+                            originAttributeCount={attributeOriginCountResponse.data?.attributes}
                         />)}
                     </ContainerWidget>
                 </details>
@@ -201,6 +207,8 @@ export function AttributeRemapListScreen() {
                                 doAttributeRemapDelete(v).then(() => fetchAttributeRemapList())
 
                             }}
+                            attributeCount={attributeCountResponse.data?.attributes}
+                            originAttributeCount={attributeOriginCountResponse.data?.attributes}
                         />)}
                     </ContainerWidget>
                 </details>
@@ -227,6 +235,8 @@ function AttributeRemapEditorWidget(props: {
     onCreate: (v: AttributeRemapCreateRequest) => void
     onUpdate: (v: AttributeRemapUpdateRequest) => void
     onDelete: (v: AttributeRemapDeleteRequest) => void
+    attributeCount?: Array<AttributeCountResponseAttribute>
+    originAttributeCount?: Array<AttributeOriginCountResponseAttribute>
 }) {
     const [remap, setRemap] = useState<{
         code: string
@@ -243,13 +253,17 @@ function AttributeRemapEditorWidget(props: {
         setRemap(props.value)
     }, [props.value])
 
+    const count = props.attributeCount?.find(attr => attr.code == remap.to_code && attr.value == remap.to_value)?.count
+    const originCount = props.originAttributeCount?.find(attr => attr.code == remap.code && attr.value == remap.value)?.count
 
-    return <ContainerWidget direction="row" gap="medium">
+
+    return <ContainerWidget direction="row" gap="medium" style={{ alignItems: "center" }}>
         <BookOneAttributeWidget
             code={remap.code}
             value={remap.value}
             colors={props.colors}
         />
+        {originCount != undefined ? <span>({originCount})</span> : null}
         <select
             className="app"
             value={remap.code}
@@ -295,12 +309,14 @@ function AttributeRemapEditorWidget(props: {
                 onChange={e => setRemap({ ...remap, to_value: e.target.value })}
                 list={BookAttributeAutocompleteList(remap.to_code ?? "")}
             />
-            {remap.to_code && remap.to_value ?
+            {remap.to_code && remap.to_value ? <>
                 <BookOneAttributeWidget
                     code={remap.to_code}
                     value={remap.to_value}
                     colors={props.colors}
-                /> : null}
+                />
+                {count != undefined ? <span>({count})</span> : null}
+            </> : null}
         </>}
         {props.isNew ?
             <button className="app" onClick={() => {
