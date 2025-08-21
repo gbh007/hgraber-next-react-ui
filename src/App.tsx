@@ -25,7 +25,6 @@ import { BookLabelsEditorScreen } from "./pages/book-label-editor";
 import { AttributeColorEditorScreen, AttributeColorListScreen } from "./pages/attribute-color";
 import { AgentListLink, AttributeColorListLink, AttributeRemapListLink, BookListLink, FSListLink, HProxyListLink, LabelPresetsLink, MainScreenLink, MassloadListLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
 import { AppTheme, ThemeContext } from "./core/context";
-import { FSEditorScreen, FSListScreen } from "./pages/fs";
 import { ParsingMirrorEditorScreen, ParsingMirrorsScreen } from "./pages/parsing-mirrors";
 import { AttributeRemapListScreen } from "./pages/attribute-remap";
 import { HProxyBookScreen } from "./features/hproxy/hproxy-book-screen";
@@ -33,6 +32,8 @@ import { HProxyListScreen } from "./features/hproxy/hproxy-list-screen";
 import { MassloadListScreen } from "./features/massload/massload-list-screen";
 import { MassloadEditorScreen } from "./features/massload/massload-editor-screen";
 import { MassloadViewScreen } from "./features/massload/massload-view-screen";
+import { FSListScreen } from "./features/fs/fs-list-screen";
+import { FSEditorScreen } from "./features/fs/fs-editor-screen";
 
 const router = createHashRouter([
   {
