@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react"
 import { useSearchParams, Link } from "react-router-dom"
-import { HProxyBookResponsePage, useHProxyBook } from "../apiclient/api-hproxy"
-import { BookDetailsLink, HProxyListLink } from "../core/routing"
-import { BadgeWidget, BookImagePreviewWidget, ImageSize, PageImagePreviewWidget, PreviewSizeWidget } from "../widgets/book-short-info"
-import { ContainerWidget } from "../widgets/common"
-import { ErrorTextWidget } from "../widgets/error-text"
-import { useAttributeColorList } from "../apiclient/api-attribute"
-import { BookOneAttributeWidget } from "../widgets/attribute"
-import { useSystemHandle } from "../apiclient/api-system-handle"
+import { useHProxyBook } from "../../apiclient/api-hproxy"
+import { BookDetailsLink, HProxyListLink } from "../../core/routing"
+import { BadgeWidget, BookImagePreviewWidget } from "../../widgets/book-short-info"
+import { ContainerWidget } from "../../widgets/common"
+import { ErrorTextWidget } from "../../widgets/error-text"
+import { useAttributeColorList } from "../../apiclient/api-attribute"
+import { BookOneAttributeWidget } from "../../widgets/attribute"
+import { useSystemHandle } from "../../apiclient/api-system-handle"
 
-import deletedBadge from "../assets/deleted.png"
+import deletedBadge from "../../assets/deleted.png"
+import { BookPagesPreviewWidget } from "./book-pages-preview-widget"
 
 export function HProxyBookScreen() {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -159,54 +160,3 @@ export function HProxyBookScreen() {
 
 
 
-
-function BookPagesPreviewWidget(props: {
-    url: string
-    pages?: Array<HProxyBookResponsePage>
-    pageLimit?: number
-}) {
-    const [pageLimit, setPageLimit] = useState(20)
-    const [imageSize, setImageSize] = useState<ImageSize>("medium")
-
-
-    useEffect(() => {
-        setPageLimit(props.pageLimit ?? 20)
-    }, [setPageLimit, props.pageLimit, props.url])
-
-
-    const scrollToTop = () => {
-        document.getElementById('BookPagesPreviewWidgetTop')?.scrollIntoView({
-            behavior: 'smooth'
-        });
-    }
-
-    if (!props.pages?.length) {
-        return null
-    }
-
-    const notAllPages = pageLimit != -1 && (pageLimit < props.pages.length)
-
-    return <ContainerWidget direction="column" gap="medium" id="BookPagesPreviewWidgetTop">
-        <ContainerWidget appContainer direction="row" gap="medium">
-            {notAllPages ?
-                <button className="app" onClick={() => setPageLimit(-1)}>Показать все страницы</button>
-                : null}
-            <PreviewSizeWidget value={imageSize} onChange={setImageSize} />
-        </ContainerWidget>
-        <ContainerWidget direction="row" gap="medium" wrap>
-            {props.pages?.filter(page => page.preview_url)
-                .filter((_, i) => pageLimit == -1 || i < pageLimit)
-                .map((page) =>
-                    <ContainerWidget appContainer direction="column" style={{ flexGrow: 1, alignItems: "center" }} key={page.page_number}>
-                        <PageImagePreviewWidget
-                            previewSize={imageSize}
-                            preview_url={page.preview_url}
-                        />
-                    </ContainerWidget>
-                )}
-        </ContainerWidget>
-        {!notAllPages ?
-            <button className="app" onClick={scrollToTop}>Наверх</button>
-            : null}
-    </ContainerWidget>
-}
