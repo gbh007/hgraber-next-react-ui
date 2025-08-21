@@ -1,76 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
-import { useAttributeColorList, useAttributeCount } from "../apiclient/api-attribute";
-import { ColorizedTextWidget, ContainerWidget } from "../widgets/common";
-import { ErrorTextWidget } from "../widgets/error-text";
-import { MassloadAttributeEditorWidget, MassloadExternalLinkEditorWidget, MassloadFilterWidget, MassloadInfoEditorWidget, MassloadListWidget, MassloadViewWidget } from "../widgets/massload";
-import { MassloadInfo, MassloadInfoListRequest, useMassloadAttributeCreate, useMassloadAttributeDelete, useMassloadExternalLinkCreate, useMassloadExternalLinkDelete, useMassloadFlagList, useMassloadInfoCreate, useMassloadInfoDelete, useMassloadInfoGet, useMassloadInfoList, useMassloadInfoUpdate } from "../apiclient/api-massload";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { MassloadEditorLink, MassloadListLink, MassloadViewLink } from "../core/routing";
-import { BookAttributeAutocompleteWidget } from "../widgets/attribute";
-
-export function MassloadListScreen() {
-    const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
-
-    const [massloadListResponse, doMassloadList] = useMassloadInfoList()
-    const [massLoadDeleteResponse, doMassloadDelete] = useMassloadInfoDelete()
-    const [massloadFlagListResponse, fetchMassloadFlagList] = useMassloadFlagList()
-    const [attributeCountResponse, getAttributeCount] = useAttributeCount()
-
-
-
-    const defaultFilterValue: MassloadInfoListRequest = {
-        sort: {
-            field: "id",
-            desc: false,
-        }
-    }
-
-    const [filter, setFilter] = useState<MassloadInfoListRequest>(defaultFilterValue)
-
-    useEffect(() => { fetchAttributeColorList() }, [fetchAttributeColorList])
-    useEffect(() => { doMassloadList(filter) }, [doMassloadList])
-    useEffect(() => { fetchMassloadFlagList() }, [fetchMassloadFlagList])
-    useEffect(() => { getAttributeCount() }, [getAttributeCount])
-
-    return <ContainerWidget direction="column" gap="big">
-        <ErrorTextWidget value={attributeColorListResponse} />
-        <ErrorTextWidget value={massloadListResponse} />
-        <ErrorTextWidget value={massLoadDeleteResponse} />
-        <ErrorTextWidget value={massloadFlagListResponse} />
-        <ErrorTextWidget value={attributeCountResponse} />
-
-        <ContainerWidget appContainer direction="column" gap="medium">
-            <details className="app">
-                <summary>Фильтр</summary>
-                <MassloadFilterWidget
-                    flagInfos={massloadFlagListResponse.data?.flags ?? []}
-                    onChange={setFilter}
-                    value={filter}
-                    attributeCount={attributeCountResponse.data?.attributes}
-                />
-            </details>
-            <ContainerWidget direction="row" gap="medium">
-                <button className="app" onClick={() => { doMassloadList(filter) }}>Обновить данные</button>
-                <button className="app" onClick={() => { setFilter(defaultFilterValue) }}>
-                    <ColorizedTextWidget color="danger">Очистить фильтр</ColorizedTextWidget>
-                </button>
-            </ContainerWidget>
-        </ContainerWidget>
-
-        <MassloadListWidget
-            value={massloadListResponse.data?.massloads ?? []}
-            colors={attributeColorListResponse.data?.colors}
-            onDelete={(id: number) => {
-                if (!confirm(`Удалить массовую загрузку ${id}?`)) {
-                    return
-                }
-
-                doMassloadDelete({ id: id }).then(() => doMassloadList(filter))
-            }}
-            flagInfos={massloadFlagListResponse.data?.flags}
-        />
-    </ContainerWidget>
-}
+import { useCallback, useEffect, useState } from "react"
+import { useAttributeColorList, useAttributeCount } from "../../apiclient/api-attribute"
+import { MassloadInfo, useMassloadAttributeCreate, useMassloadAttributeDelete, useMassloadExternalLinkCreate, useMassloadExternalLinkDelete, useMassloadFlagList, useMassloadInfoCreate, useMassloadInfoDelete, useMassloadInfoGet, useMassloadInfoUpdate } from "../../apiclient/api-massload"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { MassloadEditorLink, MassloadListLink, MassloadViewLink } from "../../core/routing"
+import { ErrorTextWidget } from "../../widgets/error-text"
+import { ContainerWidget } from "../../widgets/common"
+import { BookAttributeAutocompleteWidget } from "../../widgets/attribute"
+import { MassloadInfoEditorWidget } from "./massload-info-editor-widget"
+import { MassloadAttributeEditorWidget } from "./massload-attribute-editor-widget"
+import { MassloadExternalLinkEditorWidget } from "./massload-external-link-editor-widget"
 
 export function MassloadEditorScreen() {
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
@@ -215,43 +153,5 @@ export function MassloadEditorScreen() {
         </> : null}
 
         <BookAttributeAutocompleteWidget attributeCount={attributeCountResponse.data?.attributes} />
-    </ContainerWidget>
-}
-
-
-export function MassloadViewScreen() {
-    const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
-    const [massloadFlagListResponse, fetchMassloadFlagList] = useMassloadFlagList()
-
-    useEffect(() => { fetchAttributeColorList() }, [fetchAttributeColorList])
-    useEffect(() => { fetchMassloadFlagList() }, [fetchMassloadFlagList])
-
-    const params = useParams()
-    const massloadID = parseInt(params.id!)
-
-    const [massLoadGetResponse, fetchMassloadGet] = useMassloadInfoGet()
-
-
-    useEffect(() => {
-        fetchMassloadGet({ id: massloadID })
-    }, [fetchMassloadGet, massloadID])
-
-
-    return <ContainerWidget direction="column" gap="big">
-        <ErrorTextWidget value={attributeColorListResponse} />
-        <ErrorTextWidget value={massLoadGetResponse} />
-        <ErrorTextWidget value={massloadFlagListResponse} />
-
-        <ContainerWidget direction="row" gap="medium" wrap>
-            <Link className="app-button" to={MassloadListLink()}>Список</Link>
-            <Link className="app-button" to={MassloadEditorLink(massloadID)}>Редактировать</Link>
-        </ContainerWidget>
-
-        {massLoadGetResponse.data ?
-            <MassloadViewWidget
-                value={massLoadGetResponse.data}
-                colors={attributeColorListResponse.data?.colors}
-                flagInfos={massloadFlagListResponse.data?.flags}
-            /> : null}
     </ContainerWidget>
 }
