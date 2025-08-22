@@ -1,6 +1,6 @@
 import { AttributeCountResponseAttribute } from "../../apiclient/api-attribute"
 import { MassloadFlag, MassloadInfoListRequest } from "../../apiclient/api-massload"
-import { BookAttributeAutocompleteWidget } from "../../widgets/attribute"
+import { BookAttributeAutocompleteWidget } from "../../widgets/attribute/book-attribute"
 import { ContainerWidget, DeleteButtonWidget } from "../../widgets/common"
 import { FilterAttributesWidget } from "./attribute"
 import { MassloadFlagPickerWidget } from "./flag"

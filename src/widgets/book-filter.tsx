@@ -4,8 +4,9 @@ import { ShowSelectWidget } from "./show-select";
 import { AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
-import { attributeCodes, BookAttributeAutocompleteList, BookAttributeAutocompleteWidget } from "./attribute";
 import { ContainerWidget, DeleteButtonWidget, ManyStringSelectWidget } from "./common";
+import { BookAttributeAutocompleteList, BookAttributeAutocompleteWidget } from "./attribute/book-attribute";
+import { attributeCodes } from "./attribute/codes";
 
 
 export function BookFilterWidget(props: {

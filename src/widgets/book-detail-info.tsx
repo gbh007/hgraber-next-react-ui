@@ -5,10 +5,10 @@ import { BookAttribute, BookDetailsSize, BookSimplePage } from "../apiclient/mod
 import { BookDetails } from "../apiclient/api-book-details"
 import { BookImagePreviewWidget, ImageSize, PageImagePreviewWidget, PreviewSizeWidget } from "./book-short-info"
 import { AttributeColor } from "../apiclient/api-attribute"
-import { BookAttributeValuesWidget } from "./attribute"
 import { ColorizedTextWidget, ContainerWidget } from "./common"
 import { BooksSimpleWidget } from "./book"
 import { BookCompareLink, BookReaderLink } from "../core/routing"
+import { BookAttributeValuesWidget } from "./attribute/book-attribute-values-widget"
 
 
 export function BookDetailInfoWidget(props: PropsWithChildren & {

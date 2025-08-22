@@ -8,10 +8,10 @@ import rebuildedBadge from "../assets/rebuilded.png"
 import verifiedBadge from "../assets/verified.png"
 import deadHashBadge from "../assets/dead-hash.png"
 import { AttributeColor } from "../apiclient/api-attribute";
-import { BookAttributeValueWidget } from "./attribute";
 import { ColorizedTextWidget, ContainerWidget } from "./common";
 import { BookDetailsLink } from "../core/routing";
 import { PropsWithChildren } from "react";
+import { BookAttributeValueWidget } from "./attribute/book-attribute";
 
 export type ImageSize = "small" | "medium" | "big" | "bigger" | "biggest" | "superbig"
 

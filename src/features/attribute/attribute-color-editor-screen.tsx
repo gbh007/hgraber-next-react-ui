@@ -1,37 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { AttributeColor, useAttributeColorCreate, useAttributeColorDelete, useAttributeColorGet, useAttributeColorList, useAttributeColorUpdate, useAttributeCount } from "../apiclient/api-attribute";
-import { AttributeColorEditorWidget, AttributeColorListWidget, BookAttributeAutocompleteWidget } from "../widgets/attribute";
-import { ErrorTextWidget } from "../widgets/error-text";
 import { useNavigate, useParams } from "react-router-dom";
-import { AttributeColorEditLink } from "../core/routing";
-import { ContainerWidget } from "../widgets/common";
-
-export function AttributeColorListScreen() {
-    const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()
-    const [attributeColorDeleteResponse, doAttributeColorDelete] = useAttributeColorDelete()
-
-    useEffect(() => { fetchAttributeColorList() }, [fetchAttributeColorList])
-
-    return <ContainerWidget appContainer>
-        <ErrorTextWidget value={attributeColorListResponse} />
-        <ErrorTextWidget value={attributeColorDeleteResponse} />
-        <AttributeColorListWidget
-            value={attributeColorListResponse.data?.colors}
-            onDelete={(code: string, value: string) => {
-                if (!confirm(`Удалить окраску аттрибута ${code}/${value}`)) {
-                    return
-                }
-
-                doAttributeColorDelete({
-                    code: code,
-                    value: value,
-                }).then(() => {
-                    fetchAttributeColorList()
-                })
-            }}
-        />
-    </ContainerWidget>
-}
+import { AttributeColor, useAttributeColorCreate, useAttributeColorGet, useAttributeColorUpdate, useAttributeCount } from "../../apiclient/api-attribute";
+import { AttributeColorEditLink } from "../../core/routing";
+import { ContainerWidget } from "../../widgets/common";
+import { ErrorTextWidget } from "../../widgets/error-text";
+import { AttributeColorEditorWidget } from "../../widgets/attribute/attribute-color-editor-widget";
+import { BookAttributeAutocompleteWidget } from "../../widgets/attribute/book-attribute";
 
 export function AttributeColorEditorScreen() {
     const params = useParams()

@@ -6,11 +6,11 @@ import { BadgeWidget, BookImagePreviewWidget } from "../../widgets/book-short-in
 import { ContainerWidget } from "../../widgets/common"
 import { ErrorTextWidget } from "../../widgets/error-text"
 import { useAttributeColorList } from "../../apiclient/api-attribute"
-import { BookOneAttributeWidget } from "../../widgets/attribute"
 import { useSystemHandle } from "../../apiclient/api-system-handle"
 
 import deletedBadge from "../../assets/deleted.png"
 import { BookPagesPreviewWidget } from "./book-pages-preview-widget"
+import { BookOneAttributeWidget } from "../../widgets/attribute/book-attribute"
 
 export function HProxyBookScreen() {
     const [searchParams, setSearchParams] = useSearchParams()

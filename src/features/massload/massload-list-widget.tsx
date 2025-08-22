@@ -4,7 +4,7 @@ import { MassloadFlag, MassloadInfo } from "../../apiclient/api-massload"
 import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
 import { MassloadEditorLink, MassloadViewLink } from "../../core/routing"
 import { MassloadFlagViewWidget } from "./flag"
-import { BookOneAttributeWidget } from "../../widgets/attribute"
+import { BookOneAttributeWidget } from "../../widgets/attribute/book-attribute"
 
 export function MassloadListWidget(props: {
     value: Array<MassloadInfo>

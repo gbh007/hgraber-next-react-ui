@@ -21,11 +21,9 @@ import { BookEditorScreen } from "./pages/book-editor";
 import { BookRebuilderScreen } from "./pages/book-rebuilder";
 import { SelectToCompareScreen } from "./pages/select-to-compare";
 import { BookLabelsEditorScreen } from "./pages/book-label-editor";
-import { AttributeColorEditorScreen, AttributeColorListScreen } from "./pages/attribute-color";
 import { AgentListLink, AttributeColorListLink, AttributeRemapListLink, BookListLink, FSListLink, HProxyListLink, LabelPresetsLink, MainScreenLink, MassloadListLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
 import { AppTheme, ThemeContext } from "./core/context";
 import { ParsingMirrorEditorScreen, ParsingMirrorsScreen } from "./pages/parsing-mirrors";
-import { AttributeRemapListScreen } from "./pages/attribute-remap";
 import { HProxyBookScreen } from "./features/hproxy/hproxy-book-screen";
 import { HProxyListScreen } from "./features/hproxy/hproxy-list-screen";
 import { MassloadListScreen } from "./features/massload/massload-list-screen";
@@ -35,6 +33,9 @@ import { FSListScreen } from "./features/fs/fs-list-screen";
 import { FSEditorScreen } from "./features/fs/fs-editor-screen";
 import { AgentListScreen } from "./features/agent/agent-list-screen";
 import { AgentEditorScreen } from "./features/agent/agent-editor-screen";
+import { AttributeColorListScreen } from "./features/attribute/attribute-color-list-screen";
+import { AttributeColorEditorScreen } from "./features/attribute/attribute-color-editor-screen";
+import { AttributeRemapListScreen } from "./features/attribute/attribute-remap-list-screen";
 
 const router = createHashRouter([
   {

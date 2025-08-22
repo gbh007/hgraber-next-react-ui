@@ -5,10 +5,10 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { MassloadEditorLink, MassloadListLink, MassloadViewLink } from "../../core/routing"
 import { ErrorTextWidget } from "../../widgets/error-text"
 import { ContainerWidget } from "../../widgets/common"
-import { BookAttributeAutocompleteWidget } from "../../widgets/attribute"
 import { MassloadInfoEditorWidget } from "./massload-info-editor-widget"
 import { MassloadAttributeEditorWidget } from "./massload-attribute-editor-widget"
 import { MassloadExternalLinkEditorWidget } from "./massload-external-link-editor-widget"
+import { BookAttributeAutocompleteWidget } from "../../widgets/attribute/book-attribute"
 
 export function MassloadEditorScreen() {
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()

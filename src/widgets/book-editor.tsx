@@ -1,7 +1,8 @@
 import { AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookRaw, BookRawAttribute, BookRawLabel } from "../apiclient/model-book";
-import { attributeCodes, BookAttributeAutocompleteList, BookAttributeAutocompleteWidget } from "./attribute";
+import { BookAttributeAutocompleteList, BookAttributeAutocompleteWidget } from "./attribute/book-attribute";
+import { attributeCodes } from "./attribute/codes";
 import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
 import { ContainerWidget, DeleteButtonWidget } from "./common";
 import { DatetimePickerWidget } from "./datetime-picker";
