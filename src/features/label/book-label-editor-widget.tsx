@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { LabelDeleteRequest, LabelGetResponseLabel, LabelPresetListResponseLabel, LabelSetRequest } from "../apiclient/api-labels";
-import { ContainerWidget, HumanTimeWidget } from "./common";
+import { useState } from "react"
+import { LabelDeleteRequest, LabelGetResponseLabel, LabelPresetListResponseLabel, LabelSetRequest } from "../../apiclient/api-labels"
+import { ContainerWidget, HumanTimeWidget } from "../../widgets/common"
+import { BookLabelPresetAutocompleteWidget } from "../../widgets/label/book-label-preset-autocomplete-widget"
 
 export function BookLabelEditorWidget(props: {
     bookID: string
@@ -87,27 +88,4 @@ export function BookLabelEditorWidget(props: {
         </ContainerWidget>
         <BookLabelPresetAutocompleteWidget labelsAutoComplete={props.labelsAutoComplete} />
     </ContainerWidget>
-}
-
-export function BookLabelPresetAutocompleteWidget(props: {
-    labelsAutoComplete?: Array<LabelPresetListResponseLabel>
-}) {
-    if (!props.labelsAutoComplete) {
-        return null
-    }
-
-    return <>
-        {props.labelsAutoComplete?.map(labelPreset =>
-            <datalist id={"label-preset-values-" + labelPreset.name} key={labelPreset.name}>
-                {labelPreset.values.map(v =>
-                    <option key={v} value={v} />
-                )}
-            </datalist>
-        )}
-        <datalist id={"label-preset-names"}>
-            {props.labelsAutoComplete?.map(labelPreset =>
-                <option key={labelPreset.name} value={labelPreset.name} />
-            )}
-        </datalist>
-    </>
 }

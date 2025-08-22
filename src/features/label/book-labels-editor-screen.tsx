@@ -1,10 +1,10 @@
 import { Link, useParams, useSearchParams } from "react-router-dom"
-import { useLabelGet, useLabelPresetList, useLabelSet, useLabelDelete, LabelSetRequest, LabelDeleteRequest } from "../apiclient/api-labels"
-import { ErrorTextWidget } from "../widgets/error-text"
-import { BookLabelEditorWidget } from "../widgets/book-label-editor"
+import { LabelDeleteRequest, LabelSetRequest, useLabelDelete, useLabelGet, useLabelPresetList, useLabelSet } from "../../apiclient/api-labels"
 import { useEffect } from "react"
-import { BookDetailsLink } from "../core/routing"
-import { ContainerWidget } from "../widgets/common"
+import { ContainerWidget } from "../../widgets/common"
+import { ErrorTextWidget } from "../../widgets/error-text"
+import { BookDetailsLink } from "../../core/routing"
+import { BookLabelEditorWidget } from "./book-label-editor-widget"
 
 export function BookLabelsEditorScreen() {
     const params = useParams()

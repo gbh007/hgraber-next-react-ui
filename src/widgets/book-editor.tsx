@@ -3,9 +3,9 @@ import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookRaw, BookRawAttribute, BookRawLabel } from "../apiclient/model-book";
 import { BookAttributeAutocompleteList, BookAttributeAutocompleteWidget } from "./attribute/book-attribute";
 import { attributeCodes } from "./attribute/codes";
-import { BookLabelPresetAutocompleteWidget } from "./book-label-editor";
-import { ContainerWidget, DeleteButtonWidget } from "./common";
+import { ContainerWidget, DeleteButtonWidget, StringArrayPickerWidget } from "./common";
 import { DatetimePickerWidget } from "./datetime-picker";
+import { BookLabelPresetAutocompleteWidget } from "./label/book-label-preset-autocomplete-widget";
 
 
 export function BookEditorWidget(props: {
@@ -184,42 +184,10 @@ function AttributeEditor(props: {
             )}
         </select>
         <DeleteButtonWidget onClick={props.onDelete}></DeleteButtonWidget>
-        <ManyStringSelectWidget
+        <StringArrayPickerWidget
             value={props.value.values}
             onChange={e => props.onChange({ ...props.value, values: e })}
             autoCompleteID={BookAttributeAutocompleteList(props.value.code, true)}
         />
-    </ContainerWidget>
-}
-
-function ManyStringSelectWidget(props: {
-    value: Array<string>
-    onChange: (v: Array<string>) => void
-    autoCompleteID?: string
-}) {
-    return <ContainerWidget direction="column" gap="smaller">
-        <div>
-            <button
-                className="app"
-                onClick={() => {
-                    props.onChange([...props.value, ""])
-                }}
-            >добавить</button>
-        </div>
-        {props.value.map((value, i) =>
-            <ContainerWidget key={i} direction="row" gap="smaller">
-                <input
-                    className="app"
-                    value={value}
-                    onChange={e => props.onChange(props.value.map((v, index) => i == index ? e.target.value : v))}
-                    list={props.autoCompleteID}
-                />
-                <DeleteButtonWidget
-                    onClick={() => {
-                        props.onChange(props.value.filter((_, index) => index != i))
-                    }}
-                ></DeleteButtonWidget>
-            </ContainerWidget>
-        )}
     </ContainerWidget>
 }

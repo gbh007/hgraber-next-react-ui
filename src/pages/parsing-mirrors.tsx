@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ContainerWidget } from "../widgets/common";
+import { ContainerWidget, StringArrayPickerWidget } from "../widgets/common";
 import { Link, useParams } from "react-router-dom";
 import { ErrorTextWidget } from "../widgets/error-text";
 import { ParsingMirrorEditLink } from "../core/routing";
@@ -111,32 +111,4 @@ export function ParsingMirrorEditorScreen() {
             }}
         >Сохранить</button>
     </ContainerWidget>
-}
-
-
-export function StringArrayPickerWidget(props: {
-    value?: Array<string>
-    onChange: (v: Array<string>) => void
-}) {
-    return <ContainerWidget direction="column" gap="smaller">
-        <div>
-            <button className="app" onClick={() => {
-                props.onChange([...props.value ?? [], ""])
-            }}>Добавить</button>
-        </div>
-        {props.value?.map((value, i) => <div key={i}>
-            <input
-                className="app"
-                type="text"
-                value={value}
-                onChange={e => {
-                    props.onChange(props.value?.map((value, ind) => ind == i ? e.target.value : value) ?? [])
-                }}
-            />
-            <button className="app" onClick={() => {
-                props.onChange(props.value?.filter((_, ind) => ind != i) ?? [])
-            }}>Удалить</button>
-        </div >)
-        }
-    </ContainerWidget >
 }

@@ -164,8 +164,43 @@ export function ManyStringSelectWidget(props: {
                     onClick={() => {
                         props.onChange(props.value.filter((_, index) => index != i))
                     }}
-                ></DeleteButtonWidget>
+                />
             </ContainerWidget>
         )}
     </ContainerWidget>
+}
+
+
+export function StringArrayPickerWidget(props: {
+    name?: string
+    value: Array<string>
+    onChange: (v: Array<string>) => void
+    autoCompleteID?: string
+}) {
+    return <ContainerWidget direction="column" gap="smaller">
+        <div>
+            {props.name ? <span>{props.name}: </span> : null}
+            <button className="app" onClick={() => {
+                props.onChange([...props.value, ""])
+            }}>Добавить</button>
+        </div>
+        {props.value.map((value, i) =>
+            <ContainerWidget key={i} direction="row" gap="smaller">
+                <input
+                    className="app"
+                    type="text"
+                    value={value}
+                    onChange={e => {
+                        props.onChange(props.value.map((value, ind) => ind == i ? e.target.value : value))
+                    }}
+                    list={props.autoCompleteID}
+                />
+                <DeleteButtonWidget
+                    onClick={() => {
+                        props.onChange(props.value.filter((_, ind) => ind != i))
+                    }}
+                />
+            </ContainerWidget >)
+        }
+    </ContainerWidget >
 }
