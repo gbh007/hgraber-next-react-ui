@@ -9,7 +9,6 @@ import { MainScreen } from "./pages/main";
 import { PropsWithChildren, useState } from "react";
 import { SettingsScreen } from "./pages/settings";
 import { RPCScreen } from "./pages/rpc";
-import { AgentEditorScreen, AgentListScreen } from "./pages/agents";
 import { ListScreen } from "./pages/list";
 import { BookDetailsScreen } from "./pages/details";
 import { BookReadScreen } from "./pages/read";
@@ -34,6 +33,8 @@ import { MassloadEditorScreen } from "./features/massload/massload-editor-screen
 import { MassloadViewScreen } from "./features/massload/massload-view-screen";
 import { FSListScreen } from "./features/fs/fs-list-screen";
 import { FSEditorScreen } from "./features/fs/fs-editor-screen";
+import { AgentListScreen } from "./features/agent/agent-list-screen";
+import { AgentEditorScreen } from "./features/agent/agent-editor-screen";
 
 const router = createHashRouter([
   {

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 import { AgentListResponse } from "../../apiclient/api-agent"
 import { FSListResponseUnit } from "../../apiclient/api-fs"
-import { AgentStatusWidget } from "../../widgets/agent"
 import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../../widgets/common"
 import { FSEditLink } from "../../core/routing"
+import { AgentStatusWidget } from "../../widgets/agent/agent-status-widget"
 
 export function FSInfoWidget(props: {
     value: FSListResponseUnit
