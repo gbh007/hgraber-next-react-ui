@@ -1,13 +1,13 @@
-import { Link, useParams } from "react-router-dom"
-import { useBookRaw, useBookUpdate } from "../apiclient/api-book"
 import { useEffect, useState } from "react"
-import { ErrorTextWidget } from "../widgets/error-text"
-import { BookEditorWidget } from "../widgets/book-editor"
-import { BookRaw } from "../apiclient/model-book"
-import { useLabelPresetList } from "../apiclient/api-labels"
-import { useAttributeOriginCount } from "../apiclient/api-attribute"
-import { BookDetailsLink } from "../core/routing"
-import { ContainerWidget } from "../widgets/common"
+import { Link, useParams } from "react-router-dom"
+import { BookRaw } from "../../apiclient/model-book"
+import { useBookRaw, useBookUpdate } from "../../apiclient/api-book"
+import { useLabelPresetList } from "../../apiclient/api-labels"
+import { useAttributeOriginCount } from "../../apiclient/api-attribute"
+import { ContainerWidget } from "../../widgets/common"
+import { ErrorTextWidget } from "../../widgets/error-text"
+import { BookDetailsLink } from "../../core/routing"
+import { BookEditorWidget } from "./book-editor-widget"
 
 export function BookEditorScreen() {
     const params = useParams()

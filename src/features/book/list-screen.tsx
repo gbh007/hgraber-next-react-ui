@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react"
-import styles from "./list.module.css"
-import { BookFilter } from "../apiclient/model-book-filter"
-import { BookListResponsePages, useBookList } from "../apiclient/api-book-list"
-import { ErrorTextWidget } from "../widgets/error-text"
-import { BookFilterWidget } from "../widgets/book-filter"
-import { BookShortInfoWidget } from "../widgets/book-short-info"
-import { useAppSettings } from "../apiclient/settings"
-import { useAttributeColorList, useAttributeCount } from "../apiclient/api-attribute"
-import { useLabelPresetList } from "../apiclient/api-labels"
 import { Link, useSearchParams } from "react-router-dom"
-import { useAgentList, useAgentTaskExport } from "../apiclient/api-agent"
-import { ColorizedTextWidget, ContainerWidget } from "../widgets/common"
-import { SelectToCompareLink } from "../core/routing"
-
+import { useAppSettings } from "../../apiclient/settings"
+import styles from "./list-screen.module.css"
+import { BookFilter } from "../../apiclient/model-book-filter"
+import { useEffect, useState } from "react"
+import { useAttributeColorList, useAttributeCount } from "../../apiclient/api-attribute"
+import { useLabelPresetList } from "../../apiclient/api-labels"
+import { useBookList } from "../../apiclient/api-book-list"
+import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
+import { ErrorTextWidget } from "../../widgets/error-text"
+import { BookFilterWidget } from "../../widgets/book/book-filter-widget"
+import { SelectToCompareLink } from "../../core/routing"
+import { AgentExportWidget } from "./agent-export-widget"
+import { PaginatorWidget } from "../../widgets/common/paginator-widget"
+import { BookShortInfoWidget } from "./book-short-info-widget"
 
 export function ListScreen() {
     const [settings, _] = useAppSettings()
@@ -129,71 +129,3 @@ export function ListScreen() {
     </ContainerWidget>
 }
 
-
-function AgentExportWidget(props: { filter: BookFilter }) {
-    const [agentsResponse, getAgents] = useAgentList()
-    const [agentID, setAgentID] = useState("")
-    const [deleteAfterExport, setDeleteAfterExport] = useState(false)
-    const [exportResponse, makeExport] = useAgentTaskExport()
-
-    useEffect(() => { getAgents({ can_export: true, }) }, [getAgents])
-
-    return <details className="app">
-        <summary>Параметры экспорта</summary>
-        <ContainerWidget direction="row" gap="medium">
-            <ErrorTextWidget value={agentsResponse} />
-
-            <select className="app" value={agentID} onChange={e => { setAgentID(e.target.value) }}>
-                <option value="">Не выбран</option>
-                {agentsResponse.data?.map(agent => <option value={agent.info.id} key={agent.info.id}>
-                    {agent.info.name}
-                </option>
-                )}
-            </select>
-            <label>
-                <span>Удалить после экспорта</span>
-                <input
-                    className="app"
-                    checked={deleteAfterExport}
-                    placeholder="Удалить после экспорта"
-                    type="checkbox"
-                    autoComplete="off"
-                    onChange={e => { setDeleteAfterExport(e.target.checked) }}
-                />
-            </label>
-            <ErrorTextWidget value={exportResponse} />
-            <button className="app" disabled={exportResponse.isLoading || !agentID} onClick={() => {
-                if (deleteAfterExport && !confirm("Книги будут удалены из системы после экспорта, продолжить?")) {
-                    return
-                }
-
-                makeExport({
-                    book_filter: { ...props.filter, pagination: undefined }, // Принудительно срезаем параметры пагинации. 
-                    delete_after: deleteAfterExport,
-                    exporter: agentID,
-                })
-            }}> Выгрузить</button>
-        </ContainerWidget>
-    </details>
-}
-
-export function PaginatorWidget(props: {
-    value: Array<BookListResponsePages>
-    onChange: (v: number) => void
-}) {
-    return <div>
-        {props.value.map((page, index) => <span
-            key={index}
-            className={styles.page}
-            data-current={page.is_current ? 'true' : 'false'}
-            data-separator={page.is_separator ? 'true' : 'false'}
-            onClick={() => {
-                if (page.is_separator) return
-                props.onChange(page.value)
-            }}
-        >
-            {page.is_separator ? "..." : page.value}
-        </span>
-        )}
-    </div >
-}

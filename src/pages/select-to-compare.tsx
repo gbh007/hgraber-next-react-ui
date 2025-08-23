@@ -4,14 +4,14 @@ import styles from "./select-to-compare.module.css"
 import { BookShortInfo, useBookList } from "../apiclient/api-book-list"
 import { Link, useSearchParams } from "react-router-dom"
 import { ColorizedTextWidget, ContainerWidget } from "../widgets/common"
-import { BookFilterWidget } from "../widgets/book-filter"
-import { PaginatorWidget } from "./list"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { useAppSettings } from "../apiclient/settings"
 import { useAttributeCount } from "../apiclient/api-attribute"
 import { useLabelPresetList } from "../apiclient/api-labels"
-import { BooksSimpleWidget } from "../widgets/book"
 import { BookCompareLink, BookListLink } from "../core/routing"
+import { BooksSimpleWidget } from "../widgets/book/books-simple-widget"
+import { BookFilterWidget } from "../widgets/book/book-filter-widget"
+import { PaginatorWidget } from "../widgets/common/paginator-widget"
 
 
 export function SelectToCompareScreen() {

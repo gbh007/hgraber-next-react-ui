@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { ErrorTextWidget } from "../widgets/error-text"
 import { BookSimple } from "../apiclient/model-book"
 import styles from "./books-by-page.module.css"
-import { BooksSimpleWidget } from "../widgets/book"
+import { BooksSimpleWidget } from "../widgets/book/books-simple-widget"
 
 export function BooksByPageScreen() {
     const params = useParams()

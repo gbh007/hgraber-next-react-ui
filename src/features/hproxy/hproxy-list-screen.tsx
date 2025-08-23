@@ -4,8 +4,10 @@ import { useEffect, useState } from "react"
 import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
 import { ErrorTextWidget } from "../../widgets/error-text"
 import { HProxyBookLink, HProxyListLink } from "../../core/routing"
-import { BookImagePreviewWidget, ImageSize, PreviewSizeWidget } from "../../widgets/book-short-info"
 import { useSystemHandle } from "../../apiclient/api-system-handle"
+import { ImageSize } from "../../widgets/book/image-size"
+import { PreviewSizeWidget } from "../../widgets/book/page-image-preview-widget"
+import { BookImagePreviewWidget } from "../../widgets/book/book-image-preview-widget"
 
 export function HProxyListScreen() {
     const [searchParams, setSearchParams] = useSearchParams()

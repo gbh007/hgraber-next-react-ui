@@ -1,14 +1,3 @@
-.bookList {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(min(500px, 100vw - 20px), 1fr)
-  );
-  gap: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 span.page {
   border-radius: 3px;
   padding: 3px;

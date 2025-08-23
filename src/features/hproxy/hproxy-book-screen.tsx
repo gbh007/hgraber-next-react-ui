@@ -2,15 +2,16 @@ import { useState, useEffect } from "react"
 import { useSearchParams, Link } from "react-router-dom"
 import { useHProxyBook } from "../../apiclient/api-hproxy"
 import { BookDetailsLink, HProxyListLink } from "../../core/routing"
-import { BadgeWidget, BookImagePreviewWidget } from "../../widgets/book-short-info"
 import { ContainerWidget } from "../../widgets/common"
 import { ErrorTextWidget } from "../../widgets/error-text"
 import { useAttributeColorList } from "../../apiclient/api-attribute"
 import { useSystemHandle } from "../../apiclient/api-system-handle"
 
 import deletedBadge from "../../assets/deleted.png"
-import { BookPagesPreviewWidget } from "./book-pages-preview-widget"
+import { HProxyBookPagesPreviewWidget } from "./book-pages-preview-widget"
 import { BookOneAttributeWidget } from "../../widgets/attribute/book-attribute"
+import { BookImagePreviewWidget } from "../../widgets/book/book-image-preview-widget"
+import { BadgeWidget } from "../../widgets/book/badge-widget"
 
 export function HProxyBookScreen() {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -143,14 +144,14 @@ export function HProxyBookScreen() {
                 </ContainerWidget>)}
                 {isDownloaded ?
                     <ContainerWidget direction="row" gap="medium" wrap>
-                        <span>Скачанно:</span>
+                        <span>Скачано:</span>
                         {hProxyBookResponse.data?.exists_ids?.map(id => <Link className="app-button" to={BookDetailsLink(id)}>{id}</Link>)}
                     </ContainerWidget>
                     : null}
             </ContainerWidget>
         </ContainerWidget>
 
-        <BookPagesPreviewWidget
+        <HProxyBookPagesPreviewWidget
             url={hProxyBookResponse.data?.ext_url ?? ""}
             pages={hProxyBookResponse.data?.pages}
             pageLimit={10}

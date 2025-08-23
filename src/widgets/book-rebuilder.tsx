@@ -2,18 +2,22 @@ import { AttributeCountResponseAttribute } from "../apiclient/api-attribute";
 import { BookRebuildRequest, BookRebuildRequestFlags } from "../apiclient/api-book";
 import { LabelPresetListResponseLabel } from "../apiclient/api-labels";
 import { BookSimplePage } from "../apiclient/model-book";
-import { BookAttributeInfoEditorWidget, BookLabelInfoEditorWidget, BookMainInfoEditorWidget } from "./book-editor";
 import styles from "./book-rebuilder.module.css"
 import { Link } from "react-router-dom";
-import { BookFilterWidget } from "./book-filter";
 import { BookFilter } from "../apiclient/model-book-filter";
 import { BookListResponse, BookShortInfo } from "../apiclient/api-book-list";
-import { PaginatorWidget } from "../pages/list";
 import { ColorizedTextWidget, ContainerWidget } from "./common";
 import { useCallback, useEffect, useState } from "react";
-import { ImageSize, PageBadgesWidget, PageImagePreviewWidget, PreviewSizeWidget } from "./book-short-info";
-import { BooksSimpleWidget } from "./book";
 import { BookReaderLink } from "../core/routing";
+import { BooksSimpleWidget } from "./book/books-simple-widget";
+import { BookFilterWidget } from "./book/book-filter-widget";
+import { PaginatorWidget } from "./common/paginator-widget";
+import { BookMainInfoEditorWidget } from "./book/book-main-info-editor-widget";
+import { BookLabelInfoEditorWidget } from "./book/book-label-info-editor-widget";
+import { BookAttributeInfoEditorWidget } from "./book/book-attribute-info-editor-widget";
+import { ImageSize } from "./book/image-size";
+import { PageImagePreviewWidget, PreviewSizeWidget } from "./book/page-image-preview-widget";
+import { PageBadgesWidget } from "./book/badge-widget";
 
 export function BookRebuilderWidget(props: {
     value: BookRebuildRequest

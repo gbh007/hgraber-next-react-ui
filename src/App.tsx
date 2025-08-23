@@ -9,14 +9,10 @@ import { MainScreen } from "./pages/main";
 import { PropsWithChildren, useState } from "react";
 import { SettingsScreen } from "./pages/settings";
 import { RPCScreen } from "./pages/rpc";
-import { ListScreen } from "./pages/list";
-import { BookDetailsScreen } from "./pages/details";
-import { BookReadScreen } from "./pages/read";
 import { TaskScreen } from "./pages/tasks";
 import { CompareBookScreen } from "./pages/compare";
 import { UniqueBookPagesScreen } from "./pages/unique-pages";
 import { BooksByPageScreen } from "./pages/books-by-page";
-import { BookEditorScreen } from "./pages/book-editor";
 import { BookRebuilderScreen } from "./pages/book-rebuilder";
 import { SelectToCompareScreen } from "./pages/select-to-compare";
 import { AgentListLink, AttributeColorListLink, AttributeRemapListLink, BookListLink, FSListLink, HProxyListLink, LabelPresetsLink, MainScreenLink, MassloadListLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
@@ -38,6 +34,10 @@ import { LabelPresetEditorScreen } from "./features/label/label-preset-editor-sc
 import { BookLabelsEditorScreen } from "./features/label/book-labels-editor-screen";
 import { ParsingMirrorsScreen } from "./features/parsing/parsing-mirrors-screen";
 import { ParsingMirrorEditorScreen } from "./features/parsing/parsing-mirror-editor-screen";
+import { ListScreen } from "./features/book/list-screen";
+import { BookDetailsScreen } from "./features/book/book-details-screen";
+import { BookReadScreen } from "./features/book/book-read-screen";
+import { BookEditorScreen } from "./features/book/book-editor-screen";
 
 const router = createHashRouter([
   {

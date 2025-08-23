@@ -1,9 +1,9 @@
 import { PropsWithChildren, useCallback, useEffect, useState } from "react"
 import { BookSimplePage } from "../apiclient/model-book"
 import styles from "./split-viewer.module.css"
-import { BookReadActionButtonWidget } from "./book-reader"
 import { ColorizedTextWidget, ContainerWidget } from "./common"
-import { PageBadgesWidget } from "./book-short-info"
+import { BookReadActionButtonWidget } from "./book/book-read-action-button-widget"
+import { PageBadgesWidget } from "./book/badge-widget"
 
 
 export function DualReaderWidget(props: {

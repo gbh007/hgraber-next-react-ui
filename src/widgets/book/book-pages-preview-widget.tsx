@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react"
-import { HProxyBookResponsePage } from "../../apiclient/api-hproxy"
-import { ContainerWidget } from "../../widgets/common"
-import { ImageSize } from "../../widgets/book/image-size"
-import { PageImagePreviewWidget, PreviewSizeWidget } from "../../widgets/book/page-image-preview-widget"
+import { BookSimplePage } from "../../apiclient/model-book"
+import { ImageSize } from "./image-size"
+import { ContainerWidget } from "../common"
+import { PageImagePreviewWidget, PreviewSizeWidget } from "./page-image-preview-widget"
+import { Link } from "react-router-dom"
+import { BookReaderLink } from "../../core/routing"
 
-export function HProxyBookPagesPreviewWidget(props: {
-    url: string
-    pages?: Array<HProxyBookResponsePage>
+export function BookPagesPreviewWidget(props: {
+    bookID: string
+    pages?: Array<BookSimplePage>
     pageLimit?: number
 }) {
     const [pageLimit, setPageLimit] = useState(20)
-    const [imageSize, setImageSize] = useState<ImageSize>("medium")
-
 
     useEffect(() => {
         setPageLimit(props.pageLimit ?? 20)
-    }, [setPageLimit, props.pageLimit, props.url])
+    }, [setPageLimit, props.pageLimit, props.bookID])
 
+
+    const [imageSize, setImageSize] = useState<ImageSize>("medium")
 
     const scrollToTop = () => {
-        document.getElementById('HProxyBookPagesPreviewWidgetTop')?.scrollIntoView({
+        document.getElementById('BookPagesPreviewWidgetTop')?.scrollIntoView({
             behavior: 'smooth'
         });
     }
@@ -30,7 +32,7 @@ export function HProxyBookPagesPreviewWidget(props: {
 
     const notAllPages = pageLimit != -1 && (pageLimit < props.pages.length)
 
-    return <ContainerWidget direction="column" gap="medium" id="HProxyBookPagesPreviewWidgetTop">
+    return <ContainerWidget direction="column" gap="medium" id="BookPagesPreviewWidgetTop">
         <ContainerWidget appContainer direction="row" gap="medium">
             {notAllPages ?
                 <button className="app" onClick={() => setPageLimit(-1)}>Показать все страницы</button>
@@ -42,10 +44,13 @@ export function HProxyBookPagesPreviewWidget(props: {
                 .filter((_, i) => pageLimit == -1 || i < pageLimit)
                 .map((page) =>
                     <ContainerWidget appContainer direction="column" style={{ flexGrow: 1, alignItems: "center" }} key={page.page_number}>
-                        <PageImagePreviewWidget
-                            previewSize={imageSize}
-                            preview_url={page.preview_url}
-                        />
+                        <Link to={BookReaderLink(props.bookID, page.page_number)}>
+                            <PageImagePreviewWidget
+                                previewSize={imageSize}
+                                flags={page}
+                                preview_url={page.preview_url}
+                            />
+                        </Link>
                     </ContainerWidget>
                 )}
         </ContainerWidget>

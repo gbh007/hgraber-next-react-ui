@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom"
 import { useUniqueBookPages } from "../apiclient/api-deduplicate"
 import { useEffect, useState } from "react"
 import { ErrorTextWidget } from "../widgets/error-text"
-import { BookPagesPreviewWidget } from "../widgets/book-detail-info"
 import { ContainerWidget } from "../widgets/common"
+import { BookPagesPreviewWidget } from "../widgets/book/book-pages-preview-widget"
 
 // TODO: выглядит скорее как виджет обрезок, подумать что с этим можно сделать
 export function UniqueBookPagesScreen() {

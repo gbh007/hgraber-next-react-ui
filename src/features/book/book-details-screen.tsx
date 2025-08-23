@@ -1,18 +1,22 @@
-import { useEffect } from "react";
-import { useBookDetails } from "../apiclient/api-book-details";
-import { ErrorTextWidget } from "../widgets/error-text";
-import { BookDetailInfoWidget } from "../widgets/book-detail-info";
-import { useBookDelete } from "../apiclient/api-book-delete";
-import { Link, useParams } from "react-router-dom";
-import { useDeduplicateBookByPageBody, useSetDeadHash } from "../apiclient/api-deduplicate";
-import styles from "./details.module.css"
-import { useBookRestore, useBookStatusSet } from "../apiclient/api-book";
-import { useAttributeColorList } from "../apiclient/api-attribute";
-import { ColorizedTextWidget, ContainerWidget } from "../widgets/common";
-import { BookEditLink, BookLabelEditLink, BookReaderLink, BookRebuildLink, BookUniquePagesLink } from "../core/routing";
-import { BookTransferCoordinatorWidget } from "../widgets/book";
+import { CSSProperties, useEffect } from "react"
+import { Link, useParams } from "react-router-dom"
+import { useBookDetails } from "../../apiclient/api-book-details"
+import { useBookDelete } from "../../apiclient/api-book-delete"
+import { useBookRestore, useBookStatusSet } from "../../apiclient/api-book"
+import { useDeduplicateBookByPageBody, useSetDeadHash } from "../../apiclient/api-deduplicate"
+import { useAttributeColorList } from "../../apiclient/api-attribute"
+import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
+import { ErrorTextWidget } from "../../widgets/error-text"
+import { BookDetailInfoWidget } from "./book-detail-info-widget"
+import { BookEditLink, BookLabelEditLink, BookReaderLink, BookRebuildLink, BookUniquePagesLink } from "../../core/routing"
+import { BookTransferCoordinatorWidget } from "../../widgets/fs/book-transfer-coordinator-widget"
 
 export function BookDetailsScreen() {
+    const mainButton: CSSProperties = {
+        textAlign: "center",
+        flexGrow: 1,
+    }
+
     const params = useParams()
     const bookID = params.bookID!
 
@@ -56,10 +60,11 @@ export function BookDetailsScreen() {
         >
             <ContainerWidget direction="column" gap="big">
                 <ContainerWidget direction="row" gap="medium" wrap>
-                    <button className={"app " + styles.mainButton} onClick={() => { window.open('/api/book/archive/' + bookID, "_blank") }}>Скачать</button>
-                    {hasPages ? <Link className={"app-button " + styles.mainButton} to={BookReaderLink(bookID)}>Читать</Link> : null}
+                    <button className="app" style={mainButton} onClick={() => { window.open('/api/book/archive/' + bookID, "_blank") }}>Скачать</button>
+                    {hasPages ? <Link className="app-button" style={mainButton} to={BookReaderLink(bookID)}>Читать</Link> : null}
                     {bookDetailsResponse.data.info.flags.is_deleted ? null : <button
-                        className={"app " + styles.mainButton}
+                        className="app"
+                        style={mainButton}
                         disabled={bookDeleteResponse.isLoading}
                         onClick={() => {
                             if (!confirm(`Удалить книгу: ${bookDetailsResponse.data?.info.name}?`)) {
@@ -80,7 +85,8 @@ export function BookDetailsScreen() {
                     </button>}
                     {bookDetailsResponse.data.info.flags.is_verified ?
                         <button
-                            className={"app " + styles.mainButton}
+                            className="app"
+                            style={mainButton}
                             disabled={bookSetStatusResponse.isLoading}
                             onClick={() => {
                                 if (!confirm(`Снять подтверждение с книги: ${bookDetailsResponse.data?.info.name}?`)) {
@@ -95,7 +101,8 @@ export function BookDetailsScreen() {
                         </button>
                         :
                         <button
-                            className={"app " + styles.mainButton}
+                            className="app"
+                            style={mainButton}
                             disabled={bookSetStatusResponse.isLoading}
                             onClick={() => {
                                 if (!confirm(`Подтвердить книгу: ${bookDetailsResponse.data?.info.name}?`)) {
@@ -111,7 +118,8 @@ export function BookDetailsScreen() {
                     }
                     {hasSharedPages ?
                         <button
-                            className={"app " + styles.mainButton}
+                            className="app"
+                            style={mainButton}
                             disabled={bookDeduplicateResponse.isLoading}
                             onClick={() => {
                                 doBookDeduplicate({ book_id: bookID })
@@ -119,7 +127,7 @@ export function BookDetailsScreen() {
                         >Показать дубли</button>
                         : null}
                     {hasUniquePages ?
-                        <Link className={"app-button " + styles.mainButton} to={BookUniquePagesLink(bookDetailsResponse.data.info.id)}>Показать уникальные страницы</Link>
+                        <Link className="app-button" style={mainButton} to={BookUniquePagesLink(bookDetailsResponse.data.info.id)}>Показать уникальные страницы</Link>
                         : null}
                 </ContainerWidget>
                 <details className="app">
@@ -230,7 +238,8 @@ export function BookDetailsScreen() {
 
                         {bookDetailsResponse.data.info.flags.is_rebuild ?
                             <button
-                                className={"app " + styles.mainButton}
+                                className="app"
+                                style={mainButton}
                                 disabled={bookSetStatusResponse.isLoading}
                                 onClick={() => {
                                     if (!confirm(`Снять статус пересобранной с книги: ${bookDetailsResponse.data?.info.name}?`)) {
@@ -245,7 +254,8 @@ export function BookDetailsScreen() {
                             </button>
                             :
                             <button
-                                className={"app " + styles.mainButton}
+                                className="app"
+                                style={mainButton}
                                 disabled={bookSetStatusResponse.isLoading}
                                 onClick={() => {
                                     if (!confirm(`Установить статус пересобранной книге: ${bookDetailsResponse.data?.info.name}?`)) {
