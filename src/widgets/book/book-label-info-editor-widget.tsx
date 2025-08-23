@@ -5,7 +5,7 @@ import {
     DatetimePickerWidget,
     DeleteButtonWidget,
 } from '../design-system'
-import { BookLabelPresetAutocompleteWidget } from '../label/book-label-preset-autocomplete-widget'
+import { BookLabelPresetAutocompleteWidget } from '../label'
 
 export function BookLabelInfoEditorWidget(props: {
     value: Array<BookRawLabel>

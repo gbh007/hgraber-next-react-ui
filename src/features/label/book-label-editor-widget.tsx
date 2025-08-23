@@ -5,7 +5,7 @@ import {
     LabelPresetListResponseLabel,
     LabelSetRequest,
 } from '../../apiclient/api-labels'
-import { BookLabelPresetAutocompleteWidget } from '../../widgets/label/book-label-preset-autocomplete-widget'
+import { BookLabelPresetAutocompleteWidget } from '../../widgets/label'
 import { ContainerWidget, HumanTimeWidget } from '../../widgets/design-system'
 
 export function BookLabelEditorWidget(props: {

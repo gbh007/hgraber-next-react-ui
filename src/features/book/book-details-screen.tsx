@@ -16,7 +16,7 @@ import {
     BookRebuildLink,
     BookUniquePagesLink,
 } from '../../core/routing'
-import { BookTransferCoordinatorWidget } from '../../widgets/fs/book-transfer-coordinator-widget'
+import { BookTransferCoordinatorWidget } from '../../widgets/fs'
 import {
     ColorizedTextWidget,
     ContainerWidget,
@@ -24,10 +24,7 @@ import {
 } from '../../widgets/design-system'
 
 export function BookDetailsScreen() {
-    const mainButton: CSSProperties = {
-        textAlign: 'center',
-        flexGrow: 1,
-    }
+    const mainButton: CSSProperties = { textAlign: 'center', flexGrow: 1 }
 
     const params = useParams()
     const bookID = params.bookID!

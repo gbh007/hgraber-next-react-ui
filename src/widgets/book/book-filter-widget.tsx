@@ -1,13 +1,13 @@
 import { AttributeCountResponseAttribute } from '../../apiclient/api-attribute'
 import { LabelPresetListResponseLabel } from '../../apiclient/api-labels'
 import { BookFilter } from '../../apiclient/model-book-filter'
-import { BookAttributeAutocompleteWidget } from '../attribute/book-attribute'
+import { BookAttributeAutocompleteWidget } from '../attribute'
 import {
     ContainerWidget,
     DatetimePickerWidget,
     DeleteButtonWidget,
 } from '../design-system'
-import { BookLabelPresetAutocompleteWidget } from '../label/book-label-preset-autocomplete-widget'
+import { BookLabelPresetAutocompleteWidget } from '../label'
 import { BookFilterAttributesWidget } from './book-filter-attributes-widget'
 import { BookFilterFlagsWidget } from './book-filter-flags-widget'
 import { BookFilterLabelsWidget } from './book-filter-labels-widget'

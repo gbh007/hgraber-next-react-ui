@@ -1,10 +1,10 @@
 import { AttributeCountResponseAttribute } from '../../apiclient/api-attribute'
 import { BookRawAttribute } from '../../apiclient/model-book'
 import {
+    attributeCodes,
     BookAttributeAutocompleteList,
     BookAttributeAutocompleteWidget,
-} from '../attribute/book-attribute'
-import { attributeCodes } from '../attribute/codes'
+} from '../attribute'
 import {
     ContainerWidget,
     DeleteButtonWidget,

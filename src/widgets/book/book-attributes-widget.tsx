@@ -1,6 +1,6 @@
 import { AttributeColor } from '../../apiclient/api-attribute'
 import { BookAttribute } from '../../apiclient/model-book'
-import { BookAttributeValuesWidget } from '../attribute/book-attribute-values-widget'
+import { BookAttributeValuesWidget } from '../attribute'
 import { ContainerWidget } from '../design-system'
 
 export function BookAttributesWidget(props: {

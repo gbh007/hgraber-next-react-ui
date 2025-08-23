@@ -1,6 +1,5 @@
 import { BookFilterAttribute } from '../../apiclient/model-book-filter'
-import { BookAttributeAutocompleteList } from '../attribute/book-attribute'
-import { attributeCodes } from '../attribute/codes'
+import { attributeCodes, BookAttributeAutocompleteList } from '../attribute'
 import {
     ContainerWidget,
     DeleteButtonWidget,
