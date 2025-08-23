@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import { AttributeColor } from '../../apiclient/api-attribute'
 import { MassloadInfoAttribute } from '../../apiclient/api-massload'
-import { attributeCodes } from '../../widgets/attribute/codes'
-import {
-    BookAttributeAutocompleteList,
-    BookOneAttributeWidget,
-} from '../../widgets/attribute/book-attribute'
 import {
     ColorizedTextWidget,
     ContainerWidget,
     HumanTimeWidget,
 } from '../../widgets/design-system'
+import {
+    attributeCodes,
+    BookAttributeAutocompleteList,
+    BookOneAttributeWidget,
+} from '../../widgets/attribute'
 
 export function MassloadAttributeEditorWidget(props: {
     value?: Array<MassloadInfoAttribute>

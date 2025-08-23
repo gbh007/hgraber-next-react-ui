@@ -8,9 +8,11 @@ import {
     useAttributeCount,
 } from '../../apiclient/api-attribute'
 import { AttributeColorEditLink } from '../../core/routing'
-import { AttributeColorEditorWidget } from '../../widgets/attribute/attribute-color-editor-widget'
-import { BookAttributeAutocompleteWidget } from '../../widgets/attribute/book-attribute'
 import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
+import {
+    AttributeColorEditorWidget,
+    BookAttributeAutocompleteWidget,
+} from '../../widgets/attribute'
 
 export function AttributeColorEditorScreen() {
     const params = useParams()

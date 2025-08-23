@@ -24,8 +24,8 @@ import {
 import { MassloadInfoEditorWidget } from './massload-info-editor-widget'
 import { MassloadAttributeEditorWidget } from './massload-attribute-editor-widget'
 import { MassloadExternalLinkEditorWidget } from './massload-external-link-editor-widget'
-import { BookAttributeAutocompleteWidget } from '../../widgets/attribute/book-attribute'
 import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
+import { BookAttributeAutocompleteWidget } from '../../widgets/attribute'
 
 export function MassloadEditorScreen() {
     const [attributeColorListResponse, fetchAttributeColorList] =

@@ -3,8 +3,8 @@ import {
     useAttributeColorDelete,
     useAttributeColorList,
 } from '../../apiclient/api-attribute'
-import { AttributeColorListWidget } from '../../widgets/attribute/attribute-color-list-widget'
 import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
+import { AttributeColorListWidget } from '../../widgets/attribute'
 
 export function AttributeColorListScreen() {
     const [attributeColorListResponse, fetchAttributeColorList] =
@@ -29,12 +29,11 @@ export function AttributeColorListScreen() {
                         return
                     }
 
-                    doAttributeColorDelete({
-                        code: code,
-                        value: value,
-                    }).then(() => {
-                        fetchAttributeColorList()
-                    })
+                    doAttributeColorDelete({ code: code, value: value }).then(
+                        () => {
+                            fetchAttributeColorList()
+                        }
+                    )
                 }}
             />
         </ContainerWidget>

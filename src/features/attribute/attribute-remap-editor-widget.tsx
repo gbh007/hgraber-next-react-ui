@@ -8,14 +8,14 @@ import {
     AttributeRemapUpdateRequest,
 } from '../../apiclient/api-attribute'
 import {
-    BookAttributeAutocompleteList,
-    BookOneAttributeWidget,
-} from '../../widgets/attribute/book-attribute'
-import { attributeCodes } from '../../widgets/attribute/codes'
-import {
     ColorizedTextWidget,
     ContainerWidget,
 } from '../../widgets/design-system'
+import {
+    attributeCodes,
+    BookAttributeAutocompleteList,
+    BookOneAttributeWidget,
+} from '../../widgets/attribute'
 
 export function AttributeRemapEditorWidget(props: {
     value: {
@@ -39,10 +39,7 @@ export function AttributeRemapEditorWidget(props: {
         to_code?: string
         to_value?: string
         is_delete?: boolean
-    }>({
-        code: 'tag',
-        value: '',
-    })
+    }>({ code: 'tag', value: '' })
 
     useEffect(() => {
         setRemap(props.value)

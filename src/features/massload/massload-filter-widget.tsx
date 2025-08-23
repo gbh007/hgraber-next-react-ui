@@ -3,7 +3,7 @@ import {
     MassloadFlag,
     MassloadInfoListRequest,
 } from '../../apiclient/api-massload'
-import { BookAttributeAutocompleteWidget } from '../../widgets/attribute/book-attribute'
+import { BookAttributeAutocompleteWidget } from '../../widgets/attribute'
 import {
     ContainerWidget,
     DeleteButtonWidget,

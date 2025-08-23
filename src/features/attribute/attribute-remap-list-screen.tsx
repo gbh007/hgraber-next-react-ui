@@ -11,10 +11,12 @@ import {
     useAttributeRemapList,
     useAttributeRemapUpdate,
 } from '../../apiclient/api-attribute'
-import { attributeCodes } from '../../widgets/attribute/codes'
 import { AttributeRemapEditorWidget } from './attribute-remap-editor-widget'
-import { BookAttributeAutocompleteWidget } from '../../widgets/attribute/book-attribute'
 import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
+import {
+    attributeCodes,
+    BookAttributeAutocompleteWidget,
+} from '../../widgets/attribute'
 
 export function AttributeRemapListScreen() {
     const [valueFilter, setValueFilter] = useState('')

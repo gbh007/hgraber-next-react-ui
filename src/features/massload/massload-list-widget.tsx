@@ -3,11 +3,11 @@ import { AttributeColor } from '../../apiclient/api-attribute'
 import { MassloadFlag, MassloadInfo } from '../../apiclient/api-massload'
 import { MassloadEditorLink, MassloadViewLink } from '../../core/routing'
 import { MassloadFlagViewWidget } from './flag'
-import { BookOneAttributeWidget } from '../../widgets/attribute/book-attribute'
 import {
     ColorizedTextWidget,
     ContainerWidget,
 } from '../../widgets/design-system'
+import { BookOneAttributeWidget } from '../../widgets/attribute'
 
 export function MassloadListWidget(props: {
     value: Array<MassloadInfo>

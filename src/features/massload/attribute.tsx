@@ -1,6 +1,8 @@
 import { MassloadInfoListRequestAttribute } from '../../apiclient/api-massload'
-import { BookAttributeAutocompleteList } from '../../widgets/attribute/book-attribute'
-import { attributeCodes } from '../../widgets/attribute/codes'
+import {
+    attributeCodes,
+    BookAttributeAutocompleteList,
+} from '../../widgets/attribute'
 import {
     ContainerWidget,
     DeleteButtonWidget,

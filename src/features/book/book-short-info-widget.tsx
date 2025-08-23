@@ -3,11 +3,11 @@ import { AttributeColor } from '../../apiclient/api-attribute'
 import { BookShortInfo } from '../../apiclient/api-book-list'
 import { BookDetailsLink } from '../../core/routing'
 import { BookImagePreviewWidget } from '../../widgets/book/book-image-preview-widget'
-import { BookAttributeValueWidget } from '../../widgets/attribute/book-attribute'
 import {
     ColorizedTextWidget,
     ContainerWidget,
 } from '../../widgets/design-system'
+import { BookAttributeValueWidget } from '../../widgets/attribute'
 
 export function BookShortInfoWidget(props: {
     value: BookShortInfo

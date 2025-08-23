@@ -3,8 +3,8 @@ import { AttributeColor } from '../../apiclient/api-attribute'
 import { MassloadFlag, MassloadInfo } from '../../apiclient/api-massload'
 import { MassloadFlagViewWidget } from './flag'
 import { HProxyListLink } from '../../core/routing'
-import { BookOneAttributeWidget } from '../../widgets/attribute/book-attribute'
 import { ContainerWidget } from '../../widgets/design-system'
+import { BookOneAttributeWidget } from '../../widgets/attribute'
 
 export function MassloadViewWidget(props: {
     value: MassloadInfo
