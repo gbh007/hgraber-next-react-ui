@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { AgentListResponse } from '../../apiclient/api-agent'
 import { FSListResponseUnit } from '../../apiclient/api-fs'
 import { FSEditLink } from '../../core/routing'
-import { AgentStatusWidget } from '../../widgets/agent/agent-status-widget'
+import { AgentStatusWidget } from '../../widgets/agent'
 import {
     ColorizedTextWidget,
     ContainerWidget,

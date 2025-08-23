@@ -3,7 +3,7 @@ import {
     AgentListResponse,
     AgentListResponseStatusProblems,
 } from '../../apiclient/api-agent'
-import { AgentStatusWidget } from '../../widgets/agent/agent-status-widget'
+import { AgentStatusWidget } from '../../widgets/agent'
 import { AgentEditLink } from '../../core/routing'
 import {
     ColorizedTextWidget,
