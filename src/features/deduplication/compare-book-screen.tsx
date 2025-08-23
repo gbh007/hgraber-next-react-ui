@@ -6,9 +6,6 @@ import {
 } from '../../apiclient/api-deduplicate'
 import { useDeleteBookPage } from '../../apiclient/api-book-delete'
 import { useAttributeColorList } from '../../apiclient/api-attribute'
-import { BookImagePreviewWidget } from '../../widgets/book/book-image-preview-widget'
-import { BookAttributesWidget } from '../../widgets/book/book-attributes-widget'
-import { BookPagesPreviewWidget } from '../../widgets/book/book-pages-preview-widget'
 import { DualReaderWidget } from './dual-reader-widget'
 import { BookSimple, BookSimplePage } from '../../apiclient/model-book'
 import { BookDetailsLink } from '../../core/routing'
@@ -18,6 +15,11 @@ import {
     HumanTimeWidget,
     prettyPercent,
 } from '../../widgets/design-system'
+import {
+    BookAttributesWidget,
+    BookImagePreviewWidget,
+    BookPagesPreviewWidget,
+} from '../../widgets/book'
 
 export function CompareBookScreen() {
     const params = useParams()

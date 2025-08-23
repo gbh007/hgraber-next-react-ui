@@ -1,30 +1,29 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import { BookShortInfo, useBookList } from '../../apiclient/api-book-list'
 import { useAppSettings } from '../../apiclient/settings'
-import { BooksSimpleWidget } from '../../widgets/book/books-simple-widget'
 import styles from './select-to-compare-screen.module.css'
 import { BookFilter } from '../../apiclient/model-book-filter'
 import { useEffect, useState } from 'react'
 import { useAttributeCount } from '../../apiclient/api-attribute'
 import { useLabelPresetList } from '../../apiclient/api-labels'
 import { BookCompareLink, BookListLink } from '../../core/routing'
-import { BookFilterWidget } from '../../widgets/book/book-filter-widget'
-import { PaginatorWidget } from '../../widgets/book/paginator-widget'
 import {
     ColorizedTextWidget,
     ContainerWidget,
     ErrorTextWidget,
 } from '../../widgets/design-system'
+import {
+    BookFilterWidget,
+    BooksSimpleWidget,
+    PaginatorWidget,
+} from '../../widgets/book'
 
 export function SelectToCompareScreen() {
     const [settings, _] = useAppSettings()
     const [searchParams, setSearchParams] = useSearchParams()
 
     const defaultFilterValue: BookFilter = {
-        pagination: {
-            count: settings.book_on_page,
-            page: 1,
-        },
+        pagination: { count: settings.book_on_page, page: 1 },
         filter: {
             flags: {
                 delete_status: 'except',
@@ -32,10 +31,7 @@ export function SelectToCompareScreen() {
                 verify_status: 'only',
             },
         },
-        sort: {
-            field: 'created_at',
-            desc: true,
-        },
+        sort: { field: 'created_at', desc: true },
     }
 
     const [bookFilter, setBookFilter] = useState<BookFilter>(defaultFilterValue)

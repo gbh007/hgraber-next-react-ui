@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { AttributeColor } from '../../apiclient/api-attribute'
 import { BookShortInfo } from '../../apiclient/api-book-list'
 import { BookDetailsLink } from '../../core/routing'
-import { BookImagePreviewWidget } from '../../widgets/book/book-image-preview-widget'
+import { BookImagePreviewWidget } from '../../widgets/book'
 import {
     ColorizedTextWidget,
     ContainerWidget,

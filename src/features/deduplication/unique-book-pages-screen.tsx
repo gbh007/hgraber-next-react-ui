@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useUniqueBookPages } from '../../apiclient/api-deduplicate'
-import { BookPagesPreviewWidget } from '../../widgets/book/book-pages-preview-widget'
+import { BookPagesPreviewWidget } from '../../widgets/book'
 import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
 
 // TODO: выглядит скорее как виджет обрезок, подумать что с этим можно сделать

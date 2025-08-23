@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { HProxyBookResponsePage } from '../../apiclient/api-hproxy'
-import { ImageSize } from '../../widgets/book/image-size'
+import { ContainerWidget } from '../../widgets/design-system'
 import {
+    ImageSize,
     PageImagePreviewWidget,
     PreviewSizeWidget,
-} from '../../widgets/book/page-image-preview-widget'
-import { ContainerWidget } from '../../widgets/design-system'
+} from '../../widgets/book'
 
 export function HProxyBookPagesPreviewWidget(props: {
     url: string
@@ -22,9 +22,7 @@ export function HProxyBookPagesPreviewWidget(props: {
     const scrollToTop = () => {
         document
             .getElementById('HProxyBookPagesPreviewWidgetTop')
-            ?.scrollIntoView({
-                behavior: 'smooth',
-            })
+            ?.scrollIntoView({ behavior: 'smooth' })
     }
 
     if (!props.pages?.length) {

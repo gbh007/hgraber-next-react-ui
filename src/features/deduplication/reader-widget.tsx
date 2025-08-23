@@ -1,7 +1,7 @@
 import { PropsWithChildren, useCallback, useState } from 'react'
 import styles from './reader-widget.module.css'
 import { BookSimplePage } from '../../apiclient/model-book'
-import { PageBadgesWidget } from '../../widgets/book/badge-widget'
+import { PageBadgesWidget } from '../../widgets/book'
 import { ContainerWidget } from '../../widgets/design-system'
 
 export function ReaderWidget(

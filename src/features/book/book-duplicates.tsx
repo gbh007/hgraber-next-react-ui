@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { DeduplicateBookByPageBodyResponseResult } from '../../apiclient/api-deduplicate'
-import { BooksSimpleWidget } from '../../widgets/book/books-simple-widget'
+import { BooksSimpleWidget } from '../../widgets/book'
 import { BookCompareLink } from '../../core/routing'
 import {
     ColorizedTextWidget,

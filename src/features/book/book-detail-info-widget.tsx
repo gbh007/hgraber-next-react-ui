@@ -2,15 +2,17 @@ import { PropsWithChildren } from 'react'
 import { BookDetails } from '../../apiclient/api-book-details'
 import { DeduplicateBookByPageBodyResponseResult } from '../../apiclient/api-deduplicate'
 import { AttributeColor } from '../../apiclient/api-attribute'
-import { BookImagePreviewWidget } from '../../widgets/book/book-image-preview-widget'
-import { BookAttributesWidget } from '../../widgets/book/book-attributes-widget'
 import { BookSizeWidget } from './book-size-widget'
 import { BookDuplicates } from './book-duplicates'
-import { BookPagesPreviewWidget } from '../../widgets/book/book-pages-preview-widget'
 import {
     ColorizedTextWidget,
     ContainerWidget,
 } from '../../widgets/design-system'
+import {
+    BookAttributesWidget,
+    BookImagePreviewWidget,
+    BookPagesPreviewWidget,
+} from '../../widgets/book'
 
 export function BookDetailInfoWidget(
     props: PropsWithChildren & {

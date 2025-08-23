@@ -1,5 +1,5 @@
 import { BookShortInfo } from '../../apiclient/api-book-list'
-import { BooksSimpleWidget } from '../../widgets/book/books-simple-widget'
+import { BooksSimpleWidget } from '../../widgets/book'
 import styles from './book-rebuilder.module.css'
 
 export function BooksList(props: {

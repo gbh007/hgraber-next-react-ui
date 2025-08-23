@@ -7,10 +7,9 @@ import { useSystemHandle } from '../../apiclient/api-system-handle'
 
 import deletedBadge from '../../assets/deleted.png'
 import { HProxyBookPagesPreviewWidget } from './book-pages-preview-widget'
-import { BookImagePreviewWidget } from '../../widgets/book/book-image-preview-widget'
-import { BadgeWidget } from '../../widgets/book/badge-widget'
 import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
 import { BookOneAttributeWidget } from '../../widgets/attribute'
+import { BadgeWidget, BookImagePreviewWidget } from '../../widgets/book'
 
 export function HProxyBookScreen() {
     const [searchParams, setSearchParams] = useSearchParams()

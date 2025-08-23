@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { BookSimplePage } from '../../apiclient/model-book'
 import { ReaderWidget } from './reader-widget'
-import { BookReadActionButtonWidget } from '../../widgets/book/book-read-action-button-widget'
+import { BookReadActionButtonWidget } from '../../widgets/book'
 import {
     ColorizedTextWidget,
     ContainerWidget,

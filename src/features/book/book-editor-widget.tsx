@@ -1,9 +1,11 @@
 import { AttributeCountResponseAttribute } from '../../apiclient/api-attribute'
 import { LabelPresetListResponseLabel } from '../../apiclient/api-labels'
 import { BookRaw } from '../../apiclient/model-book'
-import { BookAttributeInfoEditorWidget } from '../../widgets/book/book-attribute-info-editor-widget'
-import { BookLabelInfoEditorWidget } from '../../widgets/book/book-label-info-editor-widget'
-import { BookMainInfoEditorWidget } from '../../widgets/book/book-main-info-editor-widget'
+import {
+    BookAttributeInfoEditorWidget,
+    BookLabelInfoEditorWidget,
+    BookMainInfoEditorWidget,
+} from '../../widgets/book'
 import { ContainerWidget } from '../../widgets/design-system'
 
 export function BookEditorWidget(props: {

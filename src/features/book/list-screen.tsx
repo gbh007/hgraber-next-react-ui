@@ -9,26 +9,22 @@ import {
 } from '../../apiclient/api-attribute'
 import { useLabelPresetList } from '../../apiclient/api-labels'
 import { useBookList } from '../../apiclient/api-book-list'
-import { BookFilterWidget } from '../../widgets/book/book-filter-widget'
 import { SelectToCompareLink } from '../../core/routing'
 import { AgentExportWidget } from './agent-export-widget'
-import { PaginatorWidget } from '../../widgets/book/paginator-widget'
 import { BookShortInfoWidget } from './book-short-info-widget'
 import {
     ColorizedTextWidget,
     ContainerWidget,
     ErrorTextWidget,
 } from '../../widgets/design-system'
+import { BookFilterWidget, PaginatorWidget } from '../../widgets/book'
 
 export function ListScreen() {
     const [settings, _] = useAppSettings()
     const [searchParams, setSearchParams] = useSearchParams()
 
     const defaultFilterValue: BookFilter = {
-        pagination: {
-            count: settings.book_on_page,
-            page: 1,
-        },
+        pagination: { count: settings.book_on_page, page: 1 },
         filter: {
             flags: {
                 delete_status: 'except',
@@ -36,10 +32,7 @@ export function ListScreen() {
                 verify_status: 'only',
             },
         },
-        sort: {
-            field: 'created_at',
-            desc: true,
-        },
+        sort: { field: 'created_at', desc: true },
     }
 
     const [bookFilter, setBookFilter] = useState<BookFilter>(defaultFilterValue)

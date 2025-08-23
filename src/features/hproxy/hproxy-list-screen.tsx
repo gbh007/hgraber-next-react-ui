@@ -3,14 +3,16 @@ import { useHProxyList } from '../../apiclient/api-hproxy'
 import { useEffect, useState } from 'react'
 import { HProxyBookLink, HProxyListLink } from '../../core/routing'
 import { useSystemHandle } from '../../apiclient/api-system-handle'
-import { ImageSize } from '../../widgets/book/image-size'
-import { PreviewSizeWidget } from '../../widgets/book/page-image-preview-widget'
-import { BookImagePreviewWidget } from '../../widgets/book/book-image-preview-widget'
 import {
     ColorizedTextWidget,
     ContainerWidget,
     ErrorTextWidget,
 } from '../../widgets/design-system'
+import {
+    BookImagePreviewWidget,
+    ImageSize,
+    PreviewSizeWidget,
+} from '../../widgets/book'
 
 export function HProxyListScreen() {
     const [searchParams, setSearchParams] = useSearchParams()

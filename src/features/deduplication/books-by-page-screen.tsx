@@ -3,7 +3,7 @@ import styles from './books-by-page-screen.module.css'
 import { useDeduplicateBooksByPage } from '../../apiclient/api-deduplicate'
 import { useEffect } from 'react'
 import { BookSimple } from '../../apiclient/model-book'
-import { BooksSimpleWidget } from '../../widgets/book/books-simple-widget'
+import { BooksSimpleWidget } from '../../widgets/book'
 import { ErrorTextWidget } from '../../widgets/design-system'
 
 export function BooksByPageScreen() {
@@ -14,10 +14,7 @@ export function BooksByPageScreen() {
     const [booksByPageResponse, fetchBooksByPage] = useDeduplicateBooksByPage()
 
     useEffect(() => {
-        fetchBooksByPage({
-            book_id: bookID,
-            page_number: pageNumber,
-        })
+        fetchBooksByPage({ book_id: bookID, page_number: pageNumber })
     }, [fetchBooksByPage, bookID, pageNumber])
 
     return (

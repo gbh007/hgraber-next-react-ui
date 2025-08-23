@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { BookSimplePage } from '../../apiclient/model-book'
-import { ImageSize } from '../../widgets/book/image-size'
-import { PreviewSizeWidget } from '../../widgets/book/page-image-preview-widget'
 import { PageSelectorReaderWidget } from './page-selector-reader-widget'
 import { PageListPreview } from './page-list-preview'
 import { ContainerWidget } from '../../widgets/design-system'
+import { ImageSize, PreviewSizeWidget } from '../../widgets/book'
 
 export function BookPagesSelectWidget(props: {
     value: Array<number>

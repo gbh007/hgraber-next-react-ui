@@ -6,15 +6,17 @@ import { LabelPresetListResponseLabel } from '../../apiclient/api-labels'
 import { BookSimplePage } from '../../apiclient/model-book'
 import { BookFilter } from '../../apiclient/model-book-filter'
 import { BuilderFlagsWidget } from './builder-flags-widget'
-import { BooksSimpleWidget } from '../../widgets/book/books-simple-widget'
-import { BookFilterWidget } from '../../widgets/book/book-filter-widget'
-import { PaginatorWidget } from '../../widgets/book/paginator-widget'
 import { BooksList } from './books-list'
-import { BookMainInfoEditorWidget } from '../../widgets/book/book-main-info-editor-widget'
-import { BookLabelInfoEditorWidget } from '../../widgets/book/book-label-info-editor-widget'
-import { BookAttributeInfoEditorWidget } from '../../widgets/book/book-attribute-info-editor-widget'
 import { BookPagesSelectWidget } from './book-pages-select-widget'
 import { ContainerWidget } from '../../widgets/design-system'
+import {
+    BookAttributeInfoEditorWidget,
+    BookFilterWidget,
+    BookLabelInfoEditorWidget,
+    BookMainInfoEditorWidget,
+    BooksSimpleWidget,
+    PaginatorWidget,
+} from '../../widgets/book'
 
 export function BookRebuilderWidget(props: {
     value: BookRebuildRequest
