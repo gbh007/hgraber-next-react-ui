@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
-import { systemWorkerRunnerConfig, useSystemWorkerConfig } from "../apiclient/api-system-worker-config"
-
-import { useSystemInfoWorkers } from "../apiclient/api-system-info"
+import { systemWorkerRunnerConfig, useSystemWorkerConfig } from "../../apiclient/api-system-worker-config"
+import { useSystemInfoWorkers } from "../../apiclient/api-system-info"
 
 export function RPCScreen() {
     return (

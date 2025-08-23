@@ -3,13 +3,7 @@ import {
   Link,
   createHashRouter,
 } from "react-router-dom";
-import { MainScreen } from "./pages/main";
-
-
 import { PropsWithChildren, useState } from "react";
-import { SettingsScreen } from "./pages/settings";
-import { RPCScreen } from "./pages/rpc";
-import { TaskScreen } from "./pages/tasks";
 import { AgentListLink, AttributeColorListLink, AttributeRemapListLink, BookListLink, FSListLink, HProxyListLink, LabelPresetsLink, MainScreenLink, MassloadListLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
 import { AppTheme, ThemeContext } from "./core/context";
 import { HProxyBookScreen } from "./features/hproxy/hproxy-book-screen";
@@ -38,6 +32,10 @@ import { CompareBookScreen } from "./features/deduplication/compare-book-screen"
 import { UniqueBookPagesScreen } from "./features/deduplication/unique-book-pages-screen";
 import { BooksByPageScreen } from "./features/deduplication/books-by-page-screen";
 import { SelectToCompareScreen } from "./features/deduplication/select-to-compare-screen";
+import { MainScreen } from "./features/system/main-screen";
+import { SettingsScreen } from "./features/system/settings-screen";
+import { RPCScreen } from "./features/system/rpc-screen";
+import { TaskScreen } from "./features/system/task-screen";
 
 const router = createHashRouter([
   {
