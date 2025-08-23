@@ -1,16 +1,16 @@
-import { Link, useParams } from "react-router-dom";
-import { useDeduplicateCompare, useSetDeadHash } from "../apiclient/api-deduplicate";
-import { useEffect, useState } from "react";
-import { ErrorTextWidget } from "../widgets/error-text";
-import { BookSimple, BookSimplePage } from "../apiclient/model-book";
-import { ContainerWidget, HumanTimeWidget, prettyPercent } from "../widgets/common";
-import { DualReaderWidget } from "../widgets/split-viewer";
-import { useAttributeColorList } from "../apiclient/api-attribute";
-import { BookDetailsLink } from "../core/routing";
-import { useDeleteBookPage } from "../apiclient/api-book-delete";
-import { BookImagePreviewWidget } from "../widgets/book/book-image-preview-widget";
-import { BookAttributesWidget } from "../widgets/book/book-attributes-widget";
-import { BookPagesPreviewWidget } from "../widgets/book/book-pages-preview-widget";
+import { useEffect, useState } from "react"
+import { Link, useParams } from "react-router-dom"
+import { useDeduplicateCompare, useSetDeadHash } from "../../apiclient/api-deduplicate"
+import { useDeleteBookPage } from "../../apiclient/api-book-delete"
+import { useAttributeColorList } from "../../apiclient/api-attribute"
+import { ContainerWidget, HumanTimeWidget, prettyPercent } from "../../widgets/common"
+import { ErrorTextWidget } from "../../widgets/error-text"
+import { BookImagePreviewWidget } from "../../widgets/book/book-image-preview-widget"
+import { BookAttributesWidget } from "../../widgets/book/book-attributes-widget"
+import { BookPagesPreviewWidget } from "../../widgets/book/book-pages-preview-widget"
+import { DualReaderWidget } from "./dual-reader-widget"
+import { BookSimple, BookSimplePage } from "../../apiclient/model-book"
+import { BookDetailsLink } from "../../core/routing"
 
 export function CompareBookScreen() {
     const params = useParams()

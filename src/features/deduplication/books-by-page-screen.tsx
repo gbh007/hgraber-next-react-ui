@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom"
-import { useDeduplicateBooksByPage } from "../apiclient/api-deduplicate"
+import styles from "./books-by-page-screen.module.css"
+import { useDeduplicateBooksByPage } from "../../apiclient/api-deduplicate"
 import { useEffect } from "react"
-import { ErrorTextWidget } from "../widgets/error-text"
-import { BookSimple } from "../apiclient/model-book"
-import styles from "./books-by-page.module.css"
-import { BooksSimpleWidget } from "../widgets/book/books-simple-widget"
+import { ErrorTextWidget } from "../../widgets/error-text"
+import { BookSimple } from "../../apiclient/model-book"
+import { BooksSimpleWidget } from "../../widgets/book/books-simple-widget"
+
 
 export function BooksByPageScreen() {
     const params = useParams()

@@ -1,6 +1,5 @@
 import { BookFilterFlags } from "../../apiclient/model-book-filter"
 import { ContainerWidget } from "../common"
-import { ShowSelectWidget } from "../show-select"
 
 
 export function BookFilterFlagsWidget(props: {
@@ -33,4 +32,15 @@ export function BookFilterFlagsWidget(props: {
             props.onChange({ ...props.value, show_without_preview: v })
         }} />
     </ContainerWidget>
+}
+
+function ShowSelectWidget(props: {
+    value: string
+    onChange: (v: string) => void
+}) {
+    return <select className="app" value={props.value} onChange={e => props.onChange(e.target.value)}>
+        <option value="all">Все</option>
+        <option value="only">Только</option>
+        <option value="except">Кроме</option>
+    </select>
 }

@@ -10,10 +10,6 @@ import { PropsWithChildren, useState } from "react";
 import { SettingsScreen } from "./pages/settings";
 import { RPCScreen } from "./pages/rpc";
 import { TaskScreen } from "./pages/tasks";
-import { CompareBookScreen } from "./pages/compare";
-import { UniqueBookPagesScreen } from "./pages/unique-pages";
-import { BooksByPageScreen } from "./pages/books-by-page";
-import { SelectToCompareScreen } from "./pages/select-to-compare";
 import { AgentListLink, AttributeColorListLink, AttributeRemapListLink, BookListLink, FSListLink, HProxyListLink, LabelPresetsLink, MainScreenLink, MassloadListLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
 import { AppTheme, ThemeContext } from "./core/context";
 import { HProxyBookScreen } from "./features/hproxy/hproxy-book-screen";
@@ -38,6 +34,10 @@ import { BookDetailsScreen } from "./features/book/book-details-screen";
 import { BookReadScreen } from "./features/book/book-read-screen";
 import { BookEditorScreen } from "./features/book/book-editor-screen";
 import { BookRebuilderScreen } from "./features/rebulder/book-rebuilder-screen";
+import { CompareBookScreen } from "./features/deduplication/compare-book-screen";
+import { UniqueBookPagesScreen } from "./features/deduplication/unique-book-pages-screen";
+import { BooksByPageScreen } from "./features/deduplication/books-by-page-screen";
+import { SelectToCompareScreen } from "./features/deduplication/select-to-compare-screen";
 
 const router = createHashRouter([
   {
