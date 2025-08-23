@@ -1,4 +1,4 @@
-import { BookFilter } from "../apiclient/model-book-filter"
+import { BookFilter } from '../apiclient/model-book-filter'
 
 export function AgentEditLink(agentID?: string) {
     return `/agent/edit/${agentID ?? 'new'}`
@@ -12,16 +12,13 @@ export function BookReaderLink(bookID: string, pageNumber?: number) {
     return `/book/${bookID}/read/${pageNumber ?? 1}`
 }
 
-
 export function BookUniquePagesLink(bookID: string) {
     return `/book/${bookID}/unique-pages`
 }
 
-
 export function BookEditLink(bookID: string) {
     return `/book/${bookID}/edit`
 }
-
 
 export function BookRebuildLink(bookID: string) {
     return `/book/${bookID}/rebuild`
@@ -37,21 +34,19 @@ export function BookLabelEditLink(bookID: string, pageNumber?: number) {
 
 export function LabelPresetEditLink(name?: string) {
     if (!name) {
-        return "/label/preset/edit"
+        return '/label/preset/edit'
     }
 
-    return "/label/preset/edit/" + encodeURIComponent(name)
+    return '/label/preset/edit/' + encodeURIComponent(name)
 }
-
 
 export function ParsingMirrorEditLink(id?: string) {
     if (!id) {
-        return "/parsing/mirror/edit"
+        return '/parsing/mirror/edit'
     }
 
-    return "/parsing/mirror/edit/" + id
+    return '/parsing/mirror/edit/' + id
 }
-
 
 export function BookListLink(filter?: BookFilter) {
     if (!filter) {
@@ -64,12 +59,14 @@ export function BookListLink(filter?: BookFilter) {
 export function BookListLinkAttribute(code: string, value: string) {
     return BookListLink({
         filter: {
-            attributes: [{
-                code: code,
-                type: "in",
-                values: [value]
-            }]
-        }
+            attributes: [
+                {
+                    code: code,
+                    type: 'in',
+                    values: [value],
+                },
+            ],
+        },
     })
 }
 
@@ -81,11 +78,9 @@ export function SelectToCompareLink(filter?: BookFilter) {
     return `/select-to-compare?filter=${encodeURIComponent(JSON.stringify(filter))}`
 }
 
-
 export function BookCompareLink(bookIDOrigin: string, bookIDTarget: string) {
     return `/book/${bookIDOrigin}/compare/${bookIDTarget}`
 }
-
 
 export function AttributeColorEditLink(code?: string, value?: string) {
     if (!code || !value) {
@@ -139,7 +134,6 @@ export function FSListLink() {
     return `/fs/list`
 }
 
-
 export function ParsingMirrorsLink() {
     return `/parsing/mirrors`
 }
@@ -169,7 +163,7 @@ export function MassloadListLink() {
 }
 
 export function MassloadEditorLink(id?: number) {
-    return `/massload/edit/${id ?? "new"}`
+    return `/massload/edit/${id ?? 'new'}`
 }
 
 export function MassloadViewLink(id: number) {

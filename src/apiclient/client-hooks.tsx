@@ -1,40 +1,41 @@
-import axios from "axios";
-import { useCallback, useState } from "react";
+import axios from 'axios'
+import { useCallback, useState } from 'react'
 
 export type GetAction = () => Promise<void>
 export type PostAction<T> = (data: T) => Promise<void>
 
 export interface Response<T> {
-    data: T,
-    isLoading: boolean,
-    isError: boolean,
-    isUnauthorize: boolean,
-    errorText: string,
+    data: T
+    isLoading: boolean
+    isError: boolean
+    isUnauthorize: boolean
+    errorText: string
     cleanData: () => void
 }
 
-export function useAPIGet<ResponseType>(url: string): [Response<ResponseType | null>, GetAction] {
-    const [data, setData] = useState<ResponseType | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
-    const [isUnauthorize, setIsUnauthorize] = useState(false);
-    const [errorText, setErrorText] = useState('');
-
+export function useAPIGet<ResponseType>(
+    url: string
+): [Response<ResponseType | null>, GetAction] {
+    const [data, setData] = useState<ResponseType | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [isError, setIsError] = useState(false)
+    const [isUnauthorize, setIsUnauthorize] = useState(false)
+    const [errorText, setErrorText] = useState('')
 
     const fetchData = useCallback(async () => {
         if (!url) {
             return
         }
 
-        setIsError(false);
+        setIsError(false)
         setIsUnauthorize(false)
-        setIsLoading(true);
-        setErrorText('');
+        setIsLoading(true)
+        setErrorText('')
 
         try {
-            const result = await axios.get(url);
+            const result = await axios.get(url)
 
-            setData(result.data);
+            setData(result.data)
         } catch (error) {
             let text = 'unknown error'
 
@@ -48,83 +49,95 @@ export function useAPIGet<ResponseType>(url: string): [Response<ResponseType | n
                 if (error.response?.status == 403) {
                     setIsUnauthorize(true)
                 }
-
             }
 
-            setErrorText(text);
-            setIsError(true);
-            setIsLoading(false);
+            setErrorText(text)
+            setIsError(true)
+            setIsLoading(false)
 
             throw text
         }
 
-        setIsLoading(false);
+        setIsLoading(false)
     }, [url])
 
-    return [{
-        data,
-        isLoading,
-        isError,
-        errorText,
-        isUnauthorize,
-        cleanData: () => { setData(null) }
-    }, fetchData];
+    return [
+        {
+            data,
+            isLoading,
+            isError,
+            errorText,
+            isUnauthorize,
+            cleanData: () => {
+                setData(null)
+            },
+        },
+        fetchData,
+    ]
 }
 
-export function useAPIPost<RequestType, ResponseType>(url: string): [Response<ResponseType | null>, PostAction<RequestType>] {
-    const [data, setData] = useState<ResponseType | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
-    const [isUnauthorize, setIsUnauthorize] = useState(false);
-    const [errorText, setErrorText] = useState('');
+export function useAPIPost<RequestType, ResponseType>(
+    url: string
+): [Response<ResponseType | null>, PostAction<RequestType>] {
+    const [data, setData] = useState<ResponseType | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [isError, setIsError] = useState(false)
+    const [isUnauthorize, setIsUnauthorize] = useState(false)
+    const [errorText, setErrorText] = useState('')
 
-
-    const fetchData = useCallback(async (requestData: RequestType) => {
-        if (!url) {
-            return
-        }
-
-        setIsError(false);
-        setIsUnauthorize(false)
-        setIsLoading(true);
-        setErrorText('');
-
-        try {
-            const result = await axios.post(url, requestData);
-
-            setData(result.data);
-        } catch (error) {
-            let text = 'unknown error'
-
-            if (error instanceof axios.AxiosError) {
-                text = error.response?.data?.details || 'unknown error'
-
-                if (error.response?.status == 401) {
-                    setIsUnauthorize(true)
-                }
-
-                if (error.response?.status == 403) {
-                    setIsUnauthorize(true)
-                }
-
+    const fetchData = useCallback(
+        async (requestData: RequestType) => {
+            if (!url) {
+                return
             }
 
-            setErrorText(text);
-            setIsError(true);
-            setIsLoading(false);
+            setIsError(false)
+            setIsUnauthorize(false)
+            setIsLoading(true)
+            setErrorText('')
 
-            throw text
-        }
+            try {
+                const result = await axios.post(url, requestData)
 
-        setIsLoading(false);
-    }, [url])
+                setData(result.data)
+            } catch (error) {
+                let text = 'unknown error'
 
-    return [{
-        data,
-        isLoading,
-        isError,
-        errorText,
-        isUnauthorize,
-        cleanData: () => { setData(null) }
-    }, fetchData];
+                if (error instanceof axios.AxiosError) {
+                    text = error.response?.data?.details || 'unknown error'
+
+                    if (error.response?.status == 401) {
+                        setIsUnauthorize(true)
+                    }
+
+                    if (error.response?.status == 403) {
+                        setIsUnauthorize(true)
+                    }
+                }
+
+                setErrorText(text)
+                setIsError(true)
+                setIsLoading(false)
+
+                throw text
+            }
+
+            setIsLoading(false)
+        },
+        [url]
+    )
+
+    return [
+        {
+            data,
+            isLoading,
+            isError,
+            errorText,
+            isUnauthorize,
+            cleanData: () => {
+                setData(null)
+            },
+        },
+        fetchData,
+    ]
 }

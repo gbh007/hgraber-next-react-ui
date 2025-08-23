@@ -1,11 +1,22 @@
-import { PostAction, useAPIPost, Response, useAPIGet, GetAction } from "./client-hooks"
+import {
+    PostAction,
+    useAPIPost,
+    Response,
+    useAPIGet,
+    GetAction,
+} from './client-hooks'
 
 export interface TaskCreateRequest {
     code: string
 }
 
-export function useTaskCreate(): [Response<void | null>, PostAction<TaskCreateRequest>] {
-    const [response, fetchData] = useAPIPost<TaskCreateRequest, void>('/api/system/task/create')
+export function useTaskCreate(): [
+    Response<void | null>,
+    PostAction<TaskCreateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<TaskCreateRequest, void>(
+        '/api/system/task/create'
+    )
 
     return [response, fetchData]
 }
@@ -31,7 +42,6 @@ export interface TaskResultsResponseResult {
     stages?: Array<TaskResultsResponseResultStage>
 }
 
-
 export interface TaskResultsResponseResultStage {
     name: string
     error?: string
@@ -43,8 +53,13 @@ export interface TaskResultsResponseResultStage {
     total: number
 }
 
-export function useTaskResults(): [Response<TaskResultsResponse | null>, GetAction] {
-    const [response, fetchData] = useAPIGet<TaskResultsResponse>('/api/system/task/results')
+export function useTaskResults(): [
+    Response<TaskResultsResponse | null>,
+    GetAction,
+] {
+    const [response, fetchData] = useAPIGet<TaskResultsResponse>(
+        '/api/system/task/results'
+    )
 
     return [response, fetchData]
 }

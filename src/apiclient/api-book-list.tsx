@@ -1,6 +1,6 @@
-import { PostAction, useAPIPost, Response } from "./client-hooks"
-import { BookFilter } from "./model-book-filter"
-import { BookSimple } from "./model-book"
+import { PostAction, useAPIPost, Response } from './client-hooks'
+import { BookFilter } from './model-book-filter'
+import { BookSimple } from './model-book'
 
 export interface BookListResponse {
     books?: Array<BookShortInfo>
@@ -26,8 +26,13 @@ export interface BookListResponsePages {
     is_separator: boolean
 }
 
-export function useBookList(): [Response<BookListResponse | null>, PostAction<BookFilter>] {
-    const [response, fetchData] = useAPIPost<BookFilter, BookListResponse>('/api/book/list')
+export function useBookList(): [
+    Response<BookListResponse | null>,
+    PostAction<BookFilter>,
+] {
+    const [response, fetchData] = useAPIPost<BookFilter, BookListResponse>(
+        '/api/book/list'
+    )
 
     return [response, fetchData]
 }

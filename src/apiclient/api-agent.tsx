@@ -1,5 +1,5 @@
-import { PostAction, useAPIPost, Response } from "./client-hooks"
-import { BookFilter } from "./model-book-filter"
+import { PostAction, useAPIPost, Response } from './client-hooks'
+import { BookFilter } from './model-book-filter'
 
 interface AgentListRequest {
     can_parse?: boolean
@@ -24,7 +24,6 @@ export interface Agent {
     created_at: string
 }
 
-
 export interface AgentListResponse {
     status?: AgentListResponseStatus
     info: Agent
@@ -42,8 +41,14 @@ export interface AgentListResponseStatusProblems {
     details: string
 }
 
-export function useAgentList(): [Response<Array<AgentListResponse> | null>, PostAction<AgentListRequest>] {
-    const [response, fetchData] = useAPIPost<AgentListRequest, Array<AgentListResponse>>('/api/agent/list')
+export function useAgentList(): [
+    Response<Array<AgentListResponse> | null>,
+    PostAction<AgentListRequest>,
+] {
+    const [response, fetchData] = useAPIPost<
+        AgentListRequest,
+        Array<AgentListResponse>
+    >('/api/agent/list')
 
     return [response, fetchData]
 }
@@ -52,8 +57,13 @@ interface AgentDeleteRequest {
     id: string
 }
 
-export function useAgentDelete(): [Response<void | null>, PostAction<AgentDeleteRequest>] {
-    const [response, fetchData] = useAPIPost<AgentDeleteRequest, void>('/api/agent/delete')
+export function useAgentDelete(): [
+    Response<void | null>,
+    PostAction<AgentDeleteRequest>,
+] {
+    const [response, fetchData] = useAPIPost<AgentDeleteRequest, void>(
+        '/api/agent/delete'
+    )
 
     return [response, fetchData]
 }
@@ -70,8 +80,13 @@ export interface AgentNewRequest {
     priority: number
 }
 
-export function useAgentNew(): [Response<void | null>, PostAction<AgentNewRequest>] {
-    const [response, fetchData] = useAPIPost<AgentNewRequest, void>('/api/agent/new')
+export function useAgentNew(): [
+    Response<void | null>,
+    PostAction<AgentNewRequest>,
+] {
+    const [response, fetchData] = useAPIPost<AgentNewRequest, void>(
+        '/api/agent/new'
+    )
 
     return [response, fetchData]
 }
@@ -82,12 +97,16 @@ interface AgentTaskExportRequest {
     delete_after: boolean
 }
 
-export function useAgentTaskExport(): [Response<void | null>, PostAction<AgentTaskExportRequest>] {
-    const [response, fetchData] = useAPIPost<AgentTaskExportRequest, void>('/api/agent/task/export')
+export function useAgentTaskExport(): [
+    Response<void | null>,
+    PostAction<AgentTaskExportRequest>,
+] {
+    const [response, fetchData] = useAPIPost<AgentTaskExportRequest, void>(
+        '/api/agent/task/export'
+    )
 
     return [response, fetchData]
 }
-
 
 export interface AgentUpdateRequest {
     id: string
@@ -102,8 +121,13 @@ export interface AgentUpdateRequest {
     priority: number
 }
 
-export function useAgentUpdate(): [Response<void | null>, PostAction<AgentUpdateRequest>] {
-    const [response, fetchData] = useAPIPost<AgentUpdateRequest, void>('/api/agent/update')
+export function useAgentUpdate(): [
+    Response<void | null>,
+    PostAction<AgentUpdateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<AgentUpdateRequest, void>(
+        '/api/agent/update'
+    )
 
     return [response, fetchData]
 }
@@ -112,8 +136,13 @@ interface AgentGetRequest {
     id: string
 }
 
-export function useAgentGet(): [Response<Agent | null>, PostAction<AgentGetRequest>] {
-    const [response, fetchData] = useAPIPost<AgentGetRequest, Agent>('/api/agent/get')
+export function useAgentGet(): [
+    Response<Agent | null>,
+    PostAction<AgentGetRequest>,
+] {
+    const [response, fetchData] = useAPIPost<AgentGetRequest, Agent>(
+        '/api/agent/get'
+    )
 
     return [response, fetchData]
 }

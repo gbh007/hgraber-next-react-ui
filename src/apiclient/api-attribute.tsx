@@ -1,4 +1,10 @@
-import { GetAction, PostAction, Response, useAPIGet, useAPIPost } from "./client-hooks"
+import {
+    GetAction,
+    PostAction,
+    Response,
+    useAPIGet,
+    useAPIPost,
+} from './client-hooks'
 
 export interface AttributeCountResponse {
     attributes?: Array<AttributeCountResponseAttribute>
@@ -10,8 +16,13 @@ export interface AttributeCountResponseAttribute {
     count: number
 }
 
-export function useAttributeCount(): [Response<AttributeCountResponse | null>, GetAction] {
-    const [response, fetchData] = useAPIGet<AttributeCountResponse>('/api/attribute/count')
+export function useAttributeCount(): [
+    Response<AttributeCountResponse | null>,
+    GetAction,
+] {
+    const [response, fetchData] = useAPIGet<AttributeCountResponse>(
+        '/api/attribute/count'
+    )
 
     return [response, fetchData]
 }
@@ -26,8 +37,13 @@ export interface AttributeOriginCountResponseAttribute {
     count: number
 }
 
-export function useAttributeOriginCount(): [Response<AttributeOriginCountResponse | null>, GetAction] {
-    const [response, fetchData] = useAPIGet<AttributeOriginCountResponse>('/api/attribute/origin/count')
+export function useAttributeOriginCount(): [
+    Response<AttributeOriginCountResponse | null>,
+    GetAction,
+] {
+    const [response, fetchData] = useAPIGet<AttributeOriginCountResponse>(
+        '/api/attribute/origin/count'
+    )
 
     return [response, fetchData]
 }
@@ -44,8 +60,13 @@ export interface AttributeColorListResponse {
     colors?: Array<AttributeColor>
 }
 
-export function useAttributeColorList(): [Response<AttributeColorListResponse | null>, GetAction] {
-    const [response, fetchData] = useAPIGet<AttributeColorListResponse>('/api/attribute/color/list')
+export function useAttributeColorList(): [
+    Response<AttributeColorListResponse | null>,
+    GetAction,
+] {
+    const [response, fetchData] = useAPIGet<AttributeColorListResponse>(
+        '/api/attribute/color/list'
+    )
 
     return [response, fetchData]
 }
@@ -55,8 +76,13 @@ export interface AttributeColorDeleteRequest {
     value: string
 }
 
-export function useAttributeColorDelete(): [Response<void | null>, PostAction<AttributeColorDeleteRequest>] {
-    const [response, fetchData] = useAPIPost<AttributeColorDeleteRequest, void>('/api/attribute/color/delete')
+export function useAttributeColorDelete(): [
+    Response<void | null>,
+    PostAction<AttributeColorDeleteRequest>,
+] {
+    const [response, fetchData] = useAPIPost<AttributeColorDeleteRequest, void>(
+        '/api/attribute/color/delete'
+    )
 
     return [response, fetchData]
 }
@@ -66,12 +92,17 @@ export interface AttributeColorGetRequest {
     value: string
 }
 
-export function useAttributeColorGet(): [Response<AttributeColor | null>, PostAction<AttributeColorGetRequest>] {
-    const [response, fetchData] = useAPIPost<AttributeColorGetRequest, AttributeColor>('/api/attribute/color/get')
+export function useAttributeColorGet(): [
+    Response<AttributeColor | null>,
+    PostAction<AttributeColorGetRequest>,
+] {
+    const [response, fetchData] = useAPIPost<
+        AttributeColorGetRequest,
+        AttributeColor
+    >('/api/attribute/color/get')
 
     return [response, fetchData]
 }
-
 
 export interface AttributeColorCreateRequest {
     code: string
@@ -80,13 +111,16 @@ export interface AttributeColorCreateRequest {
     background_color: string
 }
 
-
-export function useAttributeColorCreate(): [Response<void | null>, PostAction<AttributeColorCreateRequest>] {
-    const [response, fetchData] = useAPIPost<AttributeColorCreateRequest, void>('/api/attribute/color/create')
+export function useAttributeColorCreate(): [
+    Response<void | null>,
+    PostAction<AttributeColorCreateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<AttributeColorCreateRequest, void>(
+        '/api/attribute/color/create'
+    )
 
     return [response, fetchData]
 }
-
 
 export interface AttributeColorUpdateRequest {
     code: string
@@ -95,9 +129,13 @@ export interface AttributeColorUpdateRequest {
     background_color: string
 }
 
-
-export function useAttributeColorUpdate(): [Response<void | null>, PostAction<AttributeColorUpdateRequest>] {
-    const [response, fetchData] = useAPIPost<AttributeColorUpdateRequest, void>('/api/attribute/color/update')
+export function useAttributeColorUpdate(): [
+    Response<void | null>,
+    PostAction<AttributeColorUpdateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<AttributeColorUpdateRequest, void>(
+        '/api/attribute/color/update'
+    )
 
     return [response, fetchData]
 }
@@ -116,8 +154,13 @@ export interface AttributeRemapListResponse {
     remaps?: Array<AttributeRemap>
 }
 
-export function useAttributeRemapList(): [Response<AttributeRemapListResponse | null>, GetAction] {
-    const [response, fetchData] = useAPIGet<AttributeRemapListResponse>('/api/attribute/remap/list')
+export function useAttributeRemapList(): [
+    Response<AttributeRemapListResponse | null>,
+    GetAction,
+] {
+    const [response, fetchData] = useAPIGet<AttributeRemapListResponse>(
+        '/api/attribute/remap/list'
+    )
 
     return [response, fetchData]
 }
@@ -127,8 +170,13 @@ export interface AttributeRemapDeleteRequest {
     value: string
 }
 
-export function useAttributeRemapDelete(): [Response<void | null>, PostAction<AttributeRemapDeleteRequest>] {
-    const [response, fetchData] = useAPIPost<AttributeRemapDeleteRequest, void>('/api/attribute/remap/delete')
+export function useAttributeRemapDelete(): [
+    Response<void | null>,
+    PostAction<AttributeRemapDeleteRequest>,
+] {
+    const [response, fetchData] = useAPIPost<AttributeRemapDeleteRequest, void>(
+        '/api/attribute/remap/delete'
+    )
 
     return [response, fetchData]
 }
@@ -138,12 +186,17 @@ export interface AttributeRemapGetRequest {
     value: string
 }
 
-export function useAttributeRemapGet(): [Response<AttributeRemap | null>, PostAction<AttributeRemapGetRequest>] {
-    const [response, fetchData] = useAPIPost<AttributeRemapGetRequest, AttributeRemap>('/api/attribute/remap/get')
+export function useAttributeRemapGet(): [
+    Response<AttributeRemap | null>,
+    PostAction<AttributeRemapGetRequest>,
+] {
+    const [response, fetchData] = useAPIPost<
+        AttributeRemapGetRequest,
+        AttributeRemap
+    >('/api/attribute/remap/get')
 
     return [response, fetchData]
 }
-
 
 export interface AttributeRemapCreateRequest {
     code: string
@@ -153,13 +206,16 @@ export interface AttributeRemapCreateRequest {
     is_delete?: boolean
 }
 
-
-export function useAttributeRemapCreate(): [Response<void | null>, PostAction<AttributeRemapCreateRequest>] {
-    const [response, fetchData] = useAPIPost<AttributeRemapCreateRequest, void>('/api/attribute/remap/create')
+export function useAttributeRemapCreate(): [
+    Response<void | null>,
+    PostAction<AttributeRemapCreateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<AttributeRemapCreateRequest, void>(
+        '/api/attribute/remap/create'
+    )
 
     return [response, fetchData]
 }
-
 
 export interface AttributeRemapUpdateRequest {
     code: string
@@ -169,9 +225,13 @@ export interface AttributeRemapUpdateRequest {
     is_delete?: boolean
 }
 
-
-export function useAttributeRemapUpdate(): [Response<void | null>, PostAction<AttributeRemapUpdateRequest>] {
-    const [response, fetchData] = useAPIPost<AttributeRemapUpdateRequest, void>('/api/attribute/remap/update')
+export function useAttributeRemapUpdate(): [
+    Response<void | null>,
+    PostAction<AttributeRemapUpdateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<AttributeRemapUpdateRequest, void>(
+        '/api/attribute/remap/update'
+    )
 
     return [response, fetchData]
 }

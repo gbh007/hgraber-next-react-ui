@@ -1,5 +1,4 @@
-import { PostAction, Response, useAPIPost } from "./client-hooks"
-
+import { PostAction, Response, useAPIPost } from './client-hooks'
 
 export interface HProxyListResponse {
     books?: Array<HProxyListResponseBook>
@@ -22,8 +21,14 @@ export interface HProxyListRequest {
     url: string
 }
 
-export function useHProxyList(): [Response<HProxyListResponse | null>, PostAction<HProxyListRequest>] {
-    const [response, fetchData] = useAPIPost<HProxyListRequest, HProxyListResponse>('/api/hproxy/list')
+export function useHProxyList(): [
+    Response<HProxyListResponse | null>,
+    PostAction<HProxyListRequest>,
+] {
+    const [response, fetchData] = useAPIPost<
+        HProxyListRequest,
+        HProxyListResponse
+    >('/api/hproxy/list')
 
     return [response, fetchData]
 }
@@ -59,8 +64,14 @@ export interface HProxyBookRequest {
     url: string
 }
 
-export function useHProxyBook(): [Response<HProxyBookResponse | null>, PostAction<HProxyBookRequest>] {
-    const [response, fetchData] = useAPIPost<HProxyBookRequest, HProxyBookResponse>('/api/hproxy/book')
+export function useHProxyBook(): [
+    Response<HProxyBookResponse | null>,
+    PostAction<HProxyBookRequest>,
+] {
+    const [response, fetchData] = useAPIPost<
+        HProxyBookRequest,
+        HProxyBookResponse
+    >('/api/hproxy/book')
 
     return [response, fetchData]
 }

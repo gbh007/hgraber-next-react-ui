@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useState } from "react"
-import { BookSimplePage } from "../../apiclient/model-book"
-import { ReaderWidget } from "./reader-widget"
-import { BookReadActionButtonWidget } from "../../widgets/book/book-read-action-button-widget"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/design-system"
+import { useCallback, useEffect, useState } from 'react'
+import { BookSimplePage } from '../../apiclient/model-book'
+import { ReaderWidget } from './reader-widget'
+import { BookReadActionButtonWidget } from '../../widgets/book/book-read-action-button-widget'
+import {
+    ColorizedTextWidget,
+    ContainerWidget,
+} from '../../widgets/design-system'
 
 export function DualReaderWidget(props: {
     aBookID: string
@@ -31,7 +34,6 @@ export function DualReaderWidget(props: {
         setCurrentAPage(props.aPages![currentAIndex])
     }, [currentAIndex, props.aPages])
 
-
     useEffect(() => {
         setCurrentBIndex(0)
     }, [props.bBookID])
@@ -50,12 +52,13 @@ export function DualReaderWidget(props: {
         setCurrentAIndex(currentAIndex + 1)
     }, [props.aPages, currentAIndex])
 
-
-    const goAPage = useCallback((i: number) => {
-        if (i < 1 || i >= props.aPages!.length - 1) return
-        setCurrentAIndex(i - 1)
-    }, [props.aPages, currentAIndex])
-
+    const goAPage = useCallback(
+        (i: number) => {
+            if (i < 1 || i >= props.aPages!.length - 1) return
+            setCurrentAIndex(i - 1)
+        },
+        [props.aPages, currentAIndex]
+    )
 
     const prevBPage = useCallback(() => {
         if (currentBIndex == 0) return
@@ -67,10 +70,13 @@ export function DualReaderWidget(props: {
         setCurrentBIndex(currentBIndex + 1)
     }, [props.bPages, currentBIndex])
 
-    const goBPage = useCallback((i: number) => {
-        if (i < 1 || i >= props.bPages!.length - 1) return
-        setCurrentBIndex(i - 1)
-    }, [props.bPages, currentBIndex])
+    const goBPage = useCallback(
+        (i: number) => {
+            if (i < 1 || i >= props.bPages!.length - 1) return
+            setCurrentBIndex(i - 1)
+        },
+        [props.bPages, currentBIndex]
+    )
 
     const prevBothPage = useCallback(() => {
         if (currentBIndex == 0) return
@@ -86,67 +92,160 @@ export function DualReaderWidget(props: {
         setCurrentAIndex(currentAIndex + 1)
     }, [props.bPages, currentBIndex, props.aPages, currentAIndex])
 
-    return <ContainerWidget direction="column" gap="small">
-        <ContainerWidget appContainer direction="row" gap="small">
-            <button className="app" onClick={prevBothPage}>Пролистать назад</button>
-            <button className="app" onClick={nextBothPage}>Пролистать вперед</button>
-        </ContainerWidget>
-        <ContainerWidget direction="row" gap="small">
-            <ReaderWidget
-                bookID={props.aBookID}
-                currentIndex={currentAIndex}
-                nextPage={nextAPage}
-                prevPage={prevAPage}
-                currentPage={currentAPage}
-                pageCount={props.aPageCount}
-                pages={props.aPages}
-                goPage={goAPage}
-            >{currentAPage ? <>
-                <BookReadActionButtonWidget
+    return (
+        <ContainerWidget
+            direction='column'
+            gap='small'
+        >
+            <ContainerWidget
+                appContainer
+                direction='row'
+                gap='small'
+            >
+                <button
+                    className='app'
+                    onClick={prevBothPage}
+                >
+                    Пролистать назад
+                </button>
+                <button
+                    className='app'
+                    onClick={nextBothPage}
+                >
+                    Пролистать вперед
+                </button>
+            </ContainerWidget>
+            <ContainerWidget
+                direction='row'
+                gap='small'
+            >
+                <ReaderWidget
                     bookID={props.aBookID}
-                    pageNumber={currentAPage.page_number}
+                    currentIndex={currentAIndex}
+                    nextPage={nextAPage}
+                    prevPage={prevAPage}
                     currentPage={currentAPage}
-                    onCreateDeadHash={() => props.onCreateDeadHash(props.aBookID, currentAPage)}
-                    onDeletePage={() => props.onDeletePage(props.aBookID, currentAPage)}
-                    onDeleteAllPages={() => props.onDeleteAllPages(props.aBookID, currentAPage)}
-                    onDeleteDeadHash={() => props.onDeleteDeadHash(props.aBookID, currentAPage)}
-                />
-                <button
-                    className="app"
-                    onClick={() => props.onDeleteAllPagesWithDeadHash(props.aBookID, currentAPage)}
+                    pageCount={props.aPageCount}
+                    pages={props.aPages}
+                    goPage={goAPage}
                 >
-                    <ColorizedTextWidget bold color="danger">Удалить такие страницы</ColorizedTextWidget>
-                </button>
-                <span>{/* это специальная заглушка для равномерного размещения компонентов */}</span>
-            </> : null}
-            </ReaderWidget>
-            <ReaderWidget
-                bookID={props.bBookID}
-                currentIndex={currentBIndex}
-                nextPage={nextBPage}
-                prevPage={prevBPage}
-                currentPage={currentBPage}
-                pageCount={props.bPageCount}
-                pages={props.bPages}
-                goPage={goBPage}
-            >{currentBPage ? <>
-                <BookReadActionButtonWidget
+                    {currentAPage ? (
+                        <>
+                            <BookReadActionButtonWidget
+                                bookID={props.aBookID}
+                                pageNumber={currentAPage.page_number}
+                                currentPage={currentAPage}
+                                onCreateDeadHash={() =>
+                                    props.onCreateDeadHash(
+                                        props.aBookID,
+                                        currentAPage
+                                    )
+                                }
+                                onDeletePage={() =>
+                                    props.onDeletePage(
+                                        props.aBookID,
+                                        currentAPage
+                                    )
+                                }
+                                onDeleteAllPages={() =>
+                                    props.onDeleteAllPages(
+                                        props.aBookID,
+                                        currentAPage
+                                    )
+                                }
+                                onDeleteDeadHash={() =>
+                                    props.onDeleteDeadHash(
+                                        props.aBookID,
+                                        currentAPage
+                                    )
+                                }
+                            />
+                            <button
+                                className='app'
+                                onClick={() =>
+                                    props.onDeleteAllPagesWithDeadHash(
+                                        props.aBookID,
+                                        currentAPage
+                                    )
+                                }
+                            >
+                                <ColorizedTextWidget
+                                    bold
+                                    color='danger'
+                                >
+                                    Удалить такие страницы
+                                </ColorizedTextWidget>
+                            </button>
+                            <span>
+                                {/* это специальная заглушка для равномерного размещения компонентов */}
+                            </span>
+                        </>
+                    ) : null}
+                </ReaderWidget>
+                <ReaderWidget
                     bookID={props.bBookID}
-                    pageNumber={currentBPage.page_number}
+                    currentIndex={currentBIndex}
+                    nextPage={nextBPage}
+                    prevPage={prevBPage}
                     currentPage={currentBPage}
-                    onCreateDeadHash={() => props.onCreateDeadHash(props.bBookID, currentBPage)}
-                    onDeletePage={() => props.onDeletePage(props.bBookID, currentBPage)}
-                    onDeleteAllPages={() => props.onDeleteAllPages(props.bBookID, currentBPage)}
-                    onDeleteDeadHash={() => props.onDeleteDeadHash(props.bBookID, currentBPage)}
-                />
-                <button
-                    className="app"
-                    onClick={() => props.onDeleteAllPagesWithDeadHash(props.bBookID, currentBPage)}
+                    pageCount={props.bPageCount}
+                    pages={props.bPages}
+                    goPage={goBPage}
                 >
-                    <ColorizedTextWidget bold color="danger">Удалить такие страницы</ColorizedTextWidget>
-                </button>
-                <span>{/* это специальная заглушка для равномерного размещения компонентов */}</span>
-            </> : null}</ReaderWidget>
+                    {currentBPage ? (
+                        <>
+                            <BookReadActionButtonWidget
+                                bookID={props.bBookID}
+                                pageNumber={currentBPage.page_number}
+                                currentPage={currentBPage}
+                                onCreateDeadHash={() =>
+                                    props.onCreateDeadHash(
+                                        props.bBookID,
+                                        currentBPage
+                                    )
+                                }
+                                onDeletePage={() =>
+                                    props.onDeletePage(
+                                        props.bBookID,
+                                        currentBPage
+                                    )
+                                }
+                                onDeleteAllPages={() =>
+                                    props.onDeleteAllPages(
+                                        props.bBookID,
+                                        currentBPage
+                                    )
+                                }
+                                onDeleteDeadHash={() =>
+                                    props.onDeleteDeadHash(
+                                        props.bBookID,
+                                        currentBPage
+                                    )
+                                }
+                            />
+                            <button
+                                className='app'
+                                onClick={() =>
+                                    props.onDeleteAllPagesWithDeadHash(
+                                        props.bBookID,
+                                        currentBPage
+                                    )
+                                }
+                            >
+                                <ColorizedTextWidget
+                                    bold
+                                    color='danger'
+                                >
+                                    Удалить такие страницы
+                                </ColorizedTextWidget>
+                            </button>
+                            <span>
+                                {/* это специальная заглушка для равномерного размещения компонентов */}
+                            </span>
+                        </>
+                    ) : null}
+                </ReaderWidget>
+            </ContainerWidget>
         </ContainerWidget>
-    </ContainerWidget>
+    )
 }

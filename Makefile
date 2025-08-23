@@ -6,6 +6,10 @@ run:
 install:
 	npm install
 
+.PHONY: format
+format:
+	npx prettier ./src --write
+
 .PHONY: build
 build:
 	npm run build

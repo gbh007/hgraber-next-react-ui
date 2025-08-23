@@ -1,4 +1,4 @@
-import { PostAction, useAPIPost, Response } from "./client-hooks"
+import { PostAction, useAPIPost, Response } from './client-hooks'
 
 interface systemHandleRequest {
     urls: Array<string>
@@ -25,9 +25,14 @@ export interface systemHandleResponseDetails {
     error_reason?: string
 }
 
-
-export function useSystemHandle(): [Response<systemHandleResponse | null>, PostAction<systemHandleRequest>] {
-    const [response, fetchData] = useAPIPost<systemHandleRequest, systemHandleResponse>('/api/parsing/handle')
+export function useSystemHandle(): [
+    Response<systemHandleResponse | null>,
+    PostAction<systemHandleRequest>,
+] {
+    const [response, fetchData] = useAPIPost<
+        systemHandleRequest,
+        systemHandleResponse
+    >('/api/parsing/handle')
 
     return [response, fetchData]
 }

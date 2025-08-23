@@ -1,10 +1,21 @@
-import { useCallback, useEffect, useState } from "react"
-import { useAgentList } from "../../apiclient/api-agent"
-import { FSTransferRequest, useFSDelete, useFSList, useFSRemoveMismatch, useFSTransfer, useFSValidate } from "../../apiclient/api-fs"
-import { Link } from "react-router-dom"
-import { FSEditLink } from "../../core/routing"
-import { FSInfoWidget } from "./fs-info-widget"
-import { ColorizedTextWidget, ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
+import { useCallback, useEffect, useState } from 'react'
+import { useAgentList } from '../../apiclient/api-agent'
+import {
+    FSTransferRequest,
+    useFSDelete,
+    useFSList,
+    useFSRemoveMismatch,
+    useFSTransfer,
+    useFSValidate,
+} from '../../apiclient/api-fs'
+import { Link } from 'react-router-dom'
+import { FSEditLink } from '../../core/routing'
+import { FSInfoWidget } from './fs-info-widget'
+import {
+    ColorizedTextWidget,
+    ContainerWidget,
+    ErrorTextWidget,
+} from '../../widgets/design-system'
 
 export function FSListScreen() {
     const [fsListResponse, fetchFSList] = useFSList()
@@ -23,16 +34,23 @@ export function FSListScreen() {
         })
     }, [fetchFSList, includeDbFileSize, includeAvailableSize])
 
-    useEffect(() => { fetchFS() }, [fetchFS])
-    useEffect(() => { fetchAgentList({ include_status: true }) }, [fetchAgentList])
+    useEffect(() => {
+        fetchFS()
+    }, [fetchFS])
+    useEffect(() => {
+        fetchAgentList({ include_status: true })
+    }, [fetchAgentList])
 
     const [transferRequest, setTransferRequest] = useState<FSTransferRequest>({
-        from: "",
-        to: "",
+        from: '',
+        to: '',
     })
 
     return (
-        <ContainerWidget direction="column" gap="big">
+        <ContainerWidget
+            direction='column'
+            gap='big'
+        >
             <ErrorTextWidget value={fsListResponse} />
             <ErrorTextWidget value={fsDeleteResponse} />
             <ErrorTextWidget value={fsValidateResponse} />
@@ -40,73 +58,123 @@ export function FSListScreen() {
             <ErrorTextWidget value={fsTransferResponse} />
             <ErrorTextWidget value={agentListResponse} />
 
-            <ContainerWidget appContainer direction="row" gap="medium" wrap>
-                <Link className="app-button" to={FSEditLink()}>Новая</Link>
+            <ContainerWidget
+                appContainer
+                direction='row'
+                gap='medium'
+                wrap
+            >
+                <Link
+                    className='app-button'
+                    to={FSEditLink()}
+                >
+                    Новая
+                </Link>
                 <label>
                     <input
-                        className="app"
-                        type="checkbox"
+                        className='app'
+                        type='checkbox'
                         checked={includeAvailableSize}
-                        onChange={e => setIncludeAvailableSize(e.target.checked)}
+                        onChange={(e) =>
+                            setIncludeAvailableSize(e.target.checked)
+                        }
                     />
                     <span>Показывать доступное место</span>
                 </label>
                 <label>
                     <input
-                        className="app"
-                        type="checkbox"
+                        className='app'
+                        type='checkbox'
                         checked={includeDbFileSize}
-                        onChange={e => setIncludeDbFileSize(e.target.checked)}
+                        onChange={(e) => setIncludeDbFileSize(e.target.checked)}
                     />
                     <span>Показывать занятое место в БД</span>
                 </label>
                 <button
-                    className="app"
+                    className='app'
                     onClick={() => {
                         fetchFS()
                         fetchAgentList({ include_status: true })
                     }}
-                >Обновить данные</button>
+                >
+                    Обновить данные
+                </button>
             </ContainerWidget>
 
-            <ContainerWidget appContainer direction="column" gap="medium">
+            <ContainerWidget
+                appContainer
+                direction='column'
+                gap='medium'
+            >
                 <b>Перенести файлы</b>
-                <ContainerWidget direction="2-column" gap="medium">
+                <ContainerWidget
+                    direction='2-column'
+                    gap='medium'
+                >
                     <span>Из</span>
                     <select
-                        className="app"
+                        className='app'
                         value={transferRequest.from}
-                        onChange={e => setTransferRequest({ ...transferRequest, from: e.target.value })}
+                        onChange={(e) =>
+                            setTransferRequest({
+                                ...transferRequest,
+                                from: e.target.value,
+                            })
+                        }
                     >
-                        <option value="">Не выбрана</option>
-                        {fsListResponse.data?.file_systems?.map(fs =>
-                            <option key={fs.info.id} value={fs.info.id}>{fs.info.name}</option>
-                        )}
+                        <option value=''>Не выбрана</option>
+                        {fsListResponse.data?.file_systems?.map((fs) => (
+                            <option
+                                key={fs.info.id}
+                                value={fs.info.id}
+                            >
+                                {fs.info.name}
+                            </option>
+                        ))}
                     </select>
                     <span>В</span>
                     <select
-                        className="app"
+                        className='app'
                         value={transferRequest.to}
-                        onChange={e => setTransferRequest({ ...transferRequest, to: e.target.value })}
+                        onChange={(e) =>
+                            setTransferRequest({
+                                ...transferRequest,
+                                to: e.target.value,
+                            })
+                        }
                     >
-                        <option value="">Не выбрана</option>
-                        {fsListResponse.data?.file_systems?.map(fs =>
-                            <option key={fs.info.id} value={fs.info.id}>{fs.info.name}</option>
-                        )}
+                        <option value=''>Не выбрана</option>
+                        {fsListResponse.data?.file_systems?.map((fs) => (
+                            <option
+                                key={fs.info.id}
+                                value={fs.info.id}
+                            >
+                                {fs.info.name}
+                            </option>
+                        ))}
                     </select>
                 </ContainerWidget>
                 <label>
                     <input
-                        type="checkbox"
+                        type='checkbox'
                         checked={transferRequest.only_preview_pages ?? false}
-                        onChange={e => setTransferRequest({ ...transferRequest, only_preview_pages: e.target.checked })}
+                        onChange={(e) =>
+                            setTransferRequest({
+                                ...transferRequest,
+                                only_preview_pages: e.target.checked,
+                            })
+                        }
                     />
                     <span>Только превью</span>
                 </label>
                 <button
-                    className="app"
+                    className='app'
                     onClick={() => {
-                        if (!confirm("Перенести файлы между файловыми системами?")) {
+                        if (
+                            !confirm(
+                                'Перенести файлы между файловыми системами?'
+                            )
+                        ) {
                             return
                         }
 
@@ -114,35 +182,47 @@ export function FSListScreen() {
                     }}
                     disabled={fsTransferResponse.isLoading}
                 >
-                    <ColorizedTextWidget color="danger-lite">Перенести файлы</ColorizedTextWidget>
+                    <ColorizedTextWidget color='danger-lite'>
+                        Перенести файлы
+                    </ColorizedTextWidget>
                 </button>
             </ContainerWidget>
 
-            {fsListResponse.data?.file_systems?.map(fs => <FSInfoWidget
-                key={fs.info.id}
-                value={fs}
-                onDelete={() => {
-                    if (!confirm("Удалить файловую систему и все ее файлы (ЭТО НЕОБРАТИМО)?")) {
-                        return
-                    }
+            {fsListResponse.data?.file_systems?.map((fs) => (
+                <FSInfoWidget
+                    key={fs.info.id}
+                    value={fs}
+                    onDelete={() => {
+                        if (
+                            !confirm(
+                                'Удалить файловую систему и все ее файлы (ЭТО НЕОБРАТИМО)?'
+                            )
+                        ) {
+                            return
+                        }
 
-                    doFSDelete({ id: fs.info.id }).then(() => {
-                        fetchFS()
-                    })
-                }}
-                validationLoading={fsValidateResponse.isLoading}
-                onValidate={() => {
-                    doFSValidate({ id: fs.info.id })
-                }}
-                onRemoveMismatch={() => {
-                    if (!confirm("Удалить рассинхронизированные файлы (ЭТО НЕОБРАТИМО)?")) {
-                        return
-                    }
+                        doFSDelete({ id: fs.info.id }).then(() => {
+                            fetchFS()
+                        })
+                    }}
+                    validationLoading={fsValidateResponse.isLoading}
+                    onValidate={() => {
+                        doFSValidate({ id: fs.info.id })
+                    }}
+                    onRemoveMismatch={() => {
+                        if (
+                            !confirm(
+                                'Удалить рассинхронизированные файлы (ЭТО НЕОБРАТИМО)?'
+                            )
+                        ) {
+                            return
+                        }
 
-                    doFSRemoveMismatch({ id: fs.info.id })
-                }}
-                agents={agentListResponse.data ?? undefined}
-            />)}
+                        doFSRemoveMismatch({ id: fs.info.id })
+                    }}
+                    agents={agentListResponse.data ?? undefined}
+                />
+            ))}
         </ContainerWidget>
     )
 }

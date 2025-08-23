@@ -1,5 +1,10 @@
-import { PostAction, useAPIPost, Response, useAPIGet, GetAction } from "./client-hooks"
-
+import {
+    PostAction,
+    useAPIPost,
+    Response,
+    useAPIGet,
+    GetAction,
+} from './client-hooks'
 
 export interface ParsingMirrorCreateRequest {
     name: string
@@ -7,8 +12,13 @@ export interface ParsingMirrorCreateRequest {
     prefixes: Array<string>
 }
 
-export function useParsingMirrorCreate(): [Response<void | null>, PostAction<ParsingMirrorCreateRequest>] {
-    const [response, fetchData] = useAPIPost<ParsingMirrorCreateRequest, void>('/api/parsing/mirror/create')
+export function useParsingMirrorCreate(): [
+    Response<void | null>,
+    PostAction<ParsingMirrorCreateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<ParsingMirrorCreateRequest, void>(
+        '/api/parsing/mirror/create'
+    )
 
     return [response, fetchData]
 }
@@ -20,8 +30,13 @@ export interface ParsingMirrorUpdateRequest {
     prefixes: Array<string>
 }
 
-export function useParsingMirrorUpdate(): [Response<void | null>, PostAction<ParsingMirrorUpdateRequest>] {
-    const [response, fetchData] = useAPIPost<ParsingMirrorUpdateRequest, void>('/api/parsing/mirror/update')
+export function useParsingMirrorUpdate(): [
+    Response<void | null>,
+    PostAction<ParsingMirrorUpdateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<ParsingMirrorUpdateRequest, void>(
+        '/api/parsing/mirror/update'
+    )
 
     return [response, fetchData]
 }
@@ -30,8 +45,13 @@ export interface ParsingMirrorDeleteRequest {
     id: string
 }
 
-export function useParsingMirrorDelete(): [Response<void | null>, PostAction<ParsingMirrorDeleteRequest>] {
-    const [response, fetchData] = useAPIPost<ParsingMirrorDeleteRequest, void>('/api/parsing/mirror/delete')
+export function useParsingMirrorDelete(): [
+    Response<void | null>,
+    PostAction<ParsingMirrorDeleteRequest>,
+] {
+    const [response, fetchData] = useAPIPost<ParsingMirrorDeleteRequest, void>(
+        '/api/parsing/mirror/delete'
+    )
 
     return [response, fetchData]
 }
@@ -47,15 +67,26 @@ export interface ParsingMirrorListResponseLabel {
     prefixes: Array<string>
 }
 
-export function useParsingMirrorList(): [Response<ParsingMirrorListResponse | null>, GetAction] {
-    const [response, fetchData] = useAPIGet<ParsingMirrorListResponse>('/api/parsing/mirror/list')
+export function useParsingMirrorList(): [
+    Response<ParsingMirrorListResponse | null>,
+    GetAction,
+] {
+    const [response, fetchData] = useAPIGet<ParsingMirrorListResponse>(
+        '/api/parsing/mirror/list'
+    )
 
     return [response, fetchData]
 }
 
 // TODO: разделить модели
-export function useParsingMirrorGet(): [Response<ParsingMirrorListResponseLabel | null>, PostAction<ParsingMirrorDeleteRequest>] {
-    const [response, fetchData] = useAPIPost<ParsingMirrorDeleteRequest, ParsingMirrorListResponseLabel>('/api/parsing/mirror/get')
+export function useParsingMirrorGet(): [
+    Response<ParsingMirrorListResponseLabel | null>,
+    PostAction<ParsingMirrorDeleteRequest>,
+] {
+    const [response, fetchData] = useAPIPost<
+        ParsingMirrorDeleteRequest,
+        ParsingMirrorListResponseLabel
+    >('/api/parsing/mirror/get')
 
     return [response, fetchData]
 }

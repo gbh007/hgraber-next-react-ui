@@ -73,7 +73,6 @@ export interface BookRawPage {
     load_at: string
 }
 
-
 export interface BookRawLabel {
     page_number: number
     name: string
