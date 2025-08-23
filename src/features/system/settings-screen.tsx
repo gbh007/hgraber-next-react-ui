@@ -2,8 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { ThemeContext } from "../../core/context"
 import { useUserLogin } from "../../apiclient/api-user-login"
 import { useAppSettings } from "../../apiclient/settings"
-import { ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function SettingsScreen() {
     const theme = useContext(ThemeContext)

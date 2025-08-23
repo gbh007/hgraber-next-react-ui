@@ -1,11 +1,11 @@
 import { PropsWithChildren } from "react"
 import { BookSimple } from "../../apiclient/model-book"
-import { ContainerWidget, HumanTimeWidget } from "../common"
 import { ImageSize } from "./image-size"
 import { Link } from "react-router-dom"
 import { BookDetailsLink } from "../../core/routing"
 import { BookImagePreviewWidget } from "./book-image-preview-widget"
 import { Property } from "csstype"
+import { ContainerWidget, HumanTimeWidget } from "../design-system"
 
 export function BooksSimpleWidget(props: PropsWithChildren & {
     value?: BookSimple

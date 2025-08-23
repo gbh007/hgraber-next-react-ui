@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { MassloadInfoExternalLink } from "../../apiclient/api-massload"
-import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../../widgets/common"
+import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../../widgets/design-system"
 
 export function MassloadExternalLinkEditorWidget(props: {
     value?: Array<MassloadInfoExternalLink>

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react"
 import { BookSimplePage } from "../../apiclient/model-book"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
 import { ReaderWidget } from "./reader-widget"
 import { BookReadActionButtonWidget } from "../../widgets/book/book-read-action-button-widget"
+import { ColorizedTextWidget, ContainerWidget } from "../../widgets/design-system"
 
 export function DualReaderWidget(props: {
     aBookID: string

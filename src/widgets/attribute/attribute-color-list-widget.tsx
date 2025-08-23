@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom"
 import { AttributeColor } from "../../apiclient/api-attribute"
-import { ColorizedTextWidget, ContainerWidget } from "../common"
 import { AttributeColorEditLink } from "../../core/routing"
 import { BookAttributeValueWidget } from "./book-attribute"
+import { ColorizedTextWidget, ContainerWidget } from "../design-system"
 
 export function AttributeColorListWidget(props: {
     value?: Array<AttributeColor>

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react"
 import { useAttributeColorList, useAttributeCount } from "../../apiclient/api-attribute"
 import { MassloadInfoListRequest, useMassloadFlagList, useMassloadInfoDelete, useMassloadInfoList } from "../../apiclient/api-massload"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { MassloadFilterWidget } from "./massload-filter-widget"
 import { MassloadListWidget } from "./massload-list-widget"
+import { ColorizedTextWidget, ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 
 export function MassloadListScreen() {

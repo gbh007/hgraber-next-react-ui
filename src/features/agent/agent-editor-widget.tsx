@@ -1,5 +1,5 @@
 import { Agent } from "../../apiclient/api-agent"
-import { ContainerWidget } from "../../widgets/common"
+import { ContainerWidget } from "../../widgets/design-system"
 
 export function AgentEditorWidget(props: {
     value: Agent

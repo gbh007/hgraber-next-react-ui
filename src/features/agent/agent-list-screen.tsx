@@ -1,10 +1,9 @@
 import { useEffect } from "react"
 import { useAgentDelete, useAgentList } from "../../apiclient/api-agent"
-import { ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { Link } from "react-router-dom"
 import { AgentEditLink } from "../../core/routing"
 import { AgentInfoWidget } from "./agent-info-widget"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function AgentListScreen() {
     const [agentListResponse, fetchAgentList] = useAgentList()

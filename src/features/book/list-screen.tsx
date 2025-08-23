@@ -6,13 +6,12 @@ import { useEffect, useState } from "react"
 import { useAttributeColorList, useAttributeCount } from "../../apiclient/api-attribute"
 import { useLabelPresetList } from "../../apiclient/api-labels"
 import { useBookList } from "../../apiclient/api-book-list"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { BookFilterWidget } from "../../widgets/book/book-filter-widget"
 import { SelectToCompareLink } from "../../core/routing"
 import { AgentExportWidget } from "./agent-export-widget"
-import { PaginatorWidget } from "../../widgets/common/paginator-widget"
+import { PaginatorWidget } from "../../widgets/book/paginator-widget"
 import { BookShortInfoWidget } from "./book-short-info-widget"
+import { ColorizedTextWidget, ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function ListScreen() {
     const [settings, _] = useAppSettings()

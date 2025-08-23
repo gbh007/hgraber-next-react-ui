@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom"
 import { AttributeColor } from "../../apiclient/api-attribute"
 import { BookShortInfo } from "../../apiclient/api-book-list"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
 import { BookDetailsLink } from "../../core/routing"
 import { BookImagePreviewWidget } from "../../widgets/book/book-image-preview-widget"
 import { BookAttributeValueWidget } from "../../widgets/attribute/book-attribute"
+import { ColorizedTextWidget, ContainerWidget } from "../../widgets/design-system"
 
 export function BookShortInfoWidget(props: {
     value: BookShortInfo

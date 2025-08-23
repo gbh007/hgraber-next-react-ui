@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { LabelDeleteRequest, LabelGetResponseLabel, LabelPresetListResponseLabel, LabelSetRequest } from "../../apiclient/api-labels"
-import { ContainerWidget, HumanTimeWidget } from "../../widgets/common"
 import { BookLabelPresetAutocompleteWidget } from "../../widgets/label/book-label-preset-autocomplete-widget"
+import { ContainerWidget, HumanTimeWidget } from "../../widgets/design-system"
 
 export function BookLabelEditorWidget(props: {
     bookID: string

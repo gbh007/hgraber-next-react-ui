@@ -1,6 +1,6 @@
-import { ContainerWidget } from "../common"
 import { ImageSize } from "./image-size"
 import deadHashBadge from "../../assets/dead-hash.png"
+import { ContainerWidget } from "../design-system"
 
 
 export function BadgeWidget(props: {

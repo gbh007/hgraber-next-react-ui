@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { BookSimplePage } from "../../apiclient/model-book"
 import styles from "./book-rebuilder.module.css"
-import { ContainerWidget } from "../../widgets/common"
+import { ContainerWidget } from "../../widgets/design-system"
 import { PageBadgesWidget } from "../../widgets/book/badge-widget"
 
 export function PageSelectorReaderWidget(props: {

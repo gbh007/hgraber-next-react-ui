@@ -2,9 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Agent, useAgentGet, useAgentNew, useAgentUpdate } from "../../apiclient/api-agent";
 import { useCallback, useEffect, useState } from "react";
 import { AgentListLink } from "../../core/routing";
-import { ErrorTextWidget } from "../../widgets/error-text";
-import { ContainerWidget } from "../../widgets/common";
 import { AgentEditorWidget } from "./agent-editor-widget";
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system";
 
 export function AgentEditorScreen() {
     const params = useParams()

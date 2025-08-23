@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { useFSList, useFSTransferBook } from "../../apiclient/api-fs"
-import { ColorizedTextWidget, ContainerWidget, DialogWidget } from "../common"
-import { ErrorTextWidget } from "../error-text"
+import { ColorizedTextWidget, ContainerWidget, DialogWidget, ErrorTextWidget } from "../design-system"
 
 export function BookTransferCoordinatorWidget(props: {
     bookID: string

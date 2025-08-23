@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import { useAgentList, useAgentTaskExport } from "../../apiclient/api-agent"
 import { BookFilter } from "../../apiclient/model-book-filter"
-import { ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function AgentExportWidget(props: { filter: BookFilter }) {
     const [agentsResponse, getAgents] = useAgentList()

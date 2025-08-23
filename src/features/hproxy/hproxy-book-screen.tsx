@@ -2,8 +2,6 @@ import { useState, useEffect } from "react"
 import { useSearchParams, Link } from "react-router-dom"
 import { useHProxyBook } from "../../apiclient/api-hproxy"
 import { BookDetailsLink, HProxyListLink } from "../../core/routing"
-import { ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { useAttributeColorList } from "../../apiclient/api-attribute"
 import { useSystemHandle } from "../../apiclient/api-system-handle"
 
@@ -12,6 +10,7 @@ import { HProxyBookPagesPreviewWidget } from "./book-pages-preview-widget"
 import { BookOneAttributeWidget } from "../../widgets/attribute/book-attribute"
 import { BookImagePreviewWidget } from "../../widgets/book/book-image-preview-widget"
 import { BadgeWidget } from "../../widgets/book/badge-widget"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function HProxyBookScreen() {
     const [searchParams, setSearchParams] = useSearchParams()

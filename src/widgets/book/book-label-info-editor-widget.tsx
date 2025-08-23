@@ -1,7 +1,6 @@
 import { LabelPresetListResponseLabel } from "../../apiclient/api-labels"
 import { BookRawLabel } from "../../apiclient/model-book"
-import { ContainerWidget, DeleteButtonWidget } from "../common"
-import { DatetimePickerWidget } from "../datetime-picker"
+import { ContainerWidget, DatetimePickerWidget, DeleteButtonWidget } from "../design-system"
 import { BookLabelPresetAutocompleteWidget } from "../label/book-label-preset-autocomplete-widget"
 
 export function BookLabelInfoEditorWidget(props: {
@@ -80,6 +79,6 @@ function LabelEditor(props: {
             value={props.value.create_at}
             onChange={e => props.onChange({ ...props.value, create_at: e })}
         />
-        <DeleteButtonWidget onClick={props.onDelete}></DeleteButtonWidget>
+        <DeleteButtonWidget onClick={props.onDelete} />
     </ContainerWidget>
 }

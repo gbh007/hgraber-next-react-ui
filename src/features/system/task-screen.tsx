@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { useTaskCreate, useTaskResults } from "../../apiclient/api-task"
-import { ContainerWidget, prettyPercent } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
+import { ContainerWidget, ErrorTextWidget, prettyPercent } from "../../widgets/design-system"
 
 export function TaskScreen() {
     const [taskCode, setTaskCode] = useState("")

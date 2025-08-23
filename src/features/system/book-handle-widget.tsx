@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import { useSystemHandle } from "../../apiclient/api-system-handle"
-import { ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { ParseDetailsWidget } from "./parse-details-widget"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function BookHandleWidget() {
     const [bookList, setBookList] = useState("")

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
-import { ContainerWidget, StringArrayPickerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { useParams } from "react-router-dom"
 import { ParsingMirrorUpdateRequest, useParsingMirrorCreate, useParsingMirrorGet, useParsingMirrorUpdate } from "../../apiclient/api-parsing-mirror"
+import { ContainerWidget, ErrorTextWidget, StringArrayPickerWidget } from "../../widgets/design-system"
 
 export function ParsingMirrorEditorScreen() {
     const params = useParams()

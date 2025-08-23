@@ -1,13 +1,12 @@
 import { Link, useSearchParams } from "react-router-dom"
 import { useHProxyList } from "../../apiclient/api-hproxy"
 import { useEffect, useState } from "react"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { HProxyBookLink, HProxyListLink } from "../../core/routing"
 import { useSystemHandle } from "../../apiclient/api-system-handle"
 import { ImageSize } from "../../widgets/book/image-size"
 import { PreviewSizeWidget } from "../../widgets/book/page-image-preview-widget"
 import { BookImagePreviewWidget } from "../../widgets/book/book-image-preview-widget"
+import { ColorizedTextWidget, ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function HProxyListScreen() {
     const [searchParams, setSearchParams] = useSearchParams()

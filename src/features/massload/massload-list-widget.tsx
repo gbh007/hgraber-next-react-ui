@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom"
 import { AttributeColor } from "../../apiclient/api-attribute"
 import { MassloadFlag, MassloadInfo } from "../../apiclient/api-massload"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
 import { MassloadEditorLink, MassloadViewLink } from "../../core/routing"
 import { MassloadFlagViewWidget } from "./flag"
 import { BookOneAttributeWidget } from "../../widgets/attribute/book-attribute"
+import { ColorizedTextWidget, ContainerWidget } from "../../widgets/design-system"
 
 export function MassloadListWidget(props: {
     value: Array<MassloadInfo>

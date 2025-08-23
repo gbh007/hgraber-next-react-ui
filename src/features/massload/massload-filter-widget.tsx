@@ -1,7 +1,7 @@
 import { AttributeCountResponseAttribute } from "../../apiclient/api-attribute"
 import { MassloadFlag, MassloadInfoListRequest } from "../../apiclient/api-massload"
 import { BookAttributeAutocompleteWidget } from "../../widgets/attribute/book-attribute"
-import { ContainerWidget, DeleteButtonWidget } from "../../widgets/common"
+import { ContainerWidget, DeleteButtonWidget } from "../../widgets/design-system"
 import { FilterAttributesWidget } from "./attribute"
 import { MassloadFlagPickerWidget } from "./flag"
 
@@ -27,7 +27,7 @@ export function MassloadFilterWidget(props: {
                     onClick={() => {
                         props.onChange({ ...props.value, filter: { ...props.value.filter, name: "" } })
                     }}
-                ></DeleteButtonWidget>
+                />
                 : null}
         </ContainerWidget>
         <ContainerWidget direction="row" gap="small">

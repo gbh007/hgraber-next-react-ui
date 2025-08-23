@@ -1,5 +1,5 @@
 import { BookFilterLabel } from "../../apiclient/model-book-filter"
-import { ContainerWidget, DeleteButtonWidget, ManyStringSelectWidget } from "../common"
+import { ContainerWidget, DeleteButtonWidget, ManyStringSelectWidget } from "../design-system"
 
 
 export function BookFilterLabelsWidget(props: {

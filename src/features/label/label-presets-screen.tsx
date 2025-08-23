@@ -1,9 +1,8 @@
 import { useEffect } from "react"
 import { useLabelPresetDelete, useLabelPresetList } from "../../apiclient/api-labels"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { Link } from "react-router-dom"
 import { LabelPresetEditLink } from "../../core/routing"
-import { ContainerWidget, HumanTimeWidget } from "../../widgets/common"
+import { ContainerWidget, ErrorTextWidget, HumanTimeWidget } from "../../widgets/design-system"
 
 export function LabelPresetsScreen() {
     const [labelPresetsResponse, fetchLabelPresets] = useLabelPresetList()

@@ -3,9 +3,8 @@ import { FileSystemInfo, useFSCreate, useFSGet, useFSUpdate } from "../../apicli
 import { useCallback, useEffect, useState } from "react";
 import { FSListLink } from "../../core/routing";
 import { useAgentList } from "../../apiclient/api-agent";
-import { ContainerWidget } from "../../widgets/common";
-import { ErrorTextWidget } from "../../widgets/error-text";
 import { FSEditorWidget } from "./fs-editor-widget";
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system";
 
 export function FSEditorScreen() {
     const params = useParams()

@@ -6,10 +6,9 @@ import { useBookList } from "../../apiclient/api-book-list"
 import { useBookDetails } from "../../apiclient/api-book-details"
 import { useLabelPresetList } from "../../apiclient/api-labels"
 import { useAttributeOriginCount } from "../../apiclient/api-attribute"
-import { ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { BookDetailsLink } from "../../core/routing"
 import { BookRebuilderWidget } from "./book-rebuilder-widget"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function BookRebuilderScreen() {
     const params = useParams()

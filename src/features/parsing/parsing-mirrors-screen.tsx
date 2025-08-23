@@ -1,9 +1,8 @@
 import { useEffect } from "react"
 import { useParsingMirrorDelete, useParsingMirrorList } from "../../apiclient/api-parsing-mirror"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { Link } from "react-router-dom"
 import { ParsingMirrorEditLink } from "../../core/routing"
-import { ContainerWidget } from "../../widgets/common"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function ParsingMirrorsScreen() {
     const [parsingMirrorsResponse, fetchParsingMirrors] = useParsingMirrorList()

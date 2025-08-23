@@ -1,5 +1,5 @@
 import { MassloadFlag, MassloadInfo } from "../../apiclient/api-massload"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
+import { ColorizedTextWidget, ContainerWidget } from "../../widgets/design-system"
 import { MassloadFlagPickerWidget } from "./flag"
 
 export function MassloadInfoEditorWidget(props: {

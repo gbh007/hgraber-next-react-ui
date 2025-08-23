@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from "react"
 import { useAgentList } from "../../apiclient/api-agent"
 import { FSTransferRequest, useFSDelete, useFSList, useFSRemoveMismatch, useFSTransfer, useFSValidate } from "../../apiclient/api-fs"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { Link } from "react-router-dom"
 import { FSEditLink } from "../../core/routing"
 import { FSInfoWidget } from "./fs-info-widget"
+import { ColorizedTextWidget, ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function FSListScreen() {
     const [fsListResponse, fetchFSList] = useFSList()

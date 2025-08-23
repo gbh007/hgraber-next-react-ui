@@ -1,6 +1,6 @@
 import { AgentListResponse } from "../../apiclient/api-agent"
 import { FileSystemInfo } from "../../apiclient/api-fs"
-import { ContainerWidget } from "../../widgets/common"
+import { ContainerWidget } from "../../widgets/design-system"
 
 export function FSEditorWidget(props: {
     value: FileSystemInfo

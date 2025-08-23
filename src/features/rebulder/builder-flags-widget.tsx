@@ -1,5 +1,5 @@
 import { BookRebuildRequestFlags } from "../../apiclient/api-book"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
+import { ColorizedTextWidget, ContainerWidget } from "../../widgets/design-system"
 
 export function BuilderFlagsWidget(props: {
     value?: BookRebuildRequestFlags

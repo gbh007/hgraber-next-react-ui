@@ -1,8 +1,7 @@
 import { useEffect } from "react"
 import { useAttributeColorDelete, useAttributeColorList } from "../../apiclient/api-attribute"
-import { ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { AttributeColorListWidget } from "../../widgets/attribute/attribute-color-list-widget"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function AttributeColorListScreen() {
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()

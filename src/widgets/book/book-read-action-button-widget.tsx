@@ -1,9 +1,9 @@
 import { PropsWithChildren, useState } from "react"
 import { BookSimplePage } from "../../apiclient/model-book"
-import { ColorizedTextWidget, DialogWidget } from "../common"
 import { Link } from "react-router-dom"
 import { BookLabelEditLink, DeduplicatePageLink } from "../../core/routing"
 import { BookTransferCoordinatorWidget } from "../fs/book-transfer-coordinator-widget"
+import { ColorizedTextWidget, DialogWidget } from "../design-system"
 
 export function BookReadActionButtonWidget(props: PropsWithChildren & {
     bookID: string

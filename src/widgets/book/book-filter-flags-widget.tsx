@@ -1,5 +1,5 @@
 import { BookFilterFlags } from "../../apiclient/model-book-filter"
-import { ContainerWidget } from "../common"
+import { ContainerWidget } from "../design-system"
 
 
 export function BookFilterFlagsWidget(props: {

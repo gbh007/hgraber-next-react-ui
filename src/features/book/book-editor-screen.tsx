@@ -4,10 +4,9 @@ import { BookRaw } from "../../apiclient/model-book"
 import { useBookRaw, useBookUpdate } from "../../apiclient/api-book"
 import { useLabelPresetList } from "../../apiclient/api-labels"
 import { useAttributeOriginCount } from "../../apiclient/api-attribute"
-import { ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { BookDetailsLink } from "../../core/routing"
 import { BookEditorWidget } from "./book-editor-widget"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function BookEditorScreen() {
     const params = useParams()

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { AttributeColor, AttributeCountResponseAttribute, AttributeOriginCountResponseAttribute, AttributeRemapCreateRequest, AttributeRemapDeleteRequest, AttributeRemapUpdateRequest } from "../../apiclient/api-attribute"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
 import { BookAttributeAutocompleteList, BookOneAttributeWidget } from "../../widgets/attribute/book-attribute"
 import { attributeCodes } from "../../widgets/attribute/codes"
+import { ColorizedTextWidget, ContainerWidget } from "../../widgets/design-system"
 
 export function AttributeRemapEditorWidget(props: {
     value: {

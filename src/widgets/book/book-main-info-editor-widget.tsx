@@ -1,5 +1,5 @@
 import { BookRaw } from "../../apiclient/model-book"
-import { ContainerWidget } from "../common"
+import { ContainerWidget } from "../design-system"
 
 export function BookMainInfoEditorWidget(props: {
     value: BookRaw

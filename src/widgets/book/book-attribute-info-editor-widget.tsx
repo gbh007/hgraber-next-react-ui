@@ -2,7 +2,7 @@ import { AttributeCountResponseAttribute } from "../../apiclient/api-attribute"
 import { BookRawAttribute } from "../../apiclient/model-book"
 import { BookAttributeAutocompleteList, BookAttributeAutocompleteWidget } from "../attribute/book-attribute"
 import { attributeCodes } from "../attribute/codes"
-import { ContainerWidget, DeleteButtonWidget, StringArrayPickerWidget } from "../common"
+import { ContainerWidget, DeleteButtonWidget, StringArrayPickerWidget } from "../design-system"
 
 export function BookAttributeInfoEditorWidget(props: {
     value: Array<BookRawAttribute>
@@ -51,7 +51,7 @@ function AttributeEditor(props: {
                 <option value={code} key={code}>{code}</option>
             )}
         </select>
-        <DeleteButtonWidget onClick={props.onDelete}></DeleteButtonWidget>
+        <DeleteButtonWidget onClick={props.onDelete}/>
         <StringArrayPickerWidget
             value={props.value.values}
             onChange={e => props.onChange({ ...props.value, values: e })}

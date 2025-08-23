@@ -1,5 +1,5 @@
 import { MassloadFlag } from "../../apiclient/api-massload"
-import { ContainerWidget } from "../../widgets/common"
+import { ContainerWidget } from "../../widgets/design-system"
 
 
 export function MassloadFlagViewWidget(props: {

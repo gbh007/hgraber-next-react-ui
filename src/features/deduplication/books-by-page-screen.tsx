@@ -2,9 +2,9 @@ import { useParams } from "react-router-dom"
 import styles from "./books-by-page-screen.module.css"
 import { useDeduplicateBooksByPage } from "../../apiclient/api-deduplicate"
 import { useEffect } from "react"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { BookSimple } from "../../apiclient/model-book"
 import { BooksSimpleWidget } from "../../widgets/book/books-simple-widget"
+import { ErrorTextWidget } from "../../widgets/design-system"
 
 
 export function BooksByPageScreen() {

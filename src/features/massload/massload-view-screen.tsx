@@ -2,10 +2,9 @@ import { useEffect } from "react"
 import { useAttributeColorList } from "../../apiclient/api-attribute"
 import { useMassloadFlagList, useMassloadInfoGet } from "../../apiclient/api-massload"
 import { Link, useParams } from "react-router-dom"
-import { ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { MassloadEditorLink, MassloadListLink } from "../../core/routing"
 import { MassloadViewWidget } from "./massload-view-widget"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function MassloadViewScreen() {
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()

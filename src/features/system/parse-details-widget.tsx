@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { systemHandleResponseDetails } from "../../apiclient/api-system-handle"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
 import { BookDetailsLink } from "../../core/routing"
+import { ColorizedTextWidget, ContainerWidget } from "../../widgets/design-system"
 
 export function ParseDetailsWidget(props: {
     value?: Array<systemHandleResponseDetails>

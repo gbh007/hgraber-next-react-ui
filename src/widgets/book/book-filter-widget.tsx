@@ -2,8 +2,7 @@ import { AttributeCountResponseAttribute } from "../../apiclient/api-attribute"
 import { LabelPresetListResponseLabel } from "../../apiclient/api-labels"
 import { BookFilter } from "../../apiclient/model-book-filter"
 import { BookAttributeAutocompleteWidget } from "../attribute/book-attribute"
-import { ContainerWidget, DeleteButtonWidget } from "../common"
-import { DatetimePickerWidget } from "../datetime-picker"
+import { ContainerWidget, DatetimePickerWidget, DeleteButtonWidget } from "../design-system"
 import { BookLabelPresetAutocompleteWidget } from "../label/book-label-preset-autocomplete-widget"
 import { BookFilterAttributesWidget } from "./book-filter-attributes-widget"
 import { BookFilterFlagsWidget } from "./book-filter-flags-widget"
@@ -75,7 +74,7 @@ export function BookFilterWidget(props: {
                     onClick={() => {
                         props.onChange({ ...props.value, filter: { ...props.value.filter, name: "" } })
                     }}
-                ></DeleteButtonWidget>
+                />
                 : null}
         </ContainerWidget>
         <BookFilterAttributesWidget

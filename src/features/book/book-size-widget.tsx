@@ -1,5 +1,5 @@
 import { BookDetailsSize } from "../../apiclient/model-book"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
+import { ColorizedTextWidget, ContainerWidget } from "../../widgets/design-system"
 
 export function BookSizeWidget(props: {
     value?: BookDetailsSize

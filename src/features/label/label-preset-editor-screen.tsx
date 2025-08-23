@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom"
 import { LabelPresetCreateRequest, useLabelPresetCreate, useLabelPresetGet, useLabelPresetUpdate } from "../../apiclient/api-labels"
 import { useEffect, useState } from "react"
-import { ContainerWidget, StringArrayPickerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
+import { ContainerWidget, ErrorTextWidget, StringArrayPickerWidget } from "../../widgets/design-system"
 
 export function LabelPresetEditorScreen() {
     const params = useParams()

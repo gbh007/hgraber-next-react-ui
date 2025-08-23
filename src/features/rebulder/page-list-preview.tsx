@@ -2,10 +2,10 @@ import { useState } from "react"
 import { BookSimplePage } from "../../apiclient/model-book"
 import { ImageSize } from "../../widgets/book/image-size"
 import styles from "./book-rebuilder.module.css"
-import { ContainerWidget } from "../../widgets/common"
-import { PageImagePreviewWidget } from "../../widgets/book/page-image-preview-widget"
 import { Link } from "react-router-dom"
 import { BookReaderLink } from "../../core/routing"
+import { ContainerWidget } from "../../widgets/design-system"
+import { PageImagePreviewWidget } from "../../widgets/book/page-image-preview-widget"
 
 export function PageListPreview(props: {
     value: Array<number>

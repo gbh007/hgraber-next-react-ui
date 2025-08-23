@@ -2,10 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AttributeColor, useAttributeColorCreate, useAttributeColorGet, useAttributeColorUpdate, useAttributeCount } from "../../apiclient/api-attribute";
 import { AttributeColorEditLink } from "../../core/routing";
-import { ContainerWidget } from "../../widgets/common";
-import { ErrorTextWidget } from "../../widgets/error-text";
 import { AttributeColorEditorWidget } from "../../widgets/attribute/attribute-color-editor-widget";
 import { BookAttributeAutocompleteWidget } from "../../widgets/attribute/book-attribute";
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system";
 
 export function AttributeColorEditorScreen() {
     const params = useParams()

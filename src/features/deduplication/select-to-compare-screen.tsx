@@ -7,11 +7,10 @@ import { BookFilter } from "../../apiclient/model-book-filter"
 import { useEffect, useState } from "react"
 import { useAttributeCount } from "../../apiclient/api-attribute"
 import { useLabelPresetList } from "../../apiclient/api-labels"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { BookCompareLink, BookListLink } from "../../core/routing"
 import { BookFilterWidget } from "../../widgets/book/book-filter-widget"
-import { PaginatorWidget } from "../../widgets/common/paginator-widget"
+import { PaginatorWidget } from "../../widgets/book/paginator-widget"
+import { ColorizedTextWidget, ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 
 

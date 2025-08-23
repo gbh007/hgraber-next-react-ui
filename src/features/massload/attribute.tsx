@@ -1,7 +1,7 @@
 import { MassloadInfoListRequestAttribute } from "../../apiclient/api-massload"
 import { BookAttributeAutocompleteList } from "../../widgets/attribute/book-attribute"
 import { attributeCodes } from "../../widgets/attribute/codes"
-import { ContainerWidget, DeleteButtonWidget, ManyStringSelectWidget } from "../../widgets/common"
+import { ContainerWidget, DeleteButtonWidget, ManyStringSelectWidget } from "../../widgets/design-system"
 
 
 export function FilterAttributesWidget(props: {
@@ -34,7 +34,7 @@ export function FilterAttributesWidget(props: {
                     onClick={() => {
                         props.onChange(props.value.filter((_, index) => index != i))
                     }}
-                ></DeleteButtonWidget>
+                />
             </ContainerWidget>
         )}
     </ContainerWidget>

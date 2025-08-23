@@ -1,9 +1,7 @@
-interface DatetimePickerProps {
+export function DatetimePickerWidget(props: {
     value: string
     onChange: (v: string) => void
-}
-
-export function DatetimePickerWidget(props: DatetimePickerProps) {
+}) {
     return <input
         className="app"
         type="datetime-local"

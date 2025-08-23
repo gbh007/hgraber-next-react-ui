@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom"
 import { AgentListResponse, AgentListResponseStatusProblems } from "../../apiclient/api-agent"
 import { AgentStatusWidget } from "../../widgets/agent/agent-status-widget"
-import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../../widgets/common"
 import { AgentEditLink } from "../../core/routing"
+import { ColorizedTextWidget, ContainerWidget, HumanTimeWidget } from "../../widgets/design-system"
 
 export function AgentInfoWidget(props: {
     value: AgentListResponse

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { BookSimplePage } from "../../apiclient/model-book"
 import { ImageSize } from "./image-size"
-import { ContainerWidget } from "../common"
 import { PageImagePreviewWidget, PreviewSizeWidget } from "./page-image-preview-widget"
 import { Link } from "react-router-dom"
 import { BookReaderLink } from "../../core/routing"
+import { ContainerWidget } from "../design-system"
 
 export function BookPagesPreviewWidget(props: {
     bookID: string

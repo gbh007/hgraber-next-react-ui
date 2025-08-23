@@ -1,5 +1,5 @@
 import { AttributeColor } from "../../apiclient/api-attribute"
-import { ContainerWidget } from "../common"
+import { ContainerWidget } from "../design-system"
 import { BookAttributeAutocompleteList, BookAttributeValueWidget } from "./book-attribute"
 import { attributeCodes } from "./codes"
 

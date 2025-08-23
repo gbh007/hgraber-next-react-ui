@@ -3,12 +3,11 @@ import { useAttributeColorList, useAttributeCount } from "../../apiclient/api-at
 import { MassloadInfo, useMassloadAttributeCreate, useMassloadAttributeDelete, useMassloadExternalLinkCreate, useMassloadExternalLinkDelete, useMassloadFlagList, useMassloadInfoCreate, useMassloadInfoDelete, useMassloadInfoGet, useMassloadInfoUpdate } from "../../apiclient/api-massload"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { MassloadEditorLink, MassloadListLink, MassloadViewLink } from "../../core/routing"
-import { ErrorTextWidget } from "../../widgets/error-text"
-import { ContainerWidget } from "../../widgets/common"
 import { MassloadInfoEditorWidget } from "./massload-info-editor-widget"
 import { MassloadAttributeEditorWidget } from "./massload-attribute-editor-widget"
 import { MassloadExternalLinkEditorWidget } from "./massload-external-link-editor-widget"
 import { BookAttributeAutocompleteWidget } from "../../widgets/attribute/book-attribute"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function MassloadEditorScreen() {
     const [attributeColorListResponse, fetchAttributeColorList] = useAttributeColorList()

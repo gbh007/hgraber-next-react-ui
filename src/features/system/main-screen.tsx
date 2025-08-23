@@ -2,9 +2,8 @@
 import { useEffect } from "react"
 import { useSystemInfoSize, useSystemInfoWorkers } from "../../apiclient/api-system-info"
 import styles from "./main-screen.module.css"
-import { AutoRefresherWidget, ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { BookHandleWidget } from "./book-handle-widget"
+import { AutoRefresherWidget, ColorizedTextWidget, ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function MainScreen() {
     const [systemInfoSizeResponse, fetchSystemInfoSize] = useSystemInfoSize()

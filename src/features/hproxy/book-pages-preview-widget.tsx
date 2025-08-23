@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { HProxyBookResponsePage } from "../../apiclient/api-hproxy"
-import { ContainerWidget } from "../../widgets/common"
 import { ImageSize } from "../../widgets/book/image-size"
 import { PageImagePreviewWidget, PreviewSizeWidget } from "../../widgets/book/page-image-preview-widget"
+import { ContainerWidget } from "../../widgets/design-system"
 
 export function HProxyBookPagesPreviewWidget(props: {
     url: string

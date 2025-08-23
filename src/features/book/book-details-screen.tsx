@@ -5,11 +5,10 @@ import { useBookDelete } from "../../apiclient/api-book-delete"
 import { useBookRestore, useBookStatusSet } from "../../apiclient/api-book"
 import { useDeduplicateBookByPageBody, useSetDeadHash } from "../../apiclient/api-deduplicate"
 import { useAttributeColorList } from "../../apiclient/api-attribute"
-import { ColorizedTextWidget, ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { BookDetailInfoWidget } from "./book-detail-info-widget"
 import { BookEditLink, BookLabelEditLink, BookReaderLink, BookRebuildLink, BookUniquePagesLink } from "../../core/routing"
 import { BookTransferCoordinatorWidget } from "../../widgets/fs/book-transfer-coordinator-widget"
+import { ColorizedTextWidget, ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function BookDetailsScreen() {
     const mainButton: CSSProperties = {

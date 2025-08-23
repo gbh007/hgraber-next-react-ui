@@ -1,7 +1,7 @@
 import { BookFilterAttribute } from "../../apiclient/model-book-filter"
 import { BookAttributeAutocompleteList } from "../attribute/book-attribute"
 import { attributeCodes } from "../attribute/codes"
-import { ContainerWidget, DeleteButtonWidget, ManyStringSelectWidget } from "../common"
+import { ContainerWidget, DeleteButtonWidget, ManyStringSelectWidget } from "../design-system"
 
 export function BookFilterAttributesWidget(props: {
     value: Array<BookFilterAttribute>

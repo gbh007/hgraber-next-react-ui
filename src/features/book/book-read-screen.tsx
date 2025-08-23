@@ -6,10 +6,9 @@ import { useBookDetails } from "../../apiclient/api-book-details"
 import { useSetDeadHash } from "../../apiclient/api-deduplicate"
 import { useDeleteBookPage } from "../../apiclient/api-book-delete"
 import { BookDetailsLink, BookReaderLink } from "../../core/routing"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { PageBadgesWidget } from "../../widgets/book/badge-widget"
-import { ColorizedTextWidget } from "../../widgets/common"
 import { BookReadActionButtonWidget } from "../../widgets/book/book-read-action-button-widget"
+import { ColorizedTextWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function BookReadScreen() {
     const params = useParams()

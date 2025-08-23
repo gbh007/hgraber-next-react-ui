@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react"
 import { AttributeRemapCreateRequest, AttributeRemapDeleteRequest, AttributeRemapUpdateRequest, useAttributeColorList, useAttributeCount, useAttributeOriginCount, useAttributeRemapCreate, useAttributeRemapDelete, useAttributeRemapList, useAttributeRemapUpdate } from "../../apiclient/api-attribute"
-import { ContainerWidget } from "../../widgets/common"
-import { ErrorTextWidget } from "../../widgets/error-text"
 import { attributeCodes } from "../../widgets/attribute/codes"
 import { AttributeRemapEditorWidget } from "./attribute-remap-editor-widget"
 import { BookAttributeAutocompleteWidget } from "../../widgets/attribute/book-attribute"
+import { ContainerWidget, ErrorTextWidget } from "../../widgets/design-system"
 
 export function AttributeRemapListScreen() {
     const [valueFilter, setValueFilter] = useState("")
