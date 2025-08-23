@@ -13,7 +13,6 @@ import { TaskScreen } from "./pages/tasks";
 import { CompareBookScreen } from "./pages/compare";
 import { UniqueBookPagesScreen } from "./pages/unique-pages";
 import { BooksByPageScreen } from "./pages/books-by-page";
-import { BookRebuilderScreen } from "./pages/book-rebuilder";
 import { SelectToCompareScreen } from "./pages/select-to-compare";
 import { AgentListLink, AttributeColorListLink, AttributeRemapListLink, BookListLink, FSListLink, HProxyListLink, LabelPresetsLink, MainScreenLink, MassloadListLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
 import { AppTheme, ThemeContext } from "./core/context";
@@ -38,6 +37,7 @@ import { ListScreen } from "./features/book/list-screen";
 import { BookDetailsScreen } from "./features/book/book-details-screen";
 import { BookReadScreen } from "./features/book/book-read-screen";
 import { BookEditorScreen } from "./features/book/book-editor-screen";
+import { BookRebuilderScreen } from "./features/rebulder/book-rebuilder-screen";
 
 const router = createHashRouter([
   {
