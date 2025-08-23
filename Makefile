@@ -8,7 +8,7 @@ install:
 
 .PHONY: format
 format:
-	npx prettier ./src --write
+	npx prettier --write -l ./src
 
 .PHONY: build
 build:
