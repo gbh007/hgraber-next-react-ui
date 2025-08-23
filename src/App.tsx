@@ -21,7 +21,6 @@ import { BookRebuilderScreen } from "./pages/book-rebuilder";
 import { SelectToCompareScreen } from "./pages/select-to-compare";
 import { AgentListLink, AttributeColorListLink, AttributeRemapListLink, BookListLink, FSListLink, HProxyListLink, LabelPresetsLink, MainScreenLink, MassloadListLink, MenuLink, ParsingMirrorsLink, RPCLink, SelectToCompareLink, SettingsLink, TasksLink } from "./core/routing";
 import { AppTheme, ThemeContext } from "./core/context";
-import { ParsingMirrorEditorScreen, ParsingMirrorsScreen } from "./pages/parsing-mirrors";
 import { HProxyBookScreen } from "./features/hproxy/hproxy-book-screen";
 import { HProxyListScreen } from "./features/hproxy/hproxy-list-screen";
 import { MassloadListScreen } from "./features/massload/massload-list-screen";
@@ -37,6 +36,8 @@ import { AttributeRemapListScreen } from "./features/attribute/attribute-remap-l
 import { LabelPresetsScreen } from "./features/label/label-presets-screen";
 import { LabelPresetEditorScreen } from "./features/label/label-preset-editor-screen";
 import { BookLabelsEditorScreen } from "./features/label/book-labels-editor-screen";
+import { ParsingMirrorsScreen } from "./features/parsing/parsing-mirrors-screen";
+import { ParsingMirrorEditorScreen } from "./features/parsing/parsing-mirror-editor-screen";
 
 const router = createHashRouter([
   {

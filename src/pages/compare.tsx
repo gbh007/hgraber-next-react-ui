@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ErrorTextWidget } from "../widgets/error-text";
 import { BookAttributesWidget, BookPagesPreviewWidget } from "../widgets/book-detail-info";
 import { BookSimple, BookSimplePage } from "../apiclient/model-book";
-import { ContainerWidget, HumanTimeWidget } from "../widgets/common";
+import { ContainerWidget, HumanTimeWidget, prettyPercent } from "../widgets/common";
 import { DualReaderWidget } from "../widgets/split-viewer";
 import { BookImagePreviewWidget } from "../widgets/book-short-info";
 import { useAttributeColorList } from "../apiclient/api-attribute";
@@ -287,7 +287,3 @@ function BookShortInfo(props: {
     </ContainerWidget>
 }
 
-
-function prettyPercent(raw: number): number {
-    return Math.round(raw * 1000) / 10
-}

@@ -1,0 +1,54 @@
+import { useEffect } from "react"
+import { useParsingMirrorDelete, useParsingMirrorList } from "../../apiclient/api-parsing-mirror"
+import { ErrorTextWidget } from "../../widgets/error-text"
+import { Link } from "react-router-dom"
+import { ParsingMirrorEditLink } from "../../core/routing"
+import { ContainerWidget } from "../../widgets/common"
+
+export function ParsingMirrorsScreen() {
+    const [parsingMirrorsResponse, fetchParsingMirrors] = useParsingMirrorList()
+    useEffect(() => { fetchParsingMirrors() }, [fetchParsingMirrors])
+
+    const [parsingMirrorDeleteResponse, doDeleteParsingMirror] = useParsingMirrorDelete()
+
+    return <ContainerWidget appContainer direction="column">
+        <ErrorTextWidget value={parsingMirrorsResponse} />
+        <ErrorTextWidget value={parsingMirrorDeleteResponse} />
+        <table>
+            <thead>
+                <tr>
+                    <td>Название <Link className="app-button" to={ParsingMirrorEditLink()} >новое</Link></td>
+                    <td>Описание</td>
+                    <td>Значения</td>
+                    <td>Действия</td>
+                </tr>
+            </thead>
+            <tbody>
+                {parsingMirrorsResponse.data?.mirrors?.map(labelPreset =>
+                    <tr key={labelPreset.id}>
+                        <td>{labelPreset.name}</td>
+                        <td>{labelPreset.description}</td>
+                        <td>
+                            <ContainerWidget direction="column">
+                                {labelPreset.prefixes.map(v => <span key={v}>{v}</span>)}
+                            </ContainerWidget>
+                        </td>
+                        <td>
+                            <ContainerWidget direction="column" gap="smaller">
+                                <Link className="app-button" to={ParsingMirrorEditLink(labelPreset.id)} >Редактировать</Link>
+                                <button
+                                    className="app"
+                                    onClick={() => {
+                                        doDeleteParsingMirror({ id: labelPreset.id })
+                                            .then(() => fetchParsingMirrors())
+                                    }}
+                                    disabled={parsingMirrorDeleteResponse.isLoading}
+                                >Удалить</button>
+                            </ContainerWidget>
+                        </td>
+                    </tr>
+                )}
+            </tbody>
+        </table>
+    </ContainerWidget>
+}

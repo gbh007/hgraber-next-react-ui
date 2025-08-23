@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTaskCreate, useTaskResults } from "../apiclient/api-task";
 import { ErrorTextWidget } from "../widgets/error-text";
-import { ContainerWidget } from "../widgets/common";
+import { ContainerWidget, prettyPercent } from "../widgets/common";
 
 export function TaskScreen() {
     const [taskCode, setTaskCode] = useState("")
@@ -59,8 +59,4 @@ export function TaskScreen() {
             </ContainerWidget>
         )}
     </ContainerWidget>
-}
-
-function prettyPercent(raw: number): number {
-    return Math.round(raw * 1000) / 10
 }

@@ -204,3 +204,7 @@ export function StringArrayPickerWidget(props: {
         }
     </ContainerWidget >
 }
+
+export function prettyPercent(raw: number): number {
+    return Math.round(raw * 1000) / 10
+}
