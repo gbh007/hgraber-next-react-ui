@@ -62,6 +62,7 @@ export interface HProxyBookResponseAttributeValue {
 
 export interface HProxyBookRequest {
     url: string
+    page_limit?: number
 }
 
 export function useHProxyBook(): [

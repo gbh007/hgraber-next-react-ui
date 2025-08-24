@@ -11,12 +11,15 @@ import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
 import { BookOneAttributeWidget } from '../../widgets/attribute'
 import { BadgeWidget, BookImagePreviewWidget } from '../../widgets/book'
 
+const defaultPageLimit = 10
+
 export function HProxyBookScreen() {
     const [searchParams, setSearchParams] = useSearchParams()
     const [hProxyBookResponse, doHProxyBook] = useHProxyBook()
     const [systemHandleResponse, doSystemHandle] = useSystemHandle()
 
     const [currentURL, setCurrentURL] = useState('')
+    const [pageLimit, setPageLimit] = useState(defaultPageLimit)
     const [isReadOnlyMode, setIsReadOnlyMode] = useState(false)
 
     const [attributeColorListResponse, fetchAttributeColorList] =
@@ -32,7 +35,7 @@ export function HProxyBookScreen() {
         }
 
         setCurrentURL(u)
-        doHProxyBook({ url: u })
+        doHProxyBook({ url: u, page_limit: pageLimit })
     }, [doHProxyBook, searchParams])
 
     const downloadedFlags = {
@@ -64,6 +67,12 @@ export function HProxyBookScreen() {
                     value={currentURL}
                     onChange={(e) => setCurrentURL(e.target.value)}
                 />
+                <input
+                    className='app'
+                    value={pageLimit}
+                    type='number'
+                    onChange={(e) => setPageLimit(e.target.valueAsNumber)}
+                />
                 <button
                     className='app'
                     onClick={() => {
@@ -72,6 +81,16 @@ export function HProxyBookScreen() {
                     }}
                 >
                     Перейти
+                </button>
+                <button
+                    className='app'
+                    onClick={() => {
+                        const current = pageLimit + defaultPageLimit
+                        setPageLimit(current)
+                        doHProxyBook({ url: currentURL, page_limit: current })
+                    }}
+                >
+                    Показать больше страниц
                 </button>
 
                 <label>
