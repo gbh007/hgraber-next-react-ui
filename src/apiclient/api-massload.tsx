@@ -149,6 +149,9 @@ export interface MassloadFlag {
     code: string
     name: string
     description?: string
+    order_weight: number
+    text_color?: string
+    background_color?: string
     created_at: string
 }
 

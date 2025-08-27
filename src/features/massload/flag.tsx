@@ -9,6 +9,9 @@ export function MassloadFlagViewWidget(props: {
         return null
     }
 
+    const color = 'var(--app-color)'
+    const backgroundColor = 'var(--app-background)'
+
     return (
         <ContainerWidget
             direction='row'
@@ -21,7 +24,12 @@ export function MassloadFlagViewWidget(props: {
                     style={{
                         borderRadius: '3px',
                         padding: '3px',
-                        border: '1px solid var(--app-color)',
+                        color:
+                            props.flagInfos?.find((v) => v.code == flag)
+                                ?.text_color || color,
+                        background:
+                            props.flagInfos?.find((v) => v.code == flag)
+                                ?.background_color || backgroundColor,
                     }}
                 >
                     {props.flagInfos?.find((v) => v.code == flag)?.name ?? flag}
@@ -36,6 +44,9 @@ export function MassloadFlagPickerWidget(props: {
     onChange: (v: Array<string>) => void
     flagInfos: Array<MassloadFlag>
 }) {
+    const color = 'var(--app-color)'
+    const backgroundColor = 'var(--app-background)'
+
     return (
         <ContainerWidget
             direction='column'
@@ -43,7 +54,15 @@ export function MassloadFlagPickerWidget(props: {
             wrap
         >
             {props.flagInfos.map((flag) => (
-                <label key={flag.code}>
+                <label
+                    key={flag.code}
+                    style={{
+                        borderRadius: '3px',
+                        padding: '3px',
+                        color: flag.text_color || color,
+                        background: flag.background_color || backgroundColor,
+                    }}
+                >
                     <input
                         className='app'
                         type='checkbox'
