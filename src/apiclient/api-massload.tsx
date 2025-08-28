@@ -145,6 +145,77 @@ export function useMassloadInfoList(): [
     return [response, fetchData]
 }
 
+export interface MassloadFlagCreateRequest {
+    code: string
+    name: string
+    description?: string
+    order_weight: number
+    text_color?: string
+    background_color?: string
+}
+
+export function useMassloadFlagCreate(): [
+    Response<void | null>,
+    PostAction<MassloadFlagCreateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<MassloadFlagCreateRequest, void>(
+        'api/massload/flag/create'
+    )
+
+    return [response, fetchData]
+}
+
+export interface MassloadFlagUpdateRequest {
+    code: string
+    name: string
+    description?: string
+    order_weight: number
+    text_color?: string
+    background_color?: string
+}
+
+export function useMassloadFlagUpdate(): [
+    Response<void | null>,
+    PostAction<MassloadFlagUpdateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<MassloadFlagUpdateRequest, void>(
+        'api/massload/flag/update'
+    )
+
+    return [response, fetchData]
+}
+
+export interface MassloadFlagDeleteRequest {
+    code: string
+}
+
+export function useMassloadFlagDelete(): [
+    Response<void | null>,
+    PostAction<MassloadFlagDeleteRequest>,
+] {
+    const [response, fetchData] = useAPIPost<MassloadFlagDeleteRequest, void>(
+        '/api/massload/flag/delete'
+    )
+
+    return [response, fetchData]
+}
+
+export interface MassloadFlagGetRequest {
+    code: string
+}
+
+export function useMassloadFlagGet(): [
+    Response<MassloadFlag | null>,
+    PostAction<MassloadFlagGetRequest>,
+] {
+    const [response, fetchData] = useAPIPost<
+        MassloadFlagGetRequest,
+        MassloadFlag
+    >('/api/massload/flag/get')
+
+    return [response, fetchData]
+}
+
 export interface MassloadFlag {
     code: string
     name: string

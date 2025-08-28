@@ -9,9 +9,6 @@ export function MassloadFlagViewWidget(props: {
         return null
     }
 
-    const color = 'var(--app-color)'
-    const backgroundColor = 'var(--app-background)'
-
     return (
         <ContainerWidget
             direction='row'
@@ -19,23 +16,46 @@ export function MassloadFlagViewWidget(props: {
             wrap
         >
             {props.flags.map((flag, i) => (
-                <span
+                <MassloadOneFlagViewWidget
                     key={i}
-                    style={{
-                        borderRadius: '3px',
-                        padding: '3px',
-                        color:
-                            props.flagInfos?.find((v) => v.code == flag)
-                                ?.text_color || color,
-                        background:
-                            props.flagInfos?.find((v) => v.code == flag)
-                                ?.background_color || backgroundColor,
+                    value={{
+                        code: flag,
+                        name: props.flagInfos?.find((v) => v.code == flag)
+                            ?.name,
+                        text_color: props.flagInfos?.find((v) => v.code == flag)
+                            ?.text_color,
+                        background_color: props.flagInfos?.find(
+                            (v) => v.code == flag
+                        )?.background_color,
                     }}
-                >
-                    {props.flagInfos?.find((v) => v.code == flag)?.name ?? flag}
-                </span>
+                />
             ))}
         </ContainerWidget>
+    )
+}
+
+export function MassloadOneFlagViewWidget(props: {
+    value: {
+        code: string
+        name?: string
+        text_color?: string
+        background_color?: string
+    }
+}) {
+    const color = 'var(--app-color)'
+    const backgroundColor = 'var(--app-background)'
+
+    return (
+        <span
+            style={{
+                borderRadius: '3px',
+                padding: '3px',
+                color: props.value.text_color || color,
+                background: props.value.background_color || backgroundColor,
+            }}
+        >
+            {props.value.name || props.value.code}
+        </span>
     )
 }
 

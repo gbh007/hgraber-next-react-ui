@@ -169,3 +169,15 @@ export function MassloadEditorLink(id?: number) {
 export function MassloadViewLink(id: number) {
     return `/massload/view/${id}`
 }
+
+export function MassloadFlagEditLink(code?: string) {
+    if (!code) {
+        return `/massload/flag/edit`
+    }
+
+    return `/massload/flag/edit/${encodeURIComponent(code)}`
+}
+
+export function MassloadFlagListLink() {
+    return `/massload/flag/list`
+}

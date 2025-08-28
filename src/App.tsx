@@ -9,6 +9,7 @@ import {
     HProxyListLink,
     LabelPresetsLink,
     MainScreenLink,
+    MassloadFlagListLink,
     MassloadListLink,
     MenuLink,
     ParsingMirrorsLink,
@@ -48,6 +49,8 @@ import { MainScreen } from './features/system/main-screen'
 import { SettingsScreen } from './features/system/settings-screen'
 import { RPCScreen } from './features/system/rpc-screen'
 import { TaskScreen } from './features/system/task-screen'
+import { MassloadFlagListScreen } from './features/massload/massload-flag-list-screen'
+import { MassloadFlagEditorScreen } from './features/massload/massload-flag-editor-screen'
 
 const router = createHashRouter([
     {
@@ -322,6 +325,30 @@ const router = createHashRouter([
             </SimpleWrapper>
         ),
     },
+    {
+        path: '/massload/flag/list',
+        element: (
+            <SimpleWrapper>
+                <MassloadFlagListScreen />
+            </SimpleWrapper>
+        ),
+    },
+    {
+        path: '/massload/flag/edit',
+        element: (
+            <SimpleWrapper>
+                <MassloadFlagEditorScreen />
+            </SimpleWrapper>
+        ),
+    },
+    {
+        path: '/massload/flag/edit/:code',
+        element: (
+            <SimpleWrapper>
+                <MassloadFlagEditorScreen />
+            </SimpleWrapper>
+        ),
+    },
 ])
 
 function App() {
@@ -413,6 +440,11 @@ function MenuWidget() {
                 </li>
                 <li>
                     <Link to={MassloadListLink()}>Массовые загрузки</Link>
+                </li>
+                <li>
+                    <Link to={MassloadFlagListLink()}>
+                        Флаги массовых загрузок
+                    </Link>
                 </li>
                 <li>
                     <Link to={SettingsLink()}>Настройки</Link>
