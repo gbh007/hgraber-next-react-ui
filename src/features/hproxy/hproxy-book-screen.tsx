@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
-import { useHProxyBook } from '../../apiclient/api-hproxy'
-import { BookDetailsLink, HProxyListLink } from '../../core/routing'
+import {
+    HProxyBookResponseAttributeValueMassload,
+    useHProxyBook,
+} from '../../apiclient/api-hproxy'
+import {
+    BookDetailsLink,
+    HProxyListLink,
+    MassloadViewLink,
+} from '../../core/routing'
 import { useAttributeColorList } from '../../apiclient/api-attribute'
 import { useSystemHandle } from '../../apiclient/api-system-handle'
 
@@ -10,6 +17,7 @@ import { HProxyBookPagesPreviewWidget } from './book-pages-preview-widget'
 import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
 import { BookOneAttributeWidget } from '../../widgets/attribute'
 import { BadgeWidget, BookImagePreviewWidget } from '../../widgets/book'
+import verifiedBadge from '../../assets/verified.png'
 
 const defaultPageLimit = 10
 
@@ -197,6 +205,12 @@ export function HProxyBookScreen() {
                                     ) : (
                                         <span>{v.ext_name}</span>
                                     )}
+                                    {v.massloads_by_ext_url.map((ml) => (
+                                        <MassloadLinkWidget
+                                            key={ml.id}
+                                            value={ml}
+                                        />
+                                    ))}
                                     {v.name ? (
                                         <BookOneAttributeWidget
                                             code={attr.code}
@@ -212,6 +226,12 @@ export function HProxyBookScreen() {
                                             src={deletedBadge}
                                         />
                                     )}
+                                    {v.massloads_by_name.map((ml) => (
+                                        <MassloadLinkWidget
+                                            key={ml.id}
+                                            value={ml}
+                                        />
+                                    ))}
                                 </ContainerWidget>
                             ))}
                         </ContainerWidget>
@@ -242,5 +262,25 @@ export function HProxyBookScreen() {
                 pageLimit={10}
             />
         </ContainerWidget>
+    )
+}
+
+function MassloadLinkWidget(props: {
+    value: HProxyBookResponseAttributeValueMassload
+}) {
+    return (
+        <Link
+            to={MassloadViewLink(props.value.id)}
+            title={props.value.name}
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+            }}
+        >
+            <BadgeWidget
+                previewSize='small'
+                src={verifiedBadge}
+            />
+        </Link>
     )
 }

@@ -58,6 +58,13 @@ export interface HProxyBookResponseAttributeValue {
     ext_name: string
     name?: string
     ext_url?: string
+    massloads_by_name: Array<HProxyBookResponseAttributeValueMassload>
+    massloads_by_ext_url: Array<HProxyBookResponseAttributeValueMassload>
+}
+
+export interface HProxyBookResponseAttributeValueMassload {
+    id: number
+    name: string
 }
 
 export interface HProxyBookRequest {
