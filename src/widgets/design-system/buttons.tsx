@@ -1,4 +1,4 @@
-import deletedBadge from '../../assets/deleted.png'
+import { DeletedBadge } from './assets'
 
 export function DeleteButtonWidget(props: {
     onClick: () => void
@@ -18,7 +18,7 @@ export function DeleteButtonWidget(props: {
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}
-                src={deletedBadge}
+                src={DeletedBadge}
             />
         </button>
     )

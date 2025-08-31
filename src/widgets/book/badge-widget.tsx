@@ -1,5 +1,5 @@
 import { ImageSize } from './image-size'
-import deadHashBadge from '../../assets/dead-hash.png'
+import { DeadHashBadge } from '../../widgets/design-system/index'
 import { ContainerWidget } from '../design-system'
 
 export function BadgeWidget(props: { src: string; previewSize: ImageSize }) {
@@ -36,8 +36,8 @@ export function PageBadgesWidget(props: {
     }
     badgeSize: ImageSize
 }) {
-    const activeBadge = [deadHashBadge].filter(
-        (badge) => badge == deadHashBadge && props.flags?.has_dead_hash
+    const activeBadge = [DeadHashBadge].filter(
+        (badge) => badge == DeadHashBadge && props.flags?.has_dead_hash
     )
 
     const badgeSize =

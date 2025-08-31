@@ -11,13 +11,11 @@ import {
 } from '../../core/routing'
 import { useAttributeColorList } from '../../apiclient/api-attribute'
 import { useSystemHandle } from '../../apiclient/api-system-handle'
-
-import deletedBadge from '../../assets/deleted.png'
+import { DeletedBadge, VerifiedBadge } from '../../widgets/design-system/index'
 import { HProxyBookPagesPreviewWidget } from './book-pages-preview-widget'
 import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
 import { BookOneAttributeWidget } from '../../widgets/attribute'
 import { BadgeWidget, BookImagePreviewWidget } from '../../widgets/book'
-import verifiedBadge from '../../assets/verified.png'
 
 const defaultPageLimit = 10
 
@@ -223,7 +221,7 @@ export function HProxyBookScreen() {
                                     ) : (
                                         <BadgeWidget
                                             previewSize='small'
-                                            src={deletedBadge}
+                                            src={DeletedBadge}
                                         />
                                     )}
                                     {v.massloads_by_name.map((ml) => (
@@ -279,7 +277,7 @@ function MassloadLinkWidget(props: {
         >
             <BadgeWidget
                 previewSize='small'
-                src={verifiedBadge}
+                src={VerifiedBadge}
             />
         </Link>
     )

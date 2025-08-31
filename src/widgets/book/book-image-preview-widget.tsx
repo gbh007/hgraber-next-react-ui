@@ -1,7 +1,9 @@
-import missingImage from '../../assets/missing-image.png'
-import deletedBadge from '../../assets/deleted.png'
-import rebuildedBadge from '../../assets/rebuilded.png'
-import verifiedBadge from '../../assets/verified.png'
+import {
+    MissingImage,
+    DeletedBadge,
+    RebuildedBadge,
+    VerifiedBadge,
+} from '../../widgets/design-system/index'
 import { BookFlags } from '../../apiclient/model-book'
 import { ImageSize } from './image-size'
 import { BadgeWidget } from './badge-widget'
@@ -11,11 +13,11 @@ export function BookImagePreviewWidget(props: {
     flags?: BookFlags
     previewSize: ImageSize
 }) {
-    const activeBadge = [deletedBadge, verifiedBadge, rebuildedBadge].filter(
+    const activeBadge = [DeletedBadge, VerifiedBadge, RebuildedBadge].filter(
         (badge) =>
-            (badge == deletedBadge && props.flags?.is_deleted) ||
-            (badge == verifiedBadge && props.flags?.is_verified) ||
-            (badge == rebuildedBadge && props.flags?.is_rebuild)
+            (badge == DeletedBadge && props.flags?.is_deleted) ||
+            (badge == VerifiedBadge && props.flags?.is_verified) ||
+            (badge == RebuildedBadge && props.flags?.is_rebuild)
     )
 
     const badgeSize =
@@ -73,7 +75,7 @@ export function BookImagePreviewWidget(props: {
                     maxWidth: `${imageWidth}${widthUnit}`,
                     maxHeight: `${imageHeight}${heightUnit}`,
                 }}
-                src={props.preview_url ?? missingImage}
+                src={props.preview_url ?? MissingImage}
             />
             <div
                 style={{

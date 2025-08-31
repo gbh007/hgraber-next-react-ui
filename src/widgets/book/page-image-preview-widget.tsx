@@ -1,5 +1,4 @@
-import missingImage from '../../assets/missing-image.png'
-import deadHashBadge from '../../assets/dead-hash.png'
+import { MissingImage, DeadHashBadge } from '../../widgets/design-system/index'
 import { PropsWithChildren } from 'react'
 import { ImageSize } from './image-size'
 
@@ -13,8 +12,8 @@ export function PageImagePreviewWidget(
         onClick?: () => void
     }
 ) {
-    const activeBadge = [deadHashBadge].filter(
-        (badge) => badge == deadHashBadge && props.flags?.has_dead_hash
+    const activeBadge = [DeadHashBadge].filter(
+        (badge) => badge == DeadHashBadge && props.flags?.has_dead_hash
     )
 
     const badgeSize =
@@ -72,7 +71,7 @@ export function PageImagePreviewWidget(
                     maxWidth: `${imageWidth}${widthUnit}`,
                     maxHeight: `${imageHeight}${heightUnit}`,
                 }}
-                src={props.preview_url ?? missingImage}
+                src={props.preview_url ?? MissingImage}
                 onClick={props.onClick}
             />
             <div
