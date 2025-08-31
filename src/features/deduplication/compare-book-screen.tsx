@@ -420,7 +420,7 @@ function BookShortInfo(props: {
         >
             <b style={{ wordBreak: 'break-all' }}>{props.value.name}</b>
             <span>
-                Создана: <HumanTimeWidget value={props.value.created_at} />{' '}
+                Создана: <HumanTimeWidget value={props.value.created_at} />
             </span>
             <span>Страниц: {props.value.page_count}</span>
             {props.value.origin_url ? (

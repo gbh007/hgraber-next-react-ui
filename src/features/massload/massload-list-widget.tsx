@@ -25,13 +25,18 @@ export function MassloadListWidget(props: {
                 <thead>
                     <tr>
                         <td>
-                            ID{' '}
-                            <Link
-                                className='app-button'
-                                to={MassloadEditorLink()}
+                            <ContainerWidget
+                                direction='row'
+                                gap='small'
                             >
-                                Новая
-                            </Link>
+                                <span>ID</span>
+                                <Link
+                                    className='app-button'
+                                    to={MassloadEditorLink()}
+                                >
+                                    Новая
+                                </Link>
+                            </ContainerWidget>
                         </td>
                         <td>Название</td>
                         <td>Описание</td>

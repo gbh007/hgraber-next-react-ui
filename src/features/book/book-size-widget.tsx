@@ -83,10 +83,15 @@ export function BookSizeWidget(props: { value?: BookDetailsSize }) {
                     </ColorizedTextWidget>
                 </ContainerWidget>
             ) : null}
-            <span>
-                общий <b>{props.value.total_formatted}</b> /{' '}
-                {props.value.avg_page_size_formatted}
-            </span>
+            <ContainerWidget
+                direction='row'
+                gap='small'
+            >
+                <span>общий</span>
+                <b>{props.value.total_formatted}</b>
+                <span>/</span>
+                <span>{props.value.avg_page_size_formatted}</span>
+            </ContainerWidget>
         </ContainerWidget>
     )
 }

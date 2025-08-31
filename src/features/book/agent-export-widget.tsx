@@ -76,7 +76,6 @@ export function AgentExportWidget(props: { filter: BookFilter }) {
                         })
                     }}
                 >
-                    {' '}
                     Выгрузить
                 </button>
             </ContainerWidget>

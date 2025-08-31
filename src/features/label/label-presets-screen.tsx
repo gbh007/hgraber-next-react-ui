@@ -28,13 +28,18 @@ export function LabelPresetsScreen() {
                 <thead>
                     <tr>
                         <td>
-                            Название{' '}
-                            <Link
-                                className='app'
-                                to={LabelPresetEditLink()}
+                            <ContainerWidget
+                                direction='row'
+                                gap='small'
                             >
-                                новый
-                            </Link>
+                                <span>Название</span>
+                                <Link
+                                    className='app-button'
+                                    to={LabelPresetEditLink()}
+                                >
+                                    новый
+                                </Link>
+                            </ContainerWidget>
                         </td>
                         <td>Описание</td>
                         <td>Значения</td>

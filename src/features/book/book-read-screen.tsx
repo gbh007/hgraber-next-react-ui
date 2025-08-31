@@ -129,8 +129,7 @@ export function BookReadScreen() {
                         badgeSize='medium'
                     />
                     <span>
-                        Страница {pageNumber} из{' '}
-                        {bookDetailsResponse.data?.info.page_count ?? 0}
+                        {`Страница ${pageNumber} из ${bookDetailsResponse.data?.info.page_count ?? 0}`}
                     </span>
                 </div>
                 <div className={styles.view}>

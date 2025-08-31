@@ -12,8 +12,11 @@ export function BookMainInfoEditorWidget(props: {
             gap='small'
         >
             <b>Основная информация</b>
-            <label>
-                Название:{' '}
+            <ContainerWidget
+                direction='2-column'
+                gap='small'
+            >
+                <span>Название:</span>
                 <input
                     className='app'
                     value={props.value.name}
@@ -21,9 +24,7 @@ export function BookMainInfoEditorWidget(props: {
                         props.onChange({ ...props.value, name: e.target.value })
                     }}
                 />
-            </label>
-            <label>
-                Ссылка:{' '}
+                <span>Ссылка:</span>
                 <input
                     className='app'
                     value={props.value.origin_url ?? ''}
@@ -34,7 +35,7 @@ export function BookMainInfoEditorWidget(props: {
                         })
                     }}
                 />
-            </label>
+            </ContainerWidget>
         </ContainerWidget>
     )
 }

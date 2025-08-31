@@ -90,8 +90,7 @@ export function FSInfoWidget(props: {
                     <>
                         <b>Файлов:</b>
                         <span>
-                            {props.value.db_files_info.size_formatted} (
-                            {props.value.db_files_info.count} шт)
+                            {`${props.value.db_files_info.size_formatted} (${props.value.db_files_info.count} шт)`}
                         </span>
                     </>
                 ) : null}
@@ -100,8 +99,7 @@ export function FSInfoWidget(props: {
                     <>
                         <b>Невалидных файлов:</b>
                         <span>
-                            {props.value.db_invalid_files_info.size_formatted} (
-                            {props.value.db_invalid_files_info.count} шт)
+                            {`${props.value.db_invalid_files_info.size_formatted} (${props.value.db_invalid_files_info.count} шт)`}
                         </span>
                     </>
                 ) : null}
@@ -110,8 +108,7 @@ export function FSInfoWidget(props: {
                     <>
                         <b>Неиспользуемых файлов:</b>
                         <span>
-                            {props.value.db_detached_files_info.size_formatted}{' '}
-                            ({props.value.db_detached_files_info.count} шт)
+                            {`${props.value.db_detached_files_info.size_formatted} (${props.value.db_detached_files_info.count} шт)`}
                         </span>
                     </>
                 ) : null}

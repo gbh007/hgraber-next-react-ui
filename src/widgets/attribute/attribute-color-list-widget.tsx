@@ -14,13 +14,18 @@ export function AttributeColorListWidget(props: {
                 <thead>
                     <tr>
                         <td>
-                            Код{' '}
-                            <Link
-                                className='app-button'
-                                to={AttributeColorEditLink()}
+                            <ContainerWidget
+                                direction='row'
+                                gap='small'
                             >
-                                Новый
-                            </Link>
+                                <span>Код</span>
+                                <Link
+                                    className='app-button'
+                                    to={AttributeColorEditLink()}
+                                >
+                                    Новый
+                                </Link>
+                            </ContainerWidget>
                         </td>
                         <td>Значение</td>
                         <td>Образец</td>

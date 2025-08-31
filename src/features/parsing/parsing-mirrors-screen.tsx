@@ -27,13 +27,18 @@ export function ParsingMirrorsScreen() {
                 <thead>
                     <tr>
                         <td>
-                            Название{' '}
-                            <Link
-                                className='app-button'
-                                to={ParsingMirrorEditLink()}
+                            <ContainerWidget
+                                direction='row'
+                                gap='small'
                             >
-                                новое
-                            </Link>
+                                <span>Название</span>
+                                <Link
+                                    className='app-button'
+                                    to={ParsingMirrorEditLink()}
+                                >
+                                    новое
+                                </Link>
+                            </ContainerWidget>
                         </td>
                         <td>Описание</td>
                         <td>Значения</td>

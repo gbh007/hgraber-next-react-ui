@@ -129,7 +129,7 @@ export function PageListPreview(props: {
                                   )
                         )
                     }
-                />{' '}
+                />
                 выбрать
             </label>
             <Link

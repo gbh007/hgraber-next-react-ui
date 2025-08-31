@@ -104,7 +104,7 @@ export function PageSelectorReaderWidget(props: {
                                               )
                                     )
                                 }
-                            />{' '}
+                            />
                             выбрать
                         </label>
                     ) : null}

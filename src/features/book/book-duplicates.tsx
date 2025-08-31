@@ -99,8 +99,7 @@ export function BookDuplicates(props: {
                         style={{ alignItems: 'center' }}
                     >
                         <span>
-                            Размер: {book.target_size_formatted} /{' '}
-                            {book.target_avg_page_size_formatted}
+                            {`Размер: ${book.target_size_formatted} / ${book.target_avg_page_size_formatted}`}
                         </span>
                         <ContainerWidget
                             direction='row'
