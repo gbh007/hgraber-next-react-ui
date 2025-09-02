@@ -17,6 +17,7 @@ export function BookPagesSelectWidget(props: {
 }) {
     const [viewMode, setViewMode] = useState('reader')
     const [showOnlySelected, setShowOnlySelected] = useState(false)
+    const [showExceptSelected, setShowExceptSelected] = useState(false)
     const [showDeadHash, setShowDeadHash] = useState(true)
     const [imageOnRow, setImageOnRow] = useState(4)
 
@@ -26,6 +27,10 @@ export function BookPagesSelectWidget(props: {
         ?.filter(
             (page) =>
                 !showOnlySelected || props.value.includes(page.page_number)
+        )
+        .filter(
+            (page) =>
+                !showExceptSelected || !props.value.includes(page.page_number)
         )
         .filter((page) => showDeadHash || !page.has_dead_hash)
         .sort(
@@ -157,6 +162,17 @@ export function BookPagesSelectWidget(props: {
                             }
                         />
                         Только выбранные страницы
+                    </label>
+                    <label>
+                        <input
+                            type='checkbox'
+                            className='app'
+                            checked={showExceptSelected}
+                            onChange={(e) =>
+                                setShowExceptSelected(e.target.checked)
+                            }
+                        />
+                        Только НЕ выбранные страницы
                     </label>
                     <label>
                         <input
