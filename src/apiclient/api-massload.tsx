@@ -13,17 +13,33 @@ export interface MassloadInfo {
     flags?: Array<string>
     page_size?: number
     page_size_formatted?: string
+    page_count?: number
+
     file_size?: number
     file_size_formatted?: string
+    file_count?: number
+
+    books_in_system?: number
+
+    books_ahead?: number
+    new_books?: number
+    existing_books?: number
+
     created_at: string
     updated_at?: string
+
     external_links?: Array<MassloadInfoExternalLink>
     attributes?: Array<MassloadInfoAttribute>
 }
 
 export interface MassloadInfoExternalLink {
     url: string
+    auto_check: boolean
+    books_ahead?: number
+    new_books?: number
+    existing_books?: number
     created_at: string
+    updated_at?: string
 }
 
 export interface MassloadInfoAttribute {
@@ -31,8 +47,11 @@ export interface MassloadInfoAttribute {
     value: string
     page_size?: number
     page_size_formatted?: string
+    page_count?: number
     file_size?: number
     file_size_formatted?: string
+    file_count?: number
+    books_in_system?: number
     created_at: string
     updated_at?: string
 }
@@ -244,6 +263,7 @@ export function useMassloadFlagList(): [
 export interface MassloadExternalLinkCreateRequest {
     massload_id: number
     url: string
+    auto_check?: boolean
 }
 
 export function useMassloadExternalLinkCreate(): [
@@ -254,6 +274,24 @@ export function useMassloadExternalLinkCreate(): [
         MassloadExternalLinkCreateRequest,
         void
     >('/api/massload/info/external_link/create')
+
+    return [response, fetchData]
+}
+
+export interface MassloadExternalLinkUpdateRequest {
+    massload_id: number
+    url: string
+    auto_check?: boolean
+}
+
+export function useMassloadExternalLinkUpdate(): [
+    Response<void | null>,
+    PostAction<MassloadExternalLinkUpdateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<
+        MassloadExternalLinkUpdateRequest,
+        void
+    >('/api/massload/info/external_link/update')
 
     return [response, fetchData]
 }
