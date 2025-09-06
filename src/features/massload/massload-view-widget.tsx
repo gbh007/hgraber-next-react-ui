@@ -3,7 +3,10 @@ import { AttributeColor } from '../../apiclient/api-attribute'
 import { MassloadFlag, MassloadInfo } from '../../apiclient/api-massload'
 import { MassloadFlagViewWidget } from './flag'
 import { HProxyListLink } from '../../core/routing'
-import { ContainerWidget } from '../../widgets/design-system'
+import {
+    ColorizedTextWidget,
+    ContainerWidget,
+} from '../../widgets/design-system'
 import { BookOneAttributeWidget } from '../../widgets/attribute'
 
 export function MassloadViewWidget(props: {
@@ -41,6 +44,55 @@ export function MassloadViewWidget(props: {
                     </>
                 ) : null}
 
+                {props.value.page_count ? (
+                    <>
+                        <b>Количество страниц</b>
+                        <span>{props.value.page_count}</span>
+                    </>
+                ) : null}
+
+                {props.value.file_count ? (
+                    <>
+                        <b>Количество файлов</b>
+                        <span>{props.value.file_count}</span>
+                    </>
+                ) : null}
+
+                {props.value.books_in_system ? (
+                    <>
+                        <b>
+                            Количество книг
+                            <br />в системе по аттрибутам
+                        </b>
+                        <span>{props.value.books_in_system}</span>
+                    </>
+                ) : null}
+
+                {props.value.books_ahead ? (
+                    <>
+                        <b>
+                            Количество книг
+                            <br />
+                            перед последней скачанной
+                        </b>
+                        <span>{props.value.books_ahead}</span>
+                    </>
+                ) : null}
+
+                {props.value.new_books ? (
+                    <>
+                        <b>Количество новых книг</b>
+                        <span>{props.value.new_books}</span>
+                    </>
+                ) : null}
+
+                {props.value.existing_books ? (
+                    <>
+                        <b>Количество дубликатов</b>
+                        <span>{props.value.existing_books}</span>
+                    </>
+                ) : null}
+
                 <b>Флаги</b>
                 <span>
                     <MassloadFlagViewWidget
@@ -75,6 +127,22 @@ export function MassloadViewWidget(props: {
                             <span>({attr.file_size_formatted})</span>
                         </>
                     ) : null}
+                    {attr.page_count ? (
+                        <>
+                            <b>Количество:</b>
+                            <span>{attr.page_count}</span>
+                        </>
+                    ) : null}
+
+                    {attr.file_count && attr.file_count != attr.page_count ? (
+                        <span>({attr.file_count})</span>
+                    ) : null}
+                    {attr.books_in_system ? (
+                        <>
+                            <b>Книг:</b>
+                            <span>{attr.books_in_system}</span>
+                        </>
+                    ) : null}
                 </ContainerWidget>
             ))}
 
@@ -83,7 +151,7 @@ export function MassloadViewWidget(props: {
                 <ContainerWidget
                     key={i}
                     direction='row'
-                    gap='smaller'
+                    gap='medium'
                 >
                     <Link
                         className='app-button'
@@ -91,6 +159,37 @@ export function MassloadViewWidget(props: {
                     >
                         {link.url}
                     </Link>
+                    <b>Автопроверка:</b>
+                    {link.auto_check ? (
+                        <ColorizedTextWidget
+                            color='good'
+                            bold
+                        >
+                            Да
+                        </ColorizedTextWidget>
+                    ) : (
+                        <ColorizedTextWidget color='danger-lite'>
+                            Нет
+                        </ColorizedTextWidget>
+                    )}
+                    {link.books_ahead ? (
+                        <>
+                            <b>До:</b>
+                            <span>{link.books_ahead}</span>
+                        </>
+                    ) : null}
+                    {link.new_books ? (
+                        <>
+                            <b>Новых:</b>
+                            <span>{link.new_books}</span>
+                        </>
+                    ) : null}
+                    {link.existing_books ? (
+                        <>
+                            <b>Скачано:</b>
+                            <span>{link.existing_books}</span>
+                        </>
+                    ) : null}
                 </ContainerWidget>
             ))}
         </ContainerWidget>

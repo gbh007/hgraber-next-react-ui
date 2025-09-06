@@ -9,6 +9,7 @@ import {
     useMassloadAttributeDelete,
     useMassloadExternalLinkCreate,
     useMassloadExternalLinkDelete,
+    useMassloadExternalLinkUpdate,
     useMassloadFlagList,
     useMassloadInfoCreate,
     useMassloadInfoDelete,
@@ -68,6 +69,8 @@ export function MassloadEditorScreen() {
 
     const [massLoadExternalLinkCreateResponse, doMassloadExternalLinkCreate] =
         useMassloadExternalLinkCreate()
+    const [massLoadExternalLinkUpdateResponse, doMassloadExternalLinkUpdate] =
+        useMassloadExternalLinkUpdate()
     const [massLoadExternalLinkDeleteResponse, doMassloadExternalLinkDelete] =
         useMassloadExternalLinkDelete()
 
@@ -116,6 +119,7 @@ export function MassloadEditorScreen() {
             <ErrorTextWidget value={massLoadAttributeCreateResponse} />
             <ErrorTextWidget value={massLoadAttributeDeleteResponse} />
             <ErrorTextWidget value={massLoadExternalLinkCreateResponse} />
+            <ErrorTextWidget value={massLoadExternalLinkUpdateResponse} />
             <ErrorTextWidget value={massLoadExternalLinkDeleteResponse} />
             <ErrorTextWidget value={massloadFlagListResponse} />
 
@@ -185,9 +189,19 @@ export function MassloadEditorScreen() {
                     />
                     <MassloadExternalLinkEditorWidget
                         value={data.external_links}
-                        onCreate={(url: string) => {
+                        onCreate={(v) => {
                             doMassloadExternalLinkCreate({
-                                url: url,
+                                url: v.url,
+                                auto_check: v.auto_check,
+                                massload_id: data.id,
+                            }).then(() => {
+                                fetchMassloadGet({ id: massloadID })
+                            })
+                        }}
+                        onUpdate={(v) => {
+                            doMassloadExternalLinkUpdate({
+                                url: v.url,
+                                auto_check: v.auto_check,
                                 massload_id: data.id,
                             }).then(() => {
                                 fetchMassloadGet({ id: massloadID })

@@ -41,7 +41,7 @@ export function MassloadListWidget(props: {
                         <td>Название</td>
                         <td>Описание</td>
                         <td>Флаги</td>
-                        <td>Размер</td>
+                        <td>Данные</td>
                         <td>Аттрибуты</td>
                         <td>Действия</td>
                     </tr>
@@ -62,27 +62,72 @@ export function MassloadListWidget(props: {
                             </td>
                             <td>
                                 <ContainerWidget
-                                    direction='row'
-                                    gap='small'
-                                    wrap
+                                    direction='column'
+                                    gap='medium'
                                 >
-                                    {ml.page_size_formatted ? (
-                                        <>
+                                    <ContainerWidget
+                                        direction='row'
+                                        gap='small'
+                                        wrap
+                                    >
+                                        <b>Размер:</b>
+                                        {ml.page_size_formatted ? (
                                             <span>
                                                 {ml.page_size_formatted}
                                             </span>
-                                        </>
-                                    ) : null}
+                                        ) : null}
 
-                                    {ml.file_size_formatted &&
-                                    ml.file_size_formatted !=
-                                        ml.page_size_formatted ? (
-                                        <>
+                                        {ml.file_size_formatted &&
+                                        ml.file_size_formatted !=
+                                            ml.page_size_formatted ? (
                                             <span>
                                                 ({ml.file_size_formatted})
                                             </span>
-                                        </>
-                                    ) : null}
+                                        ) : null}
+                                    </ContainerWidget>
+                                    <ContainerWidget
+                                        direction='row'
+                                        gap='small'
+                                        wrap
+                                    >
+                                        <b>Количество:</b>
+                                        {ml.page_count ? (
+                                            <span>{ml.page_count}</span>
+                                        ) : null}
+
+                                        {ml.file_count &&
+                                        ml.file_count != ml.page_count ? (
+                                            <span>({ml.file_count})</span>
+                                        ) : null}
+                                    </ContainerWidget>
+                                    <ContainerWidget
+                                        direction='row'
+                                        gap='small'
+                                        wrap
+                                    >
+                                        <b>Книг:</b>
+                                        {ml.books_in_system ? (
+                                            <span>{ml.books_in_system}</span>
+                                        ) : null}
+                                    </ContainerWidget>
+                                    <ContainerWidget
+                                        direction='row'
+                                        gap='small'
+                                        wrap
+                                    >
+                                        <b>До / Новых / Скачано:</b>
+                                        {ml.books_ahead ? (
+                                            <span>{ml.books_ahead}</span>
+                                        ) : null}
+                                        <span>/</span>
+                                        {ml.new_books ? (
+                                            <span>{ml.new_books}</span>
+                                        ) : null}
+                                        <span>/</span>
+                                        {ml.existing_books ? (
+                                            <span>{ml.existing_books}</span>
+                                        ) : null}
+                                    </ContainerWidget>
                                 </ContainerWidget>
                             </td>
                             <td>
