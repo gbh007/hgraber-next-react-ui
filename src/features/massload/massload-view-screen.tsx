@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useAttributeColorList } from '../../apiclient/api-attribute'
 import {
+    useMassloadCalculate,
     useMassloadFlagList,
     useMassloadInfoGet,
 } from '../../apiclient/api-massload'
@@ -14,6 +15,9 @@ export function MassloadViewScreen() {
         useAttributeColorList()
     const [massloadFlagListResponse, fetchMassloadFlagList] =
         useMassloadFlagList()
+
+    const [massLoadCalculateResponse, doMassloadCalculate] =
+        useMassloadCalculate()
 
     useEffect(() => {
         fetchAttributeColorList()
@@ -39,6 +43,7 @@ export function MassloadViewScreen() {
             <ErrorTextWidget value={attributeColorListResponse} />
             <ErrorTextWidget value={massLoadGetResponse} />
             <ErrorTextWidget value={massloadFlagListResponse} />
+            <ErrorTextWidget value={massLoadCalculateResponse} />
 
             <ContainerWidget
                 direction='row'
@@ -57,6 +62,17 @@ export function MassloadViewScreen() {
                 >
                     Редактировать
                 </Link>
+                <button
+                    className='app'
+                    onClick={() => {
+                        doMassloadCalculate({
+                            id: massloadID,
+                            force: true,
+                        })
+                    }}
+                >
+                    Пересчитать
+                </button>
             </ContainerWidget>
 
             {massLoadGetResponse.data ? (

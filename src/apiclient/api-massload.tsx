@@ -164,6 +164,23 @@ export function useMassloadInfoList(): [
     return [response, fetchData]
 }
 
+export interface MassloadCalculateRequest {
+    id?: number
+    all?: boolean
+    force?: boolean
+}
+
+export function useMassloadCalculate(): [
+    Response<void | null>,
+    PostAction<MassloadCalculateRequest>,
+] {
+    const [response, fetchData] = useAPIPost<MassloadCalculateRequest, void>(
+        '/api/massload/calculate'
+    )
+
+    return [response, fetchData]
+}
+
 export interface MassloadFlagCreateRequest {
     code: string
     name: string

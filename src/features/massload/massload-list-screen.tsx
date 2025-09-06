@@ -5,6 +5,7 @@ import {
 } from '../../apiclient/api-attribute'
 import {
     MassloadInfoListRequest,
+    useMassloadCalculate,
     useMassloadFlagList,
     useMassloadInfoDelete,
     useMassloadInfoList,
@@ -26,6 +27,8 @@ export function MassloadListScreen() {
     const [massloadFlagListResponse, fetchMassloadFlagList] =
         useMassloadFlagList()
     const [attributeCountResponse, getAttributeCount] = useAttributeCount()
+    const [massLoadCalculateResponse, doMassloadCalculate] =
+        useMassloadCalculate()
 
     const defaultFilterValue: MassloadInfoListRequest = {
         sort: {
@@ -60,6 +63,25 @@ export function MassloadListScreen() {
             <ErrorTextWidget value={massLoadDeleteResponse} />
             <ErrorTextWidget value={massloadFlagListResponse} />
             <ErrorTextWidget value={attributeCountResponse} />
+            <ErrorTextWidget value={massLoadCalculateResponse} />
+
+            <ContainerWidget
+                direction='row'
+                gap='medium'
+                wrap
+            >
+                <button
+                    className='app'
+                    onClick={() => {
+                        doMassloadCalculate({
+                            all: true,
+                            force: true,
+                        })
+                    }}
+                >
+                    Пересчитать все
+                </button>
+            </ContainerWidget>
 
             <ContainerWidget
                 appContainer
