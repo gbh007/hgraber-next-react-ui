@@ -158,6 +158,12 @@ export function MassloadFilterWidget(props: {
                     <option value='id'>ИД</option>
                     <option value='page_size'>Размеру страниц</option>
                     <option value='file_size'>Размеру файлов</option>
+                    <option value='page_count'>Количеству страниц</option>
+                    <option value='file_count'>Количеству файлов</option>
+                    <option value='books_ahead'>Книг до</option>
+                    <option value='new_books'>Новых книг</option>
+                    <option value='existing_books'>Существующие книги</option>
+                    <option value='books_in_system'>Книг в системе</option>
                 </select>
             </ContainerWidget>
             <label>
