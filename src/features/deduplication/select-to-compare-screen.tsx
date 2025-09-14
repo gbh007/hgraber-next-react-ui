@@ -79,6 +79,11 @@ export function SelectToCompareScreen() {
                 appContainer
                 direction='column'
                 gap='big'
+                style={{
+                    position: 'sticky',
+                    top: '0px',
+                    zIndex: '1',
+                }}
             >
                 <ContainerWidget
                     direction='row'
