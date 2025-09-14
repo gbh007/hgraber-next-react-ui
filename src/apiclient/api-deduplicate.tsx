@@ -22,12 +22,7 @@ export interface DeduplicateBookByPageBodyResponseResult {
     shared_page_count: number
     shared_page_count_without_dead_hashes: number
 
-    target_size_formatted: string
-    shared_size_formatted: string
-    shared_size_without_dead_hashes_formatted: string
-
     target_avg_page_size: number
-    target_avg_page_size_formatted: string
     target_page_count: number
 }
 
@@ -66,13 +61,9 @@ export interface DeduplicateCompareResponse {
     target_attributes?: Array<BookAttribute>
 
     origin_book_size?: number
-    origin_book_size_formatted?: string
     target_book_size?: number
-    target_book_size_formatted?: string
     origin_page_avg_size?: number
-    origin_page_avg_size_formatted?: string
     target_page_avg_size?: number
-    target_page_avg_size_formatted?: string
 }
 
 export function useDeduplicateCompare(): [

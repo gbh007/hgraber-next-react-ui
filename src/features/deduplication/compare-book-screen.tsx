@@ -13,6 +13,7 @@ import {
     ContainerWidget,
     ErrorTextWidget,
     HumanTimeWidget,
+    PrettyDualSizeWidget,
     prettyPercent,
 } from '../../widgets/design-system'
 import {
@@ -104,12 +105,8 @@ export function CompareBookScreen() {
                             compareResult.data
                                 ?.origin_covered_target_without_dead_hashes
                         }
-                        book_size={
-                            compareResult.data?.origin_book_size_formatted
-                        }
-                        page_size={
-                            compareResult.data?.origin_page_avg_size_formatted
-                        }
+                        book_size={compareResult.data?.origin_book_size}
+                        page_size={compareResult.data?.origin_page_avg_size}
                     />
                 </ContainerWidget>
                 <div style={{ flexGrow: 1, textAlign: 'center' }}>
@@ -156,12 +153,8 @@ export function CompareBookScreen() {
                             compareResult.data
                                 ?.target_covered_origin_without_dead_hashes
                         }
-                        book_size={
-                            compareResult.data?.target_book_size_formatted
-                        }
-                        page_size={
-                            compareResult.data?.target_page_avg_size_formatted
-                        }
+                        book_size={compareResult.data?.target_book_size}
+                        page_size={compareResult.data?.target_page_avg_size}
                     />
                     <BookImagePreviewWidget
                         flags={compareResult.data?.target.flags}
@@ -401,8 +394,8 @@ function BookShortInfo(props: {
     value?: BookSimple
     covered_target?: number
     covered_target_without_dead_hashes?: number
-    book_size?: string
-    page_size?: string
+    book_size?: number
+    page_size?: number
 }) {
     if (!props.value) {
         return
@@ -434,12 +427,12 @@ function BookShortInfo(props: {
                     {prettyPercent(props.covered_target_without_dead_hashes)}%)
                 </span>
             ) : null}
-            {props.book_size ? (
-                <span>
-                    Размер: {props.book_size}
-                    {props.page_size ? ` (${props.page_size})` : ''}
-                </span>
-            ) : null}
+            <PrettyDualSizeWidget
+                first={props.book_size}
+                second={props.page_size}
+            >
+                <span>Размер:</span>
+            </PrettyDualSizeWidget>
             <Link
                 className='app-button'
                 to={BookDetailsLink(props.value.id)}

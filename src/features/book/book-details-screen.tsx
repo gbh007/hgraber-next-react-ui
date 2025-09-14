@@ -21,6 +21,7 @@ import {
     ColorizedTextWidget,
     ContainerWidget,
     ErrorTextWidget,
+    prettySize,
 } from '../../widgets/design-system'
 
 export function BookDetailsScreen() {
@@ -132,7 +133,7 @@ export function BookDetailsScreen() {
                                             bookDetailsResponse.data?.size
                                                 ?.unique &&
                                             !confirm(
-                                                `У книги ${bookDetailsResponse.data?.info.name} есть ${bookDetailsResponse.data?.size?.unique_formatted} уникального контента, точно хотите ее удалить?`
+                                                `У книги ${bookDetailsResponse.data?.info.name} есть ${prettySize(bookDetailsResponse.data?.size?.unique)} уникального контента, точно хотите ее удалить?`
                                             )
                                         ) {
                                             return

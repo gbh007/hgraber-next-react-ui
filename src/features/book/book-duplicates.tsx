@@ -5,7 +5,9 @@ import { BookCompareLink } from '../../core/routing'
 import {
     ColorizedTextWidget,
     ContainerWidget,
+    PrettyDualSizeWidget,
     prettyPercent,
+    prettySize,
 } from '../../widgets/design-system'
 
 export function BookDuplicates(props: {
@@ -99,26 +101,14 @@ export function BookDuplicates(props: {
                         style={{ alignItems: 'center' }}
                     >
                         <span>
-                            {`Размер: ${book.target_size_formatted} / ${book.target_avg_page_size_formatted}`}
+                            {`Размер: ${prettySize(book.target_size)} / ${prettySize(book.target_avg_page_size)}`}
                         </span>
-                        <ContainerWidget
-                            direction='row'
-                            gap='small'
+                        <PrettyDualSizeWidget
+                            first={book.shared_size}
+                            second={book.shared_size_without_dead_hashes}
                         >
-                            <span>
-                                Общий размер: {book.shared_size_formatted}
-                            </span>
-                            {book.shared_size_formatted !=
-                            book.shared_size_without_dead_hashes_formatted ? (
-                                <span>
-                                    (
-                                    {
-                                        book.shared_size_without_dead_hashes_formatted
-                                    }
-                                    )
-                                </span>
-                            ) : null}
-                        </ContainerWidget>
+                            <span>Общий размер:</span>
+                        </PrettyDualSizeWidget>
                         <ContainerWidget
                             direction='row'
                             gap='small'

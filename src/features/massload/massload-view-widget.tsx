@@ -6,6 +6,8 @@ import { HProxyListLink } from '../../core/routing'
 import {
     ColorizedTextWidget,
     ContainerWidget,
+    PrettyDualSizeWidget,
+    PrettySizeWidget,
 } from '../../widgets/design-system'
 import { BookOneAttributeWidget } from '../../widgets/attribute'
 
@@ -30,19 +32,13 @@ export function MassloadViewWidget(props: {
                 <b>Описание</b>
                 <pre className='app'>{props.value.description}</pre>
 
-                {props.value.page_size_formatted ? (
-                    <>
-                        <b>Размер страниц</b>
-                        <span>{props.value.page_size_formatted}</span>
-                    </>
-                ) : null}
+                <PrettySizeWidget value={props.value.page_size}>
+                    <b>Размер страниц</b>
+                </PrettySizeWidget>
 
-                {props.value.file_size_formatted ? (
-                    <>
-                        <b>Размер файлов</b>
-                        <span>{props.value.file_size_formatted}</span>
-                    </>
-                ) : null}
+                <PrettySizeWidget value={props.value.file_size}>
+                    <b>Размер файлов</b>
+                </PrettySizeWidget>
 
                 {props.value.page_count ? (
                     <>
@@ -115,18 +111,11 @@ export function MassloadViewWidget(props: {
                         colors={props.colors}
                         code={attr.code}
                     />
-                    {attr.page_size_formatted ? (
-                        <>
-                            <span>{attr.page_size_formatted}</span>
-                        </>
-                    ) : null}
+                    <PrettyDualSizeWidget
+                        first={attr.page_size}
+                        second={attr.file_size}
+                    />
 
-                    {attr.file_size_formatted &&
-                    attr.file_size_formatted != attr.page_size_formatted ? (
-                        <>
-                            <span>({attr.file_size_formatted})</span>
-                        </>
-                    ) : null}
                     {attr.page_count ? (
                         <>
                             <b>Количество:</b>

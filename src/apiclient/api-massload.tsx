@@ -12,11 +12,9 @@ export interface MassloadInfo {
     description?: string
     flags?: Array<string>
     page_size?: number
-    page_size_formatted?: string
     page_count?: number
 
     file_size?: number
-    file_size_formatted?: string
     file_count?: number
 
     books_in_system?: number
@@ -46,10 +44,8 @@ export interface MassloadInfoAttribute {
     code: string
     value: string
     page_size?: number
-    page_size_formatted?: string
     page_count?: number
     file_size?: number
-    file_size_formatted?: string
     file_count?: number
     books_in_system?: number
     created_at: string

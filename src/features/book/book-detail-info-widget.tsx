@@ -7,6 +7,7 @@ import { BookDuplicates } from './book-duplicates'
 import {
     ColorizedTextWidget,
     ContainerWidget,
+    prettySize,
 } from '../../widgets/design-system'
 import {
     BookAttributesWidget,
@@ -125,7 +126,7 @@ export function BookDetailInfoWidget(
                         <b>{fs.name}</b>
                         <span>{fs.id}</span>
                         <span>
-                            {fs.files.size_formatted} ({fs.files.count})
+                            {prettySize(fs.files.size)} ({fs.files.count})
                         </span>
                     </ContainerWidget>
                 ))}

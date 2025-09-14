@@ -6,6 +6,7 @@ import { MassloadFlagViewWidget } from './flag'
 import {
     ColorizedTextWidget,
     ContainerWidget,
+    PrettyDualSizeWidget,
 } from '../../widgets/design-system'
 import { BookOneAttributeWidget } from '../../widgets/attribute'
 
@@ -65,26 +66,12 @@ export function MassloadListWidget(props: {
                                     direction='column'
                                     gap='medium'
                                 >
-                                    <ContainerWidget
-                                        direction='row'
-                                        gap='small'
-                                        wrap
+                                    <PrettyDualSizeWidget
+                                        first={ml.page_size}
+                                        second={ml.file_size}
                                     >
                                         <b>Размер:</b>
-                                        {ml.page_size_formatted ? (
-                                            <span>
-                                                {ml.page_size_formatted}
-                                            </span>
-                                        ) : null}
-
-                                        {ml.file_size_formatted &&
-                                        ml.file_size_formatted !=
-                                            ml.page_size_formatted ? (
-                                            <span>
-                                                ({ml.file_size_formatted})
-                                            </span>
-                                        ) : null}
-                                    </ContainerWidget>
+                                    </PrettyDualSizeWidget>
                                     <ContainerWidget
                                         direction='row'
                                         gap='small'

@@ -34,18 +34,12 @@ export interface BookDetailsSize {
     shared: number
     dead_hashes: number
     total: number
-    unique_formatted: string
-    unique_without_dead_hashes_formatted: string
-    shared_formatted: string
-    dead_hashes_formatted: string
-    total_formatted: string
     unique_count: number
     unique_without_dead_hashes_count: number
     shared_count: number
     dead_hashes_count: number
     inner_duplicate_count: number
     avg_page_size: number
-    avg_page_size_formatted: string
 }
 
 export interface BookRaw {

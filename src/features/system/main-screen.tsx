@@ -10,6 +10,7 @@ import {
     ColorizedTextWidget,
     ContainerWidget,
     ErrorTextWidget,
+    prettySize,
 } from '../../widgets/design-system'
 
 export function MainScreen() {
@@ -136,8 +137,9 @@ export function MainScreen() {
                         </ColorizedTextWidget>
                         <span>Объем:</span>
                         <ColorizedTextWidget bold>
-                            {systemInfoSizeResponse.data
-                                ?.pages_size_formatted ?? 0}
+                            {prettySize(
+                                systemInfoSizeResponse.data?.pages_size ?? 0
+                            )}
                         </ColorizedTextWidget>
                     </ContainerWidget>
                 </ContainerWidget>
@@ -200,8 +202,9 @@ export function MainScreen() {
                         </ColorizedTextWidget>
                         <span>Объем:</span>
                         <ColorizedTextWidget bold>
-                            {systemInfoSizeResponse.data
-                                ?.files_size_formatted ?? 0}
+                            {prettySize(
+                                systemInfoSizeResponse.data?.files_size ?? 0
+                            )}
                         </ColorizedTextWidget>
                     </ContainerWidget>
                 </ContainerWidget>

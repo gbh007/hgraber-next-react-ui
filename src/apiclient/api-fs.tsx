@@ -109,7 +109,6 @@ export interface FSListResponseUnit {
     db_invalid_files_info?: FSDBFilesInfo
     db_detached_files_info?: FSDBFilesInfo
     available_size?: number
-    available_size_formatted?: string
 }
 
 export function useFSList(): [

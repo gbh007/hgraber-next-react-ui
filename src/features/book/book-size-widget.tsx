@@ -2,6 +2,7 @@ import { BookDetailsSize } from '../../apiclient/model-book'
 import {
     ColorizedTextWidget,
     ContainerWidget,
+    prettySize,
 } from '../../widgets/design-system'
 
 export function BookSizeWidget(props: { value?: BookDetailsSize }) {
@@ -22,7 +23,7 @@ export function BookSizeWidget(props: { value?: BookDetailsSize }) {
                         bold
                         color='good'
                     >
-                        {props.value.unique_without_dead_hashes_formatted}
+                        {prettySize(props.value.unique_without_dead_hashes)}
                     </ColorizedTextWidget>
                     <span>
                         ({props.value.unique_without_dead_hashes_count} шт)
@@ -37,7 +38,7 @@ export function BookSizeWidget(props: { value?: BookDetailsSize }) {
                 >
                     <span>уникальный (с мертвыми хешами)</span>
                     <ColorizedTextWidget bold>
-                        {props.value.unique_formatted}
+                        {prettySize(props.value.unique)}
                     </ColorizedTextWidget>
                     <span>({props.value.unique_count} шт)</span>
                 </ContainerWidget>
@@ -49,7 +50,7 @@ export function BookSizeWidget(props: { value?: BookDetailsSize }) {
                 >
                     <span>разделяемый</span>
                     <ColorizedTextWidget bold>
-                        {props.value.shared_formatted}
+                        {prettySize(props.value.shared)}
                     </ColorizedTextWidget>
                     <span>({props.value.shared_count} шт)</span>
                 </ContainerWidget>
@@ -64,7 +65,7 @@ export function BookSizeWidget(props: { value?: BookDetailsSize }) {
                         bold
                         color='danger'
                     >
-                        {props.value.dead_hashes_formatted}
+                        {prettySize(props.value.dead_hashes)}
                     </ColorizedTextWidget>
                     <span>({props.value.dead_hashes_count} шт)</span>
                 </ContainerWidget>
@@ -88,9 +89,9 @@ export function BookSizeWidget(props: { value?: BookDetailsSize }) {
                 gap='small'
             >
                 <span>общий</span>
-                <b>{props.value.total_formatted}</b>
+                <b>{prettySize(props.value.total)}</b>
                 <span>/</span>
-                <span>{props.value.avg_page_size_formatted}</span>
+                <span>{prettySize(props.value.avg_page_size)}</span>
             </ContainerWidget>
         </ContainerWidget>
     )

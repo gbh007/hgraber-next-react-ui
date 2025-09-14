@@ -17,9 +17,7 @@ export interface SystemInfoSizeResponse {
     detached_file_count: number
     dead_hash_count: number
     pages_size: number
-    pages_size_formatted: string
     files_size: number
-    files_size_formatted: string
 }
 
 export interface SystemInfoWorkersResponse {

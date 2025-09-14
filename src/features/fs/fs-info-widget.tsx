@@ -7,6 +7,8 @@ import {
     ColorizedTextWidget,
     ContainerWidget,
     HumanTimeWidget,
+    prettySize,
+    PrettySizeWidget,
 } from '../../widgets/design-system'
 
 export function FSInfoWidget(props: {
@@ -90,7 +92,7 @@ export function FSInfoWidget(props: {
                     <>
                         <b>Файлов:</b>
                         <span>
-                            {`${props.value.db_files_info.size_formatted} (${props.value.db_files_info.count} шт)`}
+                            {`${prettySize(props.value.db_files_info.size)} (${props.value.db_files_info.count} шт)`}
                         </span>
                     </>
                 ) : null}
@@ -99,7 +101,7 @@ export function FSInfoWidget(props: {
                     <>
                         <b>Невалидных файлов:</b>
                         <span>
-                            {`${props.value.db_invalid_files_info.size_formatted} (${props.value.db_invalid_files_info.count} шт)`}
+                            {`${prettySize(props.value.db_invalid_files_info.size)} (${props.value.db_invalid_files_info.count} шт)`}
                         </span>
                     </>
                 ) : null}
@@ -108,17 +110,13 @@ export function FSInfoWidget(props: {
                     <>
                         <b>Неиспользуемых файлов:</b>
                         <span>
-                            {`${props.value.db_detached_files_info.size_formatted} (${props.value.db_detached_files_info.count} шт)`}
+                            {`${prettySize(props.value.db_detached_files_info.size)} (${props.value.db_detached_files_info.count} шт)`}
                         </span>
                     </>
                 ) : null}
-
-                {props.value.available_size_formatted ? (
-                    <>
-                        <b>Свободное место:</b>
-                        <span>{props.value.available_size_formatted}</span>
-                    </>
-                ) : null}
+                <PrettySizeWidget value={props.value.available_size}>
+                    <b>Свободное место:</b>
+                </PrettySizeWidget>
 
                 <b>Создан:</b>
                 <HumanTimeWidget value={props.value.info.created_at} />
