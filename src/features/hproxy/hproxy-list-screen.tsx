@@ -1,7 +1,11 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import { useHProxyList } from '../../apiclient/api-hproxy'
 import { useEffect, useState } from 'react'
-import { HProxyBookLink, HProxyListLink } from '../../core/routing'
+import {
+    BookDetailsLink,
+    HProxyBookLink,
+    HProxyListLink,
+} from '../../core/routing'
 import { useSystemHandle } from '../../apiclient/api-system-handle'
 import {
     ColorizedTextWidget,
@@ -176,11 +180,20 @@ export function HProxyListScreen() {
                         <ColorizedTextWidget bold>
                             {book.name}
                         </ColorizedTextWidget>
+                        {book.exists_ids?.map((id) => (
+                            <Link
+                                className='app-button'
+                                to={BookDetailsLink(id)}
+                                key={id}
+                            >
+                                {id}
+                            </Link>
+                        ))}
                         <Link
                             to={HProxyBookLink(book.ext_url)}
                             className='app-button'
                         >
-                            Открыть
+                            Открыть в HProxy
                         </Link>
                     </ContainerWidget>
                 ))}

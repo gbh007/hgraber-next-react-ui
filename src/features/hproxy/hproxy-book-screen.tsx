@@ -245,6 +245,7 @@ export function HProxyBookScreen() {
                                 <Link
                                     className='app-button'
                                     to={BookDetailsLink(id)}
+                                    key={id}
                                 >
                                     {id}
                                 </Link>
