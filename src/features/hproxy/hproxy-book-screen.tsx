@@ -95,6 +95,7 @@ export function HProxyBookScreen() {
                         setPageLimit(current)
                         doHProxyBook({ url: currentURL, page_limit: current })
                     }}
+                    disabled={hProxyBookResponse.isLoading}
                 >
                     Показать больше страниц
                 </button>
