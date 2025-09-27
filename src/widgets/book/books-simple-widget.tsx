@@ -5,7 +5,13 @@ import { Link } from 'react-router-dom'
 import { BookDetailsLink } from '../../core/routing'
 import { BookImagePreviewWidget } from './book-image-preview-widget'
 import { Property } from 'csstype'
-import { ContainerWidget, HumanTimeWidget } from '../design-system'
+import {
+    ColorizedTextWidget,
+    ContainerWidget,
+    HumanTimeWidget,
+    PrettyDualSizeWidget,
+    PrettySizeWidget,
+} from '../design-system'
 
 export function BooksSimpleWidget(
     props: PropsWithChildren & {
@@ -43,10 +49,41 @@ export function BooksSimpleWidget(
             <span>
                 Создана: <HumanTimeWidget value={props.value.created_at} />
             </span>
-            <span>
-                Страниц: {props.value.page_count}
-                {props.actualPageCount ? ` (${props.actualPageCount})` : null}
-            </span>
+            <ContainerWidget
+                direction='row'
+                gap='small'
+                wrap
+            >
+                <span>Страниц:</span>
+                <span>{props.value.page_count}</span>
+                {props.actualPageCount == undefined &&
+                props.value.calculation?.calc_page_count != undefined &&
+                props.value.calculation?.calc_page_count !=
+                    props.value.page_count ? (
+                    <span>({props.value.calculation?.calc_page_count})</span>
+                ) : null}
+                {props.actualPageCount != undefined ? (
+                    <span>({props.actualPageCount})</span>
+                ) : null}
+            </ContainerWidget>
+            <ContainerWidget
+                direction='row'
+                gap='small'
+                wrap
+            >
+                <span>Размер:</span>
+                <PrettyDualSizeWidget
+                    first={props.value.calculation?.calc_page_size}
+                    second={props.value.calculation?.calc_file_size}
+                />
+                {(props.value.calculation?.calc_dead_hash_count ?? 0 > 0) ? (
+                    <ColorizedTextWidget color='danger'>
+                        <PrettySizeWidget
+                            value={props.value.calculation?.calc_dead_hash_size}
+                        />
+                    </ColorizedTextWidget>
+                ) : null}
+            </ContainerWidget>
             {props.children}
         </ContainerWidget>
     )

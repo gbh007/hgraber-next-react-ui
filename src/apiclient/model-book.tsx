@@ -5,6 +5,15 @@ export interface BookSimple {
     name: string
     page_count: number
     preview_url?: string
+    calculation?: {
+        calc_page_count?: number
+        calc_file_count?: number
+        calc_dead_hash_count?: number
+        calc_page_size?: number
+        calc_file_size?: number
+        calc_dead_hash_size?: number
+        calculated_at?: string
+    }
     flags: BookFlags
 }
 

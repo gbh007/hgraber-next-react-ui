@@ -54,6 +54,27 @@ export function BookFilterWidget(props: {
                     <option value='name'>Названию</option>
                     <option value='id'>ИД</option>
                     <option value='page_count'>Количеству страниц</option>
+                    <option value='calc_page_count'>
+                        Текущему количеству страниц
+                    </option>
+                    <option value='calc_file_count'>
+                        Текущему количеству файлов
+                    </option>
+                    <option value='calc_dead_hash_count'>
+                        Текущему количеству мертвых хешей
+                    </option>
+                    <option value='calc_page_size'>
+                        Текущему размеру страниц
+                    </option>
+                    <option value='calc_file_size'>
+                        Текущему размеру файлов
+                    </option>
+                    <option value='calc_dead_hash_size'>
+                        Текущему размеру мертвых хешей
+                    </option>
+                    <option value='calculated_at'>
+                        Дате обновления размеров
+                    </option>
                 </select>
             </ContainerWidget>
             <label>

@@ -6,6 +6,8 @@ import { BookImagePreviewWidget } from '../../widgets/book'
 import {
     ColorizedTextWidget,
     ContainerWidget,
+    PrettyDualSizeWidget,
+    PrettySizeWidget,
 } from '../../widgets/design-system'
 import { BookAttributeValueWidget } from '../../widgets/attribute'
 
@@ -52,11 +54,50 @@ export function BookShortInfoWidget(props: {
                                     : 'danger'
                             }
                         >
-                            Страниц: {book.info.page_count}
+                            <ContainerWidget
+                                direction='row'
+                                gap='small'
+                                wrap
+                            >
+                                <span>Страниц:</span>
+                                <span>{book.info.page_count}</span>
+                                {book.info.calculation?.calc_page_count !=
+                                    undefined &&
+                                book.info.calculation?.calc_page_count !=
+                                    book.info.page_count ? (
+                                    <span>
+                                        (
+                                        {book.info.calculation?.calc_page_count}
+                                        )
+                                    </span>
+                                ) : null}
+                            </ContainerWidget>
                         </ColorizedTextWidget>
                         <span>
                             {new Date(book.info.created_at).toLocaleString()}
                         </span>
+                    </ContainerWidget>
+                    <ContainerWidget
+                        direction='row'
+                        gap='small'
+                        wrap
+                    >
+                        <span>Размер:</span>
+                        <PrettyDualSizeWidget
+                            first={book.info.calculation?.calc_page_size}
+                            second={book.info.calculation?.calc_file_size}
+                        />
+                        {(book.info.calculation?.calc_dead_hash_count ??
+                        0 > 0) ? (
+                            <ColorizedTextWidget color='danger'>
+                                <PrettySizeWidget
+                                    value={
+                                        book.info.calculation
+                                            ?.calc_dead_hash_size
+                                    }
+                                />
+                            </ColorizedTextWidget>
+                        ) : null}
                     </ContainerWidget>
                     <ContainerWidget
                         direction='row'
