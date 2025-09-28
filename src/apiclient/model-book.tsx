@@ -13,6 +13,7 @@ export interface BookSimple {
         calc_file_size?: number
         calc_dead_hash_size?: number
         calculated_at?: string
+        calc_avg_page_size?: number
     }
     flags: BookFlags
 }

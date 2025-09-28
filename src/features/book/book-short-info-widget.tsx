@@ -98,6 +98,18 @@ export function BookShortInfoWidget(props: {
                                 />
                             </ColorizedTextWidget>
                         ) : null}
+                        {(book.info.calculation?.calc_avg_page_size ??
+                        0 > 0) ? (
+                            <>
+                                <span>/</span>
+                                <PrettySizeWidget
+                                    value={
+                                        book.info.calculation
+                                            ?.calc_avg_page_size
+                                    }
+                                />
+                            </>
+                        ) : null}
                     </ContainerWidget>
                     <ContainerWidget
                         direction='row'

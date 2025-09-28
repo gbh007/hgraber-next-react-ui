@@ -83,6 +83,14 @@ export function BooksSimpleWidget(
                         />
                     </ColorizedTextWidget>
                 ) : null}
+                {(props.value.calculation?.calc_avg_page_size ?? 0 > 0) ? (
+                    <>
+                        <span>/</span>
+                        <PrettySizeWidget
+                            value={props.value.calculation?.calc_avg_page_size}
+                        />
+                    </>
+                ) : null}
             </ContainerWidget>
             {props.children}
         </ContainerWidget>

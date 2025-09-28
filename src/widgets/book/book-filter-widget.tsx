@@ -66,6 +66,9 @@ export function BookFilterWidget(props: {
                     <option value='calc_page_size'>
                         Текущему размеру страниц
                     </option>
+                    <option value='calc_avg_page_size'>
+                        Текущему среднему размеру страниц
+                    </option>
                     <option value='calc_file_size'>
                         Текущему размеру файлов
                     </option>
