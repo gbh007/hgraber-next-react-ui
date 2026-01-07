@@ -1,20 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
-import {
-    HProxyBookResponseAttributeValueMassload,
-    useHProxyBook,
-} from '../../apiclient/api-hproxy'
-import {
-    BookDetailsLink,
-    HProxyListLink,
-    MassloadViewLink,
-} from '../../core/routing'
+import { useHProxyBook } from '../../apiclient/api-hproxy'
+import { BookDetailsLink, HProxyListLink } from '../../core/routing'
 import { useAttributeColorList } from '../../apiclient/api-attribute'
 import { useSystemHandle } from '../../apiclient/api-system-handle'
-import { DeletedBadge, VerifiedBadge } from '../../widgets/design-system/index'
+import { DeletedBadge } from '../../widgets/design-system/index'
 import { HProxyBookPagesPreviewWidget } from './book-pages-preview-widget'
 import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
-import { BookOneAttributeWidget } from '../../widgets/attribute'
+import {
+    BookOneAttributeWidget,
+    MassloadLinkWidget,
+} from '../../widgets/attribute'
 import { BadgeWidget, BookImagePreviewWidget } from '../../widgets/book'
 
 const defaultPageLimit = 10
@@ -262,25 +258,5 @@ export function HProxyBookScreen() {
                 pageLimit={10}
             />
         </ContainerWidget>
-    )
-}
-
-function MassloadLinkWidget(props: {
-    value: HProxyBookResponseAttributeValueMassload
-}) {
-    return (
-        <Link
-            to={MassloadViewLink(props.value.id)}
-            title={props.value.name}
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-            }}
-        >
-            <BadgeWidget
-                previewSize='small'
-                src={VerifiedBadge}
-            />
-        </Link>
     )
 }

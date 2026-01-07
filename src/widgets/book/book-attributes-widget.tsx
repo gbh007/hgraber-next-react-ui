@@ -43,6 +43,7 @@ function BookAttributeWidget(props: {
                 code={props.value.code}
                 values={props.value.values}
                 colors={props.colors}
+                valuesV2={props.value.values_v2}
             />
         </ContainerWidget>
     )

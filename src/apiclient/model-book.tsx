@@ -36,6 +36,17 @@ export interface BookAttribute {
     code: string
     name: string
     values: Array<string>
+    values_v2?: Array<BookAttributeValue>
+}
+
+export interface BookAttributeValue {
+    name: string
+    massloads_by_name?: Array<BookAttributeValueMassload>
+}
+
+export interface BookAttributeValueMassload {
+    id: number
+    name: string
 }
 
 export interface BookDetailsSize {
