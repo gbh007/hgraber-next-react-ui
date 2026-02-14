@@ -1,5 +1,8 @@
 import { useState } from 'react'
-import { AttributeCountResponseAttribute } from '../../apiclient/api-attribute'
+import {
+    AttributeColor,
+    AttributeCountResponseAttribute,
+} from '../../apiclient/api-attribute'
 import { BookRebuildRequest } from '../../apiclient/api-book'
 import { BookListResponse, BookShortInfo } from '../../apiclient/api-book-list'
 import { LabelPresetListResponseLabel } from '../../apiclient/api-labels'
@@ -29,6 +32,7 @@ export function BookRebuilderWidget(props: {
     pageCount?: number
     labelsAutoComplete?: Array<LabelPresetListResponseLabel>
     attributeCount?: Array<AttributeCountResponseAttribute>
+    attributeColors?: Array<AttributeColor>
 }) {
     const [targetPreview, setTargetPreview] = useState<BookShortInfo>()
 
@@ -186,6 +190,7 @@ export function BookRebuilderWidget(props: {
                     })
                 }
                 attributeCount={props.attributeCount}
+                colors={props.attributeColors}
             />
             <BookPagesSelectWidget
                 value={props.value.selected_pages}

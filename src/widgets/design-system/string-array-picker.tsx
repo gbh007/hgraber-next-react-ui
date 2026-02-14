@@ -56,6 +56,11 @@ export function StringArrayPickerWidget(props: {
     value: Array<string>
     onChange: (v: Array<string>) => void
     autoCompleteID?: string
+    colors?: Array<{
+        value: string
+        text_color: string
+        background_color: string
+    }>
 }) {
     return (
         <ContainerWidget
@@ -91,6 +96,14 @@ export function StringArrayPickerWidget(props: {
                             )
                         }}
                         list={props.autoCompleteID}
+                        style={{
+                            backgroundColor:
+                                props.colors?.find((v) => v.value == value)
+                                    ?.background_color || undefined,
+                            color:
+                                props.colors?.find((v) => v.value == value)
+                                    ?.text_color || undefined,
+                        }}
                     />
                     <DeleteButtonWidget
                         onClick={() => {

@@ -3,7 +3,10 @@ import { Link, useParams } from 'react-router-dom'
 import { BookRaw } from '../../apiclient/model-book'
 import { useBookRaw, useBookUpdate } from '../../apiclient/api-book'
 import { useLabelPresetList } from '../../apiclient/api-labels'
-import { useAttributeOriginCount } from '../../apiclient/api-attribute'
+import {
+    useAttributeColorList,
+    useAttributeOriginCount,
+} from '../../apiclient/api-attribute'
 import { BookDetailsLink } from '../../core/routing'
 import { BookEditorWidget } from './book-editor-widget'
 import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
@@ -26,6 +29,9 @@ export function BookEditorScreen() {
     const [attributeOriginCountResponse, getAttributeOriginCount] =
         useAttributeOriginCount()
 
+    const [attributeColorListResponse, fetchAttributeColorList] =
+        useAttributeColorList()
+
     useEffect(() => {
         fetchBookRaw({ id: bookID })
     }, [fetchBookRaw, bookID])
@@ -43,6 +49,9 @@ export function BookEditorScreen() {
         }
     }, [bookRawResponse.data])
 
+    useEffect(() => {
+        fetchAttributeColorList()
+    }, [fetchAttributeColorList])
     return (
         <ContainerWidget
             direction='column'
@@ -78,6 +87,7 @@ export function BookEditorScreen() {
                 onChange={(e) => setBook(e)}
                 labelsAutoComplete={labelPresetsResponse.data?.presets}
                 attributeCount={attributeOriginCountResponse.data?.attributes}
+                attributeColors={attributeColorListResponse.data?.colors}
             />
         </ContainerWidget>
     )

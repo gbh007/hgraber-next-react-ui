@@ -1,4 +1,7 @@
-import { AttributeCountResponseAttribute } from '../../apiclient/api-attribute'
+import {
+    AttributeColor,
+    AttributeCountResponseAttribute,
+} from '../../apiclient/api-attribute'
 import { BookRawAttribute } from '../../apiclient/model-book'
 import {
     attributeCodes,
@@ -15,6 +18,7 @@ export function BookAttributeInfoEditorWidget(props: {
     value: Array<BookRawAttribute>
     onChange: (v: Array<BookRawAttribute>) => void
     attributeCount?: Array<AttributeCountResponseAttribute>
+    colors?: Array<AttributeColor>
 }) {
     return (
         <ContainerWidget
@@ -56,6 +60,7 @@ export function BookAttributeInfoEditorWidget(props: {
                             props.value.filter((_, index) => i != index)
                         )
                     }
+                    colors={props.colors}
                 />
             ))}
             <BookAttributeAutocompleteWidget
@@ -70,7 +75,12 @@ function AttributeEditor(props: {
     value: BookRawAttribute
     onChange: (v: BookRawAttribute) => void
     onDelete: () => void
+    colors?: Array<AttributeColor>
 }) {
+    const colors = props.colors?.filter(
+        (color) => color.code == props.value.code
+    )
+
     return (
         <ContainerWidget
             direction='row'
@@ -100,6 +110,7 @@ function AttributeEditor(props: {
                     props.value.code,
                     true
                 )}
+                colors={colors}
             />
         </ContainerWidget>
     )

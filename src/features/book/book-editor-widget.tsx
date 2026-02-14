@@ -1,4 +1,7 @@
-import { AttributeCountResponseAttribute } from '../../apiclient/api-attribute'
+import {
+    AttributeColor,
+    AttributeCountResponseAttribute,
+} from '../../apiclient/api-attribute'
 import { LabelPresetListResponseLabel } from '../../apiclient/api-labels'
 import { BookRaw } from '../../apiclient/model-book'
 import {
@@ -13,6 +16,7 @@ export function BookEditorWidget(props: {
     onChange: (v: BookRaw) => void
     labelsAutoComplete?: Array<LabelPresetListResponseLabel>
     attributeCount?: Array<AttributeCountResponseAttribute>
+    attributeColors?: Array<AttributeColor>
 }) {
     return (
         <ContainerWidget
@@ -34,6 +38,7 @@ export function BookEditorWidget(props: {
                     props.onChange({ ...props.value, attributes: e })
                 }
                 attributeCount={props.attributeCount}
+                colors={props.attributeColors}
             />
         </ContainerWidget>
     )

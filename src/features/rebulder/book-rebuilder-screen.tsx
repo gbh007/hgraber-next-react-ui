@@ -9,7 +9,10 @@ import { BookFilter } from '../../apiclient/model-book-filter'
 import { useBookList } from '../../apiclient/api-book-list'
 import { useBookDetails } from '../../apiclient/api-book-details'
 import { useLabelPresetList } from '../../apiclient/api-labels'
-import { useAttributeOriginCount } from '../../apiclient/api-attribute'
+import {
+    useAttributeColorList,
+    useAttributeOriginCount,
+} from '../../apiclient/api-attribute'
 import { BookDetailsLink } from '../../core/routing'
 import { BookRebuilderWidget } from './book-rebuilder-widget'
 import { ContainerWidget, ErrorTextWidget } from '../../widgets/design-system'
@@ -62,6 +65,9 @@ export function BookRebuilderScreen() {
     const [attributeOriginCountResponse, getAttributeOriginCount] =
         useAttributeOriginCount()
 
+    const [attributeColorListResponse, fetchAttributeColorList] =
+        useAttributeColorList()
+
     useEffect(() => {
         fetchBookRaw({ id: bookID })
     }, [fetchBookRaw, bookID])
@@ -95,6 +101,10 @@ export function BookRebuilderScreen() {
         }
     }, [bookRawResponse.data])
 
+    useEffect(() => {
+        fetchAttributeColorList()
+    }, [fetchAttributeColorList])
+
     return (
         <ContainerWidget
             direction='column'
@@ -106,6 +116,7 @@ export function BookRebuilderScreen() {
             <ErrorTextWidget value={attributeOriginCountResponse} />
             <ErrorTextWidget value={bookRebuildResponse} />
             <ErrorTextWidget value={booksResponse} />
+            <ErrorTextWidget value={attributeColorListResponse} />
             <ContainerWidget
                 direction='row'
                 gap='small'
@@ -187,6 +198,7 @@ export function BookRebuilderScreen() {
                     targetBookFilterChange={setBookFilter}
                     getTargetBooks={(e) => getBooks(e)}
                     targetBookResponse={booksResponse.data ?? undefined}
+                    attributeColors={attributeColorListResponse.data?.colors}
                 />
             ) : null}
         </ContainerWidget>
