@@ -14,6 +14,8 @@ import {
     BookImagePreviewWidget,
     BookPagesPreviewWidget,
 } from '../../widgets/book'
+import { HProxyBookLink } from '../../core/routing'
+import { Link } from 'react-router-dom'
 
 export function BookDetailInfoWidget(
     props: PropsWithChildren & {
@@ -102,6 +104,14 @@ export function BookDetailInfoWidget(
                             </a>
                         ) : null}
                         {originDomain ? <span>({originDomain})</span> : null}
+                        {props.book.info.origin_url ? (
+                            <Link
+                                className='app-button'
+                                to={HProxyBookLink(props.book.info.origin_url)}
+                            >
+                                Открыть в HProxy
+                            </Link>
+                        ) : null}
                     </ContainerWidget>
                     <BookAttributesWidget
                         value={props.book.attributes}
